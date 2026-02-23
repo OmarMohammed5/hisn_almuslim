@@ -94,8 +94,55 @@ class _SurahScreenState extends State<SurahScreen> {
     return Color(int.parse(hex, radix: 16));
   }
 
+  final darkMode = const ColorFilter.matrix(<double>[
+    -1,
+    0,
+    0,
+    0,
+    255,
+    0,
+    -1,
+    0,
+    0,
+    255,
+    0,
+    0,
+    -1,
+    0,
+    255,
+    0,
+    0,
+    0,
+    1,
+    0,
+  ]);
+
+  final lightMode = const ColorFilter.matrix(<double>[
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+  ]);
+
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return BlocBuilder<QuranCubit, QuranState>(
       builder: (context, state) {
         if (state is QuranLoading) {
@@ -129,7 +176,7 @@ class _SurahScreenState extends State<SurahScreen> {
 
           return Scaffold(
             extendBodyBehindAppBar: true,
-            backgroundColor: const Color(0xFFF7F3E8),
+
             appBar: _showAppBar
                 ? AppBar(
                     backgroundColor: Colors.black.withOpacity(0.7),
@@ -194,9 +241,12 @@ class _SurahScreenState extends State<SurahScreen> {
 
                       itemBuilder: (context, index) {
                         final pageNumber = index + 1;
-                        return Image.asset(
-                          _getPagePath(pageNumber),
-                          fit: BoxFit.contain,
+                        return ColorFiltered(
+                          colorFilter: isDark ? darkMode : lightMode,
+                          child: Image.asset(
+                            _getPagePath(pageNumber),
+                            fit: BoxFit.contain,
+                          ),
                         );
                       },
                     ),
