@@ -1,0 +1,800 @@
+[
+  {
+    "imageIndex": 1,
+    "number": 7,
+    "name": "سُورَةُ الفَاتِحَةِ",
+    "startPage": 1,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 2,
+    "number": 286,
+    "name": "سُورَةُ البَقَرَةِ",
+    "startPage": 2,
+    "type": "مدنية"
+  },
+  {
+    "imageIndex": 3,
+    "number": 200,
+    "name": "سُورَةُ آلِ عِمْرَانَ",
+    "startPage": 50,
+    "type": "مدنية"
+  },
+  {
+    "imageIndex": 4,
+    "number": 176,
+    "name": "سُورَةُ النِّسَاءِ",
+    "startPage": 77,
+    "type": "مدنية"
+  },
+  {
+    "imageIndex": 5,
+    "number": 120,
+    "name": "سُورَةُ المَائِدَةِ",
+    "startPage": 106,
+    "type": "مدنية"
+  },
+  {
+    "imageIndex": 6,
+    "number": 165,
+    "name": "سُورَةُ الأَنْعَامِ",
+    "startPage": 128,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 7,
+    "number": 206,
+    "name": "سُورَةُ الأَعْرَافِ",
+    "startPage": 151,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 8,
+    "number": 75,
+    "name": "سُورَةُ الأَنْفَالِ",
+    "startPage": 177,
+    "type": "مدنية"
+  },
+  {
+    "imageIndex": 9,
+    "number": 129,
+    "name": "سُورَةُ التَّوْبَةِ",
+    "startPage": 187,
+    "type": "مدنية"
+  },
+  {
+    "imageIndex": 10,
+    "number": 109,
+    "name": "سُورَةُ يُونُسَ",
+    "startPage": 208,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 11,
+    "number": 123,
+    "name": "سُورَةُ هُودٍ",
+    "startPage": 221,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 12,
+    "number": 111,
+    "name": "سُورَةُ يُوسُفَ",
+    "startPage": 235,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 13,
+    "number": 43,
+    "name": "سُورَةُ الرَّعْدِ",
+    "startPage": 249,
+    "type": "مدنية"
+  },
+  {
+    "imageIndex": 14,
+    "number": 52,
+    "name": "سُورَةُ إِبْرَاهِيمَ",
+    "startPage": 255,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 15,
+    "number": 99,
+    "name": "سُورَةُ الحِجْرِ",
+    "startPage": 262,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 16,
+    "number": 128,
+    "name": "سُورَةُ النَّحْلِ",
+    "startPage": 267,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 17,
+    "number": 111,
+    "name": "سُورَةُ الإِسْرَاءِ",
+    "startPage": 282,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 18,
+    "number": 110,
+    "name": "سُورَةُ الكَهْفِ",
+    "startPage": 293,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 19,
+    "number": 98,
+    "name": "سُورَةُ مَرْيَمَ",
+    "startPage": 305,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 20,
+    "number": 135,
+    "name": "سُورَةُ طه",
+    "startPage": 312,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 21,
+    "number": 112,
+    "name": "سُورَةُ الأَنْبِيَاءِ",
+    "startPage": 322,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 22,
+    "number": 78,
+    "name": "سُورَةُ الحَجِّ",
+    "startPage": 332,
+    "type": "مدنية"
+  },
+  {
+    "imageIndex": 23,
+    "number": 118,
+    "name": "سُورَةُ المُؤْمِنُونَ",
+    "startPage": 342,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 24,
+    "number": 64,
+    "name": "سُورَةُ النُّورِ",
+    "startPage": 350,
+    "type": "مدنية"
+  },
+  {
+    "imageIndex": 25,
+    "number": 77,
+    "name": "سُورَةُ الفُرْقَانِ",
+    "startPage": 359,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 26,
+    "number": 227,
+    "name": "سُورَةُ الشُّعَرَاءِ",
+    "startPage": 367,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 27,
+    "number": 93,
+    "name": "سُورَةُ النَّمْلِ",
+    "startPage": 377,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 28,
+    "number": 88,
+    "name": "سُورَةُ القَصَصِ",
+    "startPage": 385,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 29,
+    "number": 69,
+    "name": "سُورَةُ العَنْكَبُوتِ",
+    "startPage": 396,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 30,
+    "number": 60,
+    "name": "سُورَةُ الرُّومِ",
+    "startPage": 404,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 31,
+    "number": 34,
+    "name": "سُورَةُ لُقْمَانَ",
+    "startPage": 411,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 32,
+    "number": 30,
+    "name": "سُورَةُ السَّجْدَةِ",
+    "startPage": 415,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 33,
+    "number": 73,
+    "name": "سُورَةُ الأَحْزَابِ",
+    "startPage": 418,
+    "type": "مدنية"
+  },
+  {
+    "imageIndex": 34,
+    "number": 54,
+    "name": "سُورَةُ سَبَإٍ",
+    "startPage": 428,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 35,
+    "number": 45,
+    "name": "سُورَةُ فَاطِرٍ",
+    "startPage": 434,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 36,
+    "number": 83,
+    "name": "سُورَةُ يس",
+    "startPage": 440,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 37,
+    "number": 182,
+    "name": "سُورَةُ الصَّافَّاتِ",
+    "startPage": 446,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 38,
+    "number": 88,
+    "name": "سُورَةُ ص",
+    "startPage": 453,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 39,
+    "number": 75,
+    "name": "سُورَةُ الزُّمَرِ",
+    "startPage": 458,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 40,
+    "number": 85,
+    "name": "سُورَةُ غَافِرٍ",
+    "startPage": 467,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 41,
+    "number": 54,
+    "name": "سُورَةُ فُصِّلَتْ",
+    "startPage": 477,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 42,
+    "number": 53,
+    "name": "سُورَةُ الشُّورَى",
+    "startPage": 483,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 43,
+    "number": 89,
+    "name": "سُورَةُ الزُّخْرُفِ",
+    "startPage": 489,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 44,
+    "number": 59,
+    "name": "سُورَةُ الدُّخَانِ",
+    "startPage": 496,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 45,
+    "number": 37,
+    "name": "سُورَةُ الجَاثِيَةِ",
+    "startPage": 499,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 46,
+    "number": 35,
+    "name": "سُورَةُ الأَحْقَافِ",
+    "startPage": 502,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 47,
+    "number": 38,
+    "name": "سُورَةُ مُحَمَّدٍ",
+    "startPage": 507,
+    "type": "مدنية"
+  },
+  {
+    "imageIndex": 48,
+    "number": 29,
+    "name": "سُورَةُ الفَتْحِ",
+    "startPage": 511,
+    "type": "مدنية"
+  },
+  {
+    "imageIndex": 49,
+    "number": 18,
+    "name": "سُورَةُ الحُجُرَاتِ",
+    "startPage": 515,
+    "type": "مدنية"
+  },
+  {
+    "imageIndex": 50,
+    "number": 45,
+    "name": "سُورَةُ ق",
+    "startPage": 518,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 51,
+    "number": 60,
+    "name": "سُورَةُ الذَّارِيَاتِ",
+    "startPage": 520,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 52,
+    "number": 49,
+    "name": "سُورَةُ الطُّورِ",
+    "startPage": 523,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 53,
+    "number": 62,
+    "name": "سُورَةُ النَّجْمِ",
+    "startPage": 526,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 54,
+    "number": 55,
+    "name": "سُورَةُ القَمَرِ",
+    "startPage": 528,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 55,
+    "number": 78,
+    "name": "سُورَةُ الرَّحْمَٰنِ",
+    "startPage": 531,
+    "type": "مدنية"
+  },
+  {
+    "imageIndex": 56,
+    "number": 96,
+    "name": "سُورَةُ الوَاقِعَةِ",
+    "startPage": 534,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 57,
+    "number": 29,
+    "name": "سُورَةُ الحَدِيدِ",
+    "startPage": 537,
+    "type": "مدنية"
+  },
+  {
+    "imageIndex": 58,
+    "number": 22,
+    "name": "سُورَةُ المُجَادِلَةِ",
+    "startPage": 542,
+    "type": "مدنية"
+  },
+  {
+    "imageIndex": 59,
+    "number": 24,
+    "name": "سُورَةُ الحَشْرِ",
+    "startPage": 545,
+    "type": "مدنية"
+  },
+  {
+    "imageIndex": 60,
+    "number": 13,
+    "name": "سُورَةُ المُمتَحِنَةِ",
+    "startPage": 549,
+    "type": "مدنية"
+  },
+  {
+    "imageIndex": 61,
+    "number": 14,
+    "name": "سُورَةُ الصَّفِّ",
+    "startPage": 551,
+    "type": "مدنية"
+  },
+  {
+    "imageIndex": 62,
+    "number": 11,
+    "name": "سُورَةُ الجُمُعَةِ",
+    "startPage": 553,
+    "type": "مدنية"
+  },
+  {
+    "imageIndex": 63,
+    "number": 11,
+    "name": "سُورَةُ المُنَافِقُونَ",
+    "startPage": 554,
+    "type": "مدنية"
+  },
+  {
+    "imageIndex": 64,
+    "number": 18,
+    "name": "سُورَةُ التَّغَابُنِ",
+    "startPage": 556,
+    "type": "مدنية"
+  },
+  {
+    "imageIndex": 65,
+    "number": 12,
+    "name": "سُورَةُ الطَّلَاقِ",
+    "startPage": 558,
+    "type": "مدنية"
+  },
+  {
+    "imageIndex": 66,
+    "number": 12,
+    "name": "سُورَةُ التَّحْرِيمِ",
+    "startPage": 560,
+    "type": "مدنية"
+  },
+  {
+    "imageIndex": 67,
+    "number": 30,
+    "name": "سُورَةُ المُلْكِ",
+    "startPage": 562,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 68,
+    "number": 52,
+    "name": "سُورَةُ القَلَمِ",
+    "startPage": 564,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 69,
+    "number": 52,
+    "name": "سُورَةُ الحَاقَّةِ",
+    "startPage": 566,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 70,
+    "number": 44,
+    "name": "سُورَةُ المَعَارِجِ",
+    "startPage": 568,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 71,
+    "number": 28,
+    "name": "سُورَةُ نُوحٍ",
+    "startPage": 570,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 72,
+    "number": 28,
+    "name": "سُورَةُ الجِنِّ",
+    "startPage": 572,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 73,
+    "number": 20,
+    "name": "سُورَةُ المُزَّمِّلِ",
+    "startPage": 574,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 74,
+    "number": 56,
+    "name": "سُورَةُ المُدَّثِّرِ",
+    "startPage": 575,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 75,
+    "number": 40,
+    "name": "سُورَةُ القِيَامَةِ",
+    "startPage": 577,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 76,
+    "number": 31,
+    "name": "سُورَةُ الإِنْسَانِ",
+    "startPage": 578,
+    "type": "مدنية"
+  },
+  {
+    "imageIndex": 77,
+    "number": 50,
+    "name": "سُورَةُ المُرْسَلَاتِ",
+    "startPage": 580,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 78,
+    "number": 40,
+    "name": "سُورَةُ النَّبَإِ",
+    "startPage": 582,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 79,
+    "number": 46,
+    "name": "سُورَةُ النَّازِعَاتِ",
+    "startPage": 583,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 80,
+    "number": 42,
+    "name": "سُورَةُ عَبَسَ",
+    "startPage": 585,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 81,
+    "number": 29,
+    "name": "سُورَةُ التَّكْوِيرِ",
+    "startPage": 586,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 82,
+    "number": 19,
+    "name": "سُورَةُ الِانْفِطَارِ",
+    "startPage": 587,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 83,
+    "number": 36,
+    "name": "سُورَةُ المُطَفِّفِينَ",
+    "startPage": 587,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 84,
+    "number": 25,
+    "name": "سُورَةُ الِانْشِقَاقِ",
+    "startPage": 589,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 85,
+    "number": 22,
+    "name": "سُورَةُ البُرُوجِ",
+    "startPage": 590,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 86,
+    "number": 17,
+    "name": "سُورَةُ الطَّارِقِ",
+    "startPage": 591,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 87,
+    "number": 19,
+    "name": "سُورَةُ الأَعْلَى",
+    "startPage": 591,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 88,
+    "number": 26,
+    "name": "سُورَةُ الغَاشِيَةِ",
+    "startPage": 592,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 89,
+    "number": 30,
+    "name": "سُورَةُ الفَجْرِ",
+    "startPage": 593,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 90,
+    "number": 20,
+    "name": "سُورَةُ البَلَدِ",
+    "startPage": 594,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 91,
+    "number": 15,
+    "name": "سُورَةُ الشَّمْسِ",
+    "startPage": 595,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 92,
+    "number": 21,
+    "name": "سُورَةُ اللَّيْلِ",
+    "startPage": 595,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 93,
+    "number": 11,
+    "name": "سُورَةُ الضُّحَى",
+    "startPage": 596,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 94,
+    "number": 8,
+    "name": "سُورَةُ الشَّرْحِ",
+    "startPage": 596,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 95,
+    "number": 8,
+    "name": "سُورَةُ التِّينِ",
+    "startPage": 597,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 96,
+    "number": 19,
+    "name": "سُورَةُ العَلَقِ",
+    "startPage": 597,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 97,
+    "number": 5,
+    "name": "سُورَةُ القَدْرِ",
+    "startPage": 598,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 98,
+    "number": 8,
+    "name": "سُورَةُ البَيِّنَةِ",
+    "startPage": 598,
+    "type": "مدنية"
+  },
+  {
+    "imageIndex": 99,
+    "number": 8,
+    "name": "سُورَةُ الزَّلْزَلَةِ",
+    "startPage": 599,
+    "type": "مدنية"
+  },
+  {
+    "imageIndex": 100,
+    "number": 11,
+    "name": "سُورَةُ العَادِيَاتِ",
+    "startPage": 599,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 101,
+    "number": 11,
+    "name": "سُورَةُ القَارِعَةِ",
+    "startPage": 600,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 102,
+    "number": 8,
+    "name": "سُورَةُ التَّكَاثُرِ",
+    "startPage": 600,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 103,
+    "number": 3,
+    "name": "سُورَةُ العَصْرِ",
+    "startPage": 601,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 104,
+    "number": 9,
+    "name": "سُورَةُ الهُمَزَةِ",
+    "startPage": 601,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 105,
+    "number": 5,
+    "name": "سُورَةُ الفِيلِ",
+    "startPage": 601,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 106,
+    "number": 4,
+    "name": "سُورَةُ قُرَيْشٍ",
+    "startPage": 602,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 107,
+    "number": 7,
+    "name": "سُورَةُ المَاعُونِ",
+    "startPage": 602,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 108,
+    "number": 3,
+    "name": "سُورَةُ الكَوْثَرِ",
+    "startPage": 602,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 109,
+    "number": 6,
+    "name": "سُورَةُ الكَافِرُونَ",
+    "startPage": 603,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 110,
+    "number": 3,
+    "name": "سُورَةُ النَّصْرِ",
+    "startPage": 603,
+    "type": "مدنية"
+  },
+  {
+    "imageIndex": 111,
+    "number": 5,
+    "name": "سُورَةُ المَسَدِ",
+    "startPage": 603,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 112,
+    "number": 4,
+    "name": "سُورَةُ الإِخْلَاصِ",
+    "startPage": 604,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 113,
+    "number": 5,
+    "name": "سُورَةُ الفَلَقِ",
+    "startPage": 604,
+    "type": "مكية"
+  },
+  {
+    "imageIndex": 114,
+    "number": 6,
+    "name": "سُورَةُ النَّاسِ",
+    "startPage": 604,
+    "type": "مكية"
+  }
+]

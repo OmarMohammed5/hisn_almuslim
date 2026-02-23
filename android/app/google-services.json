@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "400341104315",
+    "project_id": "islamic-app-distribution",
+    "storage_bucket": "islamic-app-distribution.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:400341104315:android:8906328cc3a8726867db9e",
+        "android_client_info": {
+          "package_name": "com.example.hisn_almuslim"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjg2S--IkDmRxKjP-jLMSl2EP_N31XtaM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

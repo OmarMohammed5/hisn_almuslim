@@ -1,0 +1,113 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hisn_almuslim/features/hadith/books/bukhary/screen/fehres_sahih_bukhary.dart';
+import 'package:hisn_almuslim/features/hadith/books/muslim/screen/fehres_sahih_muslim.dart';
+import 'package:hisn_almuslim/features/hadith/books/nawawi/screen/fehres_hadith_nawawi.dart';
+import 'package:hisn_almuslim/features/hadith/books/reyad%20al%20salehin/screen/fehres_reyad_al_saliheen.dart';
+import 'package:hisn_almuslim/features/hadith/widgets/book_card.dart';
+import 'package:hisn_almuslim/shared/app_bar_widget.dart';
+
+class HadithScreen extends StatelessWidget {
+  const HadithScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // final isDark = Theme.of(context).brightness == Brightness.dark;
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        appBar: AppBarWidget(title: "الأَحَادِيثُ النَّبَوِيَّةُ"),
+        body: Column(
+          children: [
+            // Search Bar
+            // SearchAppBar(),
+            // Gap(30.h),
+            // Books Grid
+            Expanded(
+              child: GridView.count(
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                crossAxisCount: 2,
+                mainAxisSpacing: 16.h,
+                crossAxisSpacing: 20.w,
+                childAspectRatio: 0.83,
+                children: [
+                  // صحيح البخاري
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return FehresSahihBukhary();
+                          },
+                        ),
+                      );
+                    },
+                    child: BookCard(
+                      title: 'صحيح البخاري',
+                      subtitle: 'متابعة القراءة من\nالحديث',
+                      number: '١',
+                    ),
+                  ),
+
+                  // // صحيح مسلم
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return FehresSahihMuslim();
+                          },
+                        ),
+                      );
+                    },
+                    child: BookCard(
+                      title: 'صحيح مسلم',
+                      subtitle: 'متابعة القراءة من\nالحديث',
+                      number: '١',
+                    ),
+                  ),
+
+                  // رياض الصالحين
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return FehresReyadAlSaliheen();
+                          },
+                        ),
+                      );
+                    },
+                    child: BookCard(
+                      title: 'رياض الصالحين',
+                      subtitle: 'متابعة القراءة من\nالحديث',
+                      number: '١',
+                    ),
+                  ),
+
+                  //  الأربعون النووية
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return FehresHadithNawawi();
+                          },
+                        ),
+                      );
+                    },
+                    child: BookCard(
+                      title: 'الأربعون النووية',
+                      subtitle: 'متابعة القراءة من\nالحديث',
+                      number: '١',
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

@@ -1,0 +1,3 @@
+- Improved performance
+- Updates the app with latest changes
+- Fixed bugs

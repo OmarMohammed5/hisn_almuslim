@@ -1,0 +1,61 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hisn_almuslim/features/jami%20dua/data/cubit/hajj%20and%20omra/hajj_dua_cubit.dart';
+import 'package:hisn_almuslim/features/jami%20dua/screen/hajj_and_omra_details.dart';
+import 'package:hisn_almuslim/features/jami%20dua/widgets/category_card.dart';
+import 'package:hisn_almuslim/shared/app_bar_widget.dart';
+import 'package:hisn_almuslim/shared/custom_text.dart';
+
+class HajjAndOmraScreen extends StatelessWidget {
+  const HajjAndOmraScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBarWidget(title: "أدعية الحج و العمرة"),
+      body: BlocBuilder<HajjDuaCubit, HajjDuaState>(
+        builder: (context, state) {
+          if (state is HajjDuaLoading) {
+            return Center(
+              child: CupertinoActivityIndicator(color: Colors.teal.shade700),
+            );
+          }
+
+          if (state is HajjDuaLoaded) {
+            final chapter = state.items;
+            return Padding(
+              padding: EdgeInsets.all(20.0.w),
+              child: ListView.builder(
+                itemCount: chapter.length,
+                itemBuilder: (context, index) {
+                  return CategoryCard(
+                    title: chapter[index].chapterTitle,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return HajjAndOmraDetails(
+                              hajjItems: chapter[index].items,
+                              title: chapter[index].chapterTitle,
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            );
+          } else if (state is HajjDuaError) {
+            return Center(child: CustomText(state.message));
+          } else {
+            return SizedBox.shrink();
+          }
+        },
+      ),
+    );
+  }
+}
