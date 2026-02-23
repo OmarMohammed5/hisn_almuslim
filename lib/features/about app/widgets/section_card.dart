@@ -40,6 +40,16 @@ class SectionCard extends StatelessWidget {
             subtitle: 'تلاوة وقراءة القرآن الكريم كاملًا',
           ),
           SectionItem(
+            icon: FlutterIslamicIcons.mosque,
+            title: 'مواقيت الصلاة',
+            subtitle: 'تنبيهات دقيقه بمواعيد الأذان',
+          ),
+          SectionItem(
+            icon: FlutterIslamicIcons.calendar,
+            title: 'التقويم الهجري',
+            subtitle: 'تقويم هجري دقيق وواضح',
+          ),
+          SectionItem(
             icon: Icons.wb_sunny_outlined,
             title: 'أذكار الصباح',
             subtitle: 'أذكار الصباح كاملة مع عدّاد للتسبيح',

@@ -52,7 +52,7 @@ class SectionItem extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 11.sp,
                     height: 1.5.h,
-                    color: isDark ? Colors.grey.shade600 : Colors.grey.shade600,
+                    color: isDark ? Colors.grey.shade600 : Colors.black38,
                     fontFamily: 'Cairo',
                   ),
                 ),
