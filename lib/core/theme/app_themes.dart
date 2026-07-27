@@ -11,14 +11,14 @@ class AppThemes {
       seedColor: Colors.blue,
       brightness: Brightness.light,
     ),
-    scaffoldBackgroundColor: AppColors.kPrimaryColor,
+    scaffoldBackgroundColor: AppColors.bgColor,
 
     /// AppBar
     appBarTheme: AppBarTheme(
       centerTitle: true,
       elevation: 0,
       toolbarHeight: 65,
-      backgroundColor: AppColors.kPrimaryColor,
+      backgroundColor: AppColors.bgColor,
       foregroundColor: Colors.black,
     ),
 

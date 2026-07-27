@@ -163,8 +163,9 @@ class _GlassBottomNavBarState extends State<GlassBottomNavBar> {
                                         data: IconThemeData(
                                           size: isSelected ? 25 : 20,
                                           color: isSelected
-                                              ? AppColors.kPrimaryColor
-                                                    .withValues(alpha: 0.9)
+                                              ? AppColors.bgColor.withValues(
+                                                  alpha: 0.9,
+                                                )
                                               : Colors.grey.shade600,
                                         ),
                                         child: isSelected
@@ -178,7 +179,7 @@ class _GlassBottomNavBarState extends State<GlassBottomNavBar> {
                                       fontSize: 11.7,
                                       fontWeight: FontWeight.w700,
                                       color: isSelected
-                                          ? AppColors.kPrimaryColor.withValues(
+                                          ? AppColors.bgColor.withValues(
                                               alpha: 0.6,
                                             )
                                           : Colors.grey.shade600,
