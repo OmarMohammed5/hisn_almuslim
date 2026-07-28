@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:hisn_almuslim/shared/custom_text.dart';
+import 'package:hisn_almuslim/core/shared/custom_text.dart';
 
 class CategoriesHeader extends StatelessWidget {
   const CategoriesHeader({super.key, required this.isDark});

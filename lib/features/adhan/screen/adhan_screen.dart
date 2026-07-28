@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,8 +7,8 @@ import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/features/adhan/data/cubit/adhan_cubit.dart';
 import 'package:hisn_almuslim/features/adhan/widgets/dashboard_timing.dart';
 import 'package:hisn_almuslim/features/adhan/widgets/prayer_timings.dart';
-import 'package:hisn_almuslim/shared/app_bar_widget.dart';
-import 'package:hisn_almuslim/shared/custom_text.dart';
+import 'package:hisn_almuslim/core/shared/custom_text.dart';
+import '../../../core/shared/app_bar_widget.dart';
 
 class AdhanScreen extends StatefulWidget {
   const AdhanScreen({super.key});

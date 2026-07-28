@@ -5,7 +5,7 @@ import 'package:hisn_almuslim/features/hadith/books/muslim/screen/fehres_sahih_m
 import 'package:hisn_almuslim/features/hadith/books/nawawi/screen/fehres_hadith_nawawi.dart';
 import 'package:hisn_almuslim/features/hadith/books/reyad%20al%20salehin/screen/fehres_reyad_al_saliheen.dart';
 import 'package:hisn_almuslim/features/hadith/widgets/book_card.dart';
-import 'package:hisn_almuslim/shared/app_bar_widget.dart';
+import '../../core/shared/app_bar_widget.dart';
 
 class HadithScreen extends StatelessWidget {
   const HadithScreen({super.key});

@@ -15,6 +15,7 @@ import 'package:hisn_almuslim/features/quran/data/cubit/cubit/quran_progress_cub
 import 'package:hisn_almuslim/features/quran/data/cubit/cubit/search_cubit.dart';
 import 'package:hisn_almuslim/features/quran/data/cubit/quran_cubit.dart';
 import 'package:hisn_almuslim/features/quran/data/models/quran_storage.dart';
+import 'package:hisn_almuslim/features/quran_audio/data/quran_audio_module.dart';
 import 'package:hisn_almuslim/features/settings/data/cubit/notification_cubit.dart';
 import 'package:hisn_almuslim/features/settings/data/cubit/theme_cubit.dart';
 import 'package:hisn_almuslim/core/service/notification_service.dart';
@@ -22,9 +23,10 @@ import 'package:hisn_almuslim/features/hadith/books/bukhary/data/cubit/chapters_
 import 'package:hisn_almuslim/features/hadith/books/muslim/data/cubit/sahih_muslim_cubit.dart';
 import 'package:hisn_almuslim/features/hadith/books/nawawi/data/cubit/hadith_cubit.dart';
 import 'package:hisn_almuslim/features/hadith/books/reyad%20al%20salehin/data/cubit/reyad_al_saliheen_cubit.dart';
+import 'package:hisn_almuslim/hisn_al_muslim_app.dart';
 // import 'package:hisn_almuslim/firebase_options.dart';
 import 'package:hisn_almuslim/splash.dart';
-import 'package:hisn_almuslim/theme/app_themes.dart';
+import 'package:hisn_almuslim/core/theme/app_themes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/data/latest.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
@@ -82,44 +84,13 @@ void main() async {
         BlocProvider(
           create: (context) => AsmaAllahCubit(asmaRepo)..loadNames(),
         ),
+
+        // Quran Audio
+        BlocProvider(
+          create: (context) => QuranAudioModule.createCubit()..loadReciters(),
+        ),
       ],
-      child: MyApp(seenWelcomeScreen: seenWelcome),
+      child: HisnAlMuslimApp(seenWelcomeScreen: seenWelcome),
     ),
   );
-}
-
-class MyApp extends StatelessWidget {
-  final bool seenWelcomeScreen;
-  const MyApp({super.key, required this.seenWelcomeScreen});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<ThemeCubit, ThemeMode>(
-      builder: (context, themeMode) {
-        return ScreenUtilInit(
-          designSize: const Size(360, 690),
-          minTextAdapt: true,
-          splitScreenMode: true,
-          builder: (BuildContext context, child) {
-            return MaterialApp(
-              // navigatorKey: navigatorKey,
-              debugShowCheckedModeBanner: false,
-              themeMode: themeMode,
-              theme: AppThemes.light,
-              darkTheme: AppThemes.dark,
-
-              builder: (context, child) {
-                return Directionality(
-                  textDirection: TextDirection.rtl,
-                  child: child!,
-                );
-              },
-              home: Splash(seenWelcomeScreen: seenWelcomeScreen),
-              // home: WelcomeScreen(),
-            );
-          },
-        );
-      },
-    );
-  }
 }

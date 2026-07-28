@@ -7,7 +7,7 @@ import 'package:hisn_almuslim/features/jami%20dua/screen/last_ten_duas_screen.da
 import 'package:hisn_almuslim/features/jami%20dua/screen/quran_dua_screen.dart';
 import 'package:hisn_almuslim/features/jami%20dua/screen/sunnah_dua_screen.dart';
 import 'package:hisn_almuslim/features/jami%20dua/widgets/category_card.dart';
-import 'package:hisn_almuslim/shared/app_bar_widget.dart';
+import '../../../core/shared/app_bar_widget.dart';
 
 class DuaScreen extends StatelessWidget {
   const DuaScreen({super.key});

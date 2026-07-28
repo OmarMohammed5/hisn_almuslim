@@ -3,7 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/features/welcome/screen/welcome_screen.dart';
 import 'package:hisn_almuslim/root.dart';
-import 'package:hisn_almuslim/shared/app_logo.dart';
+
+import 'core/shared/app_logo.dart';
 
 class Splash extends StatefulWidget {
   const Splash({super.key, required this.seenWelcomeScreen});

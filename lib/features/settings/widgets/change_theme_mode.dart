@@ -3,8 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/features/settings/data/cubit/theme_cubit.dart';
-import 'package:hisn_almuslim/theme/app_colors.dart';
-import 'package:hisn_almuslim/shared/custom_text.dart';
+import 'package:hisn_almuslim/core/shared/custom_text.dart';
+
+import '../../../core/theme/app_colors.dart';
 
 class ChangeThemeMode extends StatelessWidget {
   const ChangeThemeMode({

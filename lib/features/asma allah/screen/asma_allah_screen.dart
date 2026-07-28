@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/features/asma%20allah/data/cubit/asma_allah_cubit.dart';
 import 'package:hisn_almuslim/features/asma%20allah/widgets/asma_card.dart';
-import 'package:hisn_almuslim/shared/custom_text.dart';
+import 'package:hisn_almuslim/core/shared/custom_text.dart';
 
 class AsmaAllahScreen extends StatefulWidget {
   const AsmaAllahScreen({super.key});

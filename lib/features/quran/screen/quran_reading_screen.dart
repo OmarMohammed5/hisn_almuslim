@@ -7,16 +7,16 @@ import 'package:hisn_almuslim/features/quran/data/cubit/quran_state.dart';
 import 'package:hisn_almuslim/features/quran/screen/surah_screen.dart';
 import 'package:hisn_almuslim/features/quran/widgets/search_field.dart';
 import 'package:hisn_almuslim/features/quran/widgets/surah_card.dart';
-import 'package:hisn_almuslim/shared/re_build_scroll_To_Top.dart';
+import '../../../core/shared/re_build_scroll_To_Top.dart';
 
-class QuranScreen extends StatefulWidget {
-  const QuranScreen({super.key});
+class QuranReadingScreen extends StatefulWidget {
+  const QuranReadingScreen({super.key});
 
   @override
-  State<QuranScreen> createState() => _QuranScreenState();
+  State<QuranReadingScreen> createState() => _QuranReadingScreenState();
 }
 
-class _QuranScreenState extends State<QuranScreen> {
+class _QuranReadingScreenState extends State<QuranReadingScreen> {
   final ValueNotifier<bool> _showScrollToTop = ValueNotifier(false);
   final ScrollController _scrollController = ScrollController();
   @override
@@ -107,12 +107,9 @@ class _QuranScreenState extends State<QuranScreen> {
           },
         ),
 
-        floatingActionButton: Padding(
-          padding: EdgeInsets.only(bottom: 65.h),
-          child: ReBuildScrollToTop(
-            showScrollToTop: _showScrollToTop,
-            scrollController: _scrollController,
-          ),
+        floatingActionButton: ReBuildScrollToTop(
+          showScrollToTop: _showScrollToTop,
+          scrollController: _scrollController,
         ),
       ),
     );

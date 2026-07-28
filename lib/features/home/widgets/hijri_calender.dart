@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:hijri/hijri_calendar.dart';
-import 'package:hisn_almuslim/shared/custom_text.dart';
+import 'package:hisn_almuslim/core/shared/custom_text.dart';
 
 class HijriCalendarCard extends StatefulWidget {
   const HijriCalendarCard({super.key});

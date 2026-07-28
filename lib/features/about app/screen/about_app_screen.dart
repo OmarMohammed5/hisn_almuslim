@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/features/about%20app/widgets/about_card.dart';
 import 'package:hisn_almuslim/features/about%20app/widgets/section_card.dart';
-import 'package:hisn_almuslim/shared/app_bar_widget.dart';
-import 'package:hisn_almuslim/shared/app_logo.dart';
+import '../../../core/shared/app_bar_widget.dart';
+import '../../../core/shared/app_logo.dart';
 
 class AboutAppScreen extends StatelessWidget {
   const AboutAppScreen({super.key});

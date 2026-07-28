@@ -6,8 +6,9 @@ import 'package:hisn_almuslim/core/utils/control_font_size.dart';
 import 'package:hisn_almuslim/features/hisn%20al-muslim/widgets/zekr_actions.dart';
 import 'package:hisn_almuslim/features/hisn%20al-muslim/widgets/zekr_content.dart';
 import 'package:hisn_almuslim/features/hisn%20al-muslim/widgets/zekr_header.dart';
-import 'package:hisn_almuslim/shared/app_bar_widget.dart';
-import 'package:hisn_almuslim/theme/app_colors.dart';
+
+import '../../../core/shared/app_bar_widget.dart';
+import '../../../core/theme/app_colors.dart';
 
 class ZekrDetailsScreen extends StatefulWidget {
   final Zekr zekr;

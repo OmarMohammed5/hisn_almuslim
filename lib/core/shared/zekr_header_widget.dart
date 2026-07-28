@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hisn_almuslim/shared/zekr_info_widget.dart';
+import 'package:hisn_almuslim/core/shared/zekr_info_widget.dart';
 
 class ZekrHeaderWidget extends StatelessWidget {
   final Map<String, dynamic> zekr;

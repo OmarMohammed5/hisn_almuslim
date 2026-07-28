@@ -7,9 +7,9 @@ import 'package:hisn_almuslim/core/utils/control_font_size.dart';
 import 'package:hisn_almuslim/features/jami%20dua/data/cubit/etiquette%20dua/etiquette_dua_cubit.dart';
 import 'package:hisn_almuslim/features/jami%20dua/widgets/custom_dua_app_bar.dart';
 import 'package:hisn_almuslim/features/jami%20dua/widgets/etiquette_card.dart';
-import 'package:hisn_almuslim/helpers/share_helper.dart';
-import 'package:hisn_almuslim/shared/custom_snack_bar.dart';
-import 'package:hisn_almuslim/shared/custom_text.dart';
+import 'package:hisn_almuslim/core/helpers/share_helper.dart';
+import 'package:hisn_almuslim/core/shared/custom_text.dart';
+import '../../../core/shared/custom_snack_bar.dart';
 
 class EtiquetteDuaScreen extends StatefulWidget {
   const EtiquetteDuaScreen({super.key});

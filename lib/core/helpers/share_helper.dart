@@ -3,10 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
-import 'package:hisn_almuslim/shared/custom_snack_bar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
+import '../shared/custom_snack_bar.dart';
 
 class ShareHelper {
   static final ScreenshotController _screenshotController =

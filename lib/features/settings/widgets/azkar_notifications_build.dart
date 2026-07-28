@@ -4,9 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hisn_almuslim/features/settings/data/cubit/notification_cubit.dart';
 import 'package:hisn_almuslim/features/settings/data/cubit/notification_state.dart';
 import 'package:hisn_almuslim/features/settings/widgets/list_tile_widget.dart';
-import 'package:hisn_almuslim/shared/custom_snack_bar.dart';
-import 'package:hisn_almuslim/theme/app_colors.dart';
-import 'package:hisn_almuslim/shared/custom_text.dart';
+import 'package:hisn_almuslim/core/shared/custom_text.dart';
+
+import '../../../core/shared/custom_snack_bar.dart';
+import '../../../core/theme/app_colors.dart';
 
 class AzkarNotificationsBuild extends StatelessWidget {
   const AzkarNotificationsBuild({super.key});

@@ -9,8 +9,8 @@ import 'package:hisn_almuslim/features/hadith/books/nawawi/data/cubit/hadith_cub
 import 'package:hisn_almuslim/features/hadith/widgets/bottom_action_bar.dart';
 import 'package:hisn_almuslim/features/hadith/widgets/content.dart';
 import 'package:hisn_almuslim/features/hadith/widgets/header.dart';
-import 'package:hisn_almuslim/helpers/share_helper.dart';
-import 'package:hisn_almuslim/shared/custom_snack_bar.dart';
+import 'package:hisn_almuslim/core/helpers/share_helper.dart';
+import '../../../../../core/shared/custom_snack_bar.dart';
 
 class HadithNawawi extends StatefulWidget {
   const HadithNawawi({super.key, required this.id});

@@ -7,7 +7,7 @@ import 'package:hisn_almuslim/features/quran/data/cubit/quran_cubit.dart';
 import 'package:hisn_almuslim/features/quran/data/models/last_page_storage.dart';
 import 'package:hisn_almuslim/features/quran/screen/surah_screen.dart';
 import 'package:hisn_almuslim/features/quran/widgets/quran_dashboard.dart';
-import 'package:hisn_almuslim/shared/custom_text.dart';
+import 'package:hisn_almuslim/core/shared/custom_text.dart';
 
 class BuildProgressState extends StatelessWidget {
   const BuildProgressState({

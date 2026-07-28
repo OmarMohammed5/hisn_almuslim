@@ -5,8 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hisn_almuslim/features/jami%20dua/data/cubit/hajj%20and%20omra/hajj_dua_cubit.dart';
 import 'package:hisn_almuslim/features/jami%20dua/screen/hajj_and_omra_details.dart';
 import 'package:hisn_almuslim/features/jami%20dua/widgets/category_card.dart';
-import 'package:hisn_almuslim/shared/app_bar_widget.dart';
-import 'package:hisn_almuslim/shared/custom_text.dart';
+import 'package:hisn_almuslim/core/shared/custom_text.dart';
+import '../../../core/shared/app_bar_widget.dart';
 
 class HajjAndOmraScreen extends StatelessWidget {
   const HajjAndOmraScreen({super.key});

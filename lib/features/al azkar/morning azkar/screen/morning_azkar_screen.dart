@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hisn_almuslim/core/utils/control_font_size.dart';
 import 'package:hisn_almuslim/features/al%20azkar/morning%20azkar/data/morning_azkar.dart';
-import 'package:hisn_almuslim/shared/app_bar_widget.dart';
-import 'package:hisn_almuslim/shared/zekr_actions_widget.dart';
-import 'package:hisn_almuslim/shared/zekr_content_widget.dart';
-import 'package:hisn_almuslim/shared/zekr_header_widget.dart';
-import 'package:hisn_almuslim/theme/app_colors.dart';
+
+import '../../../../core/shared/app_bar_widget.dart';
+import '../../../../core/shared/zekr_actions_widget.dart';
+import '../../../../core/shared/zekr_content_widget.dart';
+import '../../../../core/shared/zekr_header_widget.dart';
+import '../../../../core/theme/app_colors.dart';
 
 class MorningAzkarScreen extends StatefulWidget {
   const MorningAzkarScreen({super.key, this.initialIndex});

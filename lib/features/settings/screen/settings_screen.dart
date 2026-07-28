@@ -8,9 +8,9 @@ import 'package:hisn_almuslim/features/settings/widgets/about_app_widget.dart';
 import 'package:hisn_almuslim/features/settings/widgets/azkar_notifications_build.dart';
 import 'package:hisn_almuslim/features/settings/widgets/change_theme_mode.dart';
 import 'package:hisn_almuslim/features/settings/widgets/daily_wird_notificaation_build.dart';
-import 'package:hisn_almuslim/shared/app_bar_widget.dart';
-import 'package:hisn_almuslim/shared/custom_text.dart';
-import 'package:hisn_almuslim/theme/app_colors.dart';
+import 'package:hisn_almuslim/core/shared/custom_text.dart';
+import '../../../core/shared/app_bar_widget.dart';
+import '../../../core/theme/app_colors.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});

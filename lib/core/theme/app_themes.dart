@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hisn_almuslim/theme/app_colors.dart';
+
+import 'app_colors.dart';
 
 class AppThemes {
   /// ====================== light Mode ================================

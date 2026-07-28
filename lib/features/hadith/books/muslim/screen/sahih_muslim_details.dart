@@ -6,8 +6,8 @@ import 'package:hisn_almuslim/features/hadith/books/muslim/data/model/chapter_sa
 import 'package:hisn_almuslim/features/hadith/books/muslim/data/model/hadith_muslim.dart';
 import 'package:hisn_almuslim/features/hadith/widgets/hadith_details_card.dart';
 import 'package:hisn_almuslim/features/hadith/widgets/reader_app_bar.dart';
-import 'package:hisn_almuslim/helpers/share_helper.dart';
-import 'package:hisn_almuslim/shared/custom_snack_bar.dart';
+import 'package:hisn_almuslim/core/helpers/share_helper.dart';
+import '../../../../../core/shared/custom_snack_bar.dart';
 
 class SahihMuslimDetails extends StatefulWidget {
   const SahihMuslimDetails({super.key, required this.chapterSahihMuslim});

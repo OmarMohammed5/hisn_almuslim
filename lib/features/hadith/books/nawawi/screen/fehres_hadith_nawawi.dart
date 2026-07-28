@@ -6,7 +6,7 @@ import 'package:hisn_almuslim/features/hadith/books/nawawi/data/cubit/hadith_cub
 import 'package:hisn_almuslim/features/hadith/books/nawawi/screen/hadith_nawawi.dart';
 import 'package:hisn_almuslim/features/hadith/widgets/chapter_card.dart';
 import 'package:hisn_almuslim/features/quran/widgets/search_field.dart';
-import 'package:hisn_almuslim/shared/custom_text.dart';
+import 'package:hisn_almuslim/core/shared/custom_text.dart';
 
 class FehresHadithNawawi extends StatefulWidget {
   const FehresHadithNawawi({super.key});

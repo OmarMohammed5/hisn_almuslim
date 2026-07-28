@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/features/adhan/screen/adhan_screen.dart';
 import 'package:hisn_almuslim/features/home/screen/home_screen.dart';
-import 'package:hisn_almuslim/features/quran/screen/quran_screen.dart';
+import 'package:hisn_almuslim/features/quran_audio/ui/screens/quran.dart';
 import 'package:hisn_almuslim/features/settings/screen/settings_screen.dart';
 
 class Root extends StatefulWidget {
@@ -19,7 +19,7 @@ class _RootState extends State<Root> {
 
   final List<Widget> _pages = [
     HomeScreen(),
-    QuranScreen(),
+    Quran(),
     AdhanScreen(),
     SettingsScreen(),
   ];

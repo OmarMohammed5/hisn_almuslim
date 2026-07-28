@@ -4,10 +4,11 @@ import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hisn_almuslim/features/welcome/widgets/page_view.dart';
 import 'package:hisn_almuslim/root.dart';
-import 'package:hisn_almuslim/shared/app_logo.dart';
-import 'package:hisn_almuslim/shared/custom_text.dart';
+import 'package:hisn_almuslim/core/shared/custom_text.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../core/shared/app_logo.dart';
 
 class Introduction extends StatelessWidget {
   const Introduction({super.key});

@@ -7,10 +7,10 @@ import 'package:hisn_almuslim/core/utils/control_font_size.dart';
 import 'package:hisn_almuslim/features/jami%20dua/data/cubit/quran%20&%20sunnah%20dua/cubit/dua_cubit.dart';
 import 'package:hisn_almuslim/features/jami%20dua/widgets/custom_dua_app_bar.dart';
 import 'package:hisn_almuslim/features/jami%20dua/widgets/dua_card.dart';
-import 'package:hisn_almuslim/helpers/share_helper.dart';
-import 'package:hisn_almuslim/shared/custom_snack_bar.dart';
-import 'package:hisn_almuslim/shared/custom_text.dart';
-import 'package:hisn_almuslim/shared/re_build_scroll_To_Top.dart';
+import 'package:hisn_almuslim/core/helpers/share_helper.dart';
+import 'package:hisn_almuslim/core/shared/custom_text.dart';
+import '../../../core/shared/custom_snack_bar.dart';
+import '../../../core/shared/re_build_scroll_To_Top.dart';
 
 class QuranDuaScreen extends StatefulWidget {
   const QuranDuaScreen({super.key});

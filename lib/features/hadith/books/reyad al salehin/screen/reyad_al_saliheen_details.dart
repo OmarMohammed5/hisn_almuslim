@@ -6,8 +6,9 @@ import 'package:hisn_almuslim/features/hadith/books/reyad%20al%20salehin/data/mo
 import 'package:hisn_almuslim/features/hadith/books/reyad%20al%20salehin/data/model/reyad_al_saliheen.dart';
 import 'package:hisn_almuslim/features/hadith/widgets/hadith_details_card.dart';
 import 'package:hisn_almuslim/features/hadith/widgets/reader_app_bar.dart';
-import 'package:hisn_almuslim/helpers/share_helper.dart';
-import 'package:hisn_almuslim/shared/custom_snack_bar.dart';
+import 'package:hisn_almuslim/core/helpers/share_helper.dart';
+
+import '../../../../../core/shared/custom_snack_bar.dart';
 
 class ReyadAlSaliheenDetails extends StatefulWidget {
   const ReyadAlSaliheenDetails({

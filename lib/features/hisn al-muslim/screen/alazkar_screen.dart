@@ -6,7 +6,7 @@ import 'package:hisn_almuslim/features/al%20azkar/data/cubit/azkar_cubit.dart';
 import 'package:hisn_almuslim/features/hisn%20al-muslim/screen/zekr_details_screen.dart';
 import 'package:hisn_almuslim/features/hisn%20al-muslim/widgets/zekr_card_widget.dart';
 import 'package:hisn_almuslim/features/quran/widgets/search_field.dart';
-import 'package:hisn_almuslim/shared/custom_text.dart';
+import 'package:hisn_almuslim/core/shared/custom_text.dart';
 
 class HisnAlmuslimScreen extends StatefulWidget {
   const HisnAlmuslimScreen({super.key});

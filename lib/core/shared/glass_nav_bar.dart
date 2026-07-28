@@ -1,8 +1,8 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:hisn_almuslim/shared/custom_text.dart';
-import 'package:hisn_almuslim/theme/app_colors.dart';
+import 'package:hisn_almuslim/core/shared/custom_text.dart';
+import '../theme/app_colors.dart';
 
 class GlassBottomNavBar extends StatefulWidget {
   final int currentIndex;

@@ -4,7 +4,7 @@ import 'package:hisn_almuslim/features/tasbeeh/data/cubit/counter_cubit.dart';
 import 'package:hisn_almuslim/features/tasbeeh/widgets/card_widget.dart';
 import 'package:hisn_almuslim/features/tasbeeh/widgets/zekr_counter_build.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hisn_almuslim/shared/app_bar_widget.dart';
+import '../../../core/shared/app_bar_widget.dart';
 
 class ZekrAllahScreen extends StatelessWidget {
   const ZekrAllahScreen({super.key});
