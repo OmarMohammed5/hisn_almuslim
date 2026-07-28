@@ -34,6 +34,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Scaffold(
       appBar: AppBarWidget(title: "اِلإِعْدَادَات"),
       body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,7 +76,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
             Gap(25.h),
 
-            // ===== AZKAR NOTIFICATIONS =====
+            //  AZKAR NOTIFICATIONS
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: Align(
@@ -93,7 +94,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
             Gap(25.h),
 
-            // ===== ABOUT APP =====
+            // ABOUT APP
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: Align(
@@ -116,9 +117,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  // ===============================
-  // UI HELPERS (SAME FILE)
-  // ===============================
+  // UI HELPERs
 
   Widget _sectionCard(bool isDark, Widget child) {
     return Container(

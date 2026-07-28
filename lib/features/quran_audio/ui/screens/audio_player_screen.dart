@@ -14,7 +14,6 @@ import '../widgets/now_playing_header.dart';
 import '../widgets/player_background.dart';
 import '../widgets/player_bottom_card.dart';
 import '../widgets/rotating_artwork.dart';
-import '../widgets/streaming_indicator.dart';
 import '../widgets/surah_title.dart';
 
 class AudioPlayerScreen extends StatefulWidget {
@@ -47,7 +46,7 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
         builder: (context) {
           return WillPopScope(
             onWillPop: () async {
-              await context.read<AudioPlayerCubit>().disposePlayer();
+              // await context.read<AudioPlayerCubit>().disposePlayer();
               return true;
             },
             child: Scaffold(
@@ -72,9 +71,10 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
                         children: [
                           NowPlayingHeader(
                             onBack: () async {
-                              final cubit = context.read<AudioPlayerCubit>();
-                              await cubit.disposePlayer();
-                              if (context.mounted) Navigator.pop(context);
+                              // final cubit = context.read<AudioPlayerCubit>();
+                              // await cubit.disposePlayer();
+                              // if (context.mounted)
+                              Navigator.pop(context);
                             },
                             reciterName: widget.reciter.reciter.ar,
                             rewaya: null,
@@ -115,7 +115,7 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-           CupertinoActivityIndicator(color: Colors.white,),
+          CupertinoActivityIndicator(color: Colors.white),
           SizedBox(height: 16.h),
           Text(
             'جاري تحميل الصوت...',
@@ -127,10 +127,10 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
   }
 
   Widget _buildErrorState(
-      BuildContext context,
-      AudioPlayerError state, {
-        Key? key,
-      }) {
+    BuildContext context,
+    AudioPlayerError state, {
+    Key? key,
+  }) {
     return Center(
       key: key,
       child: Padding(
@@ -182,10 +182,10 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
   }
 
   Widget _buildPlayerUI(
-      BuildContext context,
-      AudioPlayerReady state, {
-        Key? key,
-      }) {
+    BuildContext context,
+    AudioPlayerReady state, {
+    Key? key,
+  }) {
     return LayoutBuilder(
       key: key,
       builder: (context, constraints) {
@@ -245,7 +245,6 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
           ),
         );
 
-
         return Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.w),
           child: Column(
@@ -257,14 +256,14 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
     );
   }
 
-/////////////
+  /////////////
   Widget _buildArtworkFace(AudioPlayerReady state) {
     return Container(
       color: Colors.white,
       child: Center(
         child: Image.asset(
           'assets/icons/loogo.png',
-         // "assets/icons/mm.png",
+          // "assets/icons/mm.png",
           fit: BoxFit.contain,
           errorBuilder: (context, error, stackTrace) => Text(
             '${state.surah.number}',
@@ -285,10 +284,10 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
   // }
 
   Widget _buildTimeDisplay(
-      BuildContext context,
-      Duration currentPosition,
-      Duration totalDuration,
-      ) {
+    BuildContext context,
+    Duration currentPosition,
+    Duration totalDuration,
+  ) {
     return Padding(
       padding: EdgeInsets.only(top: 4.h),
       child: Row(
@@ -311,7 +310,7 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
 
   Widget _buildSpeedControl(BuildContext context, AudioPlayerReady state) {
     final cubit = context.read<AudioPlayerCubit>();
-    final speed = state.speed ?? 1.0;
+    final speed = state.speed;
 
     return InkWell(
       borderRadius: BorderRadius.circular(20.r),
@@ -341,10 +340,10 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
   }
 
   void _showSpeedSheet(
-      BuildContext context,
-      AudioPlayerCubit cubit,
-      double? currentSpeed,
-      ) {
+    BuildContext context,
+    AudioPlayerCubit cubit,
+    double? currentSpeed,
+  ) {
     const speeds = [0.5, 0.75, 1.0, 1.25, 1.5, 2.0];
     showModalBottomSheet(
       context: context,
@@ -377,7 +376,10 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
                     style: const TextStyle(color: Colors.white),
                   ),
                   trailing: isSelected
-                      ? const Icon(Icons.check_rounded, color: Color(0xFF2ED9B8))
+                      ? const Icon(
+                          Icons.check_rounded,
+                          color: Color(0xFF2ED9B8),
+                        )
                       : null,
                 );
               }),

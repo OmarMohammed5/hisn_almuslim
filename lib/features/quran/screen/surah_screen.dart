@@ -60,6 +60,15 @@ class _SurahScreenState extends State<SurahScreen> {
     return surahs.first.name;
   }
 
+  dynamic _getSurahForPage(int page, List<dynamic> surahs) {
+    for (int i = surahs.length - 1; i >= 0; i--) {
+      if (surahs[i].startPage <= page) {
+        return surahs[i];
+      }
+    }
+    return surahs.first;
+  }
+
   void _toggleUI() {
     setState(() {
       _showAppBar = !_showAppBar;
@@ -152,13 +161,12 @@ class _SurahScreenState extends State<SurahScreen> {
         }
 
         if (state is QuranLoaded) {
-          final surah = state.surahs[widget.surahIndex];
-          final startPage = surah.startPage;
-
-          // _currentPage ??= startPage;
           _currentPage ??= widget.initialPage > 0
               ? widget.initialPage
-              : startPage;
+              : state.surahs[widget.surahIndex].startPage;
+
+          final surah = _getSurahForPage(_currentPage!, state.surahs);
+          // final startPage = surah.startPage;
 
           if (!_controllerInitialized) {
             _pageController = PageController(
@@ -264,9 +272,9 @@ class _SurahScreenState extends State<SurahScreen> {
                       right: 0,
                       child: Center(
                         child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 18,
-                            vertical: 8,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 18.w,
+                            vertical: 8.h,
                           ),
                           decoration: BoxDecoration(
                             color: Colors.black.withOpacity(0.6),
@@ -274,10 +282,10 @@ class _SurahScreenState extends State<SurahScreen> {
                           ),
                           child: Text(
                             'صفحة  $_currentPage',
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: Colors.white,
                               fontFamily: "Cairo",
-                              fontSize: 14,
+                              fontSize: 14.sp,
                             ),
                           ),
                         ),
