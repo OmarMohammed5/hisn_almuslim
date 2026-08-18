@@ -20,7 +20,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final String? subtitle;
 
   @override
-  Size get preferredSize => Size.fromHeight(subtitle != null ? 65.h : 70.h);
+  Size get preferredSize => Size.fromHeight(subtitle != null ? 65.h : 40.h);
 
   @override
   Widget build(BuildContext context) {
