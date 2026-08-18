@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hisn_almuslim/core/theme/app_colors.dart';
 
 class ReBuildScrollToTop extends StatelessWidget {
   const ReBuildScrollToTop({
@@ -24,7 +25,7 @@ class ReBuildScrollToTop extends StatelessWidget {
             opacity: show ? 1 : 0,
             duration: const Duration(milliseconds: 200),
             child: FloatingActionButton(
-              backgroundColor: Colors.blueGrey.shade700,
+              backgroundColor: AppColors.kPrimary,
               onPressed: () {
                 _scrollController.animateTo(
                   0,

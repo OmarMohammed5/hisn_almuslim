@@ -23,7 +23,7 @@ class ZekrHeaderWidget extends StatelessWidget {
 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
-      padding: EdgeInsets.symmetric(horizontal: 6.w),
+      padding: EdgeInsets.symmetric(horizontal: 12.w),
       decoration: BoxDecoration(
         color: cardColor,
         borderRadius: BorderRadius.circular(20.r),

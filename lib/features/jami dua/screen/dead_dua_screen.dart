@@ -52,7 +52,8 @@ class _DeadDuaScreenState extends State<DeadDuaScreen> {
   }
 
   void shareText(String content) {
-    ShareHelper.shareAsImage(context, content);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    ShareHelper.shareAsImage(context, content, isDark: isDark ,category: "دعاء للمتوفي" );
   }
 
   @override

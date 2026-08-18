@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class AppLogo extends StatelessWidget {
   const AppLogo({super.key});
 
-  static const Color _bgColor = Color(0xFFE8EDF2);
+  static const Color _bgColor = Colors.white;
 
   @override
   Widget build(BuildContext context) {
@@ -13,13 +13,19 @@ class AppLogo extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.h),
         decoration: BoxDecoration(
+          border: Border.all(
+            color: Color(0xFFB4923F).withValues(alpha: 0.43) ,
+            width: 1.5.w,
+          ),
           color: _bgColor,
-          borderRadius: BorderRadius.circular(24.r),
-          // shape: BoxShape.circle,
+          // color: Colors.teal.shade700,
+          // borderRadius: BorderRadius.circular(24.r),
+          shape: BoxShape.circle,
+
           boxShadow: [
             BoxShadow(
               color: Colors.black12.withValues(alpha: 0.4),
-              blurRadius: 8,
+              blurRadius: 2,
               offset: Offset(0, 2),
             ),
           ],

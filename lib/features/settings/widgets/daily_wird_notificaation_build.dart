@@ -54,7 +54,7 @@ class _WirdNotificationBuildState extends State<WirdNotificationBuild> {
                   ),
                 ),
 
-                CustomText("ورد القرآن", fontSize: 12.5.sp),
+                CustomText("ورد القرآن", fontSize: 12.sp),
                 const Spacer(),
                 Switch(
                   activeThumbColor: Colors.white,

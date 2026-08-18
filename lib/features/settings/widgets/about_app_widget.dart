@@ -21,7 +21,7 @@ class AboutAppWidget extends StatelessWidget {
       child: ListTile(
         title: CustomText(
           "عن التطبيق",
-          fontSize: 12.5.sp,
+          fontSize: 12.sp,
           fontWeight: FontWeight.w600,
         ),
         leading: Container(

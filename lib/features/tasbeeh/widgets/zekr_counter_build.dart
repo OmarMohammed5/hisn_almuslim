@@ -8,20 +8,25 @@ class ZekrCounterBuild extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return GridView.builder(
-      padding: EdgeInsets.all(20.w),
+      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 8.h),
       itemCount: zekrList.length,
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        crossAxisSpacing: 16.w,
-        mainAxisSpacing: 12.h,
-        childAspectRatio: 1.2,
+        crossAxisSpacing: 14.w,
+        mainAxisSpacing: 14.h,
+        childAspectRatio: 1.05,
       ),
       itemBuilder: (context, index) {
         final zekr = zekrList[index];
-        return ZekrCounterCard(title: zekr.title, index: index);
+        return ZekrCounterCard(
+          title: zekr.title,
+          index: index,
+        );
       },
     );
   }

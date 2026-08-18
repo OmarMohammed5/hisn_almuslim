@@ -38,7 +38,8 @@ class _HajjAndOmraDetailsState extends State<HajjAndOmraDetails> {
   }
 
   void shareText(String content) {
-    ShareHelper.shareAsImage(context, content);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    ShareHelper.shareAsImage(context, content, isDark: isDark ,category: widget.title );
   }
 
   @override

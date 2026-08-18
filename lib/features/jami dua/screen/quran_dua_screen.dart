@@ -34,14 +34,14 @@ class _QuranDuaScreenState extends State<QuranDuaScreen> {
   }
 
   void shareText(String text) {
-    ShareHelper.shareAsImage(context, text);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    ShareHelper.shareAsImage(context, text, isDark: isDark ,category: 'أدعية من القرآن' );
   }
 
   // Scroll To Top
   final ScrollController _scrollController = ScrollController();
   final ValueNotifier<bool> _showScrollToTop = ValueNotifier(false);
 
-  //
 
   @override
   void initState() {

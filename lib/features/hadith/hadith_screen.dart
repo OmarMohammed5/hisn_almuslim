@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hisn_almuslim/core/routing/app_routes.dart';
 import 'package:hisn_almuslim/features/hadith/books/bukhary/screen/fehres_sahih_bukhary.dart';
 import 'package:hisn_almuslim/features/hadith/books/muslim/screen/fehres_sahih_muslim.dart';
 import 'package:hisn_almuslim/features/hadith/books/nawawi/screen/fehres_hadith_nawawi.dart';
@@ -34,13 +35,14 @@ class HadithScreen extends StatelessWidget {
                   // صحيح البخاري
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return FehresSahihBukhary();
-                          },
-                        ),
-                      );
+                      // Navigator.of(context).push(
+                      //   MaterialPageRoute(
+                      //     builder: (context) {
+                      //       return FehresSahihBukhary();
+                      //     },
+                      //   ),
+                      // );
+                      Navigator.pushNamed(context, AppRoutes.fehresSahihBukhary);
                     },
                     child: BookCard(
                       title: 'صحيح البخاري',
@@ -52,13 +54,14 @@ class HadithScreen extends StatelessWidget {
                   // // صحيح مسلم
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return FehresSahihMuslim();
-                          },
-                        ),
-                      );
+                      // Navigator.of(context).push(
+                      //   MaterialPageRoute(
+                      //     builder: (context) {
+                      //       return FehresSahihMuslim();
+                      //     },
+                      //   ),
+                      // );
+                      Navigator.pushNamed(context, AppRoutes.fehresSahihMuslim);
                     },
                     child: BookCard(
                       title: 'صحيح مسلم',
@@ -70,13 +73,14 @@ class HadithScreen extends StatelessWidget {
                   // رياض الصالحين
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return FehresReyadAlSaliheen();
-                          },
-                        ),
-                      );
+                      // Navigator.of(context).push(
+                      //   MaterialPageRoute(
+                      //     builder: (context) {
+                      //       return FehresReyadAlSaliheen();
+                      //     },
+                      //   ),
+                      // );
+                      Navigator.pushNamed(context, AppRoutes.fehresReyqdAlSaliheen);
                     },
                     child: BookCard(
                       title: 'رياض الصالحين',
@@ -88,13 +92,14 @@ class HadithScreen extends StatelessWidget {
                   //  الأربعون النووية
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return FehresHadithNawawi();
-                          },
-                        ),
-                      );
+                      // Navigator.of(context).push(
+                      //   MaterialPageRoute(
+                      //     builder: (context) {
+                      //       return FehresHadithNawawi();
+                      //     },
+                      //   ),
+                      // );
+                      Navigator.pushNamed(context, AppRoutes.fehresHadithNawawi);
                     },
                     child: BookCard(
                       title: 'الأربعون النووية',

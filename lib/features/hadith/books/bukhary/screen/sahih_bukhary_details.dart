@@ -78,7 +78,8 @@ class _SahihMuslimDetailsState extends State<SahihBukharyDetails> {
   }
 
   void _shareText(String text) {
-    ShareHelper.shareAsImage(context, text);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    ShareHelper.shareAsImage(context, text, isDark: isDark ,category: "صحيح البخاري" );
   }
 
   @override

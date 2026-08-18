@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class PlayerBackground extends StatelessWidget {
@@ -11,35 +10,19 @@ class PlayerBackground extends StatelessWidget {
     return Stack(
       fit: StackFit.expand,
       children: [
-        // Base gradient
         Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                Color(0xFF0B1E2D), // deep dark blue
-                Color(0xFF10333A), // dark teal
-                Color(0xFF123B33), // soft green-teal
+                Color(0xFF587264),
+                Color(0xFF10333A),
+                Color(0xFF123B33),
               ],
               stops: [0.0, 0.55, 1.0],
             ),
           ),
-        ),
-        // Soft glow accents, blurred for a calm, ambient feel
-        Positioned(
-          top: -80,
-          left: -60,
-          child: _glow(const Color(0xFF2ED9B8), 220),
-        ),
-        Positioned(
-          bottom: -100,
-          right: -60,
-          child: _glow(const Color(0xFF1B6E63), 260),
-        ),
-        BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 60, sigmaY: 60),
-          child: const SizedBox.expand(),
         ),
         child,
       ],
@@ -52,7 +35,12 @@ class PlayerBackground extends StatelessWidget {
       height: size,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: color.withValues(alpha: 0.25),
+        gradient: RadialGradient(
+          colors: [
+            color.withValues(alpha: 0.35),
+            color.withValues(alpha: 0.0),
+          ],
+        ),
       ),
     );
   }

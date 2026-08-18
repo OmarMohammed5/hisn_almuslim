@@ -67,7 +67,8 @@ class _HadithNawawiState extends State<HadithNawawi> {
 
   // Share Method of Zekr Content
   void shareZekr() {
-    ShareHelper.shareAsImage(context, _currentZekrText);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    ShareHelper.shareAsImage(context, _currentZekrText, isDark: isDark ,category: "الأربعون النووية" );
   }
 
   @override

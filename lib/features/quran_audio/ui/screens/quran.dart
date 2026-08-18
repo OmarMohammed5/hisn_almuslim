@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:hisn_almuslim/core/routing/app_routes.dart';
 import 'package:hisn_almuslim/features/home/widgets/custom_card_widget.dart';
 import 'package:hisn_almuslim/features/quran_audio/data/models/quran_modeel.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
@@ -29,7 +30,7 @@ class Quran extends StatelessWidget {
                 crossAxisCount: 2,
                 crossAxisSpacing: 16.w,
                 mainAxisSpacing: 12.h,
-                childAspectRatio: 1.h,
+                childAspectRatio: 0.87.h,
               ),
               itemBuilder: (context, index) {
                 final section = sections[index];
@@ -37,10 +38,7 @@ class Quran extends StatelessWidget {
                   title: section.title,
                   icon: section.icon,
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => section.screen),
-                    );
+                   Navigator.pushNamed(context, section.route);
                   },
                 );
               },
@@ -77,38 +75,8 @@ class Quran extends StatelessWidget {
           ),
         ],
       ),
-      child: Stack(
-        clipBehavior: Clip.none,
+      child: Column(
         children: [
-          // decorative
-          Positioned(
-            bottom: -40,
-            right: -40,
-            child: IgnorePointer(
-              child: Container(
-                width: 70.w,
-                height: 70.w,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white.withValues(alpha: 0.06),
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            top: -40,
-            left: -40,
-            child: IgnorePointer(
-              child: Container(
-                width: 70.w,
-                height: 70.w,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white.withValues(alpha: 0.06),
-                ),
-              ),
-            ),
-          ),
           Center(
             child: Column(
               children: [
@@ -133,12 +101,6 @@ class Quran extends StatelessWidget {
                   color: Colors.white,
                   fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
-                ),
-                Gap(6.h),
-                CustomText(
-                  'تلاوة، تفسير، واستماع لأصوات نخبة من القراء',
-                  color: Colors.white.withValues(alpha: 0.8),
-                  fontSize: 11.sp,
                 ),
               ],
             ),

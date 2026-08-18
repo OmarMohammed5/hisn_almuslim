@@ -25,7 +25,7 @@ class ChangeThemeMode extends StatelessWidget {
         ListTile(
           title: CustomText(
             "الوضع الفاتح",
-            fontSize: 12.5.sp,
+            fontSize: 12.sp,
             fontWeight: FontWeight.w600,
           ),
           leading: Container(
@@ -63,7 +63,7 @@ class ChangeThemeMode extends StatelessWidget {
         ListTile(
           title: CustomText(
             "الوضع الداكن",
-            fontSize: 12.5.sp,
+            fontSize: 12.sp,
             fontWeight: FontWeight.w600,
           ),
           leading: Container(

@@ -4,13 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:hisn_almuslim/features/quran_audio/data/models/reciter_model.dart';
-import 'package:hisn_almuslim/features/quran_audio/data/models/reciter_name_model.dart';
+import 'package:hisn_almuslim/core/routing/app_routes.dart';
+import 'package:hisn_almuslim/features/quran_audio/data/models/surah_audio_model.dart';
+import 'package:hisn_almuslim/features/quran_audio/logic/audio_player_cubit.dart';
 import 'package:hisn_almuslim/features/quran_audio/ui/widgets/error_widget_with_retry.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 import '../../../../core/shared/re_build_scroll_To_Top.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../data/models/surah_audio_model.dart';
 import '../../data/sources/surah_data_source.dart';
 import '../../logic/quran_audio_cubit.dart';
 import '../../logic/quran_audio_state.dart';
@@ -18,7 +18,6 @@ import '../widgets/loading_widget.dart';
 import '../widgets/reciter_selector_button.dart';
 import '../../data/services/audio_url_helper.dart';
 import '../widgets/surah_list.dart';
-import 'audio_player_screen.dart';
 
 class QuranAudioHomeScreen extends StatefulWidget {
   const QuranAudioHomeScreen({super.key});
@@ -32,10 +31,8 @@ class _QuranAudioHomeScreenState extends State<QuranAudioHomeScreen> {
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _searchSurahController = TextEditingController();
 
-
-
-  // Search Of Surah
   List<SurahAudioModel> _filteredSurahs = [];
+
   void _searchSurah(String keyword) {
     setState(() {
       final input = keyword.trim().toLowerCase();
@@ -49,8 +46,6 @@ class _QuranAudioHomeScreenState extends State<QuranAudioHomeScreen> {
       }
     });
   }
-
-
 
   @override
   void initState() {
@@ -75,33 +70,34 @@ class _QuranAudioHomeScreenState extends State<QuranAudioHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isKeyboardOpen = MediaQuery.viewInsetsOf(context).bottom > 0;
+
     return Scaffold(
-      // backgroundColor: AppColors.kPrimary,
-      // extendBodyBehindAppBar: true,
       body: BlocBuilder<QuranAudioCubit, QuranAudioState>(
         builder: (context, state) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildHeader(context, state),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(20.w, 20.h, 20.w, 0.h),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      // spacing: 12.h,
-                      children: [
-                        _buildSearchField(context),
-                        Expanded(child: _buildContent(context, state)),
-                      ],
-                    ),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(20.w, 20.h, 20.w, 0.h),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildSearchField(context),
+                      Expanded(child: _buildContent(context, state)),
+                    ],
                   ),
                 ),
+              ),
             ],
           );
         },
       ),
-      floatingActionButton: ReBuildScrollToTop(
+      floatingActionButton: isKeyboardOpen
+          ? null
+          : ReBuildScrollToTop(
         showScrollToTop: _showScrollToTop,
         scrollController: _scrollController,
       ),
@@ -114,9 +110,6 @@ class _QuranAudioHomeScreenState extends State<QuranAudioHomeScreen> {
 
     return Container(
       width: double.infinity,
-      // statusBarHeight pushes the *content* down so nothing sits
-      // under the notch/status bar icons, while the gradient behind
-      // it still fills all the way up to y = 0.
       padding: EdgeInsets.fromLTRB(
         16.w,
         statusBarHeight + 8.h,
@@ -129,95 +122,50 @@ class _QuranAudioHomeScreenState extends State<QuranAudioHomeScreen> {
           bottomRight: Radius.circular(36.r),
         ),
         gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            AppColors.kPrimary,
-            AppColors.kPrimary.withValues(alpha: 0.92),
-            Colors.teal.shade700,
-          ],
-          stops: const [0.0, 0.55, 1.0],
+          begin: Alignment.topRight,
+          end: Alignment.bottomLeft,
+          colors: isDark
+              ? [
+            Colors.teal.shade800.withOpacity(0.9),
+            Colors.teal.shade900.withOpacity(0.2),
+          ]
+              : [Colors.teal.shade900, Colors.teal.shade800 , ],
         ),
         boxShadow: [
           BoxShadow(
             color: AppColors.kPrimary.withValues(alpha: 0.28),
-            blurRadius: 24,
-            offset: const Offset(0, 10),
+            blurRadius: 0,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
-      child: Stack(
-        clipBehavior: Clip.none,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Layered decorative glows for depth — purely visual.
-          Positioned(
-            top: -40,
-            right: -30,
-            child: IgnorePointer(
-              child: Container(
-                width: 150.w,
-                height: 150.w,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white.withValues(alpha: 0.06),
+          _buildTopBar(context, isDark),
+          Gap(6.h),
+          Padding(
+            padding: EdgeInsets.only(left: 44.w, right: 8.w),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.menu_book_rounded,
+                  size: 12.sp,
+                  color: Colors.white.withValues(alpha: 0.7),
                 ),
-              ),
+                SizedBox(width: 6.w),
+                Expanded(
+                  child: CustomText(
+                    'استمع للقرآن الكريم بأصوات نخبة من القراء',
+                    color: Colors.white.withValues(alpha: 0.78),
+                    fontSize: 10.5.sp,
+                  ),
+                ),
+              ],
             ),
           ),
-          Positioned(
-            bottom: -50,
-            left: -40,
-            child: IgnorePointer(
-              child: Container(
-                width: 130.w,
-                height: 130.w,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white.withValues(alpha: 0.05),
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            top: 30.h,
-            right: 60.w,
-            child: IgnorePointer(
-              child: Icon(
-                Icons.auto_awesome_rounded,
-                size: 16,
-                color: Colors.white.withValues(alpha: 0.18),
-              ),
-            ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildTopBar(context, isDark),
-              Gap(6.h),
-              Padding(
-                padding: EdgeInsets.only(left: 44.w, right: 8.w),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.menu_book_rounded,
-                      size: 12.sp,
-                      color: Colors.white.withValues(alpha: 0.7),
-                    ),
-                    SizedBox(width: 6.w),
-                    Expanded(
-                      child: CustomText(
-                        'استمع للقرآن الكريم بأصوات نخبة من القراء',
-                        color: Colors.white.withValues(alpha: 0.78),
-                        fontSize: 10.5.sp,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Gap(24.h),
-              _buildReciterSection(context, state),
-            ],
-          ),
+          Gap(24.h),
+          _buildReciterSection(context, state),
         ],
       ),
     );
@@ -225,12 +173,17 @@ class _QuranAudioHomeScreenState extends State<QuranAudioHomeScreen> {
 
   Widget _buildReciterSection(BuildContext context, QuranAudioState state) {
     if (state is QuranAudioLoaded) {
-      return ReciterSelectorButton(
-        currentReciter: state.effectiveSelectedReciter,
-        reciters: state.reciters,
-        onReciterSelected: (reciter) {
-          context.read<QuranAudioCubit>().selectReciter(reciter);
-        },
+      final audioCubit = context.read<AudioPlayerCubit>();
+
+      return BlocProvider.value(
+        value: audioCubit,
+        child: ReciterSelectorButton(
+          currentReciter: state.effectiveSelectedReciter,
+          reciters: state.reciters,
+          onReciterSelected: (reciter) {
+            context.read<QuranAudioCubit>().selectReciter(reciter);
+          },
+        ),
       );
     } else if (state is QuranAudioLoading) {
       return _glassContainer(
@@ -299,7 +252,7 @@ class _QuranAudioHomeScreenState extends State<QuranAudioHomeScreen> {
           child: CustomText(
             'المصحف (صوتيات)',
             color: Colors.white,
-            fontSize: 17.sp,
+            fontSize: 15.sp,
             fontWeight: FontWeight.bold,
             maxLines: 1,
           ),
@@ -307,9 +260,6 @@ class _QuranAudioHomeScreenState extends State<QuranAudioHomeScreen> {
       ],
     );
   }
-
-
-
 
   Widget _headerIconButton({
     required IconData icon,
@@ -332,7 +282,6 @@ class _QuranAudioHomeScreenState extends State<QuranAudioHomeScreen> {
       ),
     );
   }
-
 
   Widget _buildSearchField(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -368,7 +317,7 @@ class _QuranAudioHomeScreenState extends State<QuranAudioHomeScreen> {
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.r),
-          borderSide: BorderSide(color: isDark ? Color(0xff1f242a) :Colors.grey.shade200),
+          borderSide: BorderSide(color: isDark ? Color(0xff1f242a) : Colors.grey.shade200),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.r),
@@ -393,14 +342,21 @@ class _QuranAudioHomeScreenState extends State<QuranAudioHomeScreen> {
       if (_filteredSurahs.isEmpty) {
         return _buildEmptyResults();
       }
-      return SurahList(
-        controller: _scrollController,
-        surahs: _filteredSurahs, // <-- filtered (number, name) pairs, now actually used
-        selectedReciter: state.effectiveSelectedReciter ?? state.reciters.first,
-        onSurahPressed: (surahNumber) {
-          final reciter = state.effectiveSelectedReciter ?? state.reciters.first;
-          _handleSurahPressed(context, reciter.server, surahNumber);
-        },
+
+      return Column(
+        children: [
+          Expanded(
+            child: SurahList(
+              controller: _scrollController,
+              surahs: _filteredSurahs,
+              selectedReciter: state.effectiveSelectedReciter ?? state.reciters.first,
+              onSurahPressed: (surahNumber) {
+                final reciter = state.effectiveSelectedReciter ?? state.reciters.first;
+                _handleSurahPressed(context, reciter.server, surahNumber);
+              },
+            ),
+          ),
+        ],
       );
     }
     return const SizedBox.shrink();
@@ -425,30 +381,34 @@ class _QuranAudioHomeScreenState extends State<QuranAudioHomeScreen> {
 
   void _handleSurahPressed(BuildContext context, String server, int surahNumber) {
     try {
-      final String audioUrl = AudioUrlHelper.generateAudioUrl(server, surahNumber);
-
-      final surah = SurahDataSource.getSurahByNumber(surahNumber);
-      if (surah == null) {
-        _showSnack(context, 'Surah not found');
-        return;
-      }
-
       final state = context.read<QuranAudioCubit>().state;
       if (state is! QuranAudioLoaded) {
         _showSnack(context, 'No reciter selected');
         return;
       }
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => AudioPlayerScreen(
-            surah: surah,
-            reciter: state.selectedReciter ?? state.reciters.first,
-            audioUrl: audioUrl,
-          ),
-        ),
-      );
+      final reciter = state.effectiveSelectedReciter;
+      if (reciter == null) {
+        _showSnack(context, 'No reciter selected');
+        return;
+      }
+
+
+      final String audioUrl = AudioUrlHelper.generateAudioUrl(server, surahNumber);
+      final surah = SurahDataSource.getSurahByNumber(surahNumber);
+      if (surah == null) {
+        _showSnack(context, 'Surah not found');
+        return;
+      }
+
+      final allSurahs = SurahDataSource.getAllSurahs();
+
+      Navigator.pushNamed(context, AppRoutes.playerAudio, arguments: {
+        'surah': surah,
+        'reciter': reciter,
+        'audioUrl': audioUrl,
+        'surahs': allSurahs,
+      });
     } catch (e) {
       _showSnack(context, 'Error generating audio URL: $e');
     }

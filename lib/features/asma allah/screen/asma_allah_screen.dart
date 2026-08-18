@@ -18,6 +18,16 @@ class _AsmaAllahScreenState extends State<AsmaAllahScreen> {
   final PageController _controller = PageController();
   int currentIndex = 0;
 
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        context.read<AsmaAllahCubit>().loadNames();
+      }
+    });    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;

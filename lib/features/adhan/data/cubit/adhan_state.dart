@@ -11,7 +11,6 @@ class AdhanLoaded extends AdhanState {
   final PrayerTimeModel currentPrayer;
   final PrayerTimeModel nextPrayer;
   final Duration remainingTime;
-
   AdhanLoaded({
     required this.prayerTimes,
     required this.currentPrayer,
@@ -20,7 +19,10 @@ class AdhanLoaded extends AdhanState {
   });
 }
 
+enum AdhanErrorType { serviceDisabled, permissionDenied, permissionDeniedForever, unknown }
+
 class AdhanError extends AdhanState {
   final String message;
-  AdhanError(this.message);
+  final AdhanErrorType type;
+  AdhanError(this.message, {this.type = AdhanErrorType.unknown});
 }

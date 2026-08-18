@@ -1,7 +1,13 @@
 import 'package:equatable/equatable.dart';
 import 'package:hisn_almuslim/features/quran_audio/data/models/surah_audio_model.dart';
-
 import '../data/models/reciter_model.dart';
+
+enum CompletionMode {
+  continueToNext,
+  repeatCurrent,
+  stopAfterCurrent,
+  manual,
+}
 
 abstract class AudioPlayerState extends Equatable {
   const AudioPlayerState();
@@ -23,9 +29,6 @@ class AudioPlayerLoading extends AudioPlayerState {
   List<Object?> get props => [message];
 }
 
-/// Single state for the whole "player is set up" lifecycle.
-/// isPlaying/isBuffering/isCompleted/currentPosition all update via copyWith —
-/// never swap to a different class for playing/paused/completed.
 class AudioPlayerReady extends AudioPlayerState {
   final SurahAudioModel surah;
   final ReciterModel reciter;
@@ -35,6 +38,9 @@ class AudioPlayerReady extends AudioPlayerState {
   final bool isBuffering;
   final bool isCompleted;
   final double speed;
+  final CompletionMode completionMode;
+  final List<SurahAudioModel> surahs;
+  final int currentSurahIndex;
 
   const AudioPlayerReady({
     required this.surah,
@@ -45,6 +51,9 @@ class AudioPlayerReady extends AudioPlayerState {
     this.isBuffering = false,
     this.isCompleted = false,
     this.speed = 1.0,
+    this.completionMode = CompletionMode.manual,
+    this.surahs = const [],
+    this.currentSurahIndex = 0,
   });
 
   AudioPlayerReady copyWith({
@@ -56,6 +65,9 @@ class AudioPlayerReady extends AudioPlayerState {
     bool? isBuffering,
     bool? isCompleted,
     double? speed,
+    CompletionMode? completionMode,
+    List<SurahAudioModel>? surahs,
+    int? currentSurahIndex,
   }) {
     return AudioPlayerReady(
       surah: surah ?? this.surah,
@@ -66,6 +78,9 @@ class AudioPlayerReady extends AudioPlayerState {
       isBuffering: isBuffering ?? this.isBuffering,
       isCompleted: isCompleted ?? this.isCompleted,
       speed: speed ?? this.speed,
+      completionMode: completionMode ?? this.completionMode,
+      surahs: surahs ?? this.surahs,
+      currentSurahIndex: currentSurahIndex ?? this.currentSurahIndex,
     );
   }
 
@@ -79,14 +94,29 @@ class AudioPlayerReady extends AudioPlayerState {
     isBuffering,
     isCompleted,
     speed,
+    completionMode,
+    surahs,
+    currentSurahIndex,
   ];
 }
 
 class AudioPlayerError extends AudioPlayerState {
   final String message;
+  final bool isRetryable;
+  final bool shouldShow;
+  final SurahAudioModel? surah;
+  final ReciterModel? reciter;
+  final String? audioUrl;
 
-  const AudioPlayerError(this.message);
+  const AudioPlayerError({
+    required this.message,
+    this.isRetryable = true,
+    this.shouldShow = true,
+    this.surah,
+    this.reciter,
+    this.audioUrl,
+  });
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [message, isRetryable, shouldShow ,surah, reciter, audioUrl];
 }

@@ -1,130 +1,141 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gap/gap.dart';
-import 'package:hisn_almuslim/features/quran/data/models/surah_model.dart';
-import 'package:hisn_almuslim/core/shared/custom_text.dart';
+import '../domain/entities/surah_entity.dart';
 
 class SurahCard extends StatelessWidget {
-  const SurahCard({super.key, required this.surah, this.onTap});
+  final SurahEntity surah;
+  final VoidCallback onTap;
+  final double progress;
 
-  final SurahModel surah;
-  final void Function()? onTap;
+  const SurahCard({
+    super.key,
+    required this.surah,
+    required this.onTap,
+    this.progress = 0.0,
+  });
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isMeccan = surah.isMeccan;
 
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+        margin: EdgeInsets.only(bottom: 8.h),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: isDark
-                ? [Color(0xff1a1f24), Color(0xff252b31)]
-                : [Color(0xffFAFBFC), Color(0xffF5F7F9)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: BorderRadius.circular(25.r),
-          border: Border.all(
-            color: isDark ? Color(0xff2d3338) : Color(0xffE5E9EC),
-            width: 1.5.w,
-          ),
+          color: isDark ? Colors.grey[850] : Colors.white,
+          borderRadius: BorderRadius.circular(12.r),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-          child: Row(
-            children: [
-              // Decorative number badge
-              Container(
-                width: 45.w,
-                height: 45.h,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: isDark ? Color(0xff2d3338) : Color(0xffE9EEF0),
-                ),
-                child: Center(
-                  child: CustomText(
-                    surah.imageIndex.toString(),
+        child: Row(
+          children: [
+            Container(
+              width: 33.w,
+              height: 33.w,
+              decoration: BoxDecoration(
+                color: isMeccan ? Colors.purple[100] : Colors.green[100],
+                shape: BoxShape.circle,
+              ),
+              child: Center(
+                child: Text(
+                  '${surah.number}',
+                  style: TextStyle(
                     fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.bold,
+                    color: isMeccan ? Colors.purple[800] : Colors.green[800],
                   ),
                 ),
               ),
-
-              Gap(16.w),
-
-              // Surah details
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Surah name
-                    Text(
-                      surah.name,
-                      style: TextStyle(
-                        fontSize: 24.sp,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Al mushaf',
-                        color: isDark ? Colors.white : Color(0xff1a1f24),
-                        height: 1.2,
+            ),
+            SizedBox(width: 12.w),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Flexible(
+                        child: Text(
+                          surah.displayName,
+                          style: TextStyle(
+                            fontFamily: 'Noon',
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w600,
+                            color: isDark ? Colors.white : Colors.black87,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                    ),
-
-                    Gap(8.h),
-
-                    // Ayah count
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.menu_book_rounded,
-                          size: 13.sp,
-                          color: isDark ? Colors.white60 : Colors.black45,
-                        ),
-                        Gap(4.w),
-                        CustomText(
-                          "${surah.number} آية",
-                          fontSize: 12.sp,
-                          color: isDark ? Colors.white60 : Colors.black45,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-
-              // Makkah/Madinah indicator
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 6.h),
-                decoration: BoxDecoration(
-                  color: isDark ? Color(0xff2d3338) : Color(0xffE9EEF0),
-                  borderRadius: BorderRadius.circular(20.r),
-                  border: Border.all(
-                    color: isDark ? Color(0xff3a4147) : Color(0xffDDE3E6),
-                    width: 1.w,
+                      // if (progress > 0) ...[
+                      //   SizedBox(width: 5.w),
+                      //   Container(
+                      //     padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+                      //     decoration: BoxDecoration(
+                      //       color: isMeccan ? Colors.purple[100] : Colors.green[100],
+                      //       borderRadius: BorderRadius.circular(8.r),
+                      //     ),
+                      //     child: Text(
+                      //       '${(progress * 100).round()}%',
+                      //       style: TextStyle(
+                      //         fontSize: 10.sp,
+                      //         fontWeight: FontWeight.bold,
+                      //         color: isMeccan ? Colors.purple[800] : Colors.green[800],
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ],
+                    ],
                   ),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Image.asset(
-                      surah.type == "مدنية"
-                          ? "assets/icons/Madina.png"
-                          : "assets/icons/Makka.png",
-                      width: 26.w,
-                      height: 26.h,
-                    ),
-                    Gap(4.w),
-                    CustomText(
-                      surah.type,
-                      fontSize: 11.sp,
-                      color: isDark ? Colors.white70 : Colors.black54,
-                    ),
-                  ],
-                ),
+                  SizedBox(height: 6.h),
+                  Row(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+                        decoration: BoxDecoration(
+                          color: isDark ? Colors.grey[700] : Colors.grey[200],
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        child: Text(
+                          isMeccan ? 'مكية' : 'مدنية',
+                          style: TextStyle(
+                            fontSize: 10.sp,
+                            fontFamily: "Noon",
+                            color: isDark ? Colors.grey[300] : Colors.grey[700],
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 8.w),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+                        decoration: BoxDecoration(
+                          color: isDark ? Colors.grey[700] : Colors.grey[200],
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        child: Text(
+                          '${surah.totalAyahs} آيات',
+                          style: TextStyle(
+                            fontSize: 10.sp,
+                            fontFamily: "Noon",
+                            color: isDark ? Colors.grey[300] : Colors.grey[700],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+            Icon(Icons.arrow_forward_ios_rounded, size: 16.sp, color: Colors.grey[400]),
+          ],
         ),
       ),
     );

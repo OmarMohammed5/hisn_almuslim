@@ -29,7 +29,6 @@ class _HijriCalendarCardState extends State<HijriCalendarCard> {
     _weekDays = [];
     for (int i = -3; i <= 3; i++) {
       final date = DateTime.now().add(Duration(days: i));
-
       final hijri = HijriCalendar.fromDate(date);
       _weekDays.add({
         'hijriDay': hijri.hDay,
@@ -42,47 +41,53 @@ class _HijriCalendarCardState extends State<HijriCalendarCard> {
 
   String _getArabicWeekDay(int weekday) {
     const days = [
-      'الإثنين',
-      'الثلاثاء',
-      'الأربعاء',
-      'الخميس',
-      'الجمعة',
-      'السبت',
-      'الأحد',
+      'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس',
+      'الجمعة', 'السبت', 'الأحد',
     ];
     return days[weekday - 1];
   }
 
   String _getArabicMonth(int month) {
     const months = [
-      'محرم',
-      'صفر',
-      'ربيع الأول',
-      'ربيع الآخر',
-      'جمادى الأولى',
-      'جمادى الآخرة',
-      'رجب',
-      'شعبان',
-      'رمضان',
-      'شوال',
-      'ذو القعدة',
-      'ذو الحجة',
+      'محرم', 'صفر', 'ربيع الأول', 'ربيع الآخر',
+      'جمادى الأولى', 'جمادى الآخرة', 'رجب', 'شعبان',
+      'رمضان', 'شوال', 'ذو القعدة', 'ذو الحجة',
     ];
     return months[month - 1];
   }
 
   String _toArabicNumber(int number) {
     const arabicDigits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
-    return number
-        .toString()
-        .split('')
-        .map((d) => arabicDigits[int.parse(d)])
-        .join();
+    return number.toString().split('').map((d) => arabicDigits[int.parse(d)]).join();
+  }
+
+  String _getGregorianDate() {
+    final now = DateTime.now();
+    const months = [
+      'يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو',
+      'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر',
+    ];
+    return '${_toArabicNumber(now.day)} ${months[now.month - 1]} ${_toArabicNumber(now.year)} ${'م'}';
   }
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    // ===== Theme-aware palette =====
+    final gradientColors = isDark
+        ? [const Color(0xFF0F2E29), const Color(0xFF163C35)]
+        : [Colors.teal.shade600, Colors.teal.shade400];
+
+    final primaryTextColor = Colors.white;
+    final secondaryTextColor = Colors.white.withValues(alpha: 0.7);
+    final chipBgColor = Colors.white.withValues(alpha: isDark ? 0.10 : 0.16);
+    final weekStripBg = Colors.white.withValues(alpha: isDark ? 0.06 : 0.14);
+    final selectedDayColor = isDark ? Colors.tealAccent.shade200 : Colors.white;
+    final selectedDayTextColor = isDark ? Colors.black87 : Colors.teal.shade800;
+    final todayAccentColor = const Color(0xFFD4AF37);
+    final shadowColor = (isDark ? Colors.black : Colors.teal.shade900)
+        .withValues(alpha: isDark ? 0.4 : 0.2);
 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16.w),
@@ -90,200 +95,189 @@ class _HijriCalendarCardState extends State<HijriCalendarCard> {
         gradient: LinearGradient(
           begin: Alignment.topRight,
           end: Alignment.bottomLeft,
-          colors: [
-            Colors.teal.shade800.withOpacity(0.9),
-            Colors.teal.shade900.withOpacity(0.5),
-          ],
+          colors: gradientColors,
         ),
         borderRadius: BorderRadius.circular(24.r),
         boxShadow: [
           BoxShadow(
-            color: Color(0xFF1A3A5C).withOpacity(0.3),
+            color: shadowColor,
             blurRadius: 20,
-            offset: Offset(0, 8),
+            offset: Offset(0, 8.h),
           ),
         ],
       ),
       child: Column(
         children: [
-          // ===== Header =====
-          _buildHeader(isDark),
-
-          // ===== Days of Week =====
-          _buildWeekStrip(isDark),
-
+          _buildHeader(primaryTextColor, secondaryTextColor, chipBgColor),
+          _buildWeekStrip(
+            weekStripBg,
+            primaryTextColor,
+            secondaryTextColor,
+            selectedDayColor,
+            selectedDayTextColor,
+            todayAccentColor,
+          ),
           Gap(12.h),
         ],
       ),
     );
   }
 
-  Widget _buildHeader(bool isDark) {
+  Widget _buildHeader(
+      Color primaryTextColor,
+      Color secondaryTextColor,
+      Color chipBgColor,
+      ) {
     return Padding(
       padding: EdgeInsets.fromLTRB(20.w, 18.h, 20.w, 8.h),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         textDirection: TextDirection.rtl,
         children: [
-          // Hijri Calender
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
+          // Hijri Calendar
+          Row(
+            textDirection: TextDirection.rtl,
             children: [
-              Row(
-                textDirection: TextDirection.rtl,
+              Text(
+                _toArabicNumber(_today.hDay),
+                style: TextStyle(
+                  color: primaryTextColor,
+                  fontSize: 40.sp,
+                  fontWeight: FontWeight.bold,
+                  height: 1,
+                ),
+              ),
+              Gap(10.w),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    _toArabicNumber(_today.hDay),
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 40.sp,
-                      fontWeight: FontWeight.bold,
-                      height: 1,
-                    ),
+                  CustomText(
+                    _getArabicMonth(_today.hMonth),
+                    color: primaryTextColor,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.bold,
                   ),
-                  Gap(10.w),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    spacing: 5.h,
-                    children: [
-                      CustomText(
-                        _getArabicMonth(_today.hMonth),
-                        color: Colors.white,
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      Text(
-                        '${_toArabicNumber(_today.hYear)} هـ',
-                        style: TextStyle(
-                          color: Colors.white60,
-                          fontSize: 13.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
+                  Gap(5.h),
+                  Text(
+                    '${_toArabicNumber(_today.hYear)} هـ',
+                    style: TextStyle(
+                      color: secondaryTextColor,
+                      fontSize: 13.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ],
               ),
             ],
           ),
 
-          // Gregorian Calender
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: .12),
-                  borderRadius: BorderRadius.circular(30.r),
-                ),
-                child: Text(
-                  _getGregorianDate(),
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
+          // Gregorian Calendar
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+            decoration: BoxDecoration(
+              color: chipBgColor,
+              borderRadius: BorderRadius.circular(30.r),
+            ),
+            child: Text(
+              _getGregorianDate(),
+              style: TextStyle(
+                color: primaryTextColor,
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w600,
               ),
-            ],
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildWeekStrip(bool isDark) {
+  Widget _buildWeekStrip(
+      Color weekStripBg,
+      Color primaryTextColor,
+      Color secondaryTextColor,
+      Color selectedDayColor,
+      Color selectedDayTextColor,
+      Color todayAccentColor,
+      ) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 12.w),
       padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 4.w),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: .12),
+        color: weekStripBg,
         borderRadius: BorderRadius.circular(16.r),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: _weekDays.map((day) {
-          final isSelected = day['hijriDay'] == _selectedDay;
-          final isToday = day['isToday'] as bool;
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          // Responsive day width: shrinks gracefully on narrow screens
+          final dayWidth = (constraints.maxWidth / _weekDays.length) - 4.w;
 
-          return GestureDetector(
-            onTap: () => setState(() => _selectedDay = day['hijriDay']),
-            child: AnimatedContainer(
-              duration: Duration(milliseconds: 200),
-              width: 38.5.w,
-              padding: EdgeInsets.symmetric(vertical: 8.h),
-              decoration: BoxDecoration(
-                color: isSelected
-                    ? Colors.teal.shade400.withValues(alpha: 0.99)
-                    : Colors.transparent,
-                borderRadius: BorderRadius.circular(12.r),
-              ),
-              child: Column(
-                children: [
-                  Text(
-                    day['weekDay'],
-                    style: TextStyle(
-                      color: isSelected ? Colors.white : Colors.white60,
-                      fontSize: 12.sp,
-                      fontFamily: "Al mushaf",
-                      fontWeight: isSelected
-                          ? FontWeight.bold
-                          : FontWeight.w600,
-                    ),
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: _weekDays.map((day) {
+              final isSelected = day['hijriDay'] == _selectedDay;
+              final isToday = day['isToday'] as bool;
+
+              return GestureDetector(
+                onTap: () => setState(() => _selectedDay = day['hijriDay']),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  width: dayWidth.clamp(32.w, 42.w),
+                  padding: EdgeInsets.symmetric(vertical: 8.h),
+                  decoration: BoxDecoration(
+                    color: isSelected ? selectedDayColor : Colors.transparent,
+                    borderRadius: BorderRadius.circular(12.r),
                   ),
-                  Gap(4.h),
-                  Text(
-                    _toArabicNumber(day['hijriDay']),
-                    style: TextStyle(
-                      color: isSelected
-                          ? Colors.white
-                          : isToday
-                          ? Color(0xFFD4AF37)
-                          : Colors.white,
-                      fontSize: 15.sp,
-                      fontWeight: isSelected || isToday
-                          ? FontWeight.bold
-                          : FontWeight.normal,
-                    ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        day['weekDay'],
+                        style: TextStyle(
+                          color: isSelected
+                              ? selectedDayTextColor
+                              : secondaryTextColor,
+                          fontSize: 12.sp,
+                          fontFamily: "Al mushaf",
+                          fontWeight:
+                          isSelected ? FontWeight.bold : FontWeight.w600,
+                        ),
+                      ),
+                      Gap(4.h),
+                      Text(
+                        _toArabicNumber(day['hijriDay']),
+                        style: TextStyle(
+                          color: isSelected
+                              ? selectedDayTextColor
+                              : isToday
+                              ? todayAccentColor
+                              : primaryTextColor,
+                          fontSize: 15.sp,
+                          fontWeight: isSelected || isToday
+                              ? FontWeight.bold
+                              : FontWeight.normal,
+                        ),
+                      ),
+                      Gap(4.h),
+                      AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        width: 4.w,
+                        height: 4.w,
+                        decoration: BoxDecoration(
+                          color: isToday && !isSelected
+                              ? todayAccentColor
+                              : Colors.transparent,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    ],
                   ),
-                  Gap(4.h),
-                  AnimatedContainer(
-                    duration: Duration(milliseconds: 200),
-                    width: 4.w,
-                    height: 4.w,
-                    decoration: BoxDecoration(
-                      color: isToday && !isSelected
-                          ? Color(0xFFD4AF37)
-                          : Colors.transparent,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+                ),
+              );
+            }).toList(),
           );
-        }).toList(),
+        },
       ),
     );
-  }
-
-  String _getGregorianDate() {
-    final now = DateTime.now(); // The Current data of Day
-    const months = [
-      'يناير',
-      'فبراير',
-      'مارس',
-      'أبريل',
-      'مايو',
-      'يونيو',
-      'يوليو',
-      'أغسطس',
-      'سبتمبر',
-      'أكتوبر',
-      'نوفمبر',
-      'ديسمبر',
-    ];
-    return '${now.day} ${months[now.month - 1]} ${now.year}';
   }
 }

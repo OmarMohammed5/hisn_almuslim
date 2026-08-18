@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hisn_almuslim/core/routing/app_routes.dart';
 import 'package:hisn_almuslim/features/jami%20dua/screen/dead_dua_screen.dart';
 import 'package:hisn_almuslim/features/jami%20dua/screen/etiquette_dua_screen.dart';
 import 'package:hisn_almuslim/features/jami%20dua/screen/hajj_and_omra_screen.dart';
@@ -25,80 +26,38 @@ class DuaScreen extends StatelessWidget {
             CategoryCard(
               title: 'آداب الدعاء',
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return EtiquetteDuaScreen();
-                    },
-                  ),
-                );
+              Navigator.pushNamed(context, AppRoutes.etiquetteDua);
               },
             ),
             CategoryCard(
               title: 'أدعية من القرآن',
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return QuranDuaScreen();
-                    },
-                  ),
-                );
+                Navigator.pushNamed(context, AppRoutes.quranDua);
               },
             ),
             CategoryCard(
               title: 'أدعية من السنة',
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return SunnahDuaScreen();
-                    },
-                  ),
-                );
+                Navigator.pushNamed(context, AppRoutes.sunnahDua);
               },
             ),
             CategoryCard(
               title: 'أدعية الحج و العمرة',
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return HajjAndOmraScreen();
-                    },
-                  ),
-                );
+                Navigator.pushNamed(context, AppRoutes.hajjAndOmraDua);
               },
             ),
 
             CategoryCard(
               title: 'أدعية للمتوفي',
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return DeadDuaScreen();
-                    },
-                  ),
-                );
+                Navigator.pushNamed(context, AppRoutes.deadDua);
               },
             ),
             CategoryCard(
               title: 'أدعية العشر الأواخر',
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return LastTenDuasScreen();
-                    },
-                  ),
-                );
+                Navigator.pushNamed(context, AppRoutes.lastTenDuas);
               },
             ),
           ],

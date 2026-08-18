@@ -48,7 +48,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   "تغيير المظهر",
                   color: AppColors.kIconColor,
                   fontWeight: FontWeight.bold,
-                  fontSize: 14.sp,
+                  fontSize: 12.sp,
                 ),
               ),
             ),
@@ -66,7 +66,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 child: CustomText(
                   "الورد اليومي",
                   color: AppColors.kIconColor,
-                  fontSize: 14.sp,
+                  fontSize: 12.sp,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -84,7 +84,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 child: CustomText(
                   "منبهات الأذكار",
                   color: AppColors.kIconColor,
-                  fontSize: 14.sp,
+                  fontSize: 12.sp,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -92,32 +92,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Gap(10.h),
             _sectionCard(isDark, const AzkarNotificationsBuild()),
 
-            Gap(25.h),
+            Gap(80.h),
 
             // ABOUT APP
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: CustomText(
-                  "عن التطبيق",
-                  color: AppColors.kIconColor,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            Gap(10.h),
-            _sectionCard(isDark, const AboutAppWidget()),
-
-            Gap(120.h),
+            // Padding(
+            //   padding: EdgeInsets.symmetric(horizontal: 16.w),
+            //   child: Align(
+            //     alignment: Alignment.centerRight,
+            //     child: CustomText(
+            //       "عن التطبيق",
+            //       color: AppColors.kIconColor,
+            //       fontSize: 12.sp,
+            //       fontWeight: FontWeight.bold,
+            //     ),
+            //   ),
+            // ),
+            // Gap(10.h),
+            // _sectionCard(isDark, const AboutAppWidget()),
+            //
+            // Gap(120.h),
           ],
         ),
       ),
     );
   }
-
-  // UI HELPERs
 
   Widget _sectionCard(bool isDark, Widget child) {
     return Container(

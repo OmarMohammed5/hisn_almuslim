@@ -6,6 +6,7 @@ import 'package:hisn_almuslim/features/jami%20dua/data/cubit/hajj%20and%20omra/h
 import 'package:hisn_almuslim/features/jami%20dua/screen/hajj_and_omra_details.dart';
 import 'package:hisn_almuslim/features/jami%20dua/widgets/category_card.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
+import '../../../core/routing/app_routes.dart';
 import '../../../core/shared/app_bar_widget.dart';
 
 class HajjAndOmraScreen extends StatelessWidget {
@@ -33,17 +34,22 @@ class HajjAndOmraScreen extends StatelessWidget {
                   return CategoryCard(
                     title: chapter[index].chapterTitle,
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return HajjAndOmraDetails(
-                              hajjItems: chapter[index].items,
-                              title: chapter[index].chapterTitle,
-                            );
-                          },
-                        ),
-                      );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) {
+                      //       return HajjAndOmraDetails(
+                      //         hajjItems: chapter[index].items,
+                      //         title: chapter[index].chapterTitle,
+                      //       );
+                      //     },
+                      //   ),
+                     // );
+                      Navigator.pushNamed(context, AppRoutes.hajjAndOmraDuaDetails ,
+                        arguments: {
+                        'title' : chapter[index].chapterTitle,
+                        'hajjItems': chapter[index].items,
+                        },);
                     },
                   );
                 },

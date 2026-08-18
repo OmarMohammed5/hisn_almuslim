@@ -70,6 +70,9 @@ class _SearchFieldState extends State<SearchField> {
                 /// 📝 TextField
                 Expanded(
                   child: TextField(
+                    onTapOutside: (event) {
+                      FocusManager.instance.primaryFocus?.unfocus();
+                    },
                     controller: controller,
                     onChanged: (value) {
                       context.read<SearchCubit>().update(value);

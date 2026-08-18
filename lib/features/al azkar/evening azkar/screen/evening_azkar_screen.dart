@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hisn_almuslim/core/utils/control_font_size.dart';
 import 'package:hisn_almuslim/features/al%20azkar/evening%20azkar/data/evening_azkar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/shared/app_bar_widget.dart';
+import '../../../../core/shared/interactive_zekr_card.dart';
 import '../../../../core/shared/zekr_actions_widget.dart';
 import '../../../../core/shared/zekr_content_widget.dart';
 import '../../../../core/shared/zekr_header_widget.dart';
@@ -23,7 +25,7 @@ class _EveningAzkarScreenState extends State<EveningAzkarScreen> {
   late int _currentIndex;
   PageController? _pageController;
   bool isLoading = true;
-  final ValueNotifier<double> _fontSizeNotifire = ValueNotifier(20.sp);
+  final ValueNotifier<double> _fontSizeNotifire = ValueNotifier(16.sp);
 
   /// Method to load the last page
   Future<int> loadPage() async {
@@ -118,6 +120,9 @@ class _EveningAzkarScreenState extends State<EveningAzkarScreen> {
                     },
                     itemBuilder: (context, index) {
                       final zekr = eveningAzkar['content'][index];
+                      final isLast = index == eveningAzkar['content'].length - 1;
+                      final count = int.tryParse('${zekr['count']}') ?? 1;
+
                       return ValueListenableBuilder(
                         valueListenable: _fontSizeNotifire,
                         builder: (context, fontSize, child) {
@@ -127,7 +132,23 @@ class _EveningAzkarScreenState extends State<EveningAzkarScreen> {
                               vertical: 60.h,
                             ),
                             children: [
-                              ZekrContentWidget(zekr: zekr, fontSize: fontSize),
+                              InteractiveZekrCard(
+                                key: ValueKey(index),
+                                text: zekr['text'],
+                                count: count,
+                                fadl: zekr['fadl'],
+                                onCompleted: () {
+                                  if (!isLast) {
+                                    _pageController!.nextPage(
+                                      duration: const Duration(milliseconds: 400),
+                                      curve: Curves.easeInOut,
+                                    );
+                                  } else {
+                                    _showCompletionFeedback(context);
+                                  }
+                                },
+                                size: fontSize,
+                              ),
                             ],
                           );
                         },
@@ -183,6 +204,21 @@ class _EveningAzkarScreenState extends State<EveningAzkarScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  void _showCompletionFeedback(BuildContext context) {
+    // Heavy Impact
+    HapticFeedback.heavyImpact();
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text("أتممت جميع الأذكار 🌿"),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+        backgroundColor: Colors.teal.shade700,
+        duration: const Duration(seconds: 2),
       ),
     );
   }

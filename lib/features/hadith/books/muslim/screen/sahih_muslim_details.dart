@@ -76,8 +76,10 @@ class _SahihMuslimDetailsState extends State<SahihMuslimDetails> {
     ).showSnackBar(customSnackBar("تم النسخ", Icons.check_circle, context));
   }
 
+
   void _shareText(String text) {
-    ShareHelper.shareAsImage(context, text);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    ShareHelper.shareAsImage(context, text, isDark: isDark ,category: "صحيح مسلم" );
   }
 
   @override

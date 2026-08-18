@@ -76,4 +76,9 @@ class AudioPlayerService {
   /// (future "Stop" button, notification Stop button) — NOT when the user
   /// simply navigates away from AudioPlayerScreen.
   Future<void> stop() => _requireHandler.stop();
+
+  Stream<Duration> get durationStream => _requireHandler.durationStream;
+
+
+
 }

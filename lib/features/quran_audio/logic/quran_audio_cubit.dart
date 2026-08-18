@@ -2,11 +2,13 @@
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hisn_almuslim/features/quran_audio/data/models/reciter_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../data/repos/quran_audio_repository.dart';
 import 'quran_audio_state.dart';
 
 class QuranAudioCubit extends Cubit<QuranAudioState> {
   final QuranAudioRepository _repository;
+  static const String _selectedReciterIdKey = 'selected_reciter_id';
 
   QuranAudioCubit({required QuranAudioRepository repository})
     : _repository = repository,
@@ -23,9 +25,20 @@ class QuranAudioCubit extends Cubit<QuranAudioState> {
         return;
       }
 
-      final ReciterModel firstReciter = reciters.first;
+      final prefs = await SharedPreferences.getInstance();
+      final savedReciterId = prefs.getInt(_selectedReciterIdKey);
 
-      emit(QuranAudioLoaded(reciters: reciters, selectedReciter: firstReciter));
+      ReciterModel? selectedReciter;
+      if (savedReciterId != null) {
+        selectedReciter = reciters.firstWhere(
+              (r) => r.id == savedReciterId,
+          orElse: () => reciters.first,
+        );
+      } else {
+        selectedReciter = reciters.first;
+      }
+
+      emit(QuranAudioLoaded(reciters: reciters, selectedReciter: selectedReciter));
     } catch (e) {
       // Emit error state
       emit(QuranAudioError('Failed to load reciters: ${e.toString()}'));
@@ -37,6 +50,7 @@ class QuranAudioCubit extends Cubit<QuranAudioState> {
 
     // Only update if we're in loaded state
     if (currentState is QuranAudioLoaded) {
+      _saveSelectedReciterId(reciter.id);
       emit(
         QuranAudioLoaded(
           reciters: currentState.reciters,
@@ -68,5 +82,15 @@ class QuranAudioCubit extends Cubit<QuranAudioState> {
       return currentState.message;
     }
     return null;
+  }
+
+
+  Future<void> _saveSelectedReciterId(int id) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setInt(_selectedReciterIdKey, id);
+    } catch (e) {
+      print('❌ Failed to save selected reciter: $e');
+    }
   }
 }

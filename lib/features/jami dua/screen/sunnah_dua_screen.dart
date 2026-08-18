@@ -35,7 +35,8 @@ class _SunnahDuaScreenState extends State<SunnahDuaScreen> {
   }
 
   void shareText(String text) {
-    ShareHelper.shareAsImage(context, text);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    ShareHelper.shareAsImage(context, text, isDark: isDark ,category: "أدعية من السنة");
   }
 
   // Scroll To Top

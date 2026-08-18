@@ -63,9 +63,7 @@ class AzkarNotificationsBuild extends StatelessWidget {
             return Column(
               // spacing: 15,
               children: [
-                // =====================
                 // Morning Azkar Toggle
-                // =====================
                 ListTileWidget(
                   icon: state.enableMorning
                       ? Icons.notifications_active_outlined
@@ -80,27 +78,7 @@ class AzkarNotificationsBuild extends StatelessWidget {
                     onChanged: (value) {
                       context.read<NotificationCubit>().toggleMorning(value);
 
-                      final message = value
-                          ? "تم تفعيل أذكار الصباح"
-                          : "تم إيقاف أذكار الصباح";
 
-                      final icon = value
-                          ? Icons.notifications_active_outlined
-                          : Icons.notifications_off_outlined;
-
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        customSnackBar(
-                          message,
-                          icon,
-                          context,
-                          lightColor: value
-                              ? Colors.teal.shade700
-                              : Colors.red.shade700,
-                          darkColor: value
-                              ? Colors.teal.shade900
-                              : Colors.red.shade900,
-                        ),
-                      );
                     },
                   ),
                 ),
@@ -121,15 +99,7 @@ class AzkarNotificationsBuild extends StatelessWidget {
                           selectedTime,
                         );
 
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          customSnackBar(
-                            "تم تغيير وقت أذكار الصباح إلى ${_formatTimeArabic(selectedTime)}",
-                            Icons.access_time,
-                            context,
-                            lightColor: Colors.blue.shade700,
-                            darkColor: Colors.blue.shade900,
-                          ),
-                        );
+
                       });
                     },
                     child: ListTileWidget(
@@ -171,9 +141,7 @@ class AzkarNotificationsBuild extends StatelessWidget {
                       ? const Color(0xff023d22)
                       : Colors.grey.shade300,
                 ),
-                // =====================
                 // Evening Azkar Toggle
-                // =====================
                 ListTileWidget(
                   icon: state.enableEvening
                       ? Icons.notifications_active_outlined
@@ -188,27 +156,6 @@ class AzkarNotificationsBuild extends StatelessWidget {
                     onChanged: (value) {
                       context.read<NotificationCubit>().toggleEvening(value);
 
-                      final message = value
-                          ? "تم تفعيل أذكار المساء"
-                          : "تم إيقاف أذكار المساء";
-
-                      final icon = value
-                          ? Icons.notifications_active_outlined
-                          : Icons.notifications_off_outlined;
-
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        customSnackBar(
-                          message,
-                          icon,
-                          context,
-                          lightColor: value
-                              ? Colors.teal.shade700
-                              : Colors.red.shade700,
-                          darkColor: value
-                              ? Colors.teal.shade900
-                              : Colors.red.shade900,
-                        ),
-                      );
                     },
                   ),
                 ),
@@ -218,9 +165,7 @@ class AzkarNotificationsBuild extends StatelessWidget {
                         ? const Color(0xff023d22)
                         : Colors.grey.shade300,
                   ),
-                // =====================
                 // Evening Time Picker
-                // =====================
                 if (state.enableEvening)
                   GestureDetector(
                     onTap: () {
@@ -229,15 +174,6 @@ class AzkarNotificationsBuild extends StatelessWidget {
                           selectedTime,
                         );
 
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          customSnackBar(
-                            "تم تغيير وقت أذكار المساء إلى ${_formatTimeArabic(selectedTime)}",
-                            Icons.access_time,
-                            context,
-                            lightColor: Colors.blue.shade700,
-                            darkColor: Colors.blue.shade900,
-                          ),
-                        );
                       });
                     },
                     child: ListTileWidget(

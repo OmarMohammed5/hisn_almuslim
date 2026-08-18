@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,24 +7,24 @@ import '../../../../core/theme/app_colors.dart';
 import '../../data/models/reciter_model.dart';
 import '../../logic/audio_player_cubit.dart';
 import '../../logic/audio_player_state.dart';
-import '../widgets/audio_player_controls.dart';
-import '../widgets/audio_progress_slider.dart';
-import '../widgets/now_playing_header.dart';
-import '../widgets/player_background.dart';
-import '../widgets/player_bottom_card.dart';
-import '../widgets/rotating_artwork.dart';
-import '../widgets/surah_title.dart';
+import '../widgets/player_artwork_square.dart';
+import '../widgets/player_control_card.dart';
+import '../widgets/player_controls_row.dart';
+import '../widgets/player_gradient_background.dart';
+
 
 class AudioPlayerScreen extends StatefulWidget {
   final SurahAudioModel surah;
   final ReciterModel reciter;
   final String audioUrl;
+  final List<SurahAudioModel> surahs;
 
   const AudioPlayerScreen({
     super.key,
     required this.surah,
     required this.reciter,
     required this.audioUrl,
+    this.surahs = const [],
   });
 
   @override
@@ -33,245 +32,342 @@ class AudioPlayerScreen extends StatefulWidget {
 }
 
 class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
+  bool _initialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!_initialized && mounted) {
+        _initializePlayer();
+      }
+    });
+  }
+
+  void _initializePlayer() {
+    if (_initialized) return;
+    _initialized = true;
+    final cubit = context.read<AudioPlayerCubit>();
+    cubit.initializePlayer(
+      audioUrl: widget.audioUrl,
+      surah: widget.surah,
+      reciter: widget.reciter,
+      surahs: widget.surahs,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AudioPlayerCubit()
-        ..initializePlayer(
-          audioUrl: widget.audioUrl,
-          surah: widget.surah,
-          reciter: widget.reciter,
-        ),
-      child: Builder(
-        builder: (context) {
-          return WillPopScope(
-            onWillPop: () async {
-              // await context.read<AudioPlayerCubit>().disposePlayer();
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: PlayerGradientBackground(
+        surahNumber: widget.surah.number,
+        child: SafeArea(
+          child: BlocConsumer<AudioPlayerCubit, AudioPlayerState>(
+            listener: (context, state) {
+              if (state is AudioPlayerError && state.shouldShow) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state.message),
+                    backgroundColor: Colors.red.shade700,
+                    behavior: SnackBarBehavior.floating,
+                    duration: const Duration(seconds: 3),
+                  ),
+                );
+              }
+            },
+            buildWhen: (previous, current) {
+              if (previous.runtimeType != current.runtimeType) return true;
+              if (previous is AudioPlayerReady && current is AudioPlayerReady) {
+                return previous.isPlaying != current.isPlaying ||
+                    previous.isBuffering != current.isBuffering ||
+                    previous.speed != current.speed ||
+                    previous.isCompleted != current.isCompleted ||
+                    previous.currentPosition != current.currentPosition ||
+                    previous.totalDuration != current.totalDuration;
+              }
               return true;
             },
-            child: Scaffold(
-              extendBodyBehindAppBar: true,
-              backgroundColor: Colors.transparent,
-              body: PlayerBackground(
-                child: SafeArea(
-                  child: BlocConsumer<AudioPlayerCubit, AudioPlayerState>(
-                    listener: (context, state) {
-                      if (state is AudioPlayerError) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Error: ${state.message}'),
-                            backgroundColor: Colors.red.shade700,
-                            behavior: SnackBarBehavior.floating,
-                          ),
-                        );
-                      }
-                    },
-                    builder: (context, state) {
-                      return Column(
-                        children: [
-                          NowPlayingHeader(
-                            onBack: () async {
-                              // final cubit = context.read<AudioPlayerCubit>();
-                              // await cubit.disposePlayer();
-                              // if (context.mounted)
-                              Navigator.pop(context);
-                            },
-                            reciterName: widget.reciter.reciter.ar,
-                            rewaya: null,
-                          ),
-                          Expanded(
-                            child: AnimatedSwitcher(
-                              duration: const Duration(milliseconds: 300),
-                              child: _buildBody(context, state),
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  ),
+            builder: (context, state) {
+              return Column(
+                children: [
+                  _buildTopBar(context),
+                  Expanded(child: _buildBody(context, state)),
+                ],
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  // 1. TOP HEADER ------------------------------------------------------
+  Widget _buildTopBar(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
+      child: Row(
+        children: [
+          Material(
+            color: Colors.white.withValues(alpha: 0.08),
+            shape: const CircleBorder(),
+            child: InkWell(
+              customBorder: const CircleBorder(),
+              onTap: () => Navigator.pop(context),
+              child: Padding(
+                padding: EdgeInsets.all(9.w),
+                child: Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  size: 18.sp,
+                  color: Colors.white.withValues(alpha: 0.9),
                 ),
               ),
             ),
-          );
-        },
+          ),
+          Expanded(
+            child: Text(
+              'يُتلى الآن',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+              color: Colors.white.withValues(alpha: 0.65),
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w500,
+                fontFamily: "QuranFont",
+              ),
+            ),
+          ),
+          SizedBox(width: 38.w),
+        ],
       ),
     );
   }
 
   Widget _buildBody(BuildContext context, AudioPlayerState state) {
-    if (state is AudioPlayerInitial || state is AudioPlayerLoading) {
-      return _buildLoadingState(key: const ValueKey('loading'));
-    } else if (state is AudioPlayerError) {
-      return _buildErrorState(context, state, key: const ValueKey('error'));
-    } else if (state is AudioPlayerReady) {
-      return _buildPlayerUI(context, state, key: const ValueKey('ready'));
+    if (state is AudioPlayerReady) {
+      return _buildReady(context, state);
     }
-    return const SizedBox.shrink(key: ValueKey('empty'));
-  }
-
-  Widget _buildLoadingState({Key? key}) {
+    if (state is AudioPlayerError) {
+      return _buildError(context, state);
+    }
+    if (state is AudioPlayerLoading) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const CircularProgressIndicator(color: Colors.white),
+            SizedBox(height: 16.h),
+            CustomText(
+              state.message ?? 'جاري التحميل...',
+              color: Colors.white.withValues(alpha: 0.7),
+              fontSize: 14.sp,
+            ),
+          ],
+        ),
+      );
+    }
     return Center(
-      key: key,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CupertinoActivityIndicator(color: Colors.white),
+          const CircularProgressIndicator(color: Colors.white),
           SizedBox(height: 16.h),
-          Text(
-            'جاري تحميل الصوت...',
-            style: TextStyle(color: Colors.white70, fontSize: 13.sp),
+          CustomText(
+            'جاري تجهيز الصوت...',
+            color: Colors.white.withValues(alpha: 0.7),
+            fontSize: 14.sp,
           ),
         ],
       ),
     );
   }
 
-  Widget _buildErrorState(
-    BuildContext context,
-    AudioPlayerError state, {
-    Key? key,
-  }) {
-    return Center(
-      key: key,
-      child: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-              Icons.error_outline_rounded,
-              size: 64,
-              color: Colors.white70,
-            ),
-            const SizedBox(height: 16),
-            const Text(
-              'Failed to load audio',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              state.message,
-              style: const TextStyle(color: Colors.white70),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 24),
-            ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                foregroundColor: AppColors.kPrimary,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 12,
-                ),
-              ),
-              onPressed: () => Navigator.pop(context),
-              icon: const Icon(Icons.arrow_back),
-              label: const Text('Go Back'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
-  Widget _buildPlayerUI(
-    BuildContext context,
-    AudioPlayerReady state, {
-    Key? key,
-  }) {
+  Widget _buildReady(BuildContext context, AudioPlayerReady state) {
+    final cubit = context.read<AudioPlayerCubit>();
+
+    final reciterName = widget.reciter.reciter.ar;
+
     return LayoutBuilder(
-      key: key,
       builder: (context, constraints) {
-        // Keeps the layout comfortable on small phones, large phones,
-        // and tablets alike.
-        final bool isCompact = constraints.maxHeight < 640;
-        final double artworkSize = constraints.maxWidth > 500
-            ? 260
-            : (isCompact ? 190 : 220);
+        final isCompact = constraints.maxHeight < 640;
 
-        final Widget topSection = Column(
-          mainAxisSize: MainAxisSize.min,
+        return Column(
           children: [
-            SizedBox(height: isCompact ? 12.h : 28.h),
-            RotatingArtwork(
-              isPlaying: state.isPlaying,
-              size: artworkSize,
-              child: _buildArtworkFace(state),
+            SizedBox(height: isCompact ? 10.h : 22.h),
+            PlayerArtworkSquare(
+              size: isCompact ? 130 : 155,
+              child: _artworkFace(state),
             ),
-            SizedBox(height: isCompact ? 20.h : 32.h),
-            SurahTitle(
-              arabicName: state.surah.nameArabic,
-              englishName: state.surah.nameEnglish,
-            ),
-          ],
-        );
-
-        final Widget bottomSection = Padding(
-          padding: EdgeInsets.only(bottom: isCompact ? 12.h : 50.h),
-          child: PlayerBottomCard(
-            slider: AudioProgressSlider(
-              currentPosition: state.currentPosition,
-              totalDuration: state.totalDuration,
-              onSeek: (position) =>
-                  context.read<AudioPlayerCubit>().seek(position),
-            ),
-            timeRow: _buildTimeDisplay(
-              context,
-              state.currentPosition,
-              state.totalDuration,
-            ),
-            controls: AnimatedScale(
-              scale: state.isPlaying ? 1.0 : 0.96,
-              duration: const Duration(milliseconds: 200),
-              curve: Curves.easeOut,
-              child: AudioPlayerControls(
-                isPlaying: state.isPlaying,
-                isBuffering: state.isBuffering,
-                onPlayPause: () =>
-                    context.read<AudioPlayerCubit>().togglePlayPause(),
+            SizedBox(height: isCompact ? 16.h : 26.h),
+            Expanded(
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: PlayerControlCard(
+                  arabicTitle: state.surah.nameArabic,
+                  reciterName: reciterName,
+                  riwayaText: null,
+                  progressSlider: _buildSlider(state, cubit),
+                  timeRow: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 2.w),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CustomText(
+                          AudioPlayerCubit.formatDuration(
+                              state.currentPosition),
+                          color: Colors.white.withValues(alpha: 0.6),
+                          fontSize: 11.sp,
+                        ),
+                        CustomText(
+                          AudioPlayerCubit.formatDuration(
+                              state.totalDuration),
+                          color: Colors.white.withValues(alpha: 0.4),
+                          fontSize: 11.sp,
+                        ),
+                      ],
+                    ),
+                  ),
+                  controlsRow: PlayerControlsRow(
+                    isPlaying: state.isPlaying,
+                    isBuffering: state.isBuffering,
+                    onPlayPause: cubit.togglePlayPause,
+                    onSeekBack: () => cubit.seek(
+                      state.currentPosition - const Duration(seconds: 10),
+                    ),
+                    onSeekForward: () => cubit.seek(
+                      state.currentPosition + const Duration(seconds: 10),
+                    ),
+                    onPrevious: cubit.playPrevious,
+                    onNext: cubit.playNext,
+                    hasPrevious: state.currentSurahIndex > 0,
+                    hasNext:
+                    state.currentSurahIndex < state.surahs.length - 1,
+                  ),
+                  speedChip: _speedChip(context, cubit, state.speed),
+                  completionMode:
+                  _buildCompletionModeSelector(context, cubit, state),
+                ),
               ),
             ),
-            speedControl: _buildSpeedControl(context, state),
-            // bottomInfo: StreamingIndicator(
-            //   sourceLabel: 'Streaming from MP3 Quran',
-            // ),
-          ),
-        );
-
-        return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.w),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [topSection, bottomSection],
-          ),
+            SizedBox(height: isCompact ? 8.h : 14.h),
+          ],
         );
       },
     );
   }
 
-  /////////////
-  Widget _buildArtworkFace(AudioPlayerReady state) {
+
+  Widget _buildSlider(AudioPlayerReady state, AudioPlayerCubit cubit) {
+    return SliderTheme(
+      data: SliderTheme.of(context).copyWith(
+        trackHeight: 2.5.h,
+        thumbShape: RoundSliderThumbShape(enabledThumbRadius: 6.r),
+        overlayShape: RoundSliderOverlayShape(overlayRadius: 14.r),
+        activeTrackColor: AppColors.kPrimary,
+        inactiveTrackColor: Colors.white.withValues(alpha: 0.16),
+        thumbColor: AppColors.kPrimary,
+        overlayColor: AppColors.kPrimary.withValues(alpha: 0.15),
+      ),
+      child: Slider(
+        value: state.currentPosition.inMilliseconds
+            .clamp(0, state.totalDuration.inMilliseconds)
+            .toDouble(),
+        max: state.totalDuration.inMilliseconds
+            .toDouble()
+            .clamp(1, double.infinity),
+        onChanged: (value) {
+          cubit.seek(Duration(milliseconds: value.round()));
+        },
+      ),
+    );
+  }
+
+
+  Widget _buildCompletionModeSelector(
+      BuildContext context,
+      AudioPlayerCubit cubit,
+      AudioPlayerReady state,
+      ) {
+    final modes = CompletionMode.values;
+    final labels = {
+      CompletionMode.continueToNext: 'التالي',
+      CompletionMode.repeatCurrent: 'تكرار',
+      CompletionMode.stopAfterCurrent: 'إيقاف',
+      CompletionMode.manual: 'يدوي',
+    };
+
     return Container(
-      color: Colors.white,
-      child: Center(
-        child: Image.asset(
-          'assets/icons/loogo.png',
-          // "assets/icons/mm.png",
-          fit: BoxFit.contain,
-          errorBuilder: (context, error, stackTrace) => Text(
-            '${state.surah.number}',
-            style: TextStyle(
-              fontSize: 44,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Al mushaf',
-              color: AppColors.kPrimary,
+      padding: EdgeInsets.all(4.w),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.06),
+        borderRadius: BorderRadius.circular(16.r),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
+      ),
+      child: Row(
+        children: modes.map((mode) {
+          final isSelected = state.completionMode == mode;
+          return Expanded(
+            child: GestureDetector(
+              onTap: () => cubit.setCompletionMode(mode),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 150),
+                curve: Curves.easeOut,
+                padding: EdgeInsets.symmetric(vertical: 8.h),
+                decoration: BoxDecoration(
+                  color: isSelected ? AppColors.kPrimary : Colors.transparent,
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  labels[mode]!,
+                  style: TextStyle(
+                  color: isSelected
+                      ? Colors.white
+                      : Colors.white.withValues(alpha: 0.55),
+                  fontSize: 13.sp,
+                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                    fontFamily: "QuranFont",
+                  ),
+                ),
+              ),
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+
+  Widget _artworkFace(AudioPlayerReady state) {
+    return Container(
+      decoration: const BoxDecoration(
+        shape: BoxShape.circle,
+        color: Color(0xFFFBF6EC),
+      ),
+      child: Container(
+        margin: EdgeInsets.all(3.w),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: const Color(0xFFC9A24B).withValues(alpha: 0.55),
+            width: 1.4.w,
+          ),
+        ),
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.all(18.w),
+            child: Image.asset(
+              'assets/icons/loogo.png',
+              fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) => Text(
+                '${state.surah.number}',
+                style: TextStyle(
+                  fontSize: 40.sp,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Al mushaf',
+                  color: AppColors.kPrimary,
+                ),
+              ),
             ),
           ),
         ),
@@ -279,59 +375,36 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
     );
   }
 
-  // Widget _buildArtworkFace(AudioPlayerReady state) {
-  //   return Icon(Icons.headphones_outlined , color: Colors.white,size: 170.sp,);
-  // }
 
-  Widget _buildTimeDisplay(
-    BuildContext context,
-    Duration currentPosition,
-    Duration totalDuration,
-  ) {
-    return Padding(
-      padding: EdgeInsets.only(top: 4.h),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          CustomText(
-            AudioPlayerCubit.formatDuration(currentPosition),
-            color: Colors.white.withValues(alpha: 0.6),
-            fontSize: 12.sp,
-          ),
-          CustomText(
-            AudioPlayerCubit.formatDuration(totalDuration),
-            color: Colors.white.withValues(alpha: 0.4),
-            fontSize: 12.sp,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSpeedControl(BuildContext context, AudioPlayerReady state) {
-    final cubit = context.read<AudioPlayerCubit>();
-    final speed = state.speed;
-
+  Widget _speedChip(
+      BuildContext context,
+      AudioPlayerCubit cubit,
+      double? speed,
+      ) {
     return InkWell(
       borderRadius: BorderRadius.circular(20.r),
       onTap: () => _showSpeedSheet(context, cubit, speed),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
         decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.12),
+          color: Colors.white.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(20.r),
-          border: Border.all(color: Colors.white.withValues(alpha: 0.14)),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.10)),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
-          spacing: 6.w,
           children: [
-            const Icon(Icons.speed_rounded, size: 16, color: Colors.white),
             CustomText(
-              '${speed}x',
+              '${speed ?? 1.0}x',
               color: Colors.white,
               fontWeight: FontWeight.w600,
               fontSize: 12.sp,
+            ),
+            SizedBox(width: 6.w),
+            Icon(
+              Icons.replay_rounded,
+              size: 15.sp,
+              color: Colors.white.withValues(alpha: 0.75),
             ),
           ],
         ),
@@ -340,10 +413,10 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
   }
 
   void _showSpeedSheet(
-    BuildContext context,
-    AudioPlayerCubit cubit,
-    double? currentSpeed,
-  ) {
+      BuildContext context,
+      AudioPlayerCubit cubit,
+      double? currentSpeed,
+      ) {
     const speeds = [0.5, 0.75, 1.0, 1.25, 1.5, 2.0];
     showModalBottomSheet(
       context: context,
@@ -356,7 +429,6 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
           padding: EdgeInsets.symmetric(vertical: 16.h),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            spacing: 6.h,
             children: [
               CustomText(
                 'سرعة التشغيل',
@@ -364,6 +436,7 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
                 fontWeight: FontWeight.bold,
                 fontSize: 14.sp,
               ),
+              SizedBox(height: 6.h),
               ...speeds.map((speed) {
                 final isSelected = speed == currentSpeed;
                 return ListTile(
@@ -371,20 +444,85 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
                     cubit.setSpeed(speed);
                     Navigator.pop(context);
                   },
-                  title: Text(
-                    '${speed}x',
-                    style: const TextStyle(color: Colors.white),
-                  ),
+                  title: Text('${speed}x',
+                      style: const TextStyle(color: Colors.white)),
                   trailing: isSelected
-                      ? const Icon(
-                          Icons.check_rounded,
-                          color: Color(0xFF2ED9B8),
-                        )
+                      ? const Icon(Icons.check_rounded,
+                      color: Color(0xFF2ED9B8))
                       : null,
                 );
               }),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildError(BuildContext context, AudioPlayerError state) {
+    if (!state.shouldShow) {
+      return const Center(
+        child: CircularProgressIndicator(color: Colors.white),
+      );
+    }
+
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.error_outline_rounded,
+              size: 64.sp,
+              color: Colors.white70,
+            ),
+            SizedBox(height: 16.h),
+            CustomText(
+              'تعذر تشغيل الصوت',
+              color: Colors.white,
+              fontSize: 18.sp,
+              fontWeight: FontWeight.bold,
+            ),
+            SizedBox(height: 8.h),
+            CustomText(
+              state.message,
+              color: Colors.white70,
+              fontSize: 14.sp,
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 24.h),
+            if (state.isRetryable)
+              ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: AppColors.kPrimary,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.r),
+                  ),
+                  padding:
+                  EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
+                ),
+                onPressed: () => context.read<AudioPlayerCubit>().retry(),
+                icon: const Icon(Icons.refresh_rounded),
+                label: const Text('إعادة المحاولة'),
+              )
+            else
+              ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: AppColors.kPrimary,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.r),
+                  ),
+                  padding:
+                  EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
+                ),
+                onPressed: () => Navigator.pop(context),
+                icon: const Icon(Icons.arrow_back_rounded),
+                label: const Text('رجوع'),
+              ),
+          ],
         ),
       ),
     );

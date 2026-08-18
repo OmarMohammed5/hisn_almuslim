@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:hisn_almuslim/features/adhan/data/cubit/adhan_cubit.dart';
 import 'package:hisn_almuslim/features/adhan/widgets/dashboard_timing.dart';
 import 'package:hisn_almuslim/features/adhan/widgets/prayer_timings.dart';
@@ -25,6 +26,11 @@ class _AdhanScreenState extends State<AdhanScreen> {
     _timer = Timer.periodic(Duration(seconds: 1), (_) {
       if (mounted) {
         setState(() {});
+      }
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        context.read<AdhanCubit>().loadPrayerTimes();
       }
     });
     super.initState();
@@ -116,7 +122,7 @@ class _AdhanScreenState extends State<AdhanScreen> {
               ],
             );
           } else if (state is AdhanError) {
-            return Center(child: CustomText(state.message));
+            return _LocationErrorView(state: state);
           } else {
             return const SizedBox.shrink();
           }
@@ -125,3 +131,67 @@ class _AdhanScreenState extends State<AdhanScreen> {
     );
   }
 }
+
+
+
+class _LocationErrorView extends StatelessWidget {
+  final AdhanError state;
+  const _LocationErrorView({required this.state});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 24.w),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.location_off, size: 55.sp, color: Colors.grey),
+            Gap(30.h),
+            // CustomText(state.message, textAlign: TextAlign.center),
+            // Gap(20.h),
+            ElevatedButton(
+              onPressed: () => _handleAction(context),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.teal.shade700,
+                foregroundColor: Colors.white,
+                padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
+              ),
+              child: CustomText(_buttonLabel , fontSize: 12.sp,color: Colors.white,),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  String get _buttonLabel {
+    switch (state.type) {
+      case AdhanErrorType.serviceDisabled:
+        return 'تفعيل خدمة الموقع';
+      case AdhanErrorType.permissionDeniedForever:
+        return 'فتح إعدادات التطبيق';
+      case AdhanErrorType.permissionDenied:
+      case AdhanErrorType.unknown:
+        return 'إعادة المحاولة';
+    }
+  }
+
+  Future<void> _handleAction(BuildContext context) async {
+    switch (state.type) {
+      case AdhanErrorType.serviceDisabled:
+        await Geolocator.openLocationSettings();
+        break;
+      case AdhanErrorType.permissionDeniedForever:
+        await Geolocator.openAppSettings();
+        break;
+      case AdhanErrorType.permissionDenied:
+      case AdhanErrorType.unknown:
+        break;
+    }
+    if (context.mounted) {
+      context.read<AdhanCubit>().loadPrayerTimes();
+    }
+  }
+}
+

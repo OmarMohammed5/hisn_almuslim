@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/features/adhan/screen/adhan_screen.dart';
+import 'package:hisn_almuslim/features/asma%20allah/data/cubit/asma_allah_cubit.dart';
 import 'package:hisn_almuslim/features/home/screen/home_screen.dart';
+import 'package:hisn_almuslim/features/quran/data/cubit/ayah_highlight_cubit.dart';
 import 'package:hisn_almuslim/features/quran_audio/ui/screens/quran.dart';
 import 'package:hisn_almuslim/features/settings/screen/settings_screen.dart';
+
+import 'core/di/dependency_injection.dart';
+import 'features/adhan/data/cubit/adhan_cubit.dart';
+import 'features/quran/data/cubit/cubit/quran_progress_cubit.dart';
+import 'features/quran/data/cubit/cubit/search_cubit.dart';
+import 'features/quran/data/cubit/quran_cubit.dart';
+import 'features/quran_audio/logic/quran_audio_cubit.dart';
 
 class Root extends StatefulWidget {
   const Root({super.key});
@@ -17,11 +27,42 @@ class Root extends StatefulWidget {
 class _RootState extends State<Root> {
   final ValueNotifier<int> _currentIndexNotifier = ValueNotifier(0);
 
+  // final List<Widget> _pages = [
+  //   HomeScreen(),
+  //   Quran(),
+  //   AdhanScreen(),
+  //   SettingsScreen(),
+  // ];
+
   final List<Widget> _pages = [
-    HomeScreen(),
-    Quran(),
-    AdhanScreen(),
-    SettingsScreen(),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => sl<QuranCubit>()),
+        // BlocProvider(create: (_) => sl<QuranProgressCubit>()),
+        // BlocProvider(create: (_) => sl<AsmaAllahCubit>()..loadNames()),
+        // BlocProvider(create: (_) => sl<QuranProgressCubit>()),
+        // BlocProvider(create: (_) => sl<QuranProgressCubit>()),
+
+      ],
+      child: const HomeScreen(),
+    ),
+
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => sl<QuranCubit>()),
+        BlocProvider(create: (_) => sl<SearchCubit>()),
+        BlocProvider(create: (_) => sl<AyahHighlightCubit>()),
+        BlocProvider(create: (_) => sl<QuranAudioCubit>()),
+      ],
+      child: const Quran(),
+    ),
+
+    BlocProvider(
+      create: (_) => sl<AdhanCubit>(),
+      child: const AdhanScreen(),
+    ),
+
+    const SettingsScreen(),
   ];
 
   @override
@@ -182,14 +223,14 @@ class _RootState extends State<Root> {
                   AnimatedDefaultTextStyle(
                     duration: const Duration(milliseconds: 300),
                     style: TextStyle(
-                      fontSize: isActive ? 9.sp : 8.5.sp,
+                      fontSize: isActive ? 11.sp : 9.sp,
                       fontWeight: isActive ? FontWeight.bold : FontWeight.w600,
                       color: isActive
                           ? Colors.white
                           : (isDark
                                 ? Colors.grey.shade400
                                 : Colors.grey.shade600),
-                      fontFamily: 'Cairo',
+                      fontFamily: 'QuranFont',
                       height: 1,
                     ),
                     child: Text(label),

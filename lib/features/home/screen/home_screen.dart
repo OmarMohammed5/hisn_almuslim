@@ -10,6 +10,7 @@ import 'package:hisn_almuslim/features/home/widgets/custom_card_widget.dart';
 import 'package:hisn_almuslim/features/quran/data/cubit/quran_cubit.dart';
 import 'package:hisn_almuslim/features/quran/data/cubit/quran_state.dart';
 import 'package:hisn_almuslim/features/quran/widgets/quran_dashboard.dart';
+import '../../../hisn_al_muslim_app.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,18 +19,30 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenElegantState();
 }
 
-class _HomeScreenElegantState extends State<HomeScreen> {
+class _HomeScreenElegantState extends State<HomeScreen> with RouteAware{
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
+  }
+
+  @override
+  void dispose() {
+    routeObserver.unsubscribe(this);
+    super.dispose();
+  }
+
   @override
   void initState() {
     super.initState();
-    context.read<QuranCubit>().loadSurahs();
+    // context.read<QuranCubit>().loadSurahs();
   }
 
-  //  @override
-  void didPopNext() {
-    setState(() {});
-    context.read<QuranCubit>().loadSurahs();
-  }
+  // @override
+  // void didPopNext() {
+  //   context.read<QuranCubit>().loadSurahs();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -50,24 +63,11 @@ class _HomeScreenElegantState extends State<HomeScreen> {
           ),
           SliverToBoxAdapter(child: Gap(16.h)),
 
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: BlocBuilder<QuranCubit, QuranState>(
-                builder: (context, state) {
-                  if (state is QuranLoaded) {
-                    return QuranProgressDashboard(surahs: state.surahs);
-                  }
-                  return const SizedBox();
-                },
-              ),
-            ),
-          ),
 
           SliverToBoxAdapter(child: Gap(15.h)),
 
           SliverToBoxAdapter(child: IslamicDivider(isDark: isDark)),
-          // Titel of Categories
+          // Title of Categories
           SliverToBoxAdapter(child: CategoriesHeader(isDark: isDark)),
 
           // Categories
@@ -79,22 +79,16 @@ class _HomeScreenElegantState extends State<HomeScreen> {
                 crossAxisCount: 2,
                 crossAxisSpacing: 16.w,
                 mainAxisSpacing: 12.h,
-                childAspectRatio: 1.h,
+                childAspectRatio: 0.87.h,
               ),
               itemBuilder: (context, index) {
                 final category = categories[index];
+                final screen = categories[index];
                 return CustomCardWidget(
                   title: category.title,
                   icon: category.icon,
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return category.screen;
-                        },
-                      ),
-                    );
+                    Navigator.pushNamed(context,category.route);
                   },
                 );
               },

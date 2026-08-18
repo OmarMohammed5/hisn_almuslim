@@ -107,26 +107,14 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
           (!isHomePage &&
               showBackButton &&
               ModalRoute.of(context)?.isFirst == false)
-          ? Container(
-              margin: EdgeInsets.only(right: 8),
-              child: IconButton(
-                icon: Container(
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: isDark
-                        ? Colors.teal.shade900.withValues(alpha: .2)
-                        : Colors.teal.shade50,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Icon(
-                    Icons.arrow_back_ios_rounded,
-                    color: Colors.teal.shade700,
-                    size: 18,
-                  ),
-                ),
-                onPressed: () => Navigator.pop(context),
-              ),
-            )
+          ?  IconButton(onPressed: ()=> Navigator.pop(context),
+            icon:
+            Icon(
+              Icons.arrow_back_ios_rounded,
+              color:  isDark ? Colors.white :  Colors.black87,
+              size: 18.sp,
+            ),
+          )
           : null,
 
       actions: actions,

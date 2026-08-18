@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hisn_almuslim/core/models/content_item.dart';
 import 'package:hisn_almuslim/core/utils/control_font_size.dart';
@@ -8,6 +9,7 @@ import 'package:hisn_almuslim/features/hisn%20al-muslim/widgets/zekr_content.dar
 import 'package:hisn_almuslim/features/hisn%20al-muslim/widgets/zekr_header.dart';
 
 import '../../../core/shared/app_bar_widget.dart';
+import '../../../core/shared/interactive_zekr_card.dart';
 import '../../../core/theme/app_colors.dart';
 
 class ZekrDetailsScreen extends StatefulWidget {
@@ -29,7 +31,7 @@ class _ZekrDetailsScreenState extends State<ZekrDetailsScreen> {
 
   bool isLoading = true;
   final ValueNotifier<bool> _isUiVisible = ValueNotifier(true);
-  final ValueNotifier<double> _fontSizeNotifire = ValueNotifier(18.sp);
+  final ValueNotifier<double> _fontSizeNotifire = ValueNotifier(16.sp);
 
   @override
   void initState() {
@@ -103,20 +105,36 @@ class _ZekrDetailsScreenState extends State<ZekrDetailsScreen> {
                   },
                   itemBuilder: (context, pageIndex) {
                     final content = contents[pageIndex];
+                    final isLast = pageIndex == total - 1;
+                    final count = int.tryParse(content.count) ?? 1;
 
                     return ValueListenableBuilder(
                       valueListenable: _fontSizeNotifire,
                       builder: (context, fontSize, child) {
                         return ListView(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 2.w,
-                            vertical: 60.h,
-                          ),
+                          padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 60.h),
+                          physics: BouncingScrollPhysics(),
                           children: [
-                            ZekrContent(fontSize: fontSize, content: content),
+                            InteractiveZekrCard(
+                              key: ValueKey(pageIndex),
+                              text: content.text,
+                              count: count,
+                              fadl: content.fadl,
+                              onCompleted: () {
+                                if (!isLast) {
+                                  _pageController.nextPage(
+                                    duration: const Duration(milliseconds: 400),
+                                    curve: Curves.easeInOut,
+                                  );
+                                } else {
+                                  _showCompletionFeedback(context);
+                                }
+                              },
+                              size: fontSize,
+                            ),
                           ],
                         );
-                      },
+                      }
                     );
                   },
                 ),
@@ -168,6 +186,21 @@ class _ZekrDetailsScreenState extends State<ZekrDetailsScreen> {
             ],
           );
         },
+      ),
+    );
+  }
+  void _showCompletionFeedback(BuildContext context) {
+
+    // Heavy Impact
+    HapticFeedback.heavyImpact();
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text("أتممت جميع الأذكار 🌿"),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+        backgroundColor: Colors.teal.shade700,
+        duration: const Duration(seconds: 2),
       ),
     );
   }

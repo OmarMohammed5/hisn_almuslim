@@ -30,7 +30,7 @@ class ListTileWidget extends StatelessWidget {
         ),
         child: Icon(icon, size: 22.sp, color: AppColors.kIconColor),
       ),
-      title: CustomText(title, fontSize: 12.5.sp, fontWeight: FontWeight.w600),
+      title: CustomText(title, fontSize: 12.sp, fontWeight: FontWeight.w600),
       trailing: trailing,
       subtitle: subTitle,
     );

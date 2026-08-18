@@ -213,7 +213,7 @@ class _ZekrHeaderState extends State<ZekrHeader> {
                   padding: EdgeInsets.all(8.w),
                   decoration: BoxDecoration(
                     color: isDark ? Color(0xff273835) : Color(0xffe0efed),
-                    borderRadius: BorderRadius.circular(18.r),
+                    borderRadius: BorderRadius.circular(14.r),
                     border: Border.all(color: Colors.teal.shade200),
                   ),
                   child: Icon(
@@ -228,7 +228,6 @@ class _ZekrHeaderState extends State<ZekrHeader> {
               Row(
                 spacing: 4.w,
                 children: [
-                  _chip(icon: Icons.repeat, label: "${widget.count} مرة"),
 
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 2.w),
@@ -247,7 +246,7 @@ class _ZekrHeaderState extends State<ZekrHeader> {
                               color: isDark
                                   ? Color(0xff273835)
                                   : Color(0xffe0efed),
-                              borderRadius: BorderRadius.circular(18.r),
+                              borderRadius: BorderRadius.circular(14.r),
                               border: Border.all(color: Colors.teal.shade200),
                             ),
                             child: Icon(
@@ -267,46 +266,6 @@ class _ZekrHeaderState extends State<ZekrHeader> {
             ],
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _chip({
-    required IconData icon,
-    required String label,
-    VoidCallback? onTap,
-  }) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 10.h),
-        decoration: BoxDecoration(
-          color: isDark ? Color(0xff273835) : Color(0xffe0efed),
-
-          borderRadius: BorderRadius.circular(18.r),
-          border: Border.all(color: Colors.teal.shade200),
-        ),
-        child: Row(
-          children: [
-            Icon(
-              icon,
-              color: isDark ? Color(0xff61f9d5) : Color(0xff2f8a7e),
-              size: 20.sp,
-            ),
-            if (label.isNotEmpty) ...[
-              Gap(6.w),
-              Text(
-                label,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
-                  fontFamily: "Cairo",
-                ),
-              ),
-            ],
-          ],
-        ),
       ),
     );
   }

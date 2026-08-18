@@ -18,6 +18,12 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
     _init();
   }
 
+
+  // في AppAudioHandler
+  Stream<Duration> get durationStream => _player.durationStream
+      .where((duration) => duration != null)
+      .map((duration) => duration!);
+
   Future<void> _init() async {
     final session = await AudioSession.instance;
     await session.configure(const AudioSessionConfiguration.music());
@@ -63,25 +69,24 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
     required String url,
     required MediaItem mediaItem,
   }) async {
-    currentUrl = url;
     this.mediaItem.add(mediaItem);
     queue.add([mediaItem]);
 
-    await _player.setAudioSource(AudioSource.uri(Uri.parse(url)));
+    try {
+      await _player.setAudioSource(AudioSource.uri(Uri.parse(url)));
+    } catch (e) {
+      if (currentUrl == url) currentUrl = null;
+      rethrow;
+    }
 
-    // Update the notification with the real duration once known.
+    currentUrl = url;
+
     final duration = _player.duration;
     if (duration != null) {
       this.mediaItem.add(mediaItem.copyWith(duration: duration));
     }
   }
 
-  // ---------------------------------------------------------------------
-  // Transport controls — these are called both by AudioPlayerService
-  // (from the in-app UI) AND by the OS (notification / lock screen /
-  // Bluetooth headset / Android Auto), which is the whole point of
-  // extending BaseAudioHandler.
-  // ---------------------------------------------------------------------
 
   @override
   Future<void> play() => _player.play();
@@ -90,7 +95,17 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
   Future<void> pause() => _player.pause();
 
   @override
-  Future<void> seek(Duration position) => _player.seek(position);
+  @override
+  Future<void> seek(Duration position) {
+    Duration target = position;
+    if (target < Duration.zero) target = Duration.zero;
+
+    final dur = _player.duration;
+    if (dur != null && target > dur) target = dur;
+
+    return _player.seek(target);
+  }
+
 
   Future<void> setSpeed(double speed) async {
     await _player.setSpeed(speed);
@@ -160,4 +175,6 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
     await _processingStateSubscription?.cancel();
     await _player.dispose();
   }
+
+
 }

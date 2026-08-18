@@ -18,52 +18,17 @@ class ZekrInfoWidget extends StatelessWidget {
     // final subTextColor = isDark ? Colors.grey.shade400 : Colors.grey.shade600;
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 14.h),
+      padding: EdgeInsets.symmetric( vertical: 10.h),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        spacing: 6.w,
         children: [
-          // Count Badge
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
-            decoration: BoxDecoration(
-              color: accentColor.withValues(alpha: 0.12),
-              borderRadius: BorderRadius.circular(12.r),
-              border: Border.all(
-                color: accentColor.withValues(alpha: 0.3),
-                width: 1.5.w,
-              ),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.repeat_rounded, color: accentColor, size: 18.sp),
-                Gap(8.w),
-                CustomText(
-                  "${zekr['count']}",
-                  color: accentColor,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.bold,
-                ),
-                Gap(4.w),
-                CustomText(
-                  "مرة",
-                  color: textColor,
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w600,
-                ),
-              ],
-            ),
-          ),
-
           // Info Button
           Material(
             color: Colors.transparent,
-            child: InkWell(
+            child: GestureDetector(
               onTap: () {
                 _showInfoDialog(context, accentColor, textColor);
               },
-              borderRadius: BorderRadius.circular(12.r),
               child: Container(
                 padding: EdgeInsets.all(8.w),
                 decoration: BoxDecoration(

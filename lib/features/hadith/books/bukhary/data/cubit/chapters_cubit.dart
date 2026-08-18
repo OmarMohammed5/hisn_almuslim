@@ -15,7 +15,7 @@ class ChaptersCubit extends Cubit<ChaptersState> {
     try {
       emit(ChaptersLoading());
 
-      // Conver json to String and load
+      // Convert json to String and load
       final jsonString = await rootBundle.loadString(
         "assets/json/Sahih_Albukhary.json",
       );

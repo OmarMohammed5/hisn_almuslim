@@ -149,10 +149,8 @@ class ZekrActions extends StatelessWidget {
             isDark: isDark,
             accentColor: accentColor,
             onTap: () async {
-              await ShareHelper.shareAsImage(
-                context,
-                zekr.content[currentIndex].text,
-              );
+              final isDark = Theme.of(context).brightness == Brightness.dark;
+              ShareHelper.shareAsImage(context, zekr.content[currentIndex].text, isDark: isDark ,category: zekr.title);
             },
           ),
         ],

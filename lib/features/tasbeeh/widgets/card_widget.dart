@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -13,6 +14,8 @@ class CardWidget extends StatefulWidget {
 }
 
 class _CardWidgetState extends State<CardWidget> {
+  int _previousTotal = 0;
+
   @override
   void initState() {
     super.initState();
@@ -22,202 +25,207 @@ class _CardWidgetState extends State<CardWidget> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final cardColor = isDark ? const Color(0xFF1E1E1E) : Colors.white;
-    final accentColor = isDark
-        ? Colors.tealAccent.shade200
-        : Colors.teal.shade700;
-    final textColor = isDark ? Colors.white : Colors.black87;
-    final shadowColor = isDark
-        ? Colors.black.withValues(alpha: 0.2)
-        : Colors.grey.shade300.withValues(alpha: 0.5);
+
+    final gradientColors = [const Color(0xFF0F4E29), const Color(0xFF161C35)];
+
+    final shadowColor = (isDark ? Colors.black : Colors.teal.shade900)
+        .withValues(alpha: isDark ? 0.4 : 0.2);
+
 
     return BlocBuilder<CounterCubit, Map<int, int>>(
       builder: (context, state) {
         final total = context.read<CounterCubit>().total;
-        return Container(
-          margin: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 2.h),
-          decoration: BoxDecoration(
-            color: cardColor,
-            borderRadius: BorderRadius.circular(20.r),
-            border: isDark
-                ? Border.all(color: Colors.grey.shade800, width: 1.w)
-                : Border.all(color: Colors.grey.shade200, width: 1.w),
-            boxShadow: [
-              BoxShadow(
-                color: shadowColor,
-                blurRadius: isDark ? 16 : 12,
-                spreadRadius: isDark ? 0 : 2,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(24.r),
+        final bool totalIncreased = total > _previousTotal;
+        _previousTotal = total;
 
-            child: Column(
-              children: [
-                // Top decorative bar
-                Container(
-                  height: 6.h,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        accentColor.withValues(alpha: 0.3),
-                        accentColor,
-                        accentColor.withValues(alpha: 0.3),
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                colors: gradientColors,
+              ),
+              borderRadius: BorderRadius.circular(24.r),
+              boxShadow: [
+                BoxShadow(
+                  color: shadowColor,
+                  blurRadius: 20,
+                  offset: Offset(0, 8.h),
+                ),
+              ],
+            ),
+            child: Padding(
+              padding: EdgeInsets.all(18.w),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        // Badge
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: CustomText(
+                            "قال تعالى",
+                            fontSize: 10.sp,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white.withValues(alpha: 0.7),
+                          ),
+                        ),
+                        Gap(12.h),
+                        // الآية
+                        Text(
+                          "﴿ وَمَن أَعْرَضَ عَن ذِكْرِي فَإِنَّ لَهُ مَعِيشَةً ضَنكًا وَنَحْشُرُهُ يَوْمَ الْقِيَامَةِ أَعْمَى ﴾",
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            fontSize: 13.sp,
+                            fontWeight: FontWeight.w600,
+                            height: 2.0,
+                            fontFamily: "QuranFont",
+                            color:  Colors.white.withValues(alpha: 0.92),
+                          ),
+                        ),
+                        Gap(10.h),
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: CustomText(
+                            "صدق الله العظيم",
+                            fontSize: 9.5.sp,
+                            color: Colors.white.withValues(alpha: 0.4),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ],
                     ),
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(20.r),
-                      bottomRight: Radius.circular(20.r),
-                    ),
                   ),
-                ),
-
-                Padding(
-                  padding: EdgeInsets.all(14.w),
-                  child: Row(
-                    children: [
-                      // Quranic verse section
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 10.w,
-                                  vertical: 6.h,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: accentColor.withValues(alpha: 0.12),
-                                  borderRadius: BorderRadius.circular(8.r),
-                                ),
-                                child: CustomText(
-                                  "قال تعالى",
-                                  fontSize: 10.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: accentColor,
-                                ),
-                              ),
-                            ),
-                            Gap(12.h),
-                            Text(
-                              "﴿ وَمَن أَعْرَضَ عَن ذِكْرِي فَإِنَّ لَهُ مَعِيشَةً ضَنكًا وَنَحْشُرُهُ يَوْمَ الْقِيَامَةِ أَعْمَى ﴾",
-                              textAlign: TextAlign.right,
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w600,
-                                height: 2.0,
-                                fontFamily: "Noon",
-                                color: textColor,
-                              ),
-                            ),
-                            Gap(10.h),
-                            Align(
-                              alignment: Alignment.bottomRight,
-                              child: CustomText(
-                                "صدق الله العظيم",
-                                fontSize: 9.5.sp,
-                                color: textColor.withValues(alpha: 0.6),
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
+                  Gap(16.w),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                    decoration: BoxDecoration(
+                      color: isDark
+                          ? Colors.white.withValues(alpha: 0.06)
+                          : Colors.white.withValues(alpha: 0.5),
+                      borderRadius: BorderRadius.circular(16.r),
+                      border: Border.all(
+                        color: isDark
+                            ? Colors.white.withValues(alpha: 0.08)
+                            : Colors.white.withValues(alpha: 0.8),
                       ),
-
-                      Gap(24.h),
-
-                      // Counter section
-                      Column(
-                        children: [
-                          // Counter circle
-                          Container(
-                            width: 75.w,
-                            height: 75.h,
+                    ),
+                    child: Column(
+                      children: [
+                        CustomText(
+                          "الإجمالي",
+                          fontSize: 10.5.sp,
+                          color: isDark
+                              ? Colors.white.withValues(alpha: 0.7)
+                              : const Color(0xFF5D4037),
+                          fontWeight: FontWeight.bold,
+                        ),
+                        Gap(6.h),
+                        AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 200),
+                          transitionBuilder: (child, animation) {
+                            return ScaleTransition(
+                              scale: Tween<double>(begin: 0.6, end: 1.0).animate(
+                                CurvedAnimation(
+                                  parent: animation,
+                                  curve: Curves.slowMiddle,
+                                ),
+                              ),
+                              child: child,
+                            );
+                          },
+                          child: Container(
+                            key: ValueKey(total),
+                            width: 50.w,
+                            height: 50.w,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               gradient: LinearGradient(
-                                colors: [
-                                  accentColor.withValues(alpha: 0.15),
-                                  accentColor.withValues(alpha: 0.08),
-                                ],
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
+                                colors: isDark
+                                    ? [
+                                  Colors.white.withValues(alpha: 0.12),
+                                  Colors.white.withValues(alpha: 0.04),
+                                ]
+                                    : [
+                                  Colors.white.withValues(alpha: 0.8),
+                                  Colors.white.withValues(alpha: 0.4),
+                                ],
                               ),
                               border: Border.all(
-                                color: accentColor.withValues(alpha: 0.3),
-                                width: 3.w,
+                                color: isDark
+                                    ? Colors.white.withValues(alpha: 0.15)
+                                    : Colors.white.withValues(alpha: 0.8),
+                                width: 2.w,
                               ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: accentColor.withValues(alpha: 0.2),
-                                  blurRadius: 12,
-                                  offset: const Offset(0, 4),
-                                ),
-                              ],
                             ),
                             child: Center(
                               child: CustomText(
                                 "$total",
-                                fontSize: 20.sp,
+                                fontSize: 16.sp,
                                 fontWeight: FontWeight.bold,
-                                color: accentColor,
+                                color: isDark ? Colors.white : const Color(0xFF4E342E),
                               ),
                             ),
                           ),
-
-                          Gap(12.h),
-
-                          // Reset button
-                          Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: () async {
-                                context.read<CounterCubit>().resetAll();
-                              },
-                              borderRadius: BorderRadius.circular(10.r),
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 10.w,
-                                  vertical: 6.h,
+                        ),
+                        Gap(8.h),
+                        Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            onTap: () {
+                              HapticFeedback.mediumImpact();
+                              context.read<CounterCubit>().resetAll();
+                            },
+                            borderRadius: BorderRadius.circular(10.r),
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 10.w,
+                                vertical: 6.h,
+                              ),
+                              decoration: BoxDecoration(
+                                color: isDark
+                                    ? Colors.white.withValues(alpha: 0.06)
+                                    : Colors.white.withValues(alpha: 0.4),
+                                borderRadius: BorderRadius.circular(10.r),
+                                border: Border.all(
+                                  color: isDark
+                                      ? Colors.white.withValues(alpha: 0.08)
+                                      : Colors.white.withValues(alpha: 0.6),
                                 ),
-                                decoration: BoxDecoration(
-                                  color: accentColor.withValues(alpha: 0.12),
-                                  borderRadius: BorderRadius.circular(10.r),
-                                  border: Border.all(
-                                    color: accentColor.withValues(alpha: 0.3),
-                                    width: 1.w,
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                spacing: 4.w,
+                                children: [
+                                  Icon(
+                                    Icons.restart_alt_rounded,
+                                    color: isDark ? Colors.white.withValues(alpha: 0.7) : const Color(0xFF5D4037),
+                                    size: 16.sp,
                                   ),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  spacing: 6.w,
-                                  children: [
-                                    Icon(
-                                      Icons.restart_alt_rounded,
-                                      color: accentColor,
-                                      size: 15.sp,
-                                    ),
-                                    CustomText(
-                                      "إعادة",
-                                      color: accentColor,
-                                      fontSize: 11.sp,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ],
-                                ),
+                                  CustomText(
+                                    "إعادة",
+                                    color: isDark ? Colors.white.withValues(alpha: 0.7) : const Color(0xFF5D4037),
+                                    fontSize: 10.5.sp,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ],
                               ),
                             ),
                           ),
-                        ],
-                      ),
-                    ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );

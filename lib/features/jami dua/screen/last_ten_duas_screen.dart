@@ -35,7 +35,8 @@ class _LastTenDuasScreenState extends State<LastTenDuasScreen> {
   }
 
   void shareText(String text) {
-    ShareHelper.shareAsImage(context, text);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    ShareHelper.shareAsImage(context, text, isDark: isDark ,category:  "أدعية العشر الأواخر");
   }
 
   // Scroll To Top

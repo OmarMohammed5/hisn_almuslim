@@ -82,7 +82,8 @@ class _ReyadAlSaliheenDetailsState extends State<ReyadAlSaliheenDetails> {
   }
 
   void _shareText(String text) {
-    ShareHelper.shareAsImage(context, text);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    ShareHelper.shareAsImage(context, text, isDark: isDark ,category: "رياض الصالحين" );
   }
 
   @override
