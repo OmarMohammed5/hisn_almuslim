@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hisn_almuslim/core/models/content_item.dart';
 import 'package:hisn_almuslim/core/routing/app_routes.dart';
+import 'package:hisn_almuslim/core/routing/route_transitions.dart';
 
 import '../../features/adhan/data/cubit/adhan_cubit.dart';
 import '../../features/al azkar/data/cubit/azkar_cubit.dart';
@@ -78,8 +79,9 @@ class AppRouter {
     switch (settings.name) {
     // ============ SPLASH & WELCOME ============
       case AppRoutes.splash:
-        return MaterialPageRoute(
-          builder: (_) => Splash(seenWelcomeScreen: seenWelcomeScreen),
+        return slidePageRoute(
+          settings: settings,
+          child:  Splash(seenWelcomeScreen: seenWelcomeScreen),
         );
 
       case AppRoutes.welcome:
@@ -102,20 +104,23 @@ class AppRouter {
 
     // ============ AZKAR ============
       case AppRoutes.morningAzkar:
-        return MaterialPageRoute(
-          builder: (_) => const MorningAzkarScreen(),
+        return slidePageRoute(
+          settings: settings,
+          child: const MorningAzkarScreen(),
         );
 
       case AppRoutes.eveningAzkar:
-        return MaterialPageRoute(
-          builder: (_) => const EveningAzkarScreen(),
+        return slidePageRoute(
+          settings: settings,
+          child: const EveningAzkarScreen(),
         );
 
      // Hisn Al Muslim
 
       case AppRoutes.hisnAlMuslim:
-    return MaterialPageRoute(
-    builder: (_) => MultiBlocProvider(
+    return slidePageRoute(
+      settings: settings,
+    child: MultiBlocProvider(
     providers: [
     BlocProvider.value(
     value: sl<AzkarCubit>()..getAzkar(),),
@@ -129,8 +134,9 @@ class AppRouter {
         final args = arguments as Map<String, dynamic>;
         final zekr = args['zekr'] as Zekr;
         final initialIndex = args['initialIndex'] as int? ?? 0;
-        return MaterialPageRoute(
-          builder: (_) => ZekrDetailsScreen(
+        return slidePageRoute(
+          settings: settings,
+          child: ZekrDetailsScreen(
             zekr: zekr,
             initialIndex: initialIndex,
           ),
@@ -138,8 +144,9 @@ class AppRouter {
 
     // ============ ASMA ALLAH ============
       case AppRoutes.asmaAllah:
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider(
+        return slidePageRoute(
+          settings: settings,
+          child: BlocProvider(
             create: (_)=> sl<AsmaAllahCubit>()..loadNames(),
             child: const AsmaAllahScreen(),
           ),
@@ -147,13 +154,15 @@ class AppRouter {
 
     // ============ HADITHS ============
       case AppRoutes.hadith:
-        return MaterialPageRoute(
-          builder: (_) => const HadithScreen(),
+        return slidePageRoute(
+          settings: settings,
+          child:  const HadithScreen(),
         );
 
       case AppRoutes.fehresSahihBukhary:
-        return MaterialPageRoute(
-          builder: (_) => MultiBlocProvider(
+        return slidePageRoute(
+          settings: settings,
+          child: MultiBlocProvider(
         providers: [
           BlocProvider.value(value: sl<SearchCubit>()),
           BlocProvider.value(value: sl<ChaptersCubit>()),
@@ -164,13 +173,15 @@ class AppRouter {
 
       case AppRoutes.sahihBukharyDetails:
         final chapter = arguments as Chapter;
-        return MaterialPageRoute(
-          builder: (_) => SahihBukharyDetails(chapterSahihBukhary: chapter),
+        return slidePageRoute(
+          settings: settings,
+          child: SahihBukharyDetails(chapterSahihBukhary: chapter),
         );
 
       case AppRoutes.fehresSahihMuslim:
-        return MaterialPageRoute(
-          builder: (_) => MultiBlocProvider(
+        return slidePageRoute(
+          settings: settings,
+          child: MultiBlocProvider(
     providers: [
       BlocProvider.value(value: sl<SearchCubit>()),
       BlocProvider.value(value: sl<SahihMuslimCubit>()),
@@ -181,13 +192,15 @@ class AppRouter {
 
       case AppRoutes.sahihMuslimDetails:
         final chapter = arguments as ChapterSahihMuslim;
-        return MaterialPageRoute(
-          builder: (_) => SahihMuslimDetails(chapterSahihMuslim: chapter),
+        return slidePageRoute(
+          settings: settings,
+          child: SahihMuslimDetails(chapterSahihMuslim: chapter),
         );
 
       case AppRoutes.fehresReyqdAlSaliheen:
-        return MaterialPageRoute(
-          builder: (_) => MultiBlocProvider(
+        return slidePageRoute(
+          settings: settings,
+          child: MultiBlocProvider(
       providers: [
         BlocProvider.value(value: sl<SearchCubit>()),
         BlocProvider.value(value: sl<ReyadAlSaliheenCubit>()),
@@ -198,15 +211,17 @@ class AppRouter {
 
       case AppRoutes.reyadAlSaliheenDetails:
         final chapter = arguments as ChapterReyadAlSaliheen;
-        return MaterialPageRoute(
-          builder: (_) => ReyadAlSaliheenDetails(
+        return slidePageRoute(
+          settings: settings,
+          child: ReyadAlSaliheenDetails(
             chapterReyadAlSaliheen: chapter,
           ),
         );
 
       case AppRoutes.fehresHadithNawawi:
-        return MaterialPageRoute(
-      builder: (_) => MultiBlocProvider(
+        return slidePageRoute(
+          settings: settings,
+      child: MultiBlocProvider(
     providers: [
       BlocProvider.value(value: sl<SearchCubit>()),
       BlocProvider.value(value: sl<HadithCubit>()),
@@ -217,37 +232,42 @@ class AppRouter {
 
       case AppRoutes.hadithNawawi:
         final id = arguments as int;
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider.value(
+        return slidePageRoute(
+          settings: settings,
+          child: BlocProvider.value(
             value:  sl<HadithCubit>(),
               child: HadithNawawi(id: id)),
         );
 
     // ============ JAMI DUA ============
       case AppRoutes.dua:
-        return MaterialPageRoute(
-          builder: (_) => const DuaScreen(),
+        return slidePageRoute(
+          settings: settings,
+          child: const DuaScreen(),
         );
 
       case AppRoutes.deadDua:
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider.value(
+        return slidePageRoute(
+          settings: settings,
+          child: BlocProvider.value(
             value: sl<DeadDuaCubit>(),
             child: const DeadDuaScreen(),
           ),
         );
 
       case AppRoutes.etiquetteDua:
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider.value(
+        return slidePageRoute(
+          settings: settings,
+          child: BlocProvider.value(
             value: sl<EtiquetteDuaCubit>()..loadEtiquetteDua(),
             child: const EtiquetteDuaScreen(),
           ),
         );
 
       case AppRoutes.hajjAndOmraDua:
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider.value(
+        return slidePageRoute(
+          settings: settings,
+          child: BlocProvider.value(
             value: sl<HajjDuaCubit>(),
             child: const HajjAndOmraScreen(),
           ),
@@ -257,8 +277,9 @@ class AppRouter {
         final args = arguments as Map<String, dynamic>;
         final title = args['title'] as String;
         final hajjItems = args['hajjItems'] as List<HajjItems>;
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider.value(
+        return slidePageRoute(
+          settings: settings,
+          child: BlocProvider.value(
             value: sl<HajjDuaCubit>(),
             child: HajjAndOmraDetails(
               hajjItems: hajjItems,
@@ -268,23 +289,26 @@ class AppRouter {
         );
 
       case AppRoutes.lastTenDuas:
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider.value(
+        return slidePageRoute(
+          settings: settings,
+          child: BlocProvider.value(
             value: sl<LastTenDuasCubit>(),
             child: const LastTenDuasScreen(),
           ),
         );
 
       case AppRoutes.quranDua:
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider.value(
+        return slidePageRoute(
+          settings: settings,
+          child:  BlocProvider.value(
             value: sl<DuaCubit>(),
               child: const QuranDuaScreen()),
         );
 
       case AppRoutes.sunnahDua:
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider.value(
+        return slidePageRoute(
+          settings: settings,
+          child: BlocProvider.value(
               value: sl<DuaCubit>(),
               child: const SunnahDuaScreen()),
         );
@@ -300,8 +324,9 @@ class AppRouter {
         );
 
       case AppRoutes.quranHome:
-        return MaterialPageRoute(
-          builder: (_) => MultiBlocProvider(
+        return slidePageRoute(
+          settings: settings,
+          child: MultiBlocProvider(
             providers: [
               BlocProvider.value(value: sl<QuranCubit>()),
               BlocProvider.value(value: sl<ReadingProgressCubit>()),
@@ -317,8 +342,9 @@ class AppRouter {
         final args = arguments as Map<String, dynamic>;
         final surahNumber = args['surahNumber'] as int;
         final ayahNumber = args['ayahNumber'] as int?;
-        return MaterialPageRoute(
-          builder: (_) => MultiBlocProvider(
+        return slidePageRoute(
+          settings: settings,
+          child: MultiBlocProvider(
             providers: [
               BlocProvider.value(value: sl<QuranCubit>()),
               BlocProvider.value(value: sl<ReadingProgressCubit>()),
@@ -333,8 +359,9 @@ class AppRouter {
 
       case AppRoutes.quranTafsir:
         final args = arguments as Map<String, dynamic>;
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider.value(
+        return slidePageRoute(
+          settings: settings,
+          child: BlocProvider.value(
             value: sl<QuranCubit>(),
             child: QuranTafsirPage(
               ayahNumber: args['ayahNumber'] as int,
@@ -347,8 +374,9 @@ class AppRouter {
 
     // ============ QURAN AUDIO ============
       case AppRoutes.quranAudioHome:
-        return MaterialPageRoute(
-          builder: (_) => MultiBlocProvider(
+        return slidePageRoute(
+          settings: settings,
+          child: MultiBlocProvider(
             providers: [
               BlocProvider.value(value: sl<QuranAudioCubit>(),),
               BlocProvider.value(value: sl<AudioPlayerCubit>()),
@@ -364,8 +392,9 @@ class AppRouter {
         final audioUrl = args['audioUrl'] as String;
         final surahs = args['surahs'] as List<SurahAudioModel>? ?? const[];
 
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider.value(
+        return slidePageRoute(
+          settings: settings,
+          child: BlocProvider.value(
             value: sl<AudioPlayerCubit>(),
             child: AudioPlayerScreen(
               surah: surah,
@@ -390,8 +419,9 @@ class AppRouter {
 
     // ============ TASBEEH ============
       case AppRoutes.zekrAllah:
-        return MaterialPageRoute(
-          builder: (_) => const ZekrAllahScreen(),
+        return slidePageRoute(
+          settings : settings,
+          child: const ZekrAllahScreen(),
         );
 
       default:
