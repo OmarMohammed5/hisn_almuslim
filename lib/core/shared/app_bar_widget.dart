@@ -10,7 +10,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
     this.isHomePage = false,
     this.showBackButton = true,
     this.actions,
-    this.subtitle,
+    this.subtitle, this.leading,
   });
 
   final String title;
@@ -18,9 +18,10 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final bool showBackButton;
   final List<Widget>? actions;
   final String? subtitle;
+  final Widget? leading;
 
   @override
-  Size get preferredSize => Size.fromHeight(subtitle != null ? 65.h : 40.h);
+  Size get preferredSize => Size.fromHeight(subtitle != null ? 65.h : 46.h);
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +42,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       elevation: 0,
       automaticallyImplyLeading: false,
       actions: actions,
+      leading: leading,
       flexibleSpace: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(

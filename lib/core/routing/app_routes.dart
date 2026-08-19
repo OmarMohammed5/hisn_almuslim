@@ -61,4 +61,9 @@ class AppRoutes {
 
   // Tasbeeh
   static const String zekrAllah = '/zekr-allah';
+
+  // Prophet Stories
+  static const String stories = '/story';
+  static const String storyDetails = '/story-details';
+
 }

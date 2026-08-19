@@ -79,7 +79,7 @@ class _HomeScreenElegantState extends State<HomeScreen> with RouteAware{
                 crossAxisCount: 2,
                 crossAxisSpacing: 16.w,
                 mainAxisSpacing: 12.h,
-                childAspectRatio: 0.87.h,
+                childAspectRatio: 0.93.h,
               ),
               itemBuilder: (context, index) {
                 final category = categories[index];

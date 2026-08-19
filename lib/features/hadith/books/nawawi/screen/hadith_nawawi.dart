@@ -6,7 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/core/utils/control_font_size.dart';
 import 'package:hisn_almuslim/features/hadith/books/nawawi/data/cubit/hadith_cubit.dart';
-import 'package:hisn_almuslim/features/hadith/widgets/bottom_action_bar.dart';
 import 'package:hisn_almuslim/features/hadith/widgets/content.dart';
 import 'package:hisn_almuslim/features/hadith/widgets/header.dart';
 import 'package:hisn_almuslim/core/helpers/share_helper.dart';
@@ -152,7 +151,7 @@ class _HadithNawawiState extends State<HadithNawawi> {
           Positioned(
             left: 0.w,
             right: 0.w,
-            top: 50.h,
+            top: 30.h,
             child: AnimatedSlide(
               duration: const Duration(milliseconds: 250),
               offset: _isUiVisible ? Offset.zero : const Offset(0, -1),
@@ -169,44 +168,6 @@ class _HadithNawawiState extends State<HadithNawawi> {
             ),
           ),
 
-          // Bottom Action
-          Positioned(
-            left: 0.w,
-            right: 0.w,
-            bottom: 12.h,
-            child: AnimatedSlide(
-              duration: const Duration(milliseconds: 250),
-              offset: _isUiVisible ? Offset.zero : const Offset(0, 1),
-              child: AnimatedOpacity(
-                duration: const Duration(milliseconds: 250),
-                opacity: _isUiVisible ? 1 : 0,
-                child: BottomActionBar(
-                  onCopy: () {
-                    setState(() {
-                      copyZekr(_currentZekrText);
-                    });
-                  },
-                  onShare: () {
-                    setState(() {
-                      shareZekr();
-                    });
-                  },
-                  onNext: () {
-                    pageController!.nextPage(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                    );
-                  },
-                  onPrevious: () {
-                    pageController!.previousPage(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                    );
-                  },
-                ),
-              ),
-            ),
-          ),
         ],
       ),
     );

@@ -3,15 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hisn_almuslim/core/utils/control_font_size.dart';
 import 'package:hisn_almuslim/features/jami%20dua/data/cubit/hajj%20and%20omra/hajj_dua_cubit.dart';
 import 'package:hisn_almuslim/features/jami%20dua/data/models/hajj_items.dart';
-import 'package:hisn_almuslim/features/jami%20dua/widgets/custom_dua_app_bar.dart';
 import 'package:hisn_almuslim/features/jami%20dua/widgets/dua_card.dart';
 import 'package:hisn_almuslim/core/helpers/share_helper.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
-
+import '../../../core/shared/app_bar_widget.dart';
 import '../../../core/shared/custom_snack_bar.dart';
+import '../../../core/utils/control_font_size.dart';
 
 class HajjAndOmraDetails extends StatefulWidget {
   const HajjAndOmraDetails({
@@ -52,14 +51,26 @@ class _HajjAndOmraDetailsState extends State<HajjAndOmraDetails> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      appBar: CustomDuaAppBar(
-        isDark: isDark,
-        onFontTap: () => FontSizeController.showFontSizeSlider(
-          context: context,
-          fontSizeNotifire: _fontSizeNotifier,
-        ),
+      appBar: AppBarWidget(
         title: widget.title,
-      ),
+        actions: [   Padding(
+          padding: EdgeInsets.only(right: 12.w),
+          child: IconButton(
+            icon: Icon(
+              Icons.text_fields,
+              color: Colors.teal.shade700,
+              size: 20.sp,
+            ),
+            onPressed: ()=> FontSizeController.showFontSizeSlider(
+              context: context,
+              fontSizeNotifire: _fontSizeNotifier,
+            ),
+            splashRadius: 20.r,
+          ),
+        ),
+        ],
+      ) ,
+
       body: BlocBuilder<HajjDuaCubit, HajjDuaState>(
         builder: (context, state) {
           if (state is HajjDuaLoading) {

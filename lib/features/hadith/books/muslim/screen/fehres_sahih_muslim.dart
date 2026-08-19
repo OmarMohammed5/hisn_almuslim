@@ -8,6 +8,8 @@ import 'package:hisn_almuslim/features/hadith/widgets/chapter_card.dart';
 import 'package:hisn_almuslim/features/quran/widgets/search_field.dart';
 
 import '../../../../../core/routing/app_routes.dart';
+import '../../../../../core/shared/custom_text.dart';
+import '../../../../../core/utils/arabic_search_utils.dart';
 
 class FehresSahihMuslim extends StatefulWidget {
   const FehresSahihMuslim({super.key});
@@ -17,20 +19,7 @@ class FehresSahihMuslim extends StatefulWidget {
 }
 
 class _FehresSahihMuslimState extends State<FehresSahihMuslim> {
-  /// 🔍 Search text
   String searchQuery = "";
-
-  /// Normalize Arabic for better search
-  String normalizeArabic(String text) {
-    return text
-        .replaceAll('أ', 'ا')
-        .replaceAll('إ', 'ا')
-        .replaceAll('آ', 'ا')
-        .replaceAll('ة', 'ه')
-        .replaceAll('ى', 'ي')
-        .replaceAll('ؤ', 'و')
-        .replaceAll('ئ', 'ي');
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,23 +47,18 @@ class _FehresSahihMuslimState extends State<FehresSahihMuslim> {
           }
 
           if (state is SahihMuslimLoaded) {
-            /// 🔍 Filter chapters
             final filteredChapters = state.hadiths.where((chapter) {
-              if (searchQuery.isEmpty) return true;
-
-              final title = normalizeArabic(
-                chapter.chapterTitle.toLowerCase(),
+              return ArabicSearchUtils.matches(
+                title: chapter.chapterTitle,
+                query: searchQuery,
               );
-              final query = normalizeArabic(searchQuery.toLowerCase());
-
-              return title.contains(query);
             }).toList();
 
             if (filteredChapters.isEmpty) {
               return Center(
-                child: Text(
+                child: CustomText(
                   'لا توجد نتائج',
-                  style: TextStyle(fontFamily: "Cairo", fontSize: 16.sp),
+                  fontSize: 16.sp,
                 ),
               );
             }

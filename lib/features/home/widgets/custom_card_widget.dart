@@ -213,8 +213,8 @@ class CustomCardWidget extends StatelessWidget {
                     Row(
                       children: [
                         Container(
-                          width: 44.w,
-                          height: 44.w,
+                          width: 32.w,
+                          height: 32.w,
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               begin: Alignment.topLeft,
@@ -242,7 +242,7 @@ class CustomCardWidget extends StatelessWidget {
                         Expanded(
                           child: CustomText(
                             title,
-                            fontSize: 14.sp,
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.w700,
                             color: textColor,
                             maxLines: 2,

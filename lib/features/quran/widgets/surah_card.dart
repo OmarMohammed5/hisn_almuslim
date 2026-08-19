@@ -66,7 +66,7 @@ class SurahCard extends StatelessWidget {
                         child: Text(
                           surah.displayName,
                           style: TextStyle(
-                            fontFamily: 'Noon',
+                            fontFamily: 'QuranFont',
                             fontSize: 18.sp,
                             fontWeight: FontWeight.w600,
                             color: isDark ? Colors.white : Colors.black87,
@@ -75,24 +75,6 @@ class SurahCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      // if (progress > 0) ...[
-                      //   SizedBox(width: 5.w),
-                      //   Container(
-                      //     padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
-                      //     decoration: BoxDecoration(
-                      //       color: isMeccan ? Colors.purple[100] : Colors.green[100],
-                      //       borderRadius: BorderRadius.circular(8.r),
-                      //     ),
-                      //     child: Text(
-                      //       '${(progress * 100).round()}%',
-                      //       style: TextStyle(
-                      //         fontSize: 10.sp,
-                      //         fontWeight: FontWeight.bold,
-                      //         color: isMeccan ? Colors.purple[800] : Colors.green[800],
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ],
                     ],
                   ),
                   SizedBox(height: 6.h),

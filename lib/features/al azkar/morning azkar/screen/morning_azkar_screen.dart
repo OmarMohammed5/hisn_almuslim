@@ -2,14 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/core/utils/control_font_size.dart';
 import 'package:hisn_almuslim/features/al%20azkar/morning%20azkar/data/morning_azkar.dart';
-
 import '../../../../core/shared/app_bar_widget.dart';
+import '../../../../core/shared/custom_text.dart';
 import '../../../../core/shared/interactive_zekr_card.dart';
 import '../../../../core/shared/zekr_actions_widget.dart';
-import '../../../../core/shared/zekr_content_widget.dart';
-import '../../../../core/shared/zekr_header_widget.dart';
+import '../../../../core/shared/zekr_info_dialog.dart';
 import '../../../../core/theme/app_colors.dart';
 
 class MorningAzkarScreen extends StatefulWidget {
@@ -72,6 +72,11 @@ class _MorningAzkarScreenState extends State<MorningAzkarScreen> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
+    final accentColor = isDark
+        ? Colors.tealAccent.shade200
+        : Colors.teal.shade700;
+    final textColor = isDark ? Colors.white : Colors.black87;
+
     // if it still loading display the CircularProgressIndicator
     if (isLoading || _pageController == null) {
       return Scaffold(
@@ -85,7 +90,64 @@ class _MorningAzkarScreenState extends State<MorningAzkarScreen> {
     }
 
     return Scaffold(
-      appBar: AppBarWidget(title: "${morningAzkar['title']}"),
+      appBar: AppBarWidget(
+        title: "${morningAzkar['title']}",
+         actions: [
+          GestureDetector(
+              onTap: () => FontSizeController.showFontSizeSlider(
+              context: context,
+              fontSizeNotifire: _fontSizeNotifire,
+            ),
+            child: Container(
+              padding: EdgeInsets.all(8.w),
+              decoration: BoxDecoration(
+                color: isDark ? Color(0xff273835) : Color(0xffe0efed),
+                borderRadius: BorderRadius.circular(12.r),
+                border: Border.all(color: Colors.teal.shade200),
+              ),
+              child: Icon(
+                Icons.text_fields,
+                color: isDark ? Color(0xff61f9d5) : Color(0xff2f8a7e),
+                size: 20.sp,
+              ),
+            ),
+          ),
+           Gap(10.w),
+           GestureDetector(
+             onTap: () {
+               final currentZekr =
+               morningAzkar['content'][_currentIndex]
+               as Map<String, dynamic>;
+
+               ZekrInfoDialog.show(
+                 context,
+                 source: currentZekr['source']?.toString(),
+                 count: currentZekr['count']?.toString(),
+                 accentColor: accentColor,
+                 textColor: textColor,
+               );
+             },
+             child: Container(
+               padding: EdgeInsets.all(8.w),
+               decoration: BoxDecoration(
+                 color: accentColor.withValues(alpha: 0.12),
+                 borderRadius: BorderRadius.circular(12.r),
+                 border: Border.all(
+                   color: accentColor.withValues(alpha: 0.2),
+                   width: 1,
+                 ),
+               ),
+               child: Icon(
+                 Icons.info_outline_rounded,
+                 color: accentColor,
+                 size: 22.sp,
+               ),
+             ),
+           ),
+           Gap(16.w),
+
+        ],
+      ),
       body: Stack(
         children: [
           // Content (Scrollable)
@@ -113,9 +175,10 @@ class _MorningAzkarScreenState extends State<MorningAzkarScreen> {
                         valueListenable: _fontSizeNotifire,
                         builder: (context, fontSize, child) {
                           return ListView(
+                            physics: BouncingScrollPhysics(),
                             padding: EdgeInsets.symmetric(
                               horizontal: 2.w,
-                              vertical: 60.h,
+                              vertical: 20.h,
                             ),
                             children: [
                               InteractiveZekrCard(
@@ -143,29 +206,8 @@ class _MorningAzkarScreenState extends State<MorningAzkarScreen> {
                   ),
                 ),
               ),
+              Gap(80.h),
             ],
-          ),
-          // Header
-          Positioned(
-            left: 0.w,
-            right: 0.w,
-            top: 0.h,
-            child: AnimatedSlide(
-              duration: const Duration(milliseconds: 250),
-              offset: _isUiVisible ? Offset.zero : const Offset(0, -1),
-              child: AnimatedOpacity(
-                duration: const Duration(milliseconds: 250),
-                opacity: _isUiVisible ? 1 : 0,
-                child: ZekrHeaderWidget(
-                  onFontTap: () => FontSizeController.showFontSizeSlider(
-                    context: context,
-                    fontSizeNotifire: _fontSizeNotifire,
-                  ),
-                  zekr: morningAzkar['content'][_currentIndex],
-                  isDark: isDark,
-                ),
-              ),
-            ),
           ),
 
           // Actions
@@ -179,8 +221,10 @@ class _MorningAzkarScreenState extends State<MorningAzkarScreen> {
               child: AnimatedOpacity(
                 duration: const Duration(milliseconds: 250),
                 opacity: _isUiVisible ? 1 : 0,
-                child: ZekrActionsWidget(
-                  zekr: morningAzkar['content'][_currentIndex],
+                child:ZekrActionsWidget(
+                  zekrText: morningAzkar['content'][_currentIndex]['text']
+                      ?.toString() ??
+                      '',
                   currentIndex: _currentIndex,
                   total: morningAzkar['content'].length,
                   pageController: _pageController!,
@@ -199,7 +243,7 @@ class _MorningAzkarScreenState extends State<MorningAzkarScreen> {
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Text("أتممت جميع الأذكار 🌿"),
+        content:  CustomText("أتممت جميع الأذكار " , fontSize: 11.sp,),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
         backgroundColor: Colors.teal.shade700,
@@ -208,3 +252,5 @@ class _MorningAzkarScreenState extends State<MorningAzkarScreen> {
     );
   }
 }
+
+

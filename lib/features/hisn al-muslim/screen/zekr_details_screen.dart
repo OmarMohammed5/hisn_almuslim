@@ -2,14 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/core/models/content_item.dart';
+import 'package:hisn_almuslim/core/shared/zekr_actions_widget.dart';
 import 'package:hisn_almuslim/core/utils/control_font_size.dart';
-import 'package:hisn_almuslim/features/hisn%20al-muslim/widgets/zekr_actions.dart';
-import 'package:hisn_almuslim/features/hisn%20al-muslim/widgets/zekr_content.dart';
-import 'package:hisn_almuslim/features/hisn%20al-muslim/widgets/zekr_header.dart';
-
 import '../../../core/shared/app_bar_widget.dart';
 import '../../../core/shared/interactive_zekr_card.dart';
+import '../../../core/shared/zekr_info_dialog.dart';
 import '../../../core/theme/app_colors.dart';
 
 class ZekrDetailsScreen extends StatefulWidget {
@@ -68,8 +67,15 @@ class _ZekrDetailsScreenState extends State<ZekrDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     final contents = widget.zekr.content;
     final total = contents.length;
+
+    final accentColor = isDark
+        ? Colors.tealAccent.shade200
+        : Colors.teal.shade700;
+    final textColor = isDark ? Colors.white : Colors.black87;
 
     if (isLoading) {
       return Scaffold(
@@ -85,7 +91,60 @@ class _ZekrDetailsScreenState extends State<ZekrDetailsScreen> {
     final currentContent = contents[_currentIndex];
 
     return Scaffold(
-      appBar: AppBarWidget(title: widget.zekr.title),
+      appBar: AppBarWidget(
+        title: widget.zekr.title,
+        actions: [
+          GestureDetector(
+            onTap: () => FontSizeController.showFontSizeSlider(
+              context: context,
+              fontSizeNotifire: _fontSizeNotifire,
+            ),
+            child: Container(
+              padding: EdgeInsets.all(8.w),
+              decoration: BoxDecoration(
+                color: isDark ? Color(0xff273835) : Color(0xffe0efed),
+                borderRadius: BorderRadius.circular(12.r),
+                border: Border.all(color: Colors.teal.shade200),
+              ),
+              child: Icon(
+                Icons.text_fields,
+                color: isDark ? Color(0xff61f9d5) : Color(0xff2f8a7e),
+                size: 20.sp,
+              ),
+            ),
+          ),
+          Gap(10.w),
+          GestureDetector(
+            onTap: () {
+              ZekrInfoDialog.show(
+                context,
+                source: currentContent.source,
+                count: currentContent.count,
+                accentColor: accentColor,
+                textColor: textColor,
+              );
+            },
+            child: Container(
+              padding: EdgeInsets.all(8.w),
+              decoration: BoxDecoration(
+                color: accentColor.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(12.r),
+                border: Border.all(
+                  color: accentColor.withValues(alpha: 0.2),
+                  width: 1,
+                ),
+              ),
+              child: Icon(
+                Icons.info_outline_rounded,
+                color: accentColor,
+                size: 22.sp,
+              ),
+            ),
+          ),
+          Gap(16.w),
+
+        ],
+      ),
       body: ValueListenableBuilder(
         valueListenable: _isUiVisible,
         builder: (context, isUiVisible, child) {
@@ -140,28 +199,6 @@ class _ZekrDetailsScreenState extends State<ZekrDetailsScreen> {
                 ),
               ),
 
-              /// ================= HEADER =================
-              Positioned(
-                left: 0,
-                right: 0,
-                top: 0,
-                child: AnimatedSlide(
-                  duration: const Duration(milliseconds: 250),
-                  offset: isUiVisible ? Offset.zero : const Offset(0, -1),
-                  child: AnimatedOpacity(
-                    duration: const Duration(milliseconds: 250),
-                    opacity: isUiVisible ? 1 : 0,
-                    child: ZekrHeader(
-                      count: int.tryParse(currentContent.count) ?? 1,
-                      onFontTap: () => FontSizeController.showFontSizeSlider(
-                        context: context,
-                        fontSizeNotifire: _fontSizeNotifire,
-                      ),
-                      source: currentContent.source,
-                    ),
-                  ),
-                ),
-              ),
 
               /// ================= ACTIONS =================
               Positioned(
@@ -174,11 +211,11 @@ class _ZekrDetailsScreenState extends State<ZekrDetailsScreen> {
                   child: AnimatedOpacity(
                     duration: const Duration(milliseconds: 250),
                     opacity: isUiVisible ? 1 : 0,
-                    child: ZekrActions(
-                      pageController: _pageController,
+                    child: ZekrActionsWidget(
+                      zekrText: currentContent.text,
                       currentIndex: _currentIndex,
                       total: total,
-                      zekr: widget.zekr,
+                      pageController: _pageController,
                     ),
                   ),
                 ),

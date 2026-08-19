@@ -9,6 +9,8 @@ import 'package:hisn_almuslim/features/hadith/widgets/chapter_card.dart';
 import 'package:hisn_almuslim/features/quran/widgets/search_field.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 
+import '../../../../../core/utils/arabic_search_utils.dart';
+
 class FehresHadithNawawi extends StatefulWidget {
   const FehresHadithNawawi({super.key});
 
@@ -18,17 +20,6 @@ class FehresHadithNawawi extends StatefulWidget {
 
 class _FehresHadithNawawiState extends State<FehresHadithNawawi> {
   String searchQuery = '';
-
-  String normalizeArabic(String text) {
-    return text
-        .replaceAll('أ', 'ا')
-        .replaceAll('إ', 'ا')
-        .replaceAll('آ', 'ا')
-        .replaceAll('ة', 'ه')
-        .replaceAll('ى', 'ي')
-        .replaceAll('ؤ', 'و')
-        .replaceAll('ئ', 'ي');
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,18 +46,22 @@ class _FehresHadithNawawiState extends State<FehresHadithNawawi> {
             );
           }
           if (state is HadithLoaded) {
-            final hadiths = state.hadithList;
-            final filteredHadiths = hadiths.where((hadith) {
-              if (hadith.hadithContent.isEmpty) return false;
-
-              final title = normalizeArabic(
-                hadith.hadithContent.last.title.toLowerCase(),
+            final filteredHadiths = state.hadithList.where((chapter) {
+              return ArabicSearchUtils.matches(
+                title:  chapter.hadithContent.last.title,
+                query: searchQuery,
               );
-
-              final query = normalizeArabic(searchQuery.toLowerCase());
-
-              return title.contains(query);
             }).toList();
+
+
+            if(filteredHadiths.isEmpty){
+              return Center(
+                child: CustomText(
+                  'لا توجد نتائج',
+                  fontSize: 16.sp,
+                ),
+              );
+            }
 
             return ListView.builder(
               padding: EdgeInsets.all(6.w),

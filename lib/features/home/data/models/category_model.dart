@@ -56,4 +56,9 @@ final List<CategoryModel> categories = [
     icon: FlutterIslamicIcons.tasbihHand,
     route: AppRoutes.zekrAllah,
   ),
+  CategoryModel(
+    title: "قصص الأنبياء",
+    icon: Icons.auto_stories_outlined,
+    route: AppRoutes.stories,
+  ),
 ];

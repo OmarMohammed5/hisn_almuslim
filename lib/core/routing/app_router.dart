@@ -3,6 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hisn_almuslim/core/models/content_item.dart';
 import 'package:hisn_almuslim/core/routing/app_routes.dart';
 import 'package:hisn_almuslim/core/routing/route_transitions.dart';
+import 'package:hisn_almuslim/features/stories/domain/entities/prophet_story.dart';
+import 'package:hisn_almuslim/features/stories/ui/cubit/stories_cubit.dart';
+import 'package:hisn_almuslim/features/stories/ui/screens/stories_screen.dart';
+import 'package:hisn_almuslim/features/stories/ui/screens/story_details_screen.dart';
 
 import '../../features/adhan/data/cubit/adhan_cubit.dart';
 import '../../features/al azkar/data/cubit/azkar_cubit.dart';
@@ -104,9 +108,15 @@ class AppRouter {
 
     // ============ AZKAR ============
       case AppRoutes.morningAzkar:
+        final initialIndex = arguments is int
+            ? arguments
+            : null;
+
         return slidePageRoute(
           settings: settings,
-          child: const MorningAzkarScreen(),
+          child: MorningAzkarScreen(
+            initialIndex: initialIndex,
+          ),
         );
 
       case AppRoutes.eveningAzkar:
@@ -422,6 +432,33 @@ class AppRouter {
         return slidePageRoute(
           settings : settings,
           child: const ZekrAllahScreen(),
+        );
+
+    // ============ TASBEEH ============
+
+      case AppRoutes.stories:
+        return slidePageRoute(
+          settings : settings,
+          child: BlocProvider.value(
+            value: sl<StoriesCubit>(),
+              child: const StoriesScreen()),
+        );
+
+      case AppRoutes.stories:
+        final story = arguments as ProphetStory;
+        final allStories = arguments as List<ProphetStory>;
+        final currentIndex = arguments as int;
+
+        return slidePageRoute(
+          settings : settings,
+          child: BlocProvider.value(
+              value: sl<StoriesCubit>(),
+              child:  StoryDetailsScreen(
+                  story: story,
+                  allStories: allStories,
+                  currentIndex: currentIndex
+              )
+          ),
         );
 
       default:

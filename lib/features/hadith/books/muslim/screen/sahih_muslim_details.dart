@@ -147,29 +147,12 @@ class _SahihMuslimDetailsState extends State<SahihMuslimDetails> {
                       return ReaderAppBar(
                         currentPage: value,
                         isUiVisible: isUiVisible,
-                        onUiVisible: _toggleUi,
-                        isSearching: _isSearching,
-                        searchController: _searchController,
                         title:
-                            "باب رقم : ${widget.chapterSahihMuslim.chapterId}",
-                        onSearchChanged: _searchHadiths,
-                        onSearchToggle: () {
-                          setState(() {
-                            _isSearching = !_isSearching;
-                            if (!_isSearching) {
-                              _searchController.clear();
-                              _filteredHadiths =
-                                  widget.chapterSahihMuslim.hadiths;
-                            }
-                          });
-                        },
+                        "باب رقم : ${widget.chapterSahihMuslim.chapterId}",
                         onFontTap: () => FontSizeController.showFontSizeSlider(
                           context: context,
                           fontSizeNotifire: _fontSizeNotifire,
-                        ),
-                        count: widget.chapterSahihMuslim.hadiths.length,
-                        filteredCount: _filteredHadiths.length,
-                        isFiltered: _isSearching,
+                        ), totalCount:  widget.chapterSahihMuslim.chapterCount,
                       );
                     },
                   ),

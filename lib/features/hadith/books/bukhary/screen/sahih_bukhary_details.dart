@@ -92,7 +92,7 @@ class _SahihMuslimDetailsState extends State<SahihBukharyDetails> {
           child: Scaffold(
             body: Stack(
               children: [
-                // ================= FULL SCREEN CONTENT =================
+                // Full Screen Content
                 Positioned.fill(
                   top: 90.h,
                   left: 0,
@@ -149,29 +149,12 @@ class _SahihMuslimDetailsState extends State<SahihBukharyDetails> {
                       return ReaderAppBar(
                         currentPage: value,
                         isUiVisible: isUiVisible,
-                        onUiVisible: _toggleUi,
-                        isSearching: _isSearching,
-                        searchController: _searchController,
                         title:
                             "باب رقم : ${widget.chapterSahihBukhary.chapterId}",
-                        onSearchChanged: _searchHadiths,
-                        onSearchToggle: () {
-                          setState(() {
-                            _isSearching = !_isSearching;
-                            if (!_isSearching) {
-                              _searchController.clear();
-                              _filteredHadiths =
-                                  widget.chapterSahihBukhary.hadiths;
-                            }
-                          });
-                        },
                         onFontTap: () => FontSizeController.showFontSizeSlider(
                           context: context,
                           fontSizeNotifire: _fontSizeNotifire,
-                        ),
-                        count: widget.chapterSahihBukhary.hadithsCount,
-                        filteredCount: _filteredHadiths.length,
-                        isFiltered: _isSearching,
+                        ), totalCount:  widget.chapterSahihBukhary.hadithsCount,
                       );
                     },
                   ),

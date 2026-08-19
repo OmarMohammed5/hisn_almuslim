@@ -76,8 +76,8 @@ class _HijriCalendarCardState extends State<HijriCalendarCard> {
 
     // ===== Theme-aware palette =====
     final gradientColors = isDark
-        ? [const Color(0xFF0F2E29), const Color(0xFF163C35)]
-        : [Colors.teal.shade600, Colors.teal.shade400];
+        ? [const Color(0xFF0D1F1E), const Color(0xFF163C35)]
+        : [const Color(0xFF0E8A7A), const Color(0xFF1AA892)];
 
     final primaryTextColor = Colors.white;
     final secondaryTextColor = Colors.white.withValues(alpha: 0.7);

@@ -4,11 +4,8 @@ import 'package:gap/gap.dart';
 
 class DuaCard extends StatefulWidget {
   final String content;
-
-  // Optional
   final String? title;
   final String? reference;
-
   final VoidCallback onCopy;
   final VoidCallback onShare;
   final double fontSize;
@@ -34,119 +31,144 @@ class _DuaCardState extends State<DuaCard> {
 
     return Container(
       margin: EdgeInsets.only(bottom: 16.h),
-      padding: EdgeInsets.all(20.w),
+      padding: EdgeInsets.all(12.w),
       decoration: BoxDecoration(
         color: isDark ? const Color(0xff1c2227) : Colors.white,
         borderRadius: BorderRadius.circular(18.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(.05),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 12,
+            offset: const Offset(0, 6),
           ),
         ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // 🔹 Title (Optional)
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              _CustomActionButton(
+                icon: Icons.copy,
+                label: 'نسخ',
+                onTap: widget.onCopy,
+                isDark: isDark,
+              ),
+              Gap(12.w),
+
+              _CustomActionButton(
+                icon: Icons.share_outlined,
+                label: 'مشاركة',
+                onTap: widget.onShare,
+                isDark: isDark,
+              ),
+            ],
+          ),
+
+          Gap(10.h),
+          Divider(
+            height: 1.h,
+            color: isDark ? Colors.white12 : Colors.black12,
+            thickness: 1,
+          ),
+          Gap(16.h),
+
           if (widget.title != null && widget.title!.isNotEmpty) ...[
             Text(
               widget.title!,
               textDirection: TextDirection.rtl,
               style: TextStyle(
-                fontFamily: 'Cairo',
-                fontSize: 16.sp,
+                fontFamily: 'QuranFont',
+                fontSize: 17.sp,
                 fontWeight: FontWeight.bold,
                 color: Colors.teal.shade700,
               ),
             ),
-            Gap(12.h),
+            Gap(16.h),
           ],
 
-          // 🔹 Content (Main)
           Text(
             widget.content,
             textDirection: TextDirection.rtl,
             style: TextStyle(
-              fontFamily: 'Uthmani',
+              fontFamily: 'QuranFont',
               fontSize: widget.fontSize.sp,
               height: 1.8,
               fontWeight: FontWeight.w600,
-              color: isDark ? Colors.white : Colors.black,
+              color: isDark ? const Color(0xFFF5F5F5) : const Color(0xFF1A1A1A), // ألوان أكثر نعومة
             ),
           ),
 
           // 🔹 Reference (Optional)
           if (widget.reference != null && widget.reference!.isNotEmpty) ...[
-            Gap(20.h),
+            Gap(16.h),
             Text(
               "[ ${widget.reference} ]",
               textDirection: TextDirection.rtl,
               style: TextStyle(
-                fontFamily: 'Cairo',
-                fontSize: 14.sp,
-                color: Colors.grey,
+                fontFamily: 'QuranFont',
+                fontSize: 13.sp,
+                color: Colors.grey.shade600,
+                fontStyle: FontStyle.italic,
               ),
             ),
           ],
-
-          Gap(16.h),
-          Divider(height: 1.h, color: isDark ? Colors.white12 : Colors.black54),
-          Gap(16.h),
-
-          // 🔘 Actions
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              _ActionIcon(icon: Icons.copy, label: 'نسخ', onTap: widget.onCopy),
-              Gap(16.w),
-              _ActionIcon(
-                icon: Icons.share,
-                label: 'مشاركة',
-                onTap: widget.onShare,
-              ),
-            ],
-          ),
         ],
       ),
     );
   }
 }
 
-class _ActionIcon extends StatelessWidget {
+class _CustomActionButton extends StatelessWidget {
   final IconData icon;
   final String label;
   final VoidCallback onTap;
+  final bool isDark;
 
-  const _ActionIcon({
+  const _CustomActionButton({
     required this.icon,
     required this.label,
     required this.onTap,
+    required this.isDark,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.teal.shade600,
-        borderRadius: BorderRadius.circular(12.r),
-      ),
+    return Material(
+      color: Colors.transparent,
       child: InkWell(
         borderRadius: BorderRadius.circular(12.r),
         onTap: onTap,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+        splashColor: Colors.teal.shade200.withOpacity(0.4),
+        highlightColor: Colors.teal.shade200.withOpacity(0.2),
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 6.h),
+          decoration: BoxDecoration(
+            color: isDark ? const Color(0xFF2C2C2E) : Colors.grey.shade100,
+            borderRadius: BorderRadius.circular(12.r),
+            border: Border.all(
+              color: Colors.teal.shade700.withOpacity(0.3),
+              width: 1.5,
+            ),
+          ),
           child: Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(icon, size: 15.sp, color: Colors.white),
-              Gap(4.w),
+              Icon(
+                icon,
+                size: 16.sp,
+                color: Colors.teal.shade700,
+              ),
+              Gap(6.w),
               Text(
                 label,
                 style: TextStyle(
-                  fontFamily: 'Cairo',
-                  fontSize: 10.sp,
-                  color: Colors.white,
+                  fontFamily: 'QuranFont',
+                  fontSize: 13.sp,
+                  fontWeight: FontWeight.w600,
+                  color: isDark ? Colors.white70 : const Color(0xFF3E4D5C),
                 ),
               ),
             ],

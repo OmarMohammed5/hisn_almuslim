@@ -27,24 +27,13 @@ class HajjAndOmraScreen extends StatelessWidget {
           if (state is HajjDuaLoaded) {
             final chapter = state.items;
             return Padding(
-              padding: EdgeInsets.all(20.0.w),
+              padding: EdgeInsets.all(12.w),
               child: ListView.builder(
                 itemCount: chapter.length,
                 itemBuilder: (context, index) {
                   return CategoryCard(
                     title: chapter[index].chapterTitle,
                     onTap: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) {
-                      //       return HajjAndOmraDetails(
-                      //         hajjItems: chapter[index].items,
-                      //         title: chapter[index].chapterTitle,
-                      //       );
-                      //     },
-                      //   ),
-                     // );
                       Navigator.pushNamed(context, AppRoutes.hajjAndOmraDuaDetails ,
                         arguments: {
                         'title' : chapter[index].chapterTitle,

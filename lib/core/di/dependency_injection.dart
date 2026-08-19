@@ -40,6 +40,11 @@ import '../../features/quran/domain/repositories/quran_repository.dart';
 import '../../features/quran/domain/repositories/quran_repository_impl.dart';
 import '../../features/quran/domain/repositories/reading_progress_repository.dart';
 import '../../features/quran/domain/repositories/reading_progress_repository_impl.dart';
+import '../../features/stories/data/datasources/stories_local_data_source.dart';
+import '../../features/stories/data/repositories/stories_repository.dart';
+import '../../features/stories/data/repositories/stories_repository_impl.dart';
+import '../../features/stories/domain/usecases/get_prophet_stories.dart';
+import '../../features/stories/ui/cubit/stories_cubit.dart';
 
 final GetIt sl = GetIt.instance;
 
@@ -142,7 +147,31 @@ Future<void> setupLocator() async {
   sl.registerSingleton<AudioPlayerCubit>( AudioPlayerCubit());
 
 
-  _preloadQuranData();
+  /// Prophet Stories
+  sl.registerLazySingleton<StoriesLocalDataSource>(
+        () => StoriesLocalDataSourceImpl(),
+  );
+
+  // Repositories
+  sl.registerLazySingleton<StoriesRepository>(
+        () => StoriesRepositoryImpl(
+      localDataSource: sl<StoriesLocalDataSource>(),
+    ),
+  );
+
+  // Use Cases
+  sl.registerLazySingleton<GetProphetStories>(
+        () => GetProphetStories(
+      repository: sl<StoriesRepository>(),
+    ),
+  );
+
+  // Cubit (Factory - creates new instance each time)
+  sl.registerFactory<StoriesCubit>(
+        () => StoriesCubit(
+      getProphetStories: sl<GetProphetStories>(),
+    ),
+  );  _preloadQuranData();
 }
 
 

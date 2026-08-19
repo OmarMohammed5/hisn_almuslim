@@ -1,9 +1,13 @@
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hisn_almuslim/core/shared/app_bar_widget.dart';
+import 'package:hisn_almuslim/core/shared/custom_text.dart';
 import 'package:hisn_almuslim/core/shared/re_build_scroll_To_Top.dart';
+import 'package:hisn_almuslim/core/theme/app_colors.dart';
+import 'package:hisn_almuslim/features/quran/widgets/search_field.dart';
 import '../../../core/routing/app_routes.dart';
 import '../data/cubit/quran_cubit.dart';
 import '../data/cubit/quran_state.dart';
@@ -53,7 +57,7 @@ class _QuranHomePageState extends State<QuranHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarWidget(
-        title: 'القُرْآنُ الكَرِيمُ',
+        title: "المصحف الشريف",
       ),
       body: Column(
         children: [
@@ -66,8 +70,8 @@ class _QuranHomePageState extends State<QuranHomePage> {
             child: BlocBuilder<QuranCubit, QuranState>(
               builder: (context, state) {
                 if (state is QuranLoading) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
+                  return  Center(
+                    child: CupertinoActivityIndicator(color: AppColors.kPrimary,),
                   );
                 }
 
@@ -85,12 +89,10 @@ class _QuranHomePageState extends State<QuranHomePage> {
                             color: Colors.grey[400],
                           ),
                           SizedBox(height: 16.h),
-                          Text(
+                          CustomText(
                             'لا توجد نتائج',
-                            style: TextStyle(
                               fontSize: 16.sp,
                               color: Colors.grey[600],
-                            ),
                           ),
                         ],
                       ),
@@ -174,56 +176,24 @@ class _QuranHomePageState extends State<QuranHomePage> {
   }
 
   Widget _buildSearchBar(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-      child: TextField(
-        cursorColor: Colors.grey[500],
-        onTapOutside: (event) {
-          FocusManager.instance.primaryFocus?.unfocus();
-        },
+    return Padding(
+      padding:  EdgeInsets.all(12.w),
+      child: SearchField(
         controller: _searchController,
-        decoration: InputDecoration(
-          hintText: 'ابحث عن سورة ...',
-          hintStyle: TextStyle(
-            fontSize: 13.sp,
-            color: Colors.grey[500],
-          ),
-          prefixIcon: Icon(
-            Icons.search,
-            size: 22.sp,
-            color: Colors.grey[500],
-          ),
-          suffixIcon: _searchController.text.isNotEmpty
-              ? IconButton(
-            icon: Icon(Icons.clear, size: 20.sp),
-            onPressed: () {
-              _searchController.clear();
-              context.read<QuranCubit>().clearSearch();
-              FocusManager.instance.primaryFocus?.unfocus();
-            },
-          )
-              : null,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12.r),
-            borderSide: BorderSide.none,
-          ),
-          filled: true,
-          fillColor: Theme.of(context).cardColor,
-          contentPadding: EdgeInsets.symmetric(vertical: 12.h),
-        ),
         onChanged: (value) {
-          _searchDebounce?.cancel();
-          _searchDebounce = Timer(
-            const Duration(milliseconds: 300),
-                () {
-              if (value.isEmpty) {
-                context.read<QuranCubit>().clearSearch();
-              } else {
-                context.read<QuranCubit>().searchSurahs(value);
-              }
-            },
-          );
+        _searchDebounce?.cancel();
+        _searchDebounce = Timer(
+          const Duration(milliseconds: 300),
+              () {
+            if (value.isEmpty) {
+              context.read<QuranCubit>().clearSearch();
+            } else {
+              context.read<QuranCubit>().searchSurahs(value);
+            }
+          },
+        );
         },
+          hint: 'ابحث عن سورة ...',
       ),
     );
   }

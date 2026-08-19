@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hisn_almuslim/core/shared/app_bar_widget.dart';
 import 'package:hisn_almuslim/core/utils/control_font_size.dart';
 import 'package:hisn_almuslim/features/jami%20dua/data/cubit/quran%20&%20sunnah%20dua/cubit/dua_cubit.dart';
-import 'package:hisn_almuslim/features/jami%20dua/widgets/custom_dua_app_bar.dart';
 import 'package:hisn_almuslim/features/jami%20dua/widgets/dua_card.dart';
 import 'package:hisn_almuslim/core/helpers/share_helper.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
-
 import '../../../core/shared/custom_snack_bar.dart';
 import '../../../core/shared/re_build_scroll_To_Top.dart';
 
@@ -66,14 +65,25 @@ class _SunnahDuaScreenState extends State<SunnahDuaScreen> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      appBar: CustomDuaAppBar(
-        isDark: isDark,
-        onFontTap: () => FontSizeController.showFontSizeSlider(
-          context: context,
-          fontSizeNotifire: _fontSizeNotifire,
-        ),
+      appBar: AppBarWidget(
         title: "أدعية من السنة",
-      ),
+        actions: [   Padding(
+          padding: EdgeInsets.only(right: 12.w),
+          child: IconButton(
+            icon: Icon(
+              Icons.text_fields,
+              color: Colors.teal.shade700,
+              size: 20.sp,
+            ),
+              onPressed: ()=> FontSizeController.showFontSizeSlider(
+              context: context,
+              fontSizeNotifire: _fontSizeNotifire,
+            ),
+            splashRadius: 20.r,
+          ),
+        ),
+        ],
+      ) ,
       body: BlocBuilder<DuaCubit, DuaState>(
         builder: (context, state) {
           if (state is DuaLoading) {
@@ -83,7 +93,6 @@ class _SunnahDuaScreenState extends State<SunnahDuaScreen> {
           }
 
           if (state is DuaLoaded) {
-            // To Filter the chapters of json and arrive to quran dua
 
             final chapters = state.duas;
             final quranChapter = chapters.lastWhere((c) => c.chapterId == 2);

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hisn_almuslim/features/hadith/widgets/header_card.dart';
+import 'package:gap/gap.dart';
 
 class HadithCard extends StatelessWidget {
   final String content;
@@ -25,68 +25,170 @@ class HadithCard extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 2.w, vertical: 8.h),
-      decoration: BoxDecoration(
-        gradient: isDark
-            ? LinearGradient(
-                colors: [Color(0xff1a1f24), Color(0xff252b31)],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              )
-            : LinearGradient(
-                colors: [Colors.white, Colors.grey[50]!],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-        borderRadius: BorderRadius.circular(20.r),
-        border: Border.all(
-          color: isDark
-              ? Colors.teal.withOpacity(0.2)
-              : Colors.teal.withOpacity(0.1),
-          width: 1.5,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: isDark
-                ? Colors.black.withOpacity(0.3)
-                : Colors.teal.withOpacity(0.08),
-            blurRadius: 12,
-            offset: Offset(0, 4),
-            spreadRadius: 0,
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+      margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 10.h),
+      child: Stack(
         children: [
-          HeaderCard(index: index, onCopy: onCopy, onShare: onShare),
-
-          Padding(
-            padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 20.h),
+          // Main Card
+          Container(
+            padding: EdgeInsets.all(8.w),
+            decoration: BoxDecoration(
+              color: isDark ? Color(0xFF1A1A2E) : Colors.white,
+              borderRadius: BorderRadius.circular(16.r),
+              border: Border.all(
+                color: isDark
+                    ? Colors.grey.shade800
+                    : Colors.grey.shade200,
+                width: 1,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: isDark
+                      ? Colors.black.withValues(alpha: 0.3)
+                      : Colors.grey.withValues(alpha: 0.1),
+                  blurRadius: 20,
+                  offset: Offset(0, 8),
+                ),
+              ],
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Decorative divider
-                Container(
-                  height: 3.h,
-                  width: 60.w,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [Colors.teal, Colors.teal.shade200],
-                    ),
-                    borderRadius: BorderRadius.circular(2.r),
-                  ),
+                // Top Ornamental Border
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _buildOrnament(isDark),
+                  ],
                 ),
+                Gap(12.h),
 
-                SizedBox(height: 16.h),
+                // Header with Index
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _buildIndexBadge(index, isDark),
+                    Row(
+                      children: [
+                        _buildIconButton(Icons.copy_rounded, onCopy, isDark),
+                        Gap(8.w),
+                        _buildIconButton(Icons.share_rounded, onShare, isDark),
+                      ],
+                    ),
+                  ],
+                ),
+                Gap(16.h),
 
+                // Hadith Content
                 _buildHighlightedText(
                   context,
-                  content,
+                  content.trim(),
                   searchQuery,
                   fontSize.sp,
                 ),
+                Gap(16.h),
+
+                // Bottom Ornamental Border
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _buildOrnament(isDark),
+                  ],
+                ),
               ],
+            ),
+          ),
+
+          // Decorative corner accents
+          Positioned(
+            top: -4.h,
+            left: -4.w,
+            child: _buildCornerAccent(isDark),
+          ),
+          Positioned(
+            top: -4.h,
+            right: -4.w,
+            child: _buildCornerAccent(isDark),
+          ),
+          Positioned(
+            bottom: -4.h,
+            left: -4.w,
+            child: _buildCornerAccent(isDark),
+          ),
+          Positioned(
+            bottom: -4.h,
+            right: -4.w,
+            child: _buildCornerAccent(isDark),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildOrnament(bool isDark) {
+    return Row(
+      children: [
+        Container(
+          width: 30.w,
+          height: 2.h,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Colors.transparent,
+                isDark ? Colors.teal.shade600 : Colors.teal.shade400,
+              ],
+            ),
+          ),
+        ),
+        Gap(8.w),
+        Icon(
+          Icons.dark_mode_outlined,
+          size: 14.sp,
+          color: isDark ? Colors.teal.shade600 : Colors.teal.shade400,
+        ),
+        Gap(8.w),
+        Container(
+          width: 30.w,
+          height: 2.h,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                isDark ? Colors.teal.shade600 : Colors.teal.shade400,
+                Colors.transparent,
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildIndexBadge(int index, bool isDark) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Colors.teal.shade400,
+            Colors.teal.shade700,
+          ],
+        ),
+        borderRadius: BorderRadius.circular(20.r),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            Icons.format_quote_rounded,
+            size: 14.sp,
+            color: Colors.white,
+          ),
+          Gap(6.w),
+          Text(
+            'حديث ${index + 1}',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w600,
+              fontFamily: "Cairo",
             ),
           ),
         ],
@@ -94,27 +196,85 @@ class HadithCard extends StatelessWidget {
     );
   }
 
-  /// ===== Highlighted Text =====
+  Widget _buildIconButton(IconData icon, VoidCallback? onTap, bool isDark) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.all(8.w),
+        decoration: BoxDecoration(
+          color: isDark
+              ? Colors.white.withValues(alpha: 0.05)
+              : Colors.grey.withValues(alpha: 0.08),
+          shape: BoxShape.circle,
+        ),
+        child: Icon(
+          icon,
+          size: 18.sp,
+          color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCornerAccent(bool isDark) {
+    return Container(
+      width: 16.w,
+      height: 16.w,
+      decoration: BoxDecoration(
+        color: isDark ? Colors.teal.shade800 : Colors.teal.shade100,
+        borderRadius: BorderRadius.circular(4.r),
+      ),
+    );
+  }
+
   Widget _buildHighlightedText(
-    BuildContext context,
-    String text,
-    String query,
-    double fontSize,
-  ) {
+      BuildContext context,
+      String text,
+      String query,
+      double fontSize,
+      ) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     if (query.isEmpty) {
       return Text(
         text,
-        textAlign: TextAlign.justify,
+        textAlign: TextAlign.center,
         style: TextStyle(
-          fontSize: fontSize.sp,
-          height: 2.0.h,
+          fontSize: fontSize,
+          height: 2.4.h,
           fontFamily: "Uthmani",
-          color: _baseTextColor(context),
-          letterSpacing: 0.3,
+          color: isDark ? Colors.white : Color(0xFF1A1A2E),
+          letterSpacing: 0.8,
+          wordSpacing: 2,
         ),
       );
     }
 
+    final spans = _buildHighlightSpans(text, query, context, fontSize);
+
+    return RichText(
+      textAlign: TextAlign.center,
+      text: TextSpan(
+        style: TextStyle(
+          fontSize: fontSize,
+          height: 2.4.h,
+          fontFamily: "Uthmani",
+          color: isDark ? Colors.white : Color(0xFF1A1A2E),
+          letterSpacing: 0.8,
+          wordSpacing: 2,
+        ),
+        children: spans,
+      ),
+    );
+  }
+
+  List<TextSpan> _buildHighlightSpans(
+      String text,
+      String query,
+      BuildContext context,
+      double fontSize,
+      ) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final spans = <TextSpan>[];
     final lowerText = text.toLowerCase();
     final lowerQuery = query.toLowerCase();
@@ -135,46 +295,18 @@ class HadithCard extends StatelessWidget {
         TextSpan(
           text: text.substring(index, index + query.length),
           style: TextStyle(
-            backgroundColor: _highlightBackground(context),
-            color: _highlightTextColor(context),
+            backgroundColor: isDark
+                ? Colors.tealAccent.withValues(alpha: 0.2)
+                : Colors.amber.withValues(alpha: 0.3),
+            color: isDark ? Colors.tealAccent : Color(0xFF1A1A2E),
             fontWeight: FontWeight.bold,
-            // borderRadius: BorderRadius.circular(4.r),
+            fontSize: fontSize * 1.1,
           ),
         ),
       );
 
       start = index + query.length;
     }
-
-    return RichText(
-      textAlign: TextAlign.justify,
-      text: TextSpan(
-        style: TextStyle(
-          fontSize: fontSize.sp,
-          height: 2.0.h,
-          fontFamily: "Uthmani",
-          color: _baseTextColor(context),
-          letterSpacing: 0.3,
-        ),
-        children: spans,
-      ),
-    );
-  }
-
-  Color _baseTextColor(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    return isDark ? Colors.white.withOpacity(0.95) : Colors.black87;
-  }
-
-  Color _highlightBackground(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    return isDark
-        ? Colors.tealAccent.withOpacity(0.3)
-        : Colors.amber.withOpacity(0.4);
-  }
-
-  Color _highlightTextColor(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    return isDark ? Colors.black : Colors.black87;
+    return spans;
   }
 }

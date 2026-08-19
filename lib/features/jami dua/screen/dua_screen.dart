@@ -20,7 +20,7 @@ class DuaScreen extends StatelessWidget {
       // appBar: CustomAppBar(title: "الأدعية", isDark: isDark),
       appBar: AppBarWidget(title: "الأدعية"),
       body: Padding(
-        padding: EdgeInsets.all(20.w),
+        padding: EdgeInsets.all(12.w),
         child: Column(
           children: [
             CategoryCard(

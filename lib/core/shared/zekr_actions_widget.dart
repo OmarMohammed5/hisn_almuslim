@@ -1,24 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/core/helpers/share_helper.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
+
 import 'custom_snack_bar.dart';
 
 class ZekrActionsWidget extends StatelessWidget {
-  final Map<String, dynamic> zekr;
+
+  final String zekrText;
+
   final int currentIndex;
   final PageController pageController;
   final int total;
 
   const ZekrActionsWidget({
     super.key,
-    required this.zekr,
+    required this.zekrText,
     required this.currentIndex,
     required this.total,
     required this.pageController,
   });
 
-  // Go to next page
   void _goToNext(BuildContext context) {
     if (currentIndex < total - 1) {
       pageController.nextPage(
@@ -28,7 +32,6 @@ class ZekrActionsWidget extends StatelessWidget {
     }
   }
 
-  // Go to previous page
   void _goToPrevious(BuildContext context) {
     if (currentIndex > 0) {
       pageController.previousPage(
@@ -42,33 +45,61 @@ class ZekrActionsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    // Theme-aware colors
-    final cardColor = isDark ? const Color(0xFF1E1E1E) : Colors.white;
+    final cardColor = isDark
+        ? const Color(0xFF1C2227)
+        : Colors.white;
+
     final accentColor = isDark
         ? Colors.tealAccent.shade200
         : Colors.teal.shade700;
-    final textColor = isDark ? Colors.white : Colors.black87;
+
+    final textColor = isDark
+        ? Colors.white
+        : const Color(0xFF1A1A1A);
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 16, left: 16, right: 16),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      margin: EdgeInsets.symmetric(
+        horizontal: 12.w,
+        vertical: 8.h,
+      ),
+      padding: EdgeInsets.symmetric(
+        horizontal: 12.w,
+        vertical: 10.h,
+      ),
       decoration: BoxDecoration(
         color: cardColor,
-        borderRadius: BorderRadius.circular(20),
-        border: isDark
-            ? Border.all(color: Colors.grey.shade800, width: 1)
-            : Border.all(color: Colors.grey.shade200, width: 1),
+        borderRadius: BorderRadius.circular(24.r),
+        border: Border.all(
+          color: isDark
+              ? Colors.white.withOpacity(0.08)
+              : Colors.grey.withOpacity(0.15),
+          width: 1.5,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.06),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Copy Button
-          _compactActionButton(
+          // =========================
+          // COPY
+          // =========================
+
+          _buildActionButton(
+            context: context,
             icon: Icons.copy_rounded,
             isDark: isDark,
             accentColor: accentColor,
             onTap: () {
-              Clipboard.setData(ClipboardData(text: zekr['text']));
+              Clipboard.setData(
+                ClipboardData(text: zekrText),
+              );
+
               ScaffoldMessenger.of(context).showSnackBar(
                 customSnackBar(
                   "تم نسخ الذكر بنجاح",
@@ -81,12 +112,14 @@ class ZekrActionsWidget extends StatelessWidget {
             },
           ),
 
-          // Navigation Section
+          // =========================
+          // NAVIGATION
+          // =========================
+
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Previous Button
-              _compactNavButton(
+              _buildNavButton(
                 icon: Icons.arrow_back_ios_rounded,
                 onTap: () => _goToPrevious(context),
                 isDark: isDark,
@@ -94,19 +127,18 @@ class ZekrActionsWidget extends StatelessWidget {
                 isDisabled: currentIndex == 0,
               ),
 
-              const SizedBox(width: 12),
+              Gap(8.w),
 
-              // Counter
               Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
+                padding: EdgeInsets.symmetric(
+                  horizontal: 10.w,
+                  vertical: 4.h,
                 ),
                 decoration: BoxDecoration(
-                  color: accentColor.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(12),
+                  color: accentColor.withOpacity(0.12),
+                  borderRadius: BorderRadius.circular(12.r),
                   border: Border.all(
-                    color: accentColor.withValues(alpha: 0.2),
+                    color: accentColor.withOpacity(0.2),
                     width: 1,
                   ),
                 ),
@@ -116,28 +148,29 @@ class ZekrActionsWidget extends StatelessWidget {
                     CustomText(
                       '${currentIndex + 1}',
                       color: accentColor,
-                      fontSize: 14,
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.bold,
                     ),
+
                     CustomText(
                       ' / ',
-                      color: textColor.withValues(alpha: 0.4),
-                      fontSize: 12,
+                      color: textColor.withOpacity(0.4),
+                      fontSize: 12.sp,
                     ),
+
                     CustomText(
                       '$total',
-                      color: textColor.withValues(alpha: 0.6),
-                      fontSize: 12,
+                      color: textColor.withOpacity(0.6),
+                      fontSize: 12.sp,
                       fontWeight: FontWeight.w600,
                     ),
                   ],
                 ),
               ),
 
-              const SizedBox(width: 12),
+              Gap(8.w),
 
-              // Next Button
-              _compactNavButton(
+              _buildNavButton(
                 icon: Icons.arrow_forward_ios_rounded,
                 onTap: () => _goToNext(context),
                 isDark: isDark,
@@ -147,13 +180,22 @@ class ZekrActionsWidget extends StatelessWidget {
             ],
           ),
 
-          // Share Button
-          _compactActionButton(
+          // =========================
+          // SHARE
+          // =========================
+
+          _buildActionButton(
+            context: context,
             icon: Icons.share_outlined,
             isDark: isDark,
             accentColor: accentColor,
             onTap: () async {
-              await ShareHelper.shareAsImage(context, zekr['text'] , category: "أَذْكَارُ الْمَسَاءِ" , isDark: isDark);
+              await ShareHelper.shareAsImage(
+                context,
+                zekrText,
+                category: "أَذْكَارُ الْمَسَاءِ",
+                isDark: isDark,
+              );
             },
           ),
         ],
@@ -161,7 +203,41 @@ class ZekrActionsWidget extends StatelessWidget {
     );
   }
 
-  Widget _compactNavButton({
+  Widget _buildActionButton({
+    required BuildContext context,
+    required IconData icon,
+    required bool isDark,
+    required Color accentColor,
+    required VoidCallback onTap,
+  }) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(12.r),
+        splashColor: accentColor.withOpacity(0.3),
+        highlightColor: accentColor.withOpacity(0.15),
+        child: Container(
+          padding: EdgeInsets.all(10.w),
+          decoration: BoxDecoration(
+            color: accentColor.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(12.r),
+            border: Border.all(
+              color: accentColor.withOpacity(0.2),
+              width: 1,
+            ),
+          ),
+          child: Icon(
+            icon,
+            color: accentColor,
+            size: 20.sp,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNavButton({
     required IconData icon,
     required VoidCallback onTap,
     required bool isDark,
@@ -172,55 +248,34 @@ class ZekrActionsWidget extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: isDisabled ? null : onTap,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(12.r),
+        splashColor: isDisabled
+            ? Colors.transparent
+            : accentColor.withOpacity(0.3),
+        highlightColor: isDisabled
+            ? Colors.transparent
+            : accentColor.withOpacity(0.15),
         child: Container(
-          padding: const EdgeInsets.all(8),
+          padding: EdgeInsets.all(8.w),
           decoration: BoxDecoration(
             color: isDisabled
-                ? Colors.grey.withValues(alpha: 0.1)
-                : accentColor.withValues(alpha: 0.12),
-            borderRadius: BorderRadius.circular(10),
+                ? Colors.grey.withOpacity(0.1)
+                : accentColor.withOpacity(0.12),
+            borderRadius: BorderRadius.circular(12.r),
             border: Border.all(
               color: isDisabled
-                  ? Colors.grey.withValues(alpha: 0.2)
-                  : accentColor.withValues(alpha: 0.2),
+                  ? Colors.grey.withOpacity(0.15)
+                  : accentColor.withOpacity(0.2),
               width: 1,
             ),
           ),
           child: Icon(
             icon,
             color: isDisabled
-                ? Colors.grey.withValues(alpha: 0.4)
+                ? Colors.grey.withOpacity(0.4)
                 : accentColor,
-            size: 18,
+            size: 18.sp,
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _compactActionButton({
-    required IconData icon,
-    required bool isDark,
-    required Color accentColor,
-    required VoidCallback onTap,
-  }) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(10),
-        child: Container(
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: accentColor.withValues(alpha: 0.12),
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(
-              color: accentColor.withValues(alpha: 0.2),
-              width: 1,
-            ),
-          ),
-          child: Icon(icon, color: accentColor, size: 20),
         ),
       ),
     );

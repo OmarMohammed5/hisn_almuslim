@@ -154,29 +154,12 @@ class _ReyadAlSaliheenDetailsState extends State<ReyadAlSaliheenDetails> {
                       return ReaderAppBar(
                         currentPage: value,
                         isUiVisible: isUiVisible,
-                        onUiVisible: _toggleUi,
-                        isSearching: _isSearching,
-                        searchController: _searchController,
                         title:
-                            "باب رقم : ${widget.chapterReyadAlSaliheen.chapterId}",
-                        onSearchChanged: _searchHadiths,
-                        onSearchToggle: () {
-                          setState(() {
-                            _isSearching = !_isSearching;
-                            if (!_isSearching) {
-                              _searchController.clear();
-                              _filteredHadiths =
-                                  widget.chapterReyadAlSaliheen.hadiths;
-                            }
-                          });
-                        },
+                        "باب رقم : ${widget.chapterReyadAlSaliheen.chapterId}",
                         onFontTap: () => FontSizeController.showFontSizeSlider(
                           context: context,
                           fontSizeNotifire: _fontSizeNotifire,
-                        ),
-                        count: widget.chapterReyadAlSaliheen.hadithsCount,
-                        filteredCount: _filteredHadiths.length,
-                        isFiltered: _isSearching,
+                        ), totalCount:  widget.chapterReyadAlSaliheen.hadithsCount,
                       );
                     },
                   ),

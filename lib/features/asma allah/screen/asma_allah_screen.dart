@@ -15,9 +15,10 @@ class AsmaAllahScreen extends StatefulWidget {
 }
 
 class _AsmaAllahScreenState extends State<AsmaAllahScreen> {
-  final PageController _controller = PageController();
+  late final PageController _controller = PageController(
+    viewportFraction: 0.82,
+  );
   int currentIndex = 0;
-
 
   @override
   void initState() {
@@ -25,7 +26,17 @@ class _AsmaAllahScreenState extends State<AsmaAllahScreen> {
       if (mounted) {
         context.read<AsmaAllahCubit>().loadNames();
       }
-    });    super.initState();
+    });
+    super.initState();
+  }
+
+  void _goToNextPage(AsmaAllahLoaded loadedState) {
+    if (currentIndex < loadedState.names.length - 1) {
+      _controller.nextPage(
+        duration: const Duration(milliseconds: 550),
+        curve: Curves.easeOutCubic,
+      );
+    }
   }
 
   @override
@@ -41,9 +52,10 @@ class _AsmaAllahScreenState extends State<AsmaAllahScreen> {
         }
 
         if (state is AsmaAllahLoaded) {
+          final namesList = state.names;
+
           return Scaffold(
             body: Container(
-              // ✨ Gradient background
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
@@ -55,7 +67,6 @@ class _AsmaAllahScreenState extends State<AsmaAllahScreen> {
               ),
               child: Stack(
                 children: [
-                  // ✨ Decorative background circles
                   Positioned(
                     top: -60.h,
                     right: -60.w,
@@ -81,7 +92,6 @@ class _AsmaAllahScreenState extends State<AsmaAllahScreen> {
                     ),
                   ),
 
-                  /// Content
                   SafeArea(
                     child: Column(
                       children: [
@@ -94,13 +104,10 @@ class _AsmaAllahScreenState extends State<AsmaAllahScreen> {
                             children: [
                               Row(
                                 children: [
-                                  // Back button (left)
                                   IconButton(
                                     onPressed: () => Navigator.pop(context),
                                     icon: const Icon(Icons.arrow_back),
                                   ),
-
-                                  // Center badge with Spacer on both sides
                                   const Spacer(),
                                   Container(
                                     padding: EdgeInsets.symmetric(
@@ -116,7 +123,7 @@ class _AsmaAllahScreenState extends State<AsmaAllahScreen> {
                                       ),
                                     ),
                                     child: Text(
-                                      "${currentIndex + 1} / ${state.names.length}",
+                                      "${currentIndex + 1} / ${namesList.length}",
                                       style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                         fontSize: 13.sp,
@@ -128,8 +135,6 @@ class _AsmaAllahScreenState extends State<AsmaAllahScreen> {
                                     ),
                                   ),
                                   const Spacer(),
-
-                                  // Invisible placeholder to balance the back button width
                                   Gap(40.w),
                                 ],
                               ),
@@ -137,8 +142,7 @@ class _AsmaAllahScreenState extends State<AsmaAllahScreen> {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(8.r),
                                 child: LinearProgressIndicator(
-                                  value:
-                                      (currentIndex + 1) / state.names.length,
+                                  value: (currentIndex + 1) / namesList.length,
                                   minHeight: 6,
                                   backgroundColor: isDark
                                       ? Colors.white12
@@ -152,23 +156,72 @@ class _AsmaAllahScreenState extends State<AsmaAllahScreen> {
                           ),
                         ),
 
-                        /// PageView
                         Expanded(
                           child: PageView.builder(
+                            pageSnapping: true,
                             controller: _controller,
-                            itemCount: state.names.length,
+                            itemCount: namesList.length,
                             onPageChanged: (index) {
                               setState(() {
                                 currentIndex = index;
                               });
                             },
                             itemBuilder: (context, index) {
-                              return AsmaCard(model: state.names[index]);
+                              return AnimatedBuilder(
+                                animation: _controller,
+                                builder: (context, child) {
+                                  final page = _controller.hasClients
+                                      ? (_controller.page ?? currentIndex.toDouble())
+                                      : currentIndex.toDouble();
+
+                                  final difference = index - page;
+
+                                  final distance = difference.abs().clamp(0.0, 1.0);
+
+                                  final scale = 1.0 - (distance * 0.10);
+
+
+                                  final opacity = 1.0 - (distance * 0.35);
+
+                                  final translateY = distance * 18.h;
+
+                                  final rotationY = difference * 0.08;
+
+                                  return Center(
+                                    child: Opacity(
+                                      opacity: opacity.clamp(0.0, 1.0),
+
+                                      child: Transform.translate(
+                                        offset: Offset(0, translateY),
+                                        child: Transform.scale(
+                                          scale: scale,
+
+                                          child: Transform(
+                                            alignment: Alignment.center,
+                                            transform: Matrix4.identity()
+                                              ..setEntry(3, 2, 0.001)
+                                              ..rotateY(rotationY),
+
+                                            child: child,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+
+                                child: AsmaCard(
+                                  key: ValueKey(index),
+                                  model: namesList[index],
+                                  onTap: () => _goToNextPage(state),
+                                ),
+                              );
                             },
+
                           ),
                         ),
 
-                        // ✨ Swipe hint
+                        // Swipe hint
                         Padding(
                           padding: EdgeInsets.only(bottom: 20.h),
                           child: Text(
@@ -190,7 +243,7 @@ class _AsmaAllahScreenState extends State<AsmaAllahScreen> {
             ),
           );
         } else if (state is AsmaAllahError) {
-          return CustomText(state.message);
+          return Center(child: CustomText(state.message));
         } else {
           return const SizedBox.shrink();
         }

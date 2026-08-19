@@ -12,56 +12,92 @@ class CategoryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        margin: EdgeInsets.only(bottom: 16.h),
-        padding: EdgeInsets.all(8.w),
-        decoration: BoxDecoration(
-          color: isDark ? Color(0xff1c2227) : Colors.white,
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 4.h),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
           borderRadius: BorderRadius.circular(16.r),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: .05),
-              blurRadius: 10,
-              offset: const Offset(0, 5),
+          splashColor: Colors.teal.shade200.withOpacity(0.4),
+          highlightColor: Colors.teal.shade200.withOpacity(0.2),
+          child: Container(
+            padding: EdgeInsets.all(12.w),
+            decoration: BoxDecoration(
+              color: isDark ? const Color(0xff1c2227) : Colors.white,
+              borderRadius: BorderRadius.circular(16.r),
+              border: Border.all(
+                color: isDark
+                    ? Colors.white.withOpacity(0.05)
+                    : Colors.grey.withOpacity(0.1),
+                width: 1,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+              ],
             ),
-          ],
-        ),
-        child: Row(
-          children: [
-            CircleAvatar(
-              radius: 22.r,
-              backgroundColor: isDark ? Colors.white10 : Colors.grey.shade200,
-              child: Image.asset("assets/images/decoor.png", fit: BoxFit.cover),
-            ),
-            Gap(16.w),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontFamily: 'Uthmani',
-                      fontSize: 17.sp,
-                      fontWeight: FontWeight.bold,
+            child: Row(
+              children: [
+                Container(
+                  width: 44.w,
+                  height: 44.w,
+                  decoration: BoxDecoration(
+                    color: isDark
+                        ? const Color(0xFF272A2E)
+                        : const Color(0xffE9EEF0),
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Colors.teal.shade700.withOpacity(0.1),
+                      width: 1.5,
                     ),
                   ),
-                ],
-              ),
+                  child: Center(
+                    child: Image.asset(
+                      "assets/images/decoor.png",
+                      width: 28.w,
+                      height: 28.w,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+                Gap(12.w),
+
+                Expanded(
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                      fontFamily: 'QuranFont',
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.bold,
+                      color: isDark ? Colors.white : const Color(0xFF1A1A1A),
+                      height: 1.4,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+
+                Container(
+                  padding: EdgeInsets.all(4.w),
+                  decoration: BoxDecoration(
+                    color: isDark
+                        ? const Color(0xFF272A2E)
+                        : const Color(0xffE9EEF0),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    size: 14.sp,
+                    color: isDark ? Colors.white70 : Colors.grey.shade700,
+                  ),
+                ),
+              ],
             ),
-            Container(
-              padding: EdgeInsets.all(5.w),
-              decoration: BoxDecoration(
-                color: isDark
-                    ? const Color(0xFF272a2e)
-                    : const Color(0xffE9EEF0),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(Icons.arrow_forward_ios, size: 16.sp),
-            ),
-          ],
+          ),
         ),
       ),
     );
