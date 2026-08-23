@@ -16,6 +16,7 @@ import 'features/quran/data/cubit/cubit/quran_progress_cubit.dart';
 import 'features/quran/data/cubit/cubit/search_cubit.dart';
 import 'features/quran/data/cubit/quran_cubit.dart';
 import 'features/quran_audio/logic/quran_audio_cubit.dart';
+import 'features/radio/presentation/cubit/radio_cubit.dart';
 
 class Root extends StatefulWidget {
   const Root({super.key});
@@ -38,6 +39,8 @@ class _RootState extends State<Root> {
     MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => sl<QuranCubit>()),
+        BlocProvider.value(value: sl<RadioCubit>()),
+
         // BlocProvider(create: (_) => sl<QuranProgressCubit>()),
         // BlocProvider(create: (_) => sl<AsmaAllahCubit>()..loadNames()),
         // BlocProvider(create: (_) => sl<QuranProgressCubit>()),

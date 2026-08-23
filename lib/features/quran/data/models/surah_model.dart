@@ -1,4 +1,3 @@
-
 import 'package:equatable/equatable.dart';
 import 'ayah_model.dart';
 
@@ -32,9 +31,6 @@ class SurahModel extends Equatable {
   factory SurahModel.fromJson(Map<String, dynamic> json) {
     final ayahsList = json['ayahs'] as List<dynamic>? ?? [];
 
-    print('📚 Parsing Surah: ${json['number']} - ${json['name']}');
-    print('📖 Total Ayahs: ${ayahsList.length}');
-
     return SurahModel(
       number: json['number'] as int? ?? 0,
       name: json['name'] as String? ?? '',
@@ -42,7 +38,6 @@ class SurahModel extends Equatable {
       englishName: json['englishName'] as String? ?? '',
       englishNameTranslation: json['englishNameTranslation'] as String? ?? '',
       revelationType: json['revelationType'] as String? ?? '',
-      // ====== استخدام parseString لتفادي المشاكل ======
       surahInfo: _parseString(json['surahInfo']),
       surahInfoFromBook: _parseString(json['surahInfoFromBook']),
       surahNames: _parseString(json['surahNames']),
@@ -53,7 +48,6 @@ class SurahModel extends Equatable {
     );
   }
 
-  // ====== دالة مساعدة لتحويل أي قيمة إلى String ======
   static String? _parseString(dynamic value) {
     if (value == null) return null;
     if (value is String) return value;

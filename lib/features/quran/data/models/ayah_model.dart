@@ -35,7 +35,6 @@ class AyahModel extends Equatable {
 
   factory AyahModel.fromJson(Map<String, dynamic> json) {
 
-    print('📖 Parsing Ayah: ${json['number']}');
 
 
     return AyahModel(
@@ -59,7 +58,6 @@ class AyahModel extends Equatable {
     );
   }
 
-  // ====== دالة مساعدة لتحويل أي قيمة إلى bool ======
   static bool _parseBool(dynamic value) {
     if (value == null) return false;
     if (value is bool) return value;

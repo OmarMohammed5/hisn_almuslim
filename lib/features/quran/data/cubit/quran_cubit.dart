@@ -277,11 +277,8 @@ class QuranCubit extends Cubit<QuranState> {
   }
 
 
-  // lib/features/quran/presentation/cubit/quran_cubit.dart
 
-// أضف هذه الميثودات في الـ QuranCubit
-
-  // ============ SEARCH METHODS (المطورة) ============
+  // ============ SEARCH METHODS ============
   Future<void> searchSurahs(String query) async {
     if (query.trim().isEmpty) {
       emit(QuranLoaded(
@@ -372,15 +369,11 @@ class QuranCubit extends Cubit<QuranState> {
     return text
         .trim()
         .toLowerCase()
-    // إزالة التشكيل
         .replaceAll(RegExp(r'[\u064B-\u065F\u0670]'), '')
-    // توحيد الألف
         .replaceAll('أ', 'ا')
         .replaceAll('إ', 'ا')
         .replaceAll('آ', 'ا')
-    // الياء والألف المقصورة
         .replaceAll('ى', 'ي')
-    // التاء المربوطة
         .replaceAll('ة', 'ه');
   }
 

@@ -10,8 +10,44 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8994c64f-2425-4304-931e-2db017ba0e3b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/android/app/src/main/res/xml/network_security_config.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/json/daily_content.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/core/constant/app_constants.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/core/shared/live_broadcast_indicator.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/core/theme/radio_colors.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/home/data/datasource/daily_content_local_data_source.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/home/data/models/daily_content_model.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/home/data/models/featured_banner_model.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/home/data/models/featured_banners_data.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/home/widgets/cairo_radio_card.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/home/widgets/daily_content_banner.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/home/widgets/featured_banner_card.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/home/widgets/featured_banners.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/home/widgets/live_dot.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/home/widgets/radio_icon_widget.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/home/widgets/radio_play_button.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/radio/data/datasources/radio_local_data_source.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/radio/data/models/radio_station_model.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/radio/data/repositories/radio_repository_impl.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/radio/domain/entities/radio_station.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/radio/domain/repositories/radio_repository.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/radio/presentation/cubit/radio_cubit.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/radio/presentation/cubit/radio_state.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/radio/presentation/screens/radio_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/core/di/dependency_injection.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/di/dependency_injection.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/core/routing/app_router.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/routing/app_router.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/core/routing/app_routes.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/routing/app_routes.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/home/screen/home_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/home/screen/home_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/data/cubit/quran_cubit.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/data/cubit/quran_cubit.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/data/models/ayah_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/data/models/ayah_model.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/data/models/surah_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/data/models/surah_model.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran_audio/data/services/app_audio_handler.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran_audio/data/services/app_audio_handler.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran_audio/data/services/app_audio_player_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran_audio/data/services/app_audio_player_service.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/root.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/root.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,23 +111,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Flutter.main.dart.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "main",
-    "io.flutter.reload.alreadyRun": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/FLUTTER/Practice_Zone/machinfy_app",
-    "show.migrate.to.gradle.popup": "false"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Flutter.main.dart.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;io.flutter.reload.alreadyRun&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/FLUTTER/Practice_Zone/machinfy_app&quot;,
+    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">

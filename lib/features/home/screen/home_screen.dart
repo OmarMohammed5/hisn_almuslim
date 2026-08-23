@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/features/home/data/models/category_model.dart';
+import 'package:hisn_almuslim/features/home/widgets/cairo_radio_card.dart';
 import 'package:hisn_almuslim/features/home/widgets/hijri_calender.dart';
 import 'package:hisn_almuslim/features/home/widgets/categories_header.dart';
 import 'package:hisn_almuslim/features/home/widgets/islamic_divider.dart';
@@ -11,6 +12,7 @@ import 'package:hisn_almuslim/features/quran/data/cubit/quran_cubit.dart';
 import 'package:hisn_almuslim/features/quran/data/cubit/quran_state.dart';
 import 'package:hisn_almuslim/features/quran/widgets/quran_dashboard.dart';
 import '../../../hisn_al_muslim_app.dart';
+import '../widgets/featured_banners.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -36,13 +38,7 @@ class _HomeScreenElegantState extends State<HomeScreen> with RouteAware{
   @override
   void initState() {
     super.initState();
-    // context.read<QuranCubit>().loadSurahs();
   }
-
-  // @override
-  // void didPopNext() {
-  //   context.read<QuranCubit>().loadSurahs();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -53,18 +49,26 @@ class _HomeScreenElegantState extends State<HomeScreen> with RouteAware{
         physics: BouncingScrollPhysics(),
         slivers: [
           SliverToBoxAdapter(child: Gap(65.h)),
-          // Quran Progress Dashboard
-          // Banners
+          /// Calender
           SliverToBoxAdapter(
             child: Padding(
               padding: EdgeInsets.only(top: 12.h),
               child: HijriCalendarCard(),
             ),
           ),
-          SliverToBoxAdapter(child: Gap(16.h)),
+          SliverToBoxAdapter(child: Gap(22.h)),
 
+          /// Banners
+          SliverToBoxAdapter(
+            child: const FeaturedBanners(),
+          ),
 
-          SliverToBoxAdapter(child: Gap(15.h)),
+          SliverToBoxAdapter(child: Gap(24.h)),
+
+          /// Radio Station
+          SliverToBoxAdapter(child: CairoRadioCard(),),
+
+          SliverToBoxAdapter(child: Gap(24.h)),
 
           SliverToBoxAdapter(child: IslamicDivider(isDark: isDark)),
           // Title of Categories

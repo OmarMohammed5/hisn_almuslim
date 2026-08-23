@@ -73,6 +73,7 @@ flutter:
     - assets/icons/
     - assets/json/
     - assets/hadith.json
+    - assets/json/daily_content.json
  
 
   fonts:

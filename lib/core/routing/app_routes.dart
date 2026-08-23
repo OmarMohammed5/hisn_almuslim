@@ -50,7 +50,8 @@ class AppRoutes {
   static const String quranBookmarks = '/quran-bookmarks';
   static const String quranSearch = '/quran-search';
 
-
+/// Radio Station
+  static const String radio = '/radio';
 
   // Quran Audio
   static const String quranAudioHome = '/quran-audio-home';

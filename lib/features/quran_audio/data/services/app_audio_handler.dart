@@ -65,7 +65,7 @@ class AppAudioHandler extends BaseAudioHandler with QueueHandler, SeekHandler {
   // Loading
   // ---------------------------------------------------------------------
 
-  Future<void> loadAndPlay({
+  Future<void> loadTrack({
     required String url,
     required MediaItem mediaItem,
   }) async {

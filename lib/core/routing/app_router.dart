@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hisn_almuslim/core/models/content_item.dart';
 import 'package:hisn_almuslim/core/routing/app_routes.dart';
 import 'package:hisn_almuslim/core/routing/route_transitions.dart';
+import 'package:hisn_almuslim/features/radio/presentation/cubit/radio_cubit.dart';
 import 'package:hisn_almuslim/features/stories/domain/entities/prophet_story.dart';
 import 'package:hisn_almuslim/features/stories/ui/cubit/stories_cubit.dart';
 import 'package:hisn_almuslim/features/stories/ui/screens/stories_screen.dart';
@@ -64,6 +65,7 @@ import '../../features/quran_audio/logic/quran_audio_cubit.dart';
 import '../../features/quran_audio/ui/screens/audio_player_screen.dart';
 import '../../features/quran_audio/ui/screens/quran.dart';
 import '../../features/quran_audio/ui/screens/quran_audio_home_screen.dart';
+import '../../features/radio/presentation/screens/radio_screen.dart';
 import '../../features/settings/data/cubit/notification_cubit.dart';
 import '../../features/settings/data/cubit/theme_cubit.dart';
 import '../../features/settings/screen/settings_screen.dart';
@@ -101,9 +103,21 @@ class AppRouter {
               BlocProvider.value(value: sl<QuranCubit>()),
               // BlocProvider.value(value: sl<QuranProgressCubit>()),
               BlocProvider.value(value: sl<AdhanCubit>()),
+              BlocProvider.value(value: sl<RadioCubit>()),
+
             ],
             child:  HomeScreen(),
           ),
+        );
+
+    // ============ Radio Station  ============
+      case AppRoutes.radio:
+        return slidePageRoute(
+            settings: settings,
+            child: BlocProvider.value(
+                value: sl<RadioCubit>(),
+              child: const RadioScreen(),
+            ),
         );
 
     // ============ AZKAR ============

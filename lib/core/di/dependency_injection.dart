@@ -40,6 +40,11 @@ import '../../features/quran/domain/repositories/quran_repository.dart';
 import '../../features/quran/domain/repositories/quran_repository_impl.dart';
 import '../../features/quran/domain/repositories/reading_progress_repository.dart';
 import '../../features/quran/domain/repositories/reading_progress_repository_impl.dart';
+import '../../features/quran_audio/data/services/app_audio_player_service.dart';
+import '../../features/radio/data/datasources/radio_local_data_source.dart';
+import '../../features/radio/data/repositories/radio_repository_impl.dart';
+import '../../features/radio/domain/repositories/radio_repository.dart';
+import '../../features/radio/presentation/cubit/radio_cubit.dart';
 import '../../features/stories/data/datasources/stories_local_data_source.dart';
 import '../../features/stories/data/repositories/stories_repository.dart';
 import '../../features/stories/data/repositories/stories_repository_impl.dart';
@@ -172,6 +177,28 @@ Future<void> setupLocator() async {
       getProphetStories: sl<GetProphetStories>(),
     ),
   );  _preloadQuranData();
+
+
+  /// Radio Station
+
+  sl.registerLazySingleton<RadioLocalDataSource>(
+        () => RadioLocalDataSourceImpl(),
+  );
+
+  sl.registerLazySingleton<RadioRepository>(
+        () => RadioRepositoryImpl(
+      localDataSource: sl(),
+      audioPlayerService: AudioPlayerService.instance,
+    ),
+  );
+
+  sl.registerFactory<RadioCubit>(
+        () => RadioCubit(
+      repository: sl(),
+    ),
+  );
+
+
 }
 
 
