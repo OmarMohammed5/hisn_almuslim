@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gap/gap.dart';
+
 import 'package:hisn_almuslim/features/adhan/screen/adhan_screen.dart';
 import 'package:hisn_almuslim/features/home/screen/home_screen.dart';
 import 'package:hisn_almuslim/features/quran/data/cubit/ayah_highlight_cubit.dart';
 import 'package:hisn_almuslim/features/quran_audio/ui/screens/quran.dart';
 import 'package:hisn_almuslim/features/settings/screen/settings_screen.dart';
+
 import 'core/di/dependency_injection.dart';
 import 'features/adhan/data/cubit/adhan_cubit.dart';
 import 'features/lectures/presentation/cubit/lectures_cubit.dart';
@@ -17,33 +18,48 @@ import 'features/quran_audio/logic/quran_audio_cubit.dart';
 import 'features/radio/presentation/cubit/radio_cubit.dart';
 
 class Root extends StatefulWidget {
-  const Root({super.key});
+  const Root({
+    super.key,
+  });
 
   @override
   State<Root> createState() => _RootState();
 }
 
 class _RootState extends State<Root> {
-  final ValueNotifier<int> _currentIndexNotifier = ValueNotifier(0);
-
-
+  final ValueNotifier<int> _currentIndexNotifier =
+  ValueNotifier<int>(0);
 
   final List<Widget> _pages = [
     MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => sl<QuranCubit>()),
-        BlocProvider.value(value: sl<RadioCubit>()),
-        BlocProvider.value(value: sl<LecturesCubit>()),
+        BlocProvider(
+          create: (_) => sl<QuranCubit>(),
+        ),
+        BlocProvider.value(
+          value: sl<RadioCubit>(),
+        ),
+        BlocProvider.value(
+          value: sl<LecturesCubit>(),
+        ),
       ],
       child: const HomeScreen(),
     ),
 
     MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => sl<QuranCubit>()),
-        BlocProvider(create: (_) => sl<SearchCubit>()),
-        BlocProvider(create: (_) => sl<AyahHighlightCubit>()),
-        BlocProvider(create: (_) => sl<QuranAudioCubit>()),
+        BlocProvider(
+          create: (_) => sl<QuranCubit>(),
+        ),
+        BlocProvider(
+          create: (_) => sl<SearchCubit>(),
+        ),
+        BlocProvider(
+          create: (_) => sl<AyahHighlightCubit>(),
+        ),
+        BlocProvider(
+          create: (_) => sl<QuranAudioCubit>(),
+        ),
       ],
       child: const Quran(),
     ),
@@ -70,17 +86,28 @@ class _RootState extends State<Root> {
         resizeToAvoidBottomInset: false,
         body: Stack(
           children: [
-            ValueListenableBuilder(
-              valueListenable: _currentIndexNotifier,
-              builder: (context, currentIndex, child) {
-                return IndexedStack(index: currentIndex, children: _pages);
+            ValueListenableBuilder<int>(
+              valueListenable:
+              _currentIndexNotifier,
+              builder: (
+                  context,
+                  currentIndex,
+                  child,
+                  ) {
+                return IndexedStack(
+                  index: currentIndex,
+                  children: _pages,
+                );
               },
             ),
+
             Positioned(
               left: 0,
               right: 0,
-              bottom: 6.h,
-              child: _buildModernNav(context),
+              bottom: 0,
+              child: _buildBottomNavigation(
+                context,
+              ),
             ),
           ],
         ),
@@ -88,149 +115,293 @@ class _RootState extends State<Root> {
     );
   }
 
-  Widget _buildModernNav(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+  // ===============================================================
+  // Floating Navigation Dock
+  // ===============================================================
 
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
-      height: 53.h,
-      decoration: BoxDecoration(
-        color: isDark
-            ? const Color(0xFF1e2530).withOpacity(0.98)
-            : Colors.white.withOpacity(0.98),
-        borderRadius: BorderRadius.circular(40.r),
-        border: Border.all(
-          color: const Color(0xFF4a9b8e).withOpacity(0.15),
-          width: 1.5,
-        ),
+  Widget _buildBottomNavigation(
+      BuildContext context,
+      ) {
+    final isDark =
+        Theme.of(context).brightness ==
+            Brightness.dark;
+
+    final backgroundColor = isDark
+        ? const Color(0xFF111918)
+        : Colors.white;
+
+    final borderColor = isDark
+        ? Colors.white.withValues(alpha: 0.07)
+        : Colors.black.withValues(alpha: 0.06);
+
+    final shadowColor = isDark
+        ? Colors.black.withValues(alpha: 0.45)
+        : Colors.black.withValues(alpha: 0.12);
+
+    return SafeArea(
+      top: false,
+      minimum: EdgeInsets.fromLTRB(
+        14.w,
+        0,
+        14.w,
+        10.h,
       ),
-      child: Stack(
-        children: [
-          // Background indicator for active item
-          ValueListenableBuilder<int>(
-            valueListenable: _currentIndexNotifier,
-            builder: (context, currentIndex, _) {
-              return AnimatedPositioned(
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.easeInOut,
-                right: _getIndicatorPosition(currentIndex),
-                top: 3.h,
-                bottom: 3.h,
-                child: Container(
-                  width: 62.w,
-                  decoration: BoxDecoration(
-                    color: Colors.teal.shade600,
-                    borderRadius: BorderRadius.circular(30.r),
-                  ),
-                ),
-              );
-            },
+      child: Container(
+        height: 56.h,
+        padding: EdgeInsets.symmetric(
+          horizontal: 8.w,
+          vertical: 7.h,
+        ),
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          borderRadius:
+          BorderRadius.circular(28.r),
+          border: Border.all(
+            color: borderColor,
           ),
-          // Navigation items
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _modernNavItem(
-                icon: Icons.home_rounded,
-                label: 'الرئيسية',
-                index: 0,
-                isDark: isDark,
+          boxShadow: [
+            BoxShadow(
+              color: shadowColor,
+              blurRadius: 25.r,
+              spreadRadius: -5,
+              offset: Offset(
+                0,
+                8.h,
               ),
-              _modernNavItem(
-                icon: FlutterIslamicIcons.quran2,
-                label: 'القرآن',
-                index: 1,
-                isDark: isDark,
-              ),
-              _modernNavItem(
-                icon: FlutterIslamicIcons.mosque,
-                label: 'مواقيت الصلاة',
-                index: 2,
-                isDark: isDark,
-              ),
-              _modernNavItem(
-                icon: Icons.settings_rounded,
-                label: 'الإعدادات',
-                index: 3,
-                isDark: isDark,
-              ),
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            _buildNavigationItem(
+              index: 0,
+              icon: Icons.home_rounded,
+              label: 'الرئيسية',
+              isDark: isDark,
+            ),
+            _buildNavigationItem(
+              index: 1,
+              icon: FlutterIslamicIcons.quran2,
+              label: 'القرآن',
+              isDark: isDark,
+            ),
+            _buildNavigationItem(
+              index: 2,
+              icon: FlutterIslamicIcons.mosque,
+              label: 'الصلاة',
+              isDark: isDark,
+            ),
+            _buildNavigationItem(
+              index: 3,
+              icon: Icons.settings_rounded,
+              label: 'الإعدادات',
+              isDark: isDark,
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  double _getIndicatorPosition(int index) {
-    // Calculate position for each tab (RTL)
-    switch (index) {
-      case 0:
-        return 8.w; // Home - far right
-      case 1:
-        return 88.w; // Quran
-      case 2:
-        return 168.w; // Adhan
-      case 3:
-        return 248.w; // Settings - far left
-      default:
-        return 8.w;
-    }
-  }
+  // ===============================================================
+  // Navigation Item
+  // ===============================================================
 
-  Widget _modernNavItem({
+  Widget _buildNavigationItem({
+    required int index,
     required IconData icon,
     required String label,
-    required int index,
     required bool isDark,
   }) {
     return Expanded(
       child: ValueListenableBuilder<int>(
-        valueListenable: _currentIndexNotifier,
-        builder: (context, currentIndex, _) {
-          final isActive = currentIndex == index;
+        valueListenable:
+        _currentIndexNotifier,
+        builder: (
+            context,
+            currentIndex,
+            child,
+            ) {
+          final isActive =
+              currentIndex == index;
 
           return GestureDetector(
-            onTap: () => _currentIndexNotifier.value = index,
-            child: Container(
-              height: 55.h,
-              color: Colors.transparent,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+            behavior:
+            HitTestBehavior.opaque,
+            onTap: () {
+              if (!isActive) {
+                _currentIndexNotifier.value =
+                    index;
+              }
+            },
+            child: SizedBox(
+              height: double.infinity,
+              child: Stack(
+                alignment: Alignment.center,
+                clipBehavior: Clip.none,
                 children: [
-                  AnimatedContainer(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                    child: Icon(
+                  // =================================================
+                  // Inactive Icon
+                  // =================================================
+
+                  AnimatedOpacity(
+                    duration:
+                    const Duration(
+                      milliseconds: 180,
+                    ),
+                    opacity:
+                    isActive ? 0 : 1,
+                    child: _buildInactiveIcon(
                       icon,
-                      size: isActive ? 18.sp : 17.sp,
-                      color: isActive
-                          ? Colors.white
-                          : (isDark
-                                ? Colors.grey.shade400
-                                : Colors.grey.shade600),
+                      isDark,
                     ),
                   ),
-                  Gap(6.h),
-                  AnimatedDefaultTextStyle(
-                    duration: const Duration(milliseconds: 300),
-                    style: TextStyle(
-                      fontSize: isActive ? 10.sp : 9.sp,
-                      fontWeight: isActive ? FontWeight.bold : FontWeight.w600,
-                      color: isActive
-                          ? Colors.white
-                          : (isDark
-                                ? Colors.grey.shade400
-                                : Colors.grey.shade600),
-                      fontFamily: 'QuranFont',
-                      height: 1,
+
+                  // =================================================
+                  // Active Floating Button
+                  // =================================================
+
+                  AnimatedPositioned(
+                    duration:
+                    const Duration(
+                      milliseconds: 320,
                     ),
-                    child: Text(label),
+                    curve:
+                    Curves.easeOutBack,
+                    top: isActive
+                        ? -17.h
+                        : 20.h,
+                    child: AnimatedOpacity(
+                      duration:
+                      const Duration(
+                        milliseconds: 180,
+                      ),
+                      opacity:
+                      isActive ? 1 : 0,
+                      child:
+                      _buildActiveItem(
+                        icon: icon,
+                        label: label,
+                        isDark: isDark,
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),
           );
         },
+      ),
+    );
+  }
+
+  // ===============================================================
+  // Active Item
+  // ===============================================================
+
+  Widget _buildActiveItem({
+    required IconData icon,
+    required String label,
+    required bool isDark,
+  }) {
+    final activeColor = isDark
+        ? const Color(0xFF7BE4D1)
+        : const Color(0xFF087F73);
+
+    final activeBackground = isDark
+        ? const Color(0xFF173B36)
+        : const Color(0xFFE1F2EF);
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 48.w,
+          height: 48.w,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: activeColor,
+            border: Border.all(
+              color: isDark
+                  ? const Color(0xFF0E2522)
+                  : Colors.white,
+              width: 4.w,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: activeColor.withValues(
+                  alpha: 0.28,
+                ),
+                blurRadius: 14.r,
+                offset: Offset(
+                  0,
+                  5.h,
+                ),
+              ),
+            ],
+          ),
+          child: Icon(
+            icon,
+            size: 21.sp,
+            color: isDark
+                ? const Color(0xFF0D2824)
+                : Colors.white,
+          ),
+        ),
+
+        SizedBox(height: 3.h),
+
+        Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: 9.w,
+            vertical: 3.h,
+          ),
+          decoration: BoxDecoration(
+            color: activeBackground,
+            borderRadius:
+            BorderRadius.circular(10.r),
+          ),
+          child: Text(
+            label,
+            maxLines: 1,
+            overflow:
+            TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: 8.5.sp,
+              fontWeight:
+              FontWeight.w800,
+              color: activeColor,
+              fontFamily: 'QuranFont',
+              height: 1,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  // ===============================================================
+  // Inactive Item
+  // ===============================================================
+
+  Widget _buildInactiveIcon(
+      IconData icon,
+      bool isDark,
+      ) {
+    return Container(
+      width: 44.w,
+      height: 44.w,
+      alignment: Alignment.center,
+      child: Icon(
+        icon,
+        size: 20.sp,
+        color: isDark
+            ? Colors.white.withValues(
+          alpha: 0.42,
+        )
+            : Colors.black.withValues(
+          alpha: 0.42,
+        ),
       ),
     );
   }
