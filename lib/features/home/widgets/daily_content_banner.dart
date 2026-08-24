@@ -152,7 +152,6 @@ class DailyContentBanner extends StatelessWidget {
                     // ==================================================
 
                     Row(
-                      textDirection: TextDirection.rtl,
                       children: [
                         // Icon
                         Container(

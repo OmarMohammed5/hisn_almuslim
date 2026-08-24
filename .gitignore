@@ -16,3 +16,5 @@ ios/Flutter/App.framework
 
 # Logs
 *.log
+
+env/config.json

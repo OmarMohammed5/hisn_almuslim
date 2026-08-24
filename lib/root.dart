@@ -12,6 +12,7 @@ import 'package:hisn_almuslim/features/settings/screen/settings_screen.dart';
 
 import 'core/di/dependency_injection.dart';
 import 'features/adhan/data/cubit/adhan_cubit.dart';
+import 'features/lectures/presentation/cubit/lectures_cubit.dart';
 import 'features/quran/data/cubit/cubit/quran_progress_cubit.dart';
 import 'features/quran/data/cubit/cubit/search_cubit.dart';
 import 'features/quran/data/cubit/quran_cubit.dart';
@@ -28,24 +29,14 @@ class Root extends StatefulWidget {
 class _RootState extends State<Root> {
   final ValueNotifier<int> _currentIndexNotifier = ValueNotifier(0);
 
-  // final List<Widget> _pages = [
-  //   HomeScreen(),
-  //   Quran(),
-  //   AdhanScreen(),
-  //   SettingsScreen(),
-  // ];
+
 
   final List<Widget> _pages = [
     MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => sl<QuranCubit>()),
         BlocProvider.value(value: sl<RadioCubit>()),
-
-        // BlocProvider(create: (_) => sl<QuranProgressCubit>()),
-        // BlocProvider(create: (_) => sl<AsmaAllahCubit>()..loadNames()),
-        // BlocProvider(create: (_) => sl<QuranProgressCubit>()),
-        // BlocProvider(create: (_) => sl<QuranProgressCubit>()),
-
+        BlocProvider.value(value: sl<LecturesCubit>()),
       ],
       child: const HomeScreen(),
     ),

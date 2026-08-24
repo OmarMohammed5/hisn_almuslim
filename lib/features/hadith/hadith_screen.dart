@@ -32,16 +32,8 @@ class HadithScreen extends StatelessWidget {
                 crossAxisSpacing: 20.w,
                 childAspectRatio: 0.83,
                 children: [
-                  // صحيح البخاري
                   GestureDetector(
                     onTap: () {
-                      // Navigator.of(context).push(
-                      //   MaterialPageRoute(
-                      //     builder: (context) {
-                      //       return FehresSahihBukhary();
-                      //     },
-                      //   ),
-                      // );
                       Navigator.pushNamed(context, AppRoutes.fehresSahihBukhary);
                     },
                     child: BookCard(
@@ -51,16 +43,8 @@ class HadithScreen extends StatelessWidget {
                     ),
                   ),
 
-                  // // صحيح مسلم
                   GestureDetector(
                     onTap: () {
-                      // Navigator.of(context).push(
-                      //   MaterialPageRoute(
-                      //     builder: (context) {
-                      //       return FehresSahihMuslim();
-                      //     },
-                      //   ),
-                      // );
                       Navigator.pushNamed(context, AppRoutes.fehresSahihMuslim);
                     },
                     child: BookCard(
@@ -70,16 +54,8 @@ class HadithScreen extends StatelessWidget {
                     ),
                   ),
 
-                  // رياض الصالحين
                   GestureDetector(
                     onTap: () {
-                      // Navigator.of(context).push(
-                      //   MaterialPageRoute(
-                      //     builder: (context) {
-                      //       return FehresReyadAlSaliheen();
-                      //     },
-                      //   ),
-                      // );
                       Navigator.pushNamed(context, AppRoutes.fehresReyqdAlSaliheen);
                     },
                     child: BookCard(
@@ -89,16 +65,8 @@ class HadithScreen extends StatelessWidget {
                     ),
                   ),
 
-                  //  الأربعون النووية
                   GestureDetector(
                     onTap: () {
-                      // Navigator.of(context).push(
-                      //   MaterialPageRoute(
-                      //     builder: (context) {
-                      //       return FehresHadithNawawi();
-                      //     },
-                      //   ),
-                      // );
                       Navigator.pushNamed(context, AppRoutes.fehresHadithNawawi);
                     },
                     child: BookCard(

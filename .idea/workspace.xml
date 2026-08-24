@@ -9,44 +9,38 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8994c64f-2425-4304-931e-2db017ba0e3b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/android/app/src/main/res/xml/network_security_config.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/json/daily_content.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/core/constant/app_constants.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/core/shared/live_broadcast_indicator.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/core/theme/radio_colors.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/home/data/datasource/daily_content_local_data_source.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/home/data/models/daily_content_model.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/home/data/models/featured_banner_model.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/home/data/models/featured_banners_data.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/home/widgets/cairo_radio_card.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/home/widgets/daily_content_banner.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/home/widgets/featured_banner_card.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/home/widgets/featured_banners.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/home/widgets/live_dot.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/home/widgets/radio_icon_widget.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/home/widgets/radio_play_button.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/radio/data/datasources/radio_local_data_source.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/radio/data/models/radio_station_model.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/radio/data/repositories/radio_repository_impl.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/radio/domain/entities/radio_station.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/radio/domain/repositories/radio_repository.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/radio/presentation/cubit/radio_cubit.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/radio/presentation/cubit/radio_state.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/radio/presentation/screens/radio_screen.dart" afterDir="false" />
+    <list default="true" id="8994c64f-2425-4304-931e-2db017ba0e3b" name="Changes" comment="Add initial git directory for version control">
+      <change afterPath="$PROJECT_DIR$/env/config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/home/widgets/lectures_and_lessons_card.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/lectures/domain/services/islamic_search_validator.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/lectures/presentation/screens/category_lectures_screen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/lectures/presentation/screens/lecture_search_screen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/lectures/presentation/screens/playlist_details_screen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/lectures/presentation/screens/sheikh_details_screen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/lectures/presentation/widgets/lecture_search_bar.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/lectures/presentation/widgets/lecture_state_views.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/lectures/presentation/widgets/player_main_content.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/lectures/presentation/widgets/playlist_card.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/lectures/presentation/widgets/sheikh_header.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/main_dart.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/main_dart.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/core/constant/app_constants.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/constant/app_constants.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/core/di/dependency_injection.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/di/dependency_injection.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/core/routing/app_router.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/routing/app_router.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/core/routing/app_routes.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/routing/app_routes.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/hadith/hadith_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/hadith/hadith_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/hadith/widgets/book_card.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/hadith/widgets/book_card.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/hadith/widgets/content.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/hadith/widgets/content.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/features/home/screen/home_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/home/screen/home_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/features/quran/data/cubit/quran_cubit.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/data/cubit/quran_cubit.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/features/quran/data/models/ayah_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/data/models/ayah_model.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/features/quran/data/models/surah_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/data/models/surah_model.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/features/quran_audio/data/services/app_audio_handler.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran_audio/data/services/app_audio_handler.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/features/quran_audio/data/services/app_audio_player_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran_audio/data/services/app_audio_player_service.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/home/widgets/daily_content_banner.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/home/widgets/daily_content_banner.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/widgets/search_field.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/widgets/search_field.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/root.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/root.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

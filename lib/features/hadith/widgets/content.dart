@@ -115,7 +115,6 @@ class Content extends StatelessWidget {
               Text(
                 content.trim(),
                 textAlign: TextAlign.center,
-                textDirection: TextDirection.rtl,
                 style: TextStyle(
                   fontSize: fontSize.sp,
                   height: 2.2.h,

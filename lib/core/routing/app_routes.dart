@@ -67,4 +67,15 @@ class AppRoutes {
   static const String stories = '/story';
   static const String storyDetails = '/story-details';
 
+  /// Islamic Lectures
+  static const String lectures = '/lectures';
+  static const String lecturePlayer = '/lecturePlayer';
+  static const String sheikhView = '/sheikh-view';
+  static const String playListView = '/playList-view';
+
+  static const String lectureCategory = 'lecture-category';
+  static const String lectureSearch = 'lecture-search';
+
+
+
 }

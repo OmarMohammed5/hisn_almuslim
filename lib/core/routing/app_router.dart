@@ -3,11 +3,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hisn_almuslim/core/models/content_item.dart';
 import 'package:hisn_almuslim/core/routing/app_routes.dart';
 import 'package:hisn_almuslim/core/routing/route_transitions.dart';
+import 'package:hisn_almuslim/features/lectures/domain/entities/lecture.dart';
+import 'package:hisn_almuslim/features/lectures/domain/entities/sheikh.dart';
+import 'package:hisn_almuslim/features/lectures/presentation/cubit/lectures_cubit.dart';
+import 'package:hisn_almuslim/features/lectures/presentation/screens/lectures_screen.dart';
+import 'package:hisn_almuslim/features/lectures/presentation/screens/playlist_details_screen.dart';
+import 'package:hisn_almuslim/features/lectures/presentation/screens/sheikh_details_screen.dart';
 import 'package:hisn_almuslim/features/radio/presentation/cubit/radio_cubit.dart';
 import 'package:hisn_almuslim/features/stories/domain/entities/prophet_story.dart';
 import 'package:hisn_almuslim/features/stories/ui/cubit/stories_cubit.dart';
 import 'package:hisn_almuslim/features/stories/ui/screens/stories_screen.dart';
 import 'package:hisn_almuslim/features/stories/ui/screens/story_details_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../features/adhan/data/cubit/adhan_cubit.dart';
 import '../../features/al azkar/data/cubit/azkar_cubit.dart';
@@ -48,6 +55,11 @@ import '../../features/jami dua/screen/hajj_and_omra_screen.dart';
 import '../../features/jami dua/screen/last_ten_duas_screen.dart';
 import '../../features/jami dua/screen/quran_dua_screen.dart';
 import '../../features/jami dua/screen/sunnah_dua_screen.dart';
+import '../../features/lectures/domain/entities/lecture_playlist.dart';
+import '../../features/lectures/domain/repositories/lectures_repository.dart';
+import '../../features/lectures/presentation/screens/category_lectures_screen.dart';
+import '../../features/lectures/presentation/screens/lecture_player_screen.dart';
+import '../../features/lectures/presentation/screens/lecture_search_screen.dart';
 import '../../features/quran/data/cubit/ayah_highlight_cubit.dart';
 import '../../features/quran/data/cubit/cubit/quran_progress_cubit.dart';
 import '../../features/quran/data/cubit/cubit/search_cubit.dart';
@@ -104,7 +116,7 @@ class AppRouter {
               // BlocProvider.value(value: sl<QuranProgressCubit>()),
               BlocProvider.value(value: sl<AdhanCubit>()),
               BlocProvider.value(value: sl<RadioCubit>()),
-
+              BlocProvider.value(value: sl<LecturesCubit>()),
             ],
             child:  HomeScreen(),
           ),
@@ -119,6 +131,127 @@ class AppRouter {
               child: const RadioScreen(),
             ),
         );
+
+// ============ Islamic Lectures ============
+      case AppRoutes.lectures:
+        final preferences = arguments as SharedPreferences;
+
+        return slidePageRoute(
+          settings: settings,
+          child: BlocProvider(
+            create: (_) => sl<LecturesCubit>(),
+            child: LecturesScreen(
+              preferences: preferences,
+            ),
+          ),
+        );
+
+      case AppRoutes.lecturePlayer:
+        final args = arguments as Map<String, dynamic>;
+
+        final preferences = args['preferences'] as SharedPreferences;
+        final lecture = args['lecture'] as Lecture;
+        final initialPositionSeconds =
+        args['initialPositionSeconds'] as double;
+
+        return slidePageRoute(
+          settings: settings,
+          child: BlocProvider(
+            create: (_) => sl<LecturesCubit>(),
+            child: LecturePlayerScreen(
+              preferences: preferences,
+              lecture: lecture,
+              initialPositionSeconds: initialPositionSeconds,
+            ),
+          ),
+        );
+
+
+      case AppRoutes.sheikhView:
+        final args = arguments as Map<String, dynamic>;
+
+        final preferences =
+        args['preferences'] as SharedPreferences;
+
+        final sheikh =
+        args['sheikh'] as Sheikh;
+
+        final repository =
+        sl<LecturesRepository>();
+
+        return slidePageRoute(
+          settings: settings,
+          child: BlocProvider(
+            create: (_) => sl<LecturesCubit>(),
+            child: SheikhDetailsScreen(
+              preferences: preferences,
+              sheikh: sheikh,
+              repository: repository,
+            ),
+          ),
+        );
+
+      case AppRoutes.playListView:
+        final args = arguments as Map<String, dynamic>;
+
+        final preferences = args['preferences'] as SharedPreferences;
+        final playlist = args['playlist'] as LecturePlaylist;
+        final repository = args['repository'] as LecturesRepository;
+
+        return slidePageRoute(
+          settings: settings,
+          child: BlocProvider(
+            create: (_) => sl<LecturesCubit>(),
+            child: PlaylistDetailsScreen(
+              preferences: preferences,
+              playlist: playlist,
+              repository: repository,
+            ),
+          ),
+        );
+
+
+
+      case AppRoutes.lectureSearch:
+        final arguments =
+        settings.arguments as Map<String, dynamic>;
+
+        final preferences =
+        arguments['preferences'] as SharedPreferences;
+
+        return slidePageRoute(
+          settings: settings,
+          child: BlocProvider.value(
+            value: sl<LecturesCubit>(),
+            child: LectureSearchScreen(
+              preferences: preferences,
+            ),
+          ),
+        );
+
+      case AppRoutes.lectureCategory:
+        final arguments =
+        settings.arguments as Map<String, dynamic>;
+
+        final preferences =
+        arguments['preferences'] as SharedPreferences;
+
+        final category =
+        arguments['category'] as String;
+
+        return slidePageRoute(
+          settings: settings,
+          child: BlocProvider.value(
+            value: sl<LecturesCubit>(),
+            child: CategoryLecturesScreen(
+              preferences: preferences,
+              category: category,
+            ),
+          ),
+        );
+
+
+
 
     // ============ AZKAR ============
       case AppRoutes.morningAzkar:

@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hisn_almuslim/core/constant/app_constants.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:hisn_almuslim/core/service/notification_service.dart';
 import 'package:hisn_almuslim/core/service/wird_notification.dart';
@@ -29,6 +32,11 @@ import 'package:hisn_almuslim/features/adhan/data/cubit/adhan_cubit.dart';
 import 'package:hisn_almuslim/features/quran_audio/logic/quran_audio_cubit.dart';
 import 'package:hisn_almuslim/features/quran_audio/logic/audio_player_cubit.dart';
 
+import '../../features/lectures/data/datasources/lectures_local_data_source.dart';
+import '../../features/lectures/data/datasources/youtube_remote_data_source.dart';
+import '../../features/lectures/data/repositories/lectures_repository_impl.dart';
+import '../../features/lectures/domain/repositories/lectures_repository.dart';
+import '../../features/lectures/presentation/cubit/lectures_cubit.dart';
 import '../../features/quran/data/cubit/ayah_highlight_cubit.dart';
 import '../../features/quran/data/cubit/reading_progress_cubit.dart';
 import '../../features/quran/data/datasource/ayah_highlight_data_source.dart';
@@ -198,6 +206,71 @@ Future<void> setupLocator() async {
     ),
   );
 
+  // ============================================================
+// LECTURES
+// ============================================================
+
+// HTTP Client
+  if (!sl.isRegistered<http.Client>()) {
+    sl.registerLazySingleton<http.Client>(
+      http.Client.new,
+    );
+  }
+
+// ------------------------------------------------------------
+// YouTube Remote Data Source
+// ------------------------------------------------------------
+
+  if (!sl.isRegistered<YoutubeRemoteDataSource>()) {
+    const apiKey = String.fromEnvironment('YOUTUBE_API_KEY');
+    //
+    // debugPrint(
+    //   '🔥 API KEY STATUS: ${apiKey.isEmpty ? 'EMPTY ❌' : 'LOADED ✅ (len=${apiKey.length})'}',
+    // );
+
+    sl.registerLazySingleton<YoutubeRemoteDataSource>(
+          () => YoutubeRemoteDataSource(
+        client: sl<http.Client>(),
+        apiKey: apiKey,
+      ),
+    );
+  }
+
+// ------------------------------------------------------------
+// Local Data Source
+// ------------------------------------------------------------
+
+  if (!sl.isRegistered<LecturesLocalDataSource>()) {
+    sl.registerLazySingleton<LecturesLocalDataSource>(
+          () => LecturesLocalDataSource(
+        sl<SharedPreferences>(),
+      ),
+    );
+  }
+
+// ------------------------------------------------------------
+// Repository
+// ------------------------------------------------------------
+
+  if (!sl.isRegistered<LecturesRepository>()) {
+    sl.registerLazySingleton<LecturesRepository>(
+          () => LecturesRepositoryImpl(
+        remote: sl<YoutubeRemoteDataSource>(),
+        local: sl<LecturesLocalDataSource>(),
+      ),
+    );
+  }
+
+// ------------------------------------------------------------
+// Cubit
+// Factory → new Cubit instance whenever needed
+// ------------------------------------------------------------
+
+  sl.registerFactory<LecturesCubit>(
+        () => LecturesCubit(
+      repository: sl<LecturesRepository>(),
+    ),
+  );
 
 }
 

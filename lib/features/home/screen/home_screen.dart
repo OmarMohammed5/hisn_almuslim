@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/features/home/data/models/category_model.dart';
@@ -8,9 +7,7 @@ import 'package:hisn_almuslim/features/home/widgets/hijri_calender.dart';
 import 'package:hisn_almuslim/features/home/widgets/categories_header.dart';
 import 'package:hisn_almuslim/features/home/widgets/islamic_divider.dart';
 import 'package:hisn_almuslim/features/home/widgets/custom_card_widget.dart';
-import 'package:hisn_almuslim/features/quran/data/cubit/quran_cubit.dart';
-import 'package:hisn_almuslim/features/quran/data/cubit/quran_state.dart';
-import 'package:hisn_almuslim/features/quran/widgets/quran_dashboard.dart';
+import 'package:hisn_almuslim/features/home/widgets/lectures_and_lessons_card.dart';
 import '../../../hisn_al_muslim_app.dart';
 import '../widgets/featured_banners.dart';
 
@@ -71,6 +68,13 @@ class _HomeScreenElegantState extends State<HomeScreen> with RouteAware{
           SliverToBoxAdapter(child: Gap(24.h)),
 
           SliverToBoxAdapter(child: IslamicDivider(isDark: isDark)),
+
+          SliverToBoxAdapter(child: Gap(24.h)),
+
+          /// Lectures
+          SliverToBoxAdapter(child: LecturesAndLessonsCard()),
+
+          SliverToBoxAdapter(child: Gap(24.h)),
           // Title of Categories
           SliverToBoxAdapter(child: CategoriesHeader(isDark: isDark)),
 
