@@ -15,7 +15,6 @@ import 'package:hisn_almuslim/features/stories/ui/cubit/stories_cubit.dart';
 import 'package:hisn_almuslim/features/stories/ui/screens/stories_screen.dart';
 import 'package:hisn_almuslim/features/stories/ui/screens/story_details_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../features/adhan/data/cubit/adhan_cubit.dart';
 import '../../features/al azkar/data/cubit/azkar_cubit.dart';
 import '../../features/al azkar/evening azkar/screen/evening_azkar_screen.dart';
@@ -59,15 +58,11 @@ import '../../features/lectures/domain/entities/lecture_playlist.dart';
 import '../../features/lectures/domain/repositories/lectures_repository.dart';
 import '../../features/lectures/presentation/screens/category_lectures_screen.dart';
 import '../../features/lectures/presentation/screens/lecture_player_screen.dart';
-import '../../features/lectures/presentation/screens/lecture_search_screen.dart';
 import '../../features/quran/data/cubit/ayah_highlight_cubit.dart';
-import '../../features/quran/data/cubit/cubit/quran_progress_cubit.dart';
 import '../../features/quran/data/cubit/cubit/search_cubit.dart';
 import '../../features/quran/data/cubit/quran_cubit.dart';
 import '../../features/quran/data/cubit/reading_progress_cubit.dart';
-import '../../features/quran/screen/quran_bookmarks_page.dart';
 import '../../features/quran/screen/quran_home_page.dart';
-import '../../features/quran/screen/quran_search_page.dart';
 import '../../features/quran/screen/quran_tafsir_page.dart';
 import '../../features/quran/screen/quran_surah_page.dart';
 import '../../features/quran_audio/data/models/reciter_model.dart';
@@ -77,7 +72,6 @@ import '../../features/quran_audio/logic/quran_audio_cubit.dart';
 import '../../features/quran_audio/ui/screens/audio_player_screen.dart';
 import '../../features/quran_audio/ui/screens/quran.dart';
 import '../../features/quran_audio/ui/screens/quran_audio_home_screen.dart';
-import '../../features/radio/presentation/screens/radio_screen.dart';
 import '../../features/settings/data/cubit/notification_cubit.dart';
 import '../../features/settings/data/cubit/theme_cubit.dart';
 import '../../features/settings/screen/settings_screen.dart';
@@ -87,9 +81,10 @@ import '../../splash.dart';
 import '../di/dependency_injection.dart';
 
 class AppRouter {
-  final bool seenWelcomeScreen;
 
-  AppRouter(this.seenWelcomeScreen);
+  // final bool seenWelcomeScreen;
+
+  // AppRouter(this.seenWelcomeScreen);
 
   Route? generateRoute(RouteSettings settings) {
     final arguments = settings.arguments;
@@ -99,7 +94,9 @@ class AppRouter {
       case AppRoutes.splash:
         return slidePageRoute(
           settings: settings,
-          child:  Splash(seenWelcomeScreen: seenWelcomeScreen),
+          child:  Splash(
+              // seenWelcomeScreen: seenWelcomeScreen
+          ),
         );
 
       case AppRoutes.welcome:
@@ -122,15 +119,6 @@ class AppRouter {
           ),
         );
 
-    // ============ Radio Station  ============
-      case AppRoutes.radio:
-        return slidePageRoute(
-            settings: settings,
-            child: BlocProvider.value(
-                value: sl<RadioCubit>(),
-              child: const RadioScreen(),
-            ),
-        );
 
 // ============ Islamic Lectures ============
       case AppRoutes.lectures:
@@ -210,24 +198,6 @@ class AppRouter {
           ),
         );
 
-
-
-      case AppRoutes.lectureSearch:
-        final arguments =
-        settings.arguments as Map<String, dynamic>;
-
-        final preferences =
-        arguments['preferences'] as SharedPreferences;
-
-        return slidePageRoute(
-          settings: settings,
-          child: BlocProvider.value(
-            value: sl<LecturesCubit>(),
-            child: LectureSearchScreen(
-              preferences: preferences,
-            ),
-          ),
-        );
 
       case AppRoutes.lectureCategory:
         final arguments =

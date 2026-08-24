@@ -116,6 +116,8 @@ class ZekrCounterCard extends StatelessWidget {
   Widget _buildCounterCircle(int count, Color accentColor, bool isDark, bool isActive) {
     final size = count > 99 ? 50.w : 52.w;
 
+
+
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
       curve: Curves.easeOut,
@@ -177,7 +179,7 @@ class ZekrCounterCard extends StatelessWidget {
             '$count',
             key: ValueKey(count),
             style: TextStyle(
-              fontSize: count > 99 ? 14.sp : 18.sp,
+              fontSize: count > 99 ? 12.5.sp : 18.sp,
               fontWeight: FontWeight.bold,
               color: isActive ? accentColor : Colors.grey.shade400,
               fontFamily: 'Cairo',

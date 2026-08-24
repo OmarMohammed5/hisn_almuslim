@@ -29,15 +29,6 @@ class FeaturedBannerCard extends StatelessWidget {
         margin: EdgeInsets.symmetric(horizontal: 4.w),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(22.r),
-          // boxShadow: [
-          //   BoxShadow(
-          //     color: colorScheme.primary.withValues(
-          //       alpha: isDark ? 0.10 : 0.06,
-          //     ),
-          //     blurRadius: 16.r,
-          //     offset: Offset(0, 6.h),
-          //   ),
-          // ],
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(22.r),

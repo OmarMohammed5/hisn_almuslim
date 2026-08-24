@@ -46,6 +46,11 @@ const featuredYoutubeChannels = <YoutubeChannelConfig>[
   ),
 
   YoutubeChannelConfig(
+    name: 'الشيخ عثمان الخميس',
+    handle: '@othmanalkamees',
+  ),
+
+  YoutubeChannelConfig(
     name: 'م. أيمن عبد الرحيم',
     channelId: 'UCQywk1Q7YQ_UITeh4fr6Ejg',
   ),
@@ -60,6 +65,11 @@ const featuredYoutubeChannels = <YoutubeChannelConfig>[
     handle: '@mohelghaleez',
   ),
 
+
+  YoutubeChannelConfig(
+    name: 'الشيخ أمجد سمير',
+    channelId: 'UC_FFy2YxiElNMba-t-6VwTA',
+  ),
 
   YoutubeChannelConfig(
     name: 'أمير منير',
@@ -86,23 +96,10 @@ const featuredYoutubeChannels = <YoutubeChannelConfig>[
     channelId: 'UCH0J6cLZzbHvm7aKeNrWLdA',
   ),
 
-  YoutubeChannelConfig(
-    name: 'د. أحمد العربي',
-    channelId: 'UCF3kYy_SVFZVj5-YbFriKpQ',
-  ),
-
-  YoutubeChannelConfig(
-    name: 'الشيخ بدر المشاري',
-    channelId: 'UCvspyJ3xzyIZuJuhMeZ0O2g',
-  ),
 
   YoutubeChannelConfig(
     name: 'الشيخ محمود الحسنات',
     channelId: 'UCTsAN8CeCY5zJ_SA8kekTXg',
   ),
 
-  YoutubeChannelConfig(
-    name: 'الشيخ عثمان الخميس',
-    handle: '@othmanalkamees',
-  ),
 ];

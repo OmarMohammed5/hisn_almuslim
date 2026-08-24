@@ -59,8 +59,8 @@ void main() async {
         BlocProvider<NotificationCubit>(create: (_) => sl<NotificationCubit>()),
       ],
       child: HisnAlMuslimApp(
-        seenWelcomeScreen: seenWelcome,
-        appRouter: AppRouter(seenWelcome),
+        // seenWelcomeScreen: seenWelcome,
+        appRouter: AppRouter(),
       ),
     ),
   );

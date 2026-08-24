@@ -3,6 +3,7 @@ import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BookCard extends StatelessWidget {
+  final VoidCallback onTap;
   final String title;
   final String subtitle;
   final String number;
@@ -12,6 +13,7 @@ class BookCard extends StatelessWidget {
     required this.title,
     required this.subtitle,
     required this.number,
+    required this.onTap,
   });
 
   @override
@@ -39,11 +41,8 @@ class BookCard extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       borderRadius: BorderRadius.circular(18.r),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(18.r),
-        onTap: () {
-          // Keep your existing onTap here
-        },
+      child: GestureDetector(
+        onTap: onTap,
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(18.r),

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/features/home/data/models/category_model.dart';
 import 'package:hisn_almuslim/features/home/widgets/cairo_radio_card.dart';
 import 'package:hisn_almuslim/features/home/widgets/hijri_calender.dart';
-import 'package:hisn_almuslim/features/home/widgets/categories_header.dart';
-import 'package:hisn_almuslim/features/home/widgets/islamic_divider.dart';
-import 'package:hisn_almuslim/features/home/widgets/custom_card_widget.dart';
+import 'package:hisn_almuslim/features/home/widgets/home_categories_section.dart';
+import 'package:hisn_almuslim/features/home/widgets/home_section_header.dart';
 import 'package:hisn_almuslim/features/home/widgets/lectures_and_lessons_card.dart';
+
 import '../../../hisn_al_muslim_app.dart';
 import '../widgets/featured_banners.dart';
 
@@ -15,15 +16,19 @@ class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenElegantState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenElegantState extends State<HomeScreen> with RouteAware{
-
+class _HomeScreenState extends State<HomeScreen> with RouteAware {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
+
+    final route = ModalRoute.of(context);
+
+    if (route is PageRoute) {
+      routeObserver.subscribe(this, route);
+    }
   }
 
   @override
@@ -33,78 +38,62 @@ class _HomeScreenElegantState extends State<HomeScreen> with RouteAware{
   }
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Scaffold(
-      body: CustomScrollView(
-        physics: BouncingScrollPhysics(),
-        slivers: [
-          SliverToBoxAdapter(child: Gap(65.h)),
-          /// Calender
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.only(top: 12.h),
-              child: HijriCalendarCard(),
-            ),
+      body: SafeArea(
+        bottom: false,
+        child: CustomScrollView(
+          physics: const BouncingScrollPhysics(
+            parent: AlwaysScrollableScrollPhysics(),
           ),
-          SliverToBoxAdapter(child: Gap(22.h)),
+          slivers: [
+            SliverToBoxAdapter(child: Gap(18.h)),
 
-          /// Banners
-          SliverToBoxAdapter(
-            child: const FeaturedBanners(),
-          ),
+            // Calendar
+            const SliverToBoxAdapter(child: HijriCalendarCard()),
 
-          SliverToBoxAdapter(child: Gap(24.h)),
+            SliverToBoxAdapter(child: Gap(20.h)),
 
-          /// Radio Station
-          SliverToBoxAdapter(child: CairoRadioCard(),),
+            // Featured content
+            const SliverToBoxAdapter(child: FeaturedBanners()),
 
-          SliverToBoxAdapter(child: Gap(24.h)),
+            SliverToBoxAdapter(child: Gap(24.h)),
 
-          SliverToBoxAdapter(child: IslamicDivider(isDark: isDark)),
-
-          SliverToBoxAdapter(child: Gap(24.h)),
-
-          /// Lectures
-          SliverToBoxAdapter(child: LecturesAndLessonsCard()),
-
-          SliverToBoxAdapter(child: Gap(24.h)),
-          // Title of Categories
-          SliverToBoxAdapter(child: CategoriesHeader(isDark: isDark)),
-
-          // Categories
-          SliverPadding(
-            padding: EdgeInsets.fromLTRB(18.w, 4.h, 18.w, 12.h),
-            sliver: SliverGrid.builder(
-              itemCount: categories.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16.w,
-                mainAxisSpacing: 12.h,
-                childAspectRatio: 0.93.h,
+            // Quick access section
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: HomeSectionHeader(
+                  title: 'المحتوى الإسلامي',
+                  icon: FlutterIslamicIcons.islam,
+                ),
               ),
-              itemBuilder: (context, index) {
-                final category = categories[index];
-                final screen = categories[index];
-                return CustomCardWidget(
-                  title: category.title,
-                  icon: category.icon,
-                  onTap: () {
-                    Navigator.pushNamed(context,category.route);
-                  },
-                );
-              },
             ),
-          ),
 
-          SliverToBoxAdapter(child: Gap(100.h)),
-        ],
+            SliverToBoxAdapter(child: Gap(12.h)),
+
+            // Quran Radio
+            const SliverToBoxAdapter(child: CairoRadioCard()),
+
+            SliverToBoxAdapter(child: Gap(14.h)),
+
+            // Lectures
+            const SliverToBoxAdapter(child: LecturesAndLessonsCard()),
+
+            SliverToBoxAdapter(child: Gap(30.h)),
+
+            // Categories
+            SliverToBoxAdapter(
+              child: CategoriesHomeSection(
+                categories: categories,
+                initialVisibleCount: 2,
+              ),
+            ),
+
+            // Bottom spacing
+            SliverToBoxAdapter(child: Gap(110.h)),
+          ],
+        ),
       ),
     );
   }

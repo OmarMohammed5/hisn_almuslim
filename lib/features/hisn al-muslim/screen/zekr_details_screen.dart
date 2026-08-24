@@ -14,6 +14,7 @@ import '../../../core/theme/app_colors.dart';
 class ZekrDetailsScreen extends StatefulWidget {
   final Zekr zekr;
   final int initialIndex;
+
   const ZekrDetailsScreen({
     super.key,
     required this.zekr,
@@ -142,7 +143,6 @@ class _ZekrDetailsScreenState extends State<ZekrDetailsScreen> {
             ),
           ),
           Gap(16.w),
-
         ],
       ),
       body: ValueListenableBuilder(
@@ -171,7 +171,7 @@ class _ZekrDetailsScreenState extends State<ZekrDetailsScreen> {
                       valueListenable: _fontSizeNotifire,
                       builder: (context, fontSize, child) {
                         return ListView(
-                          padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 60.h),
+                          padding: EdgeInsets.fromLTRB(2.w, 20.h, 2.w, 110.h),
                           physics: BouncingScrollPhysics(),
                           children: [
                             InteractiveZekrCard(
@@ -185,37 +185,37 @@ class _ZekrDetailsScreenState extends State<ZekrDetailsScreen> {
                                     duration: const Duration(milliseconds: 400),
                                     curve: Curves.easeInOut,
                                   );
-                                } else {
-                                  _showCompletionFeedback(context);
                                 }
                               },
                               size: fontSize,
                             ),
                           ],
                         );
-                      }
+                      },
                     );
                   },
                 ),
               ),
 
-
               /// ================= ACTIONS =================
               Positioned(
                 left: 0,
                 right: 0,
-                bottom: 12.h,
-                child: AnimatedSlide(
-                  duration: const Duration(milliseconds: 250),
-                  offset: isUiVisible ? Offset.zero : const Offset(0, 1),
-                  child: AnimatedOpacity(
+                bottom: 0,
+                child: SafeArea(
+                  top: false,
+                  child: AnimatedSlide(
                     duration: const Duration(milliseconds: 250),
-                    opacity: isUiVisible ? 1 : 0,
-                    child: ZekrActionsWidget(
-                      zekrText: currentContent.text,
-                      currentIndex: _currentIndex,
-                      total: total,
-                      pageController: _pageController,
+                    offset: isUiVisible ? Offset.zero : const Offset(0, 1),
+                    child: AnimatedOpacity(
+                      duration: const Duration(milliseconds: 250),
+                      opacity: isUiVisible ? 1 : 0,
+                      child: ZekrActionsWidget(
+                        zekrText: currentContent.text,
+                        currentIndex: _currentIndex,
+                        total: total,
+                        pageController: _pageController,
+                      ),
                     ),
                   ),
                 ),
@@ -223,21 +223,6 @@ class _ZekrDetailsScreenState extends State<ZekrDetailsScreen> {
             ],
           );
         },
-      ),
-    );
-  }
-  void _showCompletionFeedback(BuildContext context) {
-
-    // Heavy Impact
-    HapticFeedback.heavyImpact();
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: const Text("أتممت جميع الأذكار 🌿"),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-        backgroundColor: Colors.teal.shade700,
-        duration: const Duration(seconds: 2),
       ),
     );
   }

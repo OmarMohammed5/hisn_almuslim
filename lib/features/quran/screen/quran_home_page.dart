@@ -125,7 +125,6 @@ class _QuranHomePageState extends State<QuranHomePage> {
                                 arguments: {'surahNumber': surah.number},
                               );
                             },
-                            progress: highlightProgress,
                           );
                         },
                       );

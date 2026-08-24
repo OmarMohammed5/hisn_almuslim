@@ -14,6 +14,7 @@ import '../../../../core/theme/app_colors.dart';
 
 class EveningAzkarScreen extends StatefulWidget {
   const EveningAzkarScreen({super.key, this.initialIndex});
+
   final int? initialIndex;
 
   @override
@@ -128,8 +129,8 @@ class _EveningAzkarScreenState extends State<EveningAzkarScreen> {
           GestureDetector(
             onTap: () {
               final currentZekr =
-              eveningAzkar['content'][_currentIndex]
-              as Map<String, dynamic>;
+                  eveningAzkar['content'][_currentIndex]
+                      as Map<String, dynamic>;
 
               ZekrInfoDialog.show(
                 context,
@@ -157,7 +158,6 @@ class _EveningAzkarScreenState extends State<EveningAzkarScreen> {
             ),
           ),
           Gap(16.w),
-
         ],
       ),
       body: Stack(
@@ -180,17 +180,15 @@ class _EveningAzkarScreenState extends State<EveningAzkarScreen> {
                     },
                     itemBuilder: (context, index) {
                       final zekr = eveningAzkar['content'][index];
-                      final isLast = index == eveningAzkar['content'].length - 1;
+                      final isLast =
+                          index == eveningAzkar['content'].length - 1;
                       final count = int.tryParse('${zekr['count']}') ?? 1;
 
                       return ValueListenableBuilder(
                         valueListenable: _fontSizeNotifire,
                         builder: (context, fontSize, child) {
                           return ListView(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 2.w,
-                              vertical: 20.h,
-                            ),
+                            padding: EdgeInsets.fromLTRB(2.w, 20.h, 2.w, 110.h),
                             children: [
                               InteractiveZekrCard(
                                 key: ValueKey(index),
@@ -200,11 +198,11 @@ class _EveningAzkarScreenState extends State<EveningAzkarScreen> {
                                 onCompleted: () {
                                   if (!isLast) {
                                     _pageController!.nextPage(
-                                      duration: const Duration(milliseconds: 400),
+                                      duration: const Duration(
+                                        milliseconds: 400,
+                                      ),
                                       curve: Curves.easeInOut,
                                     );
-                                  } else {
-                                    _showCompletionFeedback(context);
                                   }
                                 },
                                 size: fontSize,
@@ -217,48 +215,43 @@ class _EveningAzkarScreenState extends State<EveningAzkarScreen> {
                   ),
                 ),
               ),
-              Gap(60.h),
             ],
           ),
           // Actions
           Positioned(
-            left: 0.w,
-            right: 0.w,
-            bottom: 8.h,
-            child: AnimatedSlide(
-              duration: const Duration(milliseconds: 250),
-              curve: Curves.easeInOut,
-              offset: _isUiVisible ? Offset.zero : const Offset(0, 1),
-              child: AnimatedOpacity(
-                duration: const Duration(milliseconds: 250),
-                opacity: _isUiVisible ? 1 : 0,
-                child:ZekrActionsWidget(
-                  zekrText: eveningAzkar['content'][_currentIndex]['text']
-                      ?.toString() ??
-                      '',
-                  currentIndex: _currentIndex,
-                  total: eveningAzkar['content'].length,
-                  pageController: _pageController!,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: SafeArea(
+              top: false,
+              child: AnimatedSlide(
+                duration:
+                const Duration(milliseconds: 250),
+                curve: Curves.easeInOut,
+                offset: _isUiVisible
+                    ? Offset.zero
+                    : const Offset(0, 1),
+                child: AnimatedOpacity(
+                  duration:
+                  const Duration(milliseconds: 250),
+                  opacity: _isUiVisible ? 1 : 0,
+                  child: ZekrActionsWidget(
+                    zekrText:
+                    eveningAzkar['content']
+                    [_currentIndex]['text']
+                        ?.toString() ??
+                        '',
+                    currentIndex: _currentIndex,
+                    total:
+                    eveningAzkar['content'].length,
+                    pageController:
+                    _pageController!,
+                  ),
                 ),
               ),
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  void _showCompletionFeedback(BuildContext context) {
-    // Heavy Impact
-    HapticFeedback.heavyImpact();
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: const Text("أتممت جميع الأذكار 🌿"),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-        backgroundColor: Colors.teal.shade700,
-        duration: const Duration(seconds: 2),
       ),
     );
   }

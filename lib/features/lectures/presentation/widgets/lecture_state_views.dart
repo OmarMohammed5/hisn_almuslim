@@ -15,20 +15,20 @@ class _ShimmerBox extends StatefulWidget {
   });
 
   @override
-  State<_ShimmerBox> createState() =>
-      _ShimmerBoxState();
+  State<_ShimmerBox> createState() => _ShimmerBoxState();
 }
 
-class _ShimmerBoxState extends State<_ShimmerBox> with SingleTickerProviderStateMixin {
-
+class _ShimmerBoxState extends State<_ShimmerBox>
+    with SingleTickerProviderStateMixin {
   late final AnimationController _controller = AnimationController(
     vsync: this,
-    duration:
-    const Duration(milliseconds: 1100),
+    duration: const Duration(milliseconds: 1100),
   )..repeat(reverse: true);
 
-  late final Animation<double>
-  _opacity = Tween<double>(begin: .35, end: .9,).animate(_controller);
+  late final Animation<double> _opacity = Tween<double>(
+    begin: .35,
+    end: .9,
+  ).animate(_controller);
 
   @override
   void dispose() {
@@ -44,38 +44,28 @@ class _ShimmerBoxState extends State<_ShimmerBox> with SingleTickerProviderState
         width: widget.width,
         height: widget.height,
         decoration: BoxDecoration(
-          color: AppColors.kPrimary
-              .withValues(
-            alpha:
-            .08 * _opacity.value,
-          ),
-          borderRadius:
-          widget.borderRadius,
+          color: AppColors.kPrimary.withValues(alpha: .08 * _opacity.value),
+          borderRadius: widget.borderRadius,
         ),
       ),
     );
   }
 }
 
-class LectureCardSkeleton
-    extends StatelessWidget {
-  const LectureCardSkeleton({
-    super.key,
-  });
+class LectureCardSkeleton extends StatelessWidget {
+  const LectureCardSkeleton({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin:
-      EdgeInsets.only(bottom: 12.h),
+      margin: EdgeInsets.only(bottom: 12.h),
       padding: EdgeInsets.all(8.w),
       child: Row(
         children: [
           _ShimmerBox(
             width: 126.w,
             height: 78.h,
-            borderRadius:
-            BorderRadius.circular(14.r),
+            borderRadius: BorderRadius.circular(14.r),
           ),
           SizedBox(width: 10.w),
           Expanded(
@@ -85,19 +75,13 @@ class LectureCardSkeleton
                 _ShimmerBox(
                   width: double.infinity,
                   height: 13.h,
-                  borderRadius:
-                  BorderRadius.circular(
-                    6.r,
-                  ),
+                  borderRadius: BorderRadius.circular(6.r),
                 ),
                 SizedBox(height: 8.h),
                 _ShimmerBox(
                   width: 120.w,
                   height: 11.h,
-                  borderRadius:
-                  BorderRadius.circular(
-                    6.r,
-                  ),
+                  borderRadius: BorderRadius.circular(6.r),
                 ),
               ],
             ),
@@ -108,28 +92,20 @@ class LectureCardSkeleton
   }
 }
 
-class LectureResultsSkeleton
-    extends StatelessWidget {
+class LectureResultsSkeleton extends StatelessWidget {
   final int count;
 
-  const LectureResultsSkeleton({
-    super.key,
-    this.count = 4,
-  });
+  const LectureResultsSkeleton({super.key, this.count = 4});
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: List.generate(
-        count,
-            (_) => const LectureCardSkeleton(),
-      ),
+      children: List.generate(count, (_) => const LectureCardSkeleton()),
     );
   }
 }
 
-class LectureFeedbackView
-    extends StatelessWidget {
+class LectureFeedbackView extends StatelessWidget {
   final IconData icon;
   final String message;
   final String? actionLabel;
@@ -143,70 +119,52 @@ class LectureFeedbackView
     this.onAction,
   });
 
-  const LectureFeedbackView.invalidQuery({
-    super.key,
-    required this.message,
-  })  : icon = Icons.mosque_outlined,
-        actionLabel = null,
-        onAction = null;
+  const LectureFeedbackView.invalidQuery({super.key, required this.message})
+    : icon = Icons.search_off,
+      actionLabel = null,
+      onAction = null;
 
-  const LectureFeedbackView.empty({
-    super.key,
-  })  : icon = Icons.search_off_rounded,
-        message =
-        'لم نجد نتائج مناسبة، جرّب كلمات بحث مختلفة.',
-        actionLabel = null,
-        onAction = null;
+  const LectureFeedbackView.empty({super.key})
+    : icon = Icons.search_off_rounded,
+      message = 'لم نجد نتائج مناسبة، جرّب كلمات بحث مختلفة.',
+      actionLabel = null,
+      onAction = null;
 
   @override
   Widget build(BuildContext context) {
-    final scheme =
-        Theme.of(context).colorScheme;
+    final scheme = Theme.of(context).colorScheme;
 
     return Padding(
-      padding:
-      EdgeInsets.symmetric(
-        vertical: 44.h,
-        horizontal: 24.w,
-      ),
+      padding: EdgeInsets.symmetric(vertical: 44.h, horizontal: 24.w),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
             width: 56.w,
             height: 56.w,
             decoration: BoxDecoration(
-              color: scheme.primary
-                  .withValues(alpha: .08),
+              color: AppColors.kPrimary.withValues(alpha: .08),
               shape: BoxShape.circle,
             ),
-            child: Icon(
-              icon,
-              color: scheme.primary,
-              size: 26.sp,
-            ),
+            child: Icon(icon, color: AppColors.kPrimary, size: 26.sp),
           ),
           SizedBox(height: 14.h),
           CustomText(
             message,
-            textAlign:
-            TextAlign.center,
+            maxLines: 4,
+            textAlign: TextAlign.center,
             fontSize: 12.5.sp,
             height: 1.6,
-            fontWeight:
-            FontWeight.w600,
-            color: scheme.onSurface
-                .withValues(alpha: .68),
+            fontWeight: FontWeight.w600,
+            color: scheme.onSurface.withValues(alpha: .68),
           ),
-          if (actionLabel != null &&
-              onAction != null) ...[
+          if (actionLabel != null && onAction != null) ...[
             SizedBox(height: 14.h),
             FilledButton.icon(
               onPressed: onAction,
-              icon: const Icon(
-                Icons.refresh_rounded,
-              ),
-              label:
-              Text(actionLabel!),
+              icon: const Icon(Icons.refresh_rounded),
+              label: Text(actionLabel!),
             ),
           ],
         ],

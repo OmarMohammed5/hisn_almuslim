@@ -13,17 +13,13 @@ class HadithScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final isDark = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         appBar: AppBarWidget(title: "الأَحَادِيثُ النَّبَوِيَّةُ"),
         body: Column(
           children: [
-            // Search Bar
-            // SearchAppBar(),
-            // Gap(30.h),
-            // Books Grid
+
             Expanded(
               child: GridView.count(
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
@@ -32,48 +28,33 @@ class HadithScreen extends StatelessWidget {
                 crossAxisSpacing: 20.w,
                 childAspectRatio: 0.83,
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, AppRoutes.fehresSahihBukhary);
-                    },
-                    child: BookCard(
-                      title: 'صحيح البخاري',
-                      subtitle: 'متابعة القراءة من\nالحديث',
-                      number: '١',
-                    ),
+
+                  BookCard(
+                    onTap: () => Navigator.pushNamed(context, AppRoutes.fehresSahihBukhary),
+                    title: 'صحيح البخاري',
+                    subtitle: 'متابعة القراءة من\nالحديث',
+                    number: '١',
                   ),
 
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, AppRoutes.fehresSahihMuslim);
-                    },
-                    child: BookCard(
-                      title: 'صحيح مسلم',
-                      subtitle: 'متابعة القراءة من\nالحديث',
-                      number: '١',
-                    ),
+                  BookCard(
+                    onTap: () => Navigator.pushNamed(context, AppRoutes.fehresSahihMuslim),
+                    title: 'صحيح مسلم',
+                    subtitle: 'متابعة القراءة من\nالحديث',
+                    number: '١',
                   ),
 
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, AppRoutes.fehresReyqdAlSaliheen);
-                    },
-                    child: BookCard(
-                      title: 'رياض الصالحين',
-                      subtitle: 'متابعة القراءة من\nالحديث',
-                      number: '١',
-                    ),
+                  BookCard(
+                    onTap: () =>  Navigator.pushNamed(context, AppRoutes.fehresReyqdAlSaliheen),
+                    title: 'رياض الصالحين',
+                    subtitle: 'متابعة القراءة من\nالحديث',
+                    number: '١',
                   ),
 
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, AppRoutes.fehresHadithNawawi);
-                    },
-                    child: BookCard(
-                      title: 'الأربعون النووية',
-                      subtitle: 'متابعة القراءة من\nالحديث',
-                      number: '١',
-                    ),
+                  BookCard(
+                    onTap: () =>  Navigator.pushNamed(context, AppRoutes.fehresHadithNawawi),
+                    title: 'الأربعون النووية',
+                    subtitle: 'متابعة القراءة من\nالحديث',
+                    number: '١',
                   ),
                 ],
               ),

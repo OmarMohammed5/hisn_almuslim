@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/core/shared/app_bar_widget.dart';
-import 'package:hisn_almuslim/core/shared/custom_text.dart';
-import 'package:hisn_almuslim/core/theme/app_colors.dart';
 import 'package:hisn_almuslim/features/lectures/presentation/cubit/lectures_cubit.dart';
 import 'package:hisn_almuslim/features/lectures/presentation/cubit/lectures_state.dart';
 import 'package:hisn_almuslim/features/lectures/presentation/widgets/lecture_card.dart';
 import 'package:hisn_almuslim/features/lectures/presentation/widgets/lecture_state_views.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../quran/widgets/search_field.dart';
 import '../../domain/entities/lecture.dart';
 import 'lecture_player_screen.dart';
@@ -102,32 +98,36 @@ class _CategoryLecturesScreenState
 
       body: BlocBuilder<LecturesCubit, LecturesState>(
         builder: (context, state) {
-          return ListView(
-            physics: const BouncingScrollPhysics(),
-            padding: EdgeInsets.fromLTRB(16.w, 14.h, 16.w, 100.h,),
+          return Column(
             children: [
               // Search
-
-              SearchField(
-                controller: _controller,
-                hint: 'ابحث داخل ${widget.category}...',
-                onChanged: (query) {
-                  context
-                      .read<LecturesCubit>()
-                      .searchInCategory(
-                    category:
-                    widget.category,
-                    query: query,
-                  );
-                },
+              Padding(
+                padding:  EdgeInsets.symmetric(horizontal: 16.w , vertical: 16.h),
+                child: SearchField(
+                  controller: _controller,
+                  hint: 'ابحث داخل ${widget.category}...',
+                  onChanged: (query) {
+                    context
+                        .read<LecturesCubit>()
+                        .searchInCategory(
+                      category:
+                      widget.category,
+                      query: query,
+                    );
+                  },
+                ),
               ),
 
-              Gap(30.h),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: _getItemCount(state),
+                  physics: const BouncingScrollPhysics(),
+                  padding: EdgeInsets.fromLTRB(16.w, 14.h, 16.w, 100.h,),
+                  itemBuilder: (context , index){
+                 return _buildItem( context, state, index);
+                  },
 
-              // Results
-              _buildResults(
-                context,
-                state,
+                ),
               ),
             ],
           );
@@ -137,18 +137,26 @@ class _CategoryLecturesScreenState
   }
 
   // Build Results
-  Widget _buildResults(
+  Widget _buildItem(
       BuildContext context,
       LecturesState state,
+      int index,
       ) {
     switch (state.status) {
-    // Loading
       case LecturesStatus.loading:
-        return const LectureResultsSkeleton(
-          count: 6,
+        return const LectureCardSkeleton();
+
+      case LecturesStatus.success:
+        final lecture =
+        state.searchResults[index];
+
+        return LectureCard(
+          lecture: lecture,
+          onTap: () {
+            _openLecture(lecture);
+          },
         );
 
-    // Invalid Query
       case LecturesStatus.invalidQuery:
         return LectureFeedbackView.invalidQuery(
           message:
@@ -156,68 +164,44 @@ class _CategoryLecturesScreenState
               'يمكنك البحث فقط عن المحتوى الإسلامي.',
         );
 
-    // Failure
       case LecturesStatus.failure:
         return LectureFeedbackView(
-          icon:
-          Icons.wifi_off_rounded,
-
+          icon: Icons.wifi_off_rounded,
           message:
           state.errorMessage ??
               'تعذر تحميل المحاضرات.',
-
-          actionLabel:
-          'إعادة المحاولة',
-
+          actionLabel: 'إعادة المحاولة',
           onAction: () {
-            context.read<LecturesCubit>().searchCategory(widget.category,);
+            context
+                .read<LecturesCubit>()
+                .searchCategory(
+              widget.category,
+            );
           },
         );
 
-    // Empty
       case LecturesStatus.empty:
         return const LectureFeedbackView.empty();
 
-    // Success
-      case LecturesStatus.success:
-        if (state.searchResults
-            .isEmpty) {
-          return const LectureFeedbackView
-              .empty();
-        }
-
-        return Column(
-          children: state.searchResults
-              .map(
-                (lecture) =>
-                LectureCard(
-                  lecture: lecture,
-
-                  onTap: () {
-                    _openLecture(
-                      lecture,
-                    );
-                  },
-                ),
-          )
-              .toList(),
-        );
-
-    // Initial
       case LecturesStatus.initial:
-        return Padding(
-          padding:
-          EdgeInsets.symmetric(
-            vertical: 50.h,
-          ),
-          child:
-          const LectureFeedbackView(
-            icon:
-            Icons.auto_stories_rounded,
-            message:
-            'جاري تحميل المحاضرات...',
-          ),
+        return const LectureFeedbackView(
+          icon: Icons.auto_stories_rounded,
+          message: 'جاري تحميل المحاضرات...',
         );
     }
   }
+
+  int _getItemCount(LecturesState state) {
+    switch (state.status) {
+      case LecturesStatus.success:
+        return state.searchResults.length;
+
+      case LecturesStatus.loading:
+        return 6;
+
+      default:
+        return 1;
+    }
+  }
+
 }

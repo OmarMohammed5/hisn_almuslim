@@ -71,17 +71,16 @@ class _CairoRadioCardState extends State<CairoRadioCard>
     final isDark = theme.brightness == Brightness.dark;
 
     final radioPrimary = isDark
-        ? RadioColors.darkPrimary
+        ? const Color(0xFF35AFA3)
         : RadioColors.lightPrimary;
 
     final radioDark = isDark
-        ? RadioColors.darkTealDark
+        ? const Color(0xFF102A27)
         : RadioColors.lightTealDark;
 
     final radioMedium = isDark
-        ? RadioColors.darkTealMedium
+        ? const Color(0xFF4BC2B6)
         : RadioColors.lightTealMedium;
-
 
     return BlocConsumer<RadioCubit, RadioState>(
       listener: (context, state) {
@@ -109,27 +108,42 @@ class _CairoRadioCardState extends State<CairoRadioCard>
             padding: EdgeInsets.all(22.w),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(22.r),
+
               gradient: LinearGradient(
                 begin: Alignment.topRight,
                 end: Alignment.bottomLeft,
-                colors: [
-                  radioPrimary.withValues(
-                    alpha: isDark ? 0.25 : 0.12,
-                  ),
-                  radioDark.withValues(
-                    alpha: isDark ? 0.12 : 0.05,
-                  ),
+                colors: isDark
+                    ? const [
+                  Color(0xFF152522),
+                  Color(0xFF101A19),
+                ]
+                    : [
+                  radioPrimary.withValues(alpha: 0.12),
+                  radioDark.withValues(alpha: 0.05),
                 ],
               ),
+
               border: Border.all(
-                color: radioMedium.withValues(
-                  alpha: isDark ? 0.55 : 0.30,
-                ),
+                color: isDark
+                    ? radioPrimary.withValues(alpha: 0.28)
+                    : radioMedium.withValues(alpha: 0.30),
+                width: 1,
               ),
-              boxShadow: [
+
+              boxShadow: isDark
+                  ? [
+                BoxShadow(
+                  color: Colors.black.withValues(
+                    alpha: 0.22,
+                  ),
+                  blurRadius: 12.r,
+                  offset: Offset(0, 5.h),
+                ),
+              ]
+                  : [
                 BoxShadow(
                   color: radioPrimary.withValues(
-                    alpha: isDark ? 0.18 : 0.08,
+                    alpha: 0.08,
                   ),
                   blurRadius: 20.r,
                   offset: Offset(0, 8.h),
@@ -157,7 +171,7 @@ class _CairoRadioCardState extends State<CairoRadioCard>
                           if (isPlaying) ...[
                             // Live indicator
                             LiveDot(
-                              color: radioMedium,
+                              color: Colors.red.shade800,
                             ),
 
                             SizedBox(width: 6.w),
@@ -166,7 +180,7 @@ class _CairoRadioCardState extends State<CairoRadioCard>
                               'مباشر الآن',
                                 fontSize: 12.sp,
                                 fontWeight: FontWeight.w700,
-                                color: radioMedium,
+                                color: Colors.red.shade800,
                             ),
 
                             SizedBox(width: 10.w),
@@ -174,7 +188,7 @@ class _CairoRadioCardState extends State<CairoRadioCard>
                             // Sound waves
                             SoundWaveBars(
                               active: true,
-                              color: radioMedium,
+                              color: Colors.red.shade800,
                               height: 12,
                               barWidth: 2.4,
                             ),

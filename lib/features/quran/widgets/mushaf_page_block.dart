@@ -5,57 +5,123 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../data/cubit/ayah_highlight_state.dart';
 import '../domain/entities/ayah_entity.dart';
 import '../domain/entities/mushaf_page_entity.dart';
-import '../theme/mushaf_colors.dart';
 import 'ayah_badge.dart';
 import 'page_footer.dart';
 
 class MushafPageBlock extends StatefulWidget {
   final MushafPageEntity page;
+
   final int? selectedAyahNumber;
-  final Map<int, HighlightData> highlightedAyahs;
-  final ValueChanged<AyahEntity> onAyahTap;
+
+  final Map<int, HighlightData>
+  highlightedAyahs;
+
+  final ValueChanged<AyahEntity>
+  onAyahTap;
+
   final bool showBasmala;
 
   const MushafPageBlock({
     super.key,
+
     required this.page,
+
     required this.onAyahTap,
-    this.highlightedAyahs = const {},
+
+    this.highlightedAyahs =
+    const {},
+
     this.selectedAyahNumber,
+
     this.showBasmala = false,
   });
 
   @override
-  State<MushafPageBlock> createState() => MushafPageBlockState();
+  State<MushafPageBlock> createState() =>
+      MushafPageBlockState();
 }
 
-class MushafPageBlockState extends State<MushafPageBlock> {
-  final Map<int, TapGestureRecognizer> _recognizers = {};
-  final Map<int, GlobalKey> _ayahKeys = {};
+class MushafPageBlockState
+    extends State<MushafPageBlock> {
 
-  TapGestureRecognizer _recognizerFor(AyahEntity ayah) {
+  final Map<int, TapGestureRecognizer>
+  _recognizers = {};
+
+  final Map<int, GlobalKey>
+  _ayahKeys = {};
+
+  // ============================================================
+  // Mushaf Palette
+  // ============================================================
+
+  static const Color _lightText =
+  Color(0xFF292C29);
+
+  static const Color _darkText =
+  Color(0xFFE8E0CC);
+
+  static const Color _lightTeal =
+  Color(0xFF16877D);
+
+  static const Color _darkTeal =
+  Color(0xFF66C7BB);
+
+  static const Color _lightGold =
+  Color(0xFFB59A5A);
+
+  static const Color _darkGold =
+  Color(0xFFCDB878);
+
+  // ============================================================
+  // Recognizers
+  // ============================================================
+
+  TapGestureRecognizer _recognizerFor(
+      AyahEntity ayah,
+      ) {
     return _recognizers.putIfAbsent(
       ayah.numberInSurah,
-          () => TapGestureRecognizer()..onTap = () => widget.onAyahTap(ayah),
+          () => TapGestureRecognizer()
+        ..onTap = () =>
+            widget.onAyahTap(ayah),
     );
   }
 
-  GlobalKey _keyFor(int ayahNumberInSurah) {
-    return _ayahKeys.putIfAbsent(ayahNumberInSurah, () => GlobalKey());
+  // ============================================================
+  // Ayah Keys
+  // ============================================================
+
+  GlobalKey _keyFor(
+      int ayahNumberInSurah,
+      ) {
+    return _ayahKeys.putIfAbsent(
+      ayahNumberInSurah,
+          () => GlobalKey(),
+    );
   }
 
+  // ============================================================
+  // Dispose Recognizers
+  // ============================================================
+
   void _disposeRecognizers() {
-    for (final recognizer in _recognizers.values) {
+    for (final recognizer
+    in _recognizers.values) {
       recognizer.dispose();
     }
+
     _recognizers.clear();
     _ayahKeys.clear();
   }
 
   @override
-  void didUpdateWidget(covariant MushafPageBlock oldWidget) {
+  void didUpdateWidget(
+      covariant MushafPageBlock oldWidget,
+      ) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.page.pageNumber != widget.page.pageNumber) {
+
+    if (oldWidget.page.pageNumber !=
+        widget.page.pageNumber) {
       _disposeRecognizers();
     }
   }
@@ -63,22 +129,48 @@ class MushafPageBlockState extends State<MushafPageBlock> {
   @override
   void dispose() {
     _disposeRecognizers();
+
     super.dispose();
   }
 
-  int? topVisibleAyahNumber({required double thresholdY}) {
+  // ============================================================
+  // Get Top Visible Ayah
+  // ============================================================
+
+  int? topVisibleAyahNumber({
+    required double thresholdY,
+  }) {
     int? result;
-    double bestY = -double.infinity;
 
-    for (final entry in _ayahKeys.entries) {
-      final ctx = entry.value.currentContext;
+    double bestY =
+    -double.infinity;
+
+    for (final entry
+    in _ayahKeys.entries) {
+
+      final ctx =
+          entry.value.currentContext;
+
       if (ctx == null) continue;
-      final box = ctx.findRenderObject() as RenderBox?;
-      if (box == null || !box.attached) continue;
 
-      final globalY = box.localToGlobal(Offset.zero).dy;
-      if (globalY <= thresholdY && globalY > bestY) {
+      final box =
+      ctx.findRenderObject()
+      as RenderBox?;
+
+      if (box == null ||
+          !box.attached) {
+        continue;
+      }
+
+      final globalY =
+          box.localToGlobal(
+            Offset.zero,
+          ).dy;
+
+      if (globalY <= thresholdY &&
+          globalY > bestY) {
         bestY = globalY;
+
         result = entry.key;
       }
     }
@@ -86,85 +178,321 @@ class MushafPageBlockState extends State<MushafPageBlock> {
     return result;
   }
 
+  // ============================================================
+  // Build
+  // ============================================================
+
   @override
-  Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+  Widget build(
+      BuildContext context,
+      ) {
+    final isDark =
+        Theme.of(context).brightness ==
+            Brightness.dark;
+
     final baseColor =
-    isDark ? Colors.white.withOpacity(0.92) : MushafColors.inkLight;
-    final selectionColor = isDark ? MushafColors.goldDark : MushafColors.gold;
+    isDark
+        ? _darkText
+        : _lightText;
+
+    final accentColor =
+    isDark
+        ? _darkTeal
+        : _lightTeal;
+
+    final goldColor =
+    isDark
+        ? _darkGold
+        : _lightGold;
 
     return RepaintBoundary(
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 10.h),
+        padding:
+        EdgeInsets.symmetric(
+          horizontal: 20.w,
+          vertical: 12.h,
+        ),
+
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          crossAxisAlignment:
+          CrossAxisAlignment.stretch,
+
           children: [
-            // Basmala at the top center
+
+            // ==================================================
+            // Basmala
+            // ==================================================
+
             if (widget.showBasmala)
-              Center(
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: 12.h),
-                  child: Image.asset(
-                    'assets/images/basmala.png',
-                    height: 45.h,
-                    fit: BoxFit.fitHeight,
+              _buildBasmala(
+                context,
+                isDark,
+                goldColor,
+              ),
+
+            // ==================================================
+            // Quran Text
+            // ==================================================
+
+            RichText(
+              textAlign:
+              TextAlign.right,
+
+              textDirection:
+              TextDirection.rtl,
+
+              text: TextSpan(
+                children:
+                _buildSpans(
+                  baseColor,
+                  accentColor,
+                ),
+              ),
+            ),
+
+            // ==================================================
+            // Page Divider
+            // ==================================================
+
+            Padding(
+              padding:
+              EdgeInsets.only(
+                top: 18.h,
+              ),
+
+              child: Container(
+                height: 1,
+
+                margin:
+                EdgeInsets.symmetric(
+                  horizontal: 12.w,
+                ),
+
+                decoration:
+                BoxDecoration(
+                  gradient:
+                  LinearGradient(
+                    colors: [
+                      Colors.transparent,
+
+                      goldColor.withValues(
+                        alpha: .22,
+                      ),
+
+                      goldColor.withValues(
+                        alpha: .30,
+                      ),
+
+                      goldColor.withValues(
+                        alpha: .22,
+                      ),
+
+                      Colors.transparent,
+                    ],
                   ),
                 ),
               ),
-
-            // Ayah text
-            RichText(
-              textAlign: TextAlign.right,
-              textDirection: TextDirection.rtl,
-              text: TextSpan(
-                children: _buildSpans(baseColor, selectionColor),
-              ),
             ),
 
-            Divider(
-              height: 24.h,
-              thickness: 0.6,
-              color: (isDark ? MushafColors.goldDark : MushafColors.gold)
-                  .withOpacity(0.25),
+            SizedBox(
+              height: 8.h,
             ),
-            PageFooter(page: widget.page),
+
+            // ==================================================
+            // Footer
+            // ==================================================
+
+            PageFooter(
+              page: widget.page,
+            ),
           ],
         ),
       ),
     );
   }
 
-  List<InlineSpan> _buildSpans(Color baseColor, Color selectionColor) {
-    final spans = <InlineSpan>[];
+  // ============================================================
+  // Basmala
+  // ============================================================
 
-    for (final ayah in widget.page.ayahs) {
-      final isSelected = widget.selectedAyahNumber == ayah.numberInSurah;
-      final highlightData = widget.highlightedAyahs[ayah.numberInSurah];
+  Widget _buildBasmala(
+      BuildContext context,
+      bool isDark,
+      Color goldColor,
+      ) {
+    final color =
+    isDark
+        ? goldColor
+        : _lightTeal;
 
-      spans.add(TextSpan(
-        text: '${ayah.text} ',
-        recognizer: _recognizerFor(ayah),
-        style: TextStyle(
-          fontFamily: 'QuranFont',
-          fontSize: 21.sp,
-          height: 2.0,
-          color: isSelected ? selectionColor : baseColor,
-          backgroundColor: highlightData?.color.withOpacity(0.28) ??
-              (isSelected ? selectionColor.withOpacity(0.10) : null),
-        ),
-      ));
-      spans.add(WidgetSpan(
-        alignment: PlaceholderAlignment.middle,
-        child: KeyedSubtree(
-          key: _keyFor(ayah.numberInSurah),
-          child: AyahBadge(
-            numberInSurah: ayah.numberInSurah,
-            isBookmarked: highlightData != null,
+    return Padding(
+      padding:
+      EdgeInsets.only(
+        top: 2.h,
+        bottom: 18.h,
+      ),
+
+      child: Center(
+        child: Container(
+          padding:
+          EdgeInsets.symmetric(
+            horizontal: 16.w,
+            vertical: 7.h,
+          ),
+
+          decoration:
+          BoxDecoration(
+            color: color.withValues(
+              alpha: isDark
+                  ? .055
+                  : .045,
+            ),
+
+            borderRadius:
+            BorderRadius.circular(
+              100.r,
+            ),
+
+            border: Border.all(
+              color: color.withValues(
+                alpha: isDark
+                    ? .16
+                    : .12,
+              ),
+              width: 0.8,
+            ),
+          ),
+
+          child: ColorFiltered(
+            colorFilter:
+            ColorFilter.mode(
+              color,
+              BlendMode.srcIn,
+            ),
+
+            child: Image.asset(
+              'assets/images/basmala.png',
+
+              height: 43.h,
+
+              fit:
+              BoxFit.contain,
+
+              filterQuality:
+              FilterQuality.high,
+            ),
           ),
         ),
-      ));
-      spans.add(const TextSpan(text: '   ', style: TextStyle(fontFamily: 'Noon')));
+      ),
+    );
+  }
+
+  // ============================================================
+  // Ayah Spans
+  // ============================================================
+
+  List<InlineSpan> _buildSpans(
+      Color baseColor,
+      Color selectionColor,
+      ) {
+    final spans =
+    <InlineSpan>[];
+
+    for (final ayah
+    in widget.page.ayahs) {
+
+      final isSelected =
+          widget.selectedAyahNumber ==
+              ayah.numberInSurah;
+
+      final highlightData =
+      widget.highlightedAyahs[
+      ayah.numberInSurah];
+
+      // --------------------------------------------------------
+      // Ayah
+      // --------------------------------------------------------
+
+      spans.add(
+        TextSpan(
+          text:
+          '${ayah.text} ',
+
+          recognizer:
+          _recognizerFor(
+            ayah,
+          ),
+
+          style: TextStyle(
+            fontFamily:
+            'QuranFont',
+
+            fontSize:
+            21.sp,
+
+            height:
+            2.0,
+
+            color:
+            isSelected
+                ? selectionColor
+                : baseColor,
+
+            backgroundColor:
+            highlightData != null
+                ? highlightData.color
+                .withValues(
+              alpha: .16,
+            )
+                : isSelected
+                ? selectionColor
+                .withValues(
+              alpha: .075,
+            )
+                : null,
+          ),
+        ),
+      );
+
+      // --------------------------------------------------------
+      // Ayah Badge
+      // --------------------------------------------------------
+
+      spans.add(
+        WidgetSpan(
+          alignment:
+          PlaceholderAlignment.middle,
+
+          child: KeyedSubtree(
+            key: _keyFor(
+              ayah.numberInSurah,
+            ),
+
+            child: AyahBadge(
+              numberInSurah:
+              ayah.numberInSurah,
+
+              isBookmarked:
+              highlightData != null,
+            ),
+          ),
+        ),
+      );
+
+      // --------------------------------------------------------
+      // Spacing
+      // --------------------------------------------------------
+
+      spans.add(
+        const TextSpan(
+          text: '   ',
+          style: TextStyle(
+            fontFamily: 'Noon',
+          ),
+        ),
+      );
     }
+
     return spans;
   }
 }

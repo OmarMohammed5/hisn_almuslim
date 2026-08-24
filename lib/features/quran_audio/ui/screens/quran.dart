@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:hisn_almuslim/core/routing/app_routes.dart';
-import 'package:hisn_almuslim/features/home/widgets/custom_card_widget.dart';
+import 'package:hisn_almuslim/features/home/widgets/category_card.dart';
 import 'package:hisn_almuslim/features/quran_audio/data/models/quran_modeel.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 import '../../../../core/shared/app_bar_widget.dart';
@@ -30,15 +29,15 @@ class Quran extends StatelessWidget {
                 crossAxisCount: 2,
                 crossAxisSpacing: 16.w,
                 mainAxisSpacing: 12.h,
-                childAspectRatio: 0.93.h,
+                childAspectRatio: 1.1.h,
               ),
               itemBuilder: (context, index) {
                 final section = sections[index];
-                return CustomCardWidget(
+                return CategoryCardWidget(
                   title: section.title,
                   icon: section.icon,
                   onTap: () {
-                   Navigator.pushNamed(context, section.route);
+                    Navigator.pushNamed(context, section.route);
                   },
                 );
               },
@@ -52,60 +51,130 @@ class Quran extends StatelessWidget {
   }
 
   Widget _buildHeroHeader(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
+    final primary = AppColors.kPrimary;
+
+    final backgroundColors = isDark
+        ? const [Color(0xFF155A52), Color(0xFF0C3934)]
+        : const [Color(0xFF0F9F8E), Color(0xFF08796D)];
+
+    final titleColor = Colors.white.withValues(alpha: .96);
 
     return Container(
       width: double.infinity,
+      height: 178.h,
       margin: EdgeInsets.fromLTRB(18.w, 16.h, 18.w, 24.h),
-      padding: EdgeInsets.symmetric(vertical: 28.h, horizontal: 20.w),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24.r),
+        borderRadius: BorderRadius.circular(26.r),
         gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: isDark
-              ? [Colors.teal.shade700, Colors.teal.shade900]
-              : [AppColors.kPrimary, Colors.teal.shade600],
+          begin: Alignment.topRight,
+          end: Alignment.bottomLeft,
+          colors: backgroundColors,
+        ),
+        border: Border.all(
+          color: primary.withValues(alpha: isDark ? .35 : .20),
+          width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.kPrimary.withValues(alpha: 0.25),
-            blurRadius: 20,
-            offset: const Offset(0, 8),
+            color: primary.withValues(alpha: isDark ? .16 : .18),
+            blurRadius: 24.r,
+            offset: Offset(0, 10.h),
           ),
         ],
       ),
-      child: Column(
-        children: [
-          Center(
-            child: Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(16.w),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(26.r),
+        child: Stack(
+          children: [
+            // Decorative circles
+            Positioned(
+              top: -55.h,
+              right: -35.w,
+              child: IgnorePointer(
+                child: Container(
+                  width: 135.w,
+                  height: 135.w,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.white.withValues(alpha: 0.15),
-                    border: Border.all(
-                      color: Colors.white.withValues(alpha: 0.3),
-                    ),
-                  ),
-                  child: Icon(
-                    FlutterIslamicIcons.solidQuran2,
-                    size: 36.sp,
-                    color: Colors.white,
+                    color: Colors.white.withValues(alpha: isDark ? .035 : .055),
                   ),
                 ),
-                Gap(16.h),
-                CustomText(
-                  'المصحف الشريف',
-                  color: Colors.white,
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.bold,
-                ),
-              ],
+              ),
             ),
-          ),
-        ],
+
+            Positioned(
+              bottom: -70.h,
+              left: -45.w,
+              child: IgnorePointer(
+                child: Container(
+                  width: 150.w,
+                  height: 150.w,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white.withValues(alpha: isDark ? .025 : .045),
+                  ),
+                ),
+              ),
+            ),
+
+
+
+            // Main content
+            Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 18.h),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Icon
+                    Container(
+                      width: 62.w,
+                      height: 62.w,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white.withValues(
+                          alpha: isDark ? .10 : .14,
+                        ),
+                        border: Border.all(
+                          color: Colors.white.withValues(alpha: .24),
+                          width: 1,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: .08),
+                            blurRadius: 12.r,
+                            offset: Offset(0, 5.h),
+                          ),
+                        ],
+                      ),
+                      child: Icon(
+                        FlutterIslamicIcons.solidQuran2,
+                        size: 30.sp,
+                        color: Colors.white,
+                      ),
+                    ),
+
+                    SizedBox(height: 13.h),
+
+                    // Title
+                    CustomText(
+                      'القرآن الكريم',
+                      maxLines: 1,
+                      textAlign: TextAlign.center,
+                      fontSize: 19.sp,
+                      fontWeight: FontWeight.w800,
+                      color: titleColor,
+                    ),
+
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

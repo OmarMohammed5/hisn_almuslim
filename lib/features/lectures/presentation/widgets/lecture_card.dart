@@ -11,11 +11,7 @@ class LectureCard extends StatelessWidget {
   final Lecture lecture;
   final VoidCallback onTap;
 
-  const LectureCard({
-    super.key,
-    required this.lecture,
-    required this.onTap,
-  });
+  const LectureCard({super.key, required this.lecture, required this.onTap});
 
   String _duration() {
     final h = lecture.duration.inHours;
@@ -30,38 +26,27 @@ class LectureCard extends StatelessWidget {
         .toString()
         .padLeft(2, '0');
 
-    return h > 0
-        ? '$h:$m:$s'
-        : '$m:$s';
+    return h > 0 ? '$h:$m:$s' : '$m:$s';
   }
 
   @override
   Widget build(BuildContext context) {
-    final scheme =
-        Theme.of(context).colorScheme;
+    final scheme = Theme.of(context).colorScheme;
 
-    return InkWell(
+    return GestureDetector(
       onTap: onTap,
-      borderRadius:
-      BorderRadius.circular(18.r),
       child: Container(
-        margin:
-        EdgeInsets.only(bottom: 12.h),
+        margin: EdgeInsets.only(bottom: 12.h),
         padding: EdgeInsets.all(8.w),
         decoration: BoxDecoration(
           color: scheme.surface,
-          borderRadius:
-          BorderRadius.circular(18.r),
-          border: Border.all(
-            color: scheme.primary
-                .withValues(alpha: .10),
-          ),
+          borderRadius: BorderRadius.circular(18.r),
+          border: Border.all(color: scheme.primary.withValues(alpha: .10)),
         ),
         child: Row(
           children: [
             ClipRRect(
-              borderRadius:
-              BorderRadius.circular(14.r),
+              borderRadius: BorderRadius.circular(14.r),
               child: SizedBox(
                 width: 126.w,
                 height: 78.h,
@@ -69,51 +54,32 @@ class LectureCard extends StatelessWidget {
                   fit: StackFit.expand,
                   children: [
                     CachedNetworkImage(
-                      imageUrl:
-                      lecture.thumbnailUrl,
+                      imageUrl: lecture.thumbnailUrl,
                       fit: BoxFit.cover,
-                      placeholder:
-                          (_, __) =>
-                      const Center(
-                        child:
-                        CupertinoActivityIndicator(),
+                      placeholder: (_, __) =>
+                          const Center(child: CupertinoActivityIndicator()),
+                      errorWidget: (_, __, ___) => Icon(
+                        Icons.ondemand_video_rounded,
+                        color: AppColors.kPrimary,
                       ),
-                      errorWidget:
-                          (_, __, ___) =>
-                          Icon(
-                            Icons
-                                .ondemand_video_rounded,
-                            color:
-                            AppColors.kPrimary,
-                          ),
                     ),
                     Positioned(
                       left: 6.w,
                       bottom: 6.h,
                       child: Container(
-                        padding:
-                        EdgeInsets.symmetric(
+                        padding: EdgeInsets.symmetric(
                           horizontal: 6.w,
                           vertical: 3.h,
                         ),
-                        decoration:
-                        BoxDecoration(
-                          color: Colors.black
-                              .withValues(
-                            alpha: .72,
-                          ),
-                          borderRadius:
-                          BorderRadius.circular(
-                            6.r,
-                          ),
+                        decoration: BoxDecoration(
+                          color: Colors.black.withValues(alpha: .72),
+                          borderRadius: BorderRadius.circular(6.r),
                         ),
                         child: CustomText(
                           _duration(),
-                          color:
-                          Colors.white,
+                          color: Colors.white,
                           fontSize: 9.sp,
-                          fontWeight:
-                          FontWeight.w600,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
@@ -124,15 +90,13 @@ class LectureCard extends StatelessWidget {
             SizedBox(width: 10.w),
             Expanded(
               child: Column(
-                crossAxisAlignment:
-                CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomText(
                     lecture.title,
                     maxLines: 3,
                     fontSize: 13.5.sp,
-                    fontWeight:
-                    FontWeight.w700,
+                    fontWeight: FontWeight.w700,
                     height: 1.35,
                   ),
                   SizedBox(height: 12.h),
@@ -140,10 +104,7 @@ class LectureCard extends StatelessWidget {
                     lecture.channelName,
                     maxLines: 2,
                     fontSize: 10.5.sp,
-                    color: scheme.onSurface
-                        .withValues(
-                      alpha: .60,
-                    ),
+                    color: scheme.onSurface.withValues(alpha: .60),
                   ),
                 ],
               ),

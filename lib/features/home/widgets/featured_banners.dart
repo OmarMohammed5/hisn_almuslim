@@ -9,20 +9,14 @@ import 'daily_content_banner.dart';
 import 'featured_banner_card.dart';
 
 class FeaturedBanners extends StatefulWidget {
-  const FeaturedBanners({
-    super.key,
-  });
+  const FeaturedBanners({super.key});
 
   @override
-  State<FeaturedBanners> createState() =>
-      _FeaturedBannersState();
+  State<FeaturedBanners> createState() => _FeaturedBannersState();
 }
 
-class _FeaturedBannersState
-    extends State<FeaturedBanners> {
-  final DailyContentLocalDataSource
-  _dataSource =
-  DailyContentLocalDataSource();
+class _FeaturedBannersState extends State<FeaturedBanners> {
+  final DailyContentLocalDataSource _dataSource = DailyContentLocalDataSource();
 
   int _currentIndex = 0;
 
@@ -46,15 +40,11 @@ class _FeaturedBannersState
       if (!mounted) return;
 
       setState(() {
-        _banners = [
-          ...featuredBanners,
-          ...banners,
-        ];
+        _banners = [...featuredBanners, ...banners];
 
         _isLoading = false;
       });
     } catch (e, stackTrace) {
-
       if (!mounted) return;
 
       setState(() {
@@ -65,8 +55,8 @@ class _FeaturedBannersState
   }
 
   List<FeaturedBannerModel> _buildDailyBanners(
-      Map<String, List<DailyContentModel>> content,
-      ) {
+    Map<String, List<DailyContentModel>> content,
+  ) {
     final now = DateTime.now();
 
     return [
@@ -121,11 +111,7 @@ class _FeaturedBannersState
       );
     }
 
-    final index = _getDailyIndex(
-      length: items.length,
-      date: date,
-      type: type,
-    );
+    final index = _getDailyIndex(length: items.length, date: date, type: type);
 
     final item = items[index];
 
@@ -143,12 +129,7 @@ class _FeaturedBannersState
     required DateTime date,
     required FeaturedBannerType type,
   }) {
-    final dayOfYear = date
-        .difference(
-      DateTime(date.year, 1, 1),
-    )
-        .inDays;
-
+    final dayOfYear = date.difference(DateTime(date.year, 1, 1)).inDays;
 
     final offset = switch (type) {
       FeaturedBannerType.ayah => 0,
@@ -166,9 +147,7 @@ class _FeaturedBannersState
     if (_isLoading) {
       return SizedBox(
         height: 140.h,
-        child: const Center(
-          child: CircularProgressIndicator(),
-        ),
+        child: const Center(child: CircularProgressIndicator()),
       );
     }
 
@@ -177,34 +156,25 @@ class _FeaturedBannersState
     }
 
     final theme = Theme.of(context);
-    final colorScheme =
-        theme.colorScheme;
+    final colorScheme = theme.colorScheme;
 
     return Column(
       children: [
         // ======================================================
         // Carousel
         // ======================================================
-
         CarouselSlider.builder(
           itemCount: _banners.length,
 
-          itemBuilder: (
-              context,
-              index,
-              realIndex,
-              ) {
-            final banner =
-            _banners[index];
+          itemBuilder: (context, index, realIndex) {
+            final banner = _banners[index];
 
             // -----------------------------------------------
             // Daily Content Banner
             // -----------------------------------------------
 
             if (banner.isDailyContentBanner) {
-              return DailyContentBanner(
-                banner: banner,
-              );
+              return DailyContentBanner(banner: banner);
             }
 
             // -----------------------------------------------
@@ -218,10 +188,7 @@ class _FeaturedBannersState
                   return;
                 }
 
-                Navigator.pushNamed(
-                  context,
-                  banner.route!,
-                );
+                Navigator.pushNamed(context, banner.route!);
               },
             );
           },
@@ -235,27 +202,17 @@ class _FeaturedBannersState
 
             autoPlay: true,
 
-            autoPlayInterval:
-            const Duration(
-              seconds: 5,
-            ),
+            autoPlayInterval: const Duration(seconds: 5),
 
-            autoPlayAnimationDuration:
-            const Duration(
-              milliseconds: 700,
-            ),
+            autoPlayAnimationDuration: const Duration(milliseconds: 700),
 
-            autoPlayCurve:
-            Curves.easeInOut,
+            autoPlayCurve: Curves.easeInOut,
 
             enableInfiniteScroll: true,
 
             pauseAutoPlayOnTouch: true,
 
-            onPageChanged: (
-                index,
-                reason,
-                ) {
+            onPageChanged: (index, reason) {
               if (!mounted) return;
 
               setState(() {
@@ -268,52 +225,31 @@ class _FeaturedBannersState
         // ======================================================
         // Indicator
         // ======================================================
-
         SizedBox(height: 9.h),
 
         Row(
-          mainAxisAlignment:
-          MainAxisAlignment.center,
-          children: List.generate(
-            _banners.length,
-                (index) {
-              final isActive =
-                  index == _currentIndex;
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List.generate(_banners.length, (index) {
+            final isActive = index == _currentIndex;
 
-              return AnimatedContainer(
-                duration:
-                const Duration(
-                  milliseconds: 250,
-                ),
+            return AnimatedContainer(
+              duration: const Duration(milliseconds: 250),
 
-                margin:
-                EdgeInsets.symmetric(
-                  horizontal: 3.w,
-                ),
+              margin: EdgeInsets.symmetric(horizontal: 3.w),
 
-                width: isActive
-                    ? 22.w
-                    : 6.w,
+              width: isActive ? 22.w : 6.w,
 
-                height: 5.w,
+              height: 5.w,
 
-                decoration:
-                BoxDecoration(
-                  color: isActive
-                      ? Colors.teal.shade300
-                      : colorScheme.primary
-                      .withValues(
-                    alpha: 0.20,
-                  ),
+              decoration: BoxDecoration(
+                color: isActive
+                    ? Colors.teal.shade300
+                    : Colors.grey.shade800.withValues(alpha: 0.6),
 
-                  borderRadius:
-                  BorderRadius.circular(
-                    10.r,
-                  ),
-                ),
-              );
-            },
-          ),
+                borderRadius: BorderRadius.circular(10.r),
+              ),
+            );
+          }),
         ),
       ],
     );

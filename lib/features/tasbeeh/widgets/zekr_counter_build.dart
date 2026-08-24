@@ -8,7 +8,6 @@ class ZekrCounterBuild extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return GridView.builder(
       padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 8.h),

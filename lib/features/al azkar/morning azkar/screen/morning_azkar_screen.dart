@@ -176,9 +176,11 @@ class _MorningAzkarScreenState extends State<MorningAzkarScreen> {
                         builder: (context, fontSize, child) {
                           return ListView(
                             physics: BouncingScrollPhysics(),
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 2.w,
-                              vertical: 20.h,
+                            padding: EdgeInsets.fromLTRB(
+                              2.w,
+                              20.h,
+                              2.w,
+                              110.h,
                             ),
                             children: [
                               InteractiveZekrCard(
@@ -192,8 +194,6 @@ class _MorningAzkarScreenState extends State<MorningAzkarScreen> {
                                       duration: const Duration(milliseconds: 400),
                                       curve: Curves.easeInOut,
                                     );
-                                  } else {
-                                    _showCompletionFeedback(context);
                                   }
                                 },
                                 size: fontSize,
@@ -206,7 +206,6 @@ class _MorningAzkarScreenState extends State<MorningAzkarScreen> {
                   ),
                 ),
               ),
-              Gap(80.h),
             ],
           ),
 
@@ -215,19 +214,22 @@ class _MorningAzkarScreenState extends State<MorningAzkarScreen> {
             left: 0.w,
             right: 0.w,
             bottom: 12.h,
-            child: AnimatedSlide(
-              duration: const Duration(milliseconds: 250),
-              offset: _isUiVisible ? Offset.zero : const Offset(0, 1),
-              child: AnimatedOpacity(
+            child: SafeArea(
+              top: false,
+              child: AnimatedSlide(
                 duration: const Duration(milliseconds: 250),
-                opacity: _isUiVisible ? 1 : 0,
-                child:ZekrActionsWidget(
-                  zekrText: morningAzkar['content'][_currentIndex]['text']
-                      ?.toString() ??
-                      '',
-                  currentIndex: _currentIndex,
-                  total: morningAzkar['content'].length,
-                  pageController: _pageController!,
+                offset: _isUiVisible ? Offset.zero : const Offset(0, 1),
+                child: AnimatedOpacity(
+                  duration: const Duration(milliseconds: 250),
+                  opacity: _isUiVisible ? 1 : 0,
+                  child:ZekrActionsWidget(
+                    zekrText: morningAzkar['content'][_currentIndex]['text']
+                        ?.toString() ??
+                        '',
+                    currentIndex: _currentIndex,
+                    total: morningAzkar['content'].length,
+                    pageController: _pageController!,
+                  ),
                 ),
               ),
             ),
@@ -237,20 +239,6 @@ class _MorningAzkarScreenState extends State<MorningAzkarScreen> {
     );
   }
 
-  void _showCompletionFeedback(BuildContext context) {
-    // Heavy Impact
-    HapticFeedback.heavyImpact();
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content:  CustomText("أتممت جميع الأذكار " , fontSize: 11.sp,),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-        backgroundColor: Colors.teal.shade700,
-        duration: const Duration(seconds: 2),
-      ),
-    );
-  }
 }
 
 

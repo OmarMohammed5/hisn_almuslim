@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
+import 'package:hisn_almuslim/core/theme/app_colors.dart';
 
 class HijriCalendarCard extends StatefulWidget {
   const HijriCalendarCard({super.key});
@@ -85,12 +86,12 @@ class _HijriCalendarCardState extends State<HijriCalendarCard> {
     final weekStripBg = Colors.white.withValues(alpha: isDark ? 0.06 : 0.14);
     final selectedDayColor = isDark ? Colors.tealAccent.shade200 : Colors.white;
     final selectedDayTextColor = isDark ? Colors.black87 : Colors.teal.shade800;
-    final todayAccentColor = const Color(0xFFD4AF37);
+    final todayAccentColor = AppColors.kAccentGold;
     final shadowColor = (isDark ? Colors.black : Colors.teal.shade900)
         .withValues(alpha: isDark ? 0.4 : 0.2);
 
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16.w),
+      margin: EdgeInsets.symmetric(horizontal: 18.w),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topRight,
@@ -209,7 +210,6 @@ class _HijriCalendarCardState extends State<HijriCalendarCard> {
       ),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          // Responsive day width: shrinks gracefully on narrow screens
           final dayWidth = (constraints.maxWidth / _weekDays.length) - 4.w;
 
           return Row(

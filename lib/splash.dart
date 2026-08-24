@@ -5,11 +5,14 @@ import 'package:hisn_almuslim/features/welcome/screen/welcome_screen.dart';
 import 'package:hisn_almuslim/root.dart';
 
 import 'core/shared/app_logo.dart';
+import 'core/shared/custom_text.dart';
 
 class Splash extends StatefulWidget {
-  const Splash({super.key, required this.seenWelcomeScreen});
+  const Splash({super.key,
+    // required this.seenWelcomeScreen
+  });
 
-  final bool seenWelcomeScreen;
+  // final bool seenWelcomeScreen;
 
   @override
   State<Splash> createState() => _SplashState();
@@ -68,7 +71,9 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
       context,
       MaterialPageRoute(
         builder: (_) =>
-            widget.seenWelcomeScreen ? const Root() : const WelcomeScreen(),
+            // widget.seenWelcomeScreen ?
+            const Root()
+                // : const WelcomeScreen(),
       ),
     );
   }
@@ -119,16 +124,13 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
                 position: _ayahSlide,
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 28.w),
-                  child: Text(
+                  child: CustomText(
                     "﴿ أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ ﴾",
                     textAlign: TextAlign.center,
-                    style: TextStyle(
                       fontSize: 20.sp,
-                      fontFamily: "AlqalamQuranMajeed2",
                       height: 1.8,
                       fontWeight: FontWeight.w500,
                       color: isDark ? Colors.white70 : Colors.green.shade900,
-                    ),
                   ),
                 ),
               ),
