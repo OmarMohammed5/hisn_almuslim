@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hisn_almuslim/core/routing/app_routes.dart';
 
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 import 'package:hisn_almuslim/core/utils/arabic_search_utils.dart';
@@ -11,6 +12,8 @@ import 'package:hisn_almuslim/features/hisn%20al-muslim/screen/zekr_details_scre
 import 'package:hisn_almuslim/features/hisn%20al-muslim/widgets/zekr_card_widget.dart';
 import 'package:hisn_almuslim/features/quran/widgets/search_field.dart';
 
+import '../../../core/shared/re_build_scroll_To_Top.dart';
+
 class HisnAlmuslimScreen extends StatefulWidget {
   const HisnAlmuslimScreen({super.key});
 
@@ -19,15 +22,29 @@ class HisnAlmuslimScreen extends StatefulWidget {
 }
 
 class _HisnAlmuslimScreenState extends State<HisnAlmuslimScreen> {
-
   String searchQuery = '';
+
+  /// Scroll
+  final ScrollController _scrollController = ScrollController();
+  final ValueNotifier<bool> _showScrollToTop = ValueNotifier(false);
 
   @override
   void initState() {
     super.initState();
 
+    _scrollController.addListener(() {
+      _showScrollToTop.value = _scrollController.offset > 300;
+    });
+
     // Load Azkar.
     context.read<AzkarCubit>().getAzkar();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
+    _showScrollToTop.dispose();
   }
 
   @override
@@ -40,27 +57,24 @@ class _HisnAlmuslimScreenState extends State<HisnAlmuslimScreen> {
       },
 
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           toolbarHeight: 80.h,
           elevation: 0,
           scrolledUnderElevation: 0,
-
           leading: IconButton(
             onPressed: () {
               Navigator.pop(context);
             },
             icon: Icon(
               Icons.arrow_back_ios_rounded,
-              color: isDark
-                  ? Colors.white
-                  : Colors.black87,
+              color: isDark ? Colors.white : Colors.black87,
               size: 18.sp,
             ),
           ),
 
           title: SearchField(
             hint: 'ابحث في الأذكار ...',
-
             onChanged: (value) {
               setState(() {
                 searchQuery = value;
@@ -75,9 +89,7 @@ class _HisnAlmuslimScreenState extends State<HisnAlmuslimScreen> {
 
             if (state is AzkarLoading) {
               return Center(
-                child: CupertinoActivityIndicator(
-                  color: Colors.teal.shade700,
-                ),
+                child: CupertinoActivityIndicator(color: Colors.teal.shade700),
               );
             }
 
@@ -97,10 +109,8 @@ class _HisnAlmuslimScreenState extends State<HisnAlmuslimScreen> {
                 return Center(
                   child: CustomText(
                     'لا توجد نتائج للبحث',
-                    fontSize: 18.sp,
-                    color: isDark
-                        ? Colors.white70
-                        : Colors.black54,
+                    fontSize: 16.sp,
+                    color: isDark ? Colors.white70 : Colors.black54,
                   ),
                 );
               }
@@ -110,28 +120,22 @@ class _HisnAlmuslimScreenState extends State<HisnAlmuslimScreen> {
               return ListView.builder(
                 itemCount: filteredAzkar.length,
                 physics: const BouncingScrollPhysics(),
-
+                controller: _scrollController,
                 itemBuilder: (context, index) {
                   final azkar = filteredAzkar[index];
 
-
-                  final originalIndex =
-                  state.zekrList.indexOf(azkar);
+                  final originalIndex = state.zekrList.indexOf(azkar);
 
                   return ZekrCardWidget(
                     title: azkar.title,
-
                     onTap: () {
-                      Navigator.push(
+                      Navigator.pushNamed(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return ZekrDetailsScreen(
-                              zekr: azkar,
-                              initialIndex: originalIndex,
-                            );
-                          },
-                        ),
+                        AppRoutes.zekrDetails,
+                        arguments: {
+                          'zekr': azkar,
+                          'initialIndex': originalIndex,
+                        },
                       );
                     },
                   );
@@ -153,6 +157,10 @@ class _HisnAlmuslimScreenState extends State<HisnAlmuslimScreen> {
 
             return const SizedBox.shrink();
           },
+        ),
+        floatingActionButton: ReBuildScrollToTop(
+          showScrollToTop: _showScrollToTop,
+          scrollController: _scrollController,
         ),
       ),
     );

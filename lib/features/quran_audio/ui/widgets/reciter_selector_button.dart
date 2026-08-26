@@ -40,7 +40,8 @@ class _ReciterSelectorButtonState extends State<ReciterSelectorButton> {
         return current is AudioPlayerReady;
       },
       builder: (context, state) {
-        final isPlaying = state is AudioPlayerReady && state.isPlaying && !state.isCompleted;
+        final isPlaying =
+            state is AudioPlayerReady && state.isPlaying && !state.isCompleted;
         final currentSurah = state is AudioPlayerReady ? state.surah : null;
 
         return GestureDetector(
@@ -52,16 +53,10 @@ class _ReciterSelectorButtonState extends State<ReciterSelectorButton> {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: isDark
-                    ? [
-                  const Color(0xFF1A2332),
-                  const Color(0xFF0F1621),
-                ]
-                    : [
-                  Colors.white,
-                  const Color(0xFFF8FAFC),
-                ],
+                    ? [const Color(0xFF1A2332), Colors.grey.shade900]
+                    : [Colors.white, const Color(0xFFF8FAFC)],
               ),
-              borderRadius: BorderRadius.circular(16.r),
+              borderRadius: BorderRadius.circular(25.r),
               border: Border.all(
                 color: isDark
                     ? Colors.white.withValues(alpha: 0.08)
@@ -150,33 +145,35 @@ class _ReciterSelectorButtonState extends State<ReciterSelectorButton> {
                         color: isDark ? Colors.white : const Color(0xFF1A2332),
                         maxLines: 1,
                       ),
-                      if (widget.currentReciter != null)
-                        Gap(6.h),
+                      if (widget.currentReciter != null) Gap(6.h),
                       Row(
-                          children: [
-                            Icon(
-                              Icons.menu_book_outlined,
-                              size: 12.sp,
-                              color: isDark
-                                  ? Colors.white.withValues(alpha: 0.4)
-                                  : Colors.grey.shade600,
-                            ),
-                            SizedBox(width: 4.w),
-                            CustomText(
-                              "رواية ${widget.currentReciter!.rewaya.ar}",
-                              maxLines: 1,
-                              fontSize: 11.sp,
-                              color: isDark
-                                  ? Colors.white.withValues(alpha: 0.4)
-                                  : Colors.grey.shade600,
-                            ),
-                          ],
-                        ),
+                        children: [
+                          Icon(
+                            Icons.menu_book_outlined,
+                            size: 12.sp,
+                            color: isDark
+                                ? Colors.white.withValues(alpha: 0.4)
+                                : Colors.grey.shade600,
+                          ),
+                          SizedBox(width: 4.w),
+                          CustomText(
+                            "رواية ${widget.currentReciter!.rewaya.ar}",
+                            maxLines: 1,
+                            fontSize: 11.sp,
+                            color: isDark
+                                ? Colors.white.withValues(alpha: 0.4)
+                                : Colors.grey.shade600,
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 12.w,
+                    vertical: 8.h,
+                  ),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topLeft,
@@ -220,7 +217,8 @@ class _ReciterSelectorButtonState extends State<ReciterSelectorButton> {
   Widget _buildReciterAvatar(bool isPlaying, bool isDark) {
     final hasReciter = widget.currentReciter != null;
     final reciterIndex = hasReciter
-        ? widget.reciters.indexWhere((r) => r.id == widget.currentReciter!.id) + 1
+        ? widget.reciters.indexWhere((r) => r.id == widget.currentReciter!.id) +
+              1
         : 0;
 
     return Stack(
@@ -235,18 +233,15 @@ class _ReciterSelectorButtonState extends State<ReciterSelectorButton> {
               end: Alignment.bottomRight,
               colors: hasReciter
                   ? [
-                AppColors.kPrimary.withValues(alpha: 0.2),
-                AppColors.kPrimary.withValues(alpha: 0.05),
-              ]
+                      AppColors.kPrimary.withValues(alpha: 0.2),
+                      AppColors.kPrimary.withValues(alpha: 0.05),
+                    ]
                   : isDark
                   ? [
-                Colors.white.withValues(alpha: 0.08),
-                Colors.white.withValues(alpha: 0.02),
-              ]
-                  : [
-                Colors.grey.shade200,
-                Colors.grey.shade100,
-              ],
+                      Colors.white.withValues(alpha: 0.08),
+                      Colors.white.withValues(alpha: 0.02),
+                    ]
+                  : [Colors.grey.shade200, Colors.grey.shade100],
             ),
             shape: BoxShape.circle,
             border: Border.all(
@@ -261,18 +256,18 @@ class _ReciterSelectorButtonState extends State<ReciterSelectorButton> {
           child: Center(
             child: hasReciter
                 ? CustomText(
-              '$reciterIndex',
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w700,
-              color: AppColors.kPrimary,
-            )
+                    '$reciterIndex',
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.kPrimary,
+                  )
                 : Icon(
-              Icons.person_search_rounded,
-              color: isDark
-                  ? Colors.white.withValues(alpha: 0.3)
-                  : Colors.grey.shade500,
-              size: 22.sp,
-            ),
+                    Icons.person_search_rounded,
+                    color: isDark
+                        ? Colors.white.withValues(alpha: 0.3)
+                        : Colors.grey.shade500,
+                    size: 22.sp,
+                  ),
           ),
         ),
         Positioned(

@@ -61,6 +61,7 @@ class _DeadDuaScreenState extends State<DeadDuaScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBarWidget(
         title: 'أدعية للمتوفي',
         actions: [   Padding(

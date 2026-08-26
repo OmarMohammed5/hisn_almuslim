@@ -44,12 +44,13 @@ class CategoryCardWidget extends StatelessWidget {
             color: bgColor,
             borderRadius: radius,
             border: Border.all(color: borderColor, width: 1),
-            boxShadow: isDark
+            boxShadow:
+            isDark
                 ? const []
                 : [
               BoxShadow(
                 color: AppColors.kPrimary.withValues(alpha: 0.05),
-                blurRadius: 10.r,
+                blurRadius: 6.r,
                 offset: Offset(0, 3.h),
               ),
             ],

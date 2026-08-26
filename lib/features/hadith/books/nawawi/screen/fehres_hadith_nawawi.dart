@@ -9,6 +9,7 @@ import 'package:hisn_almuslim/features/hadith/widgets/chapter_card.dart';
 import 'package:hisn_almuslim/features/quran/widgets/search_field.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 
+import '../../../../../core/shared/re_build_scroll_To_Top.dart';
 import '../../../../../core/utils/arabic_search_utils.dart';
 
 class FehresHadithNawawi extends StatefulWidget {
@@ -21,10 +22,31 @@ class FehresHadithNawawi extends StatefulWidget {
 class _FehresHadithNawawiState extends State<FehresHadithNawawi> {
   String searchQuery = '';
 
+
+  /// Scroll
+  final ScrollController _scrollController = ScrollController();
+  final ValueNotifier<bool> _showScrollToTop = ValueNotifier(false);
+
+  @override
+  void initState() {
+    _scrollController.addListener(() {
+      _showScrollToTop.value = _scrollController.offset > 300;
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    _showScrollToTop.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     // final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         toolbarHeight: 80.h,
         elevation: 0,
@@ -64,6 +86,7 @@ class _FehresHadithNawawiState extends State<FehresHadithNawawi> {
             }
 
             return ListView.builder(
+              controller: _scrollController,
               padding: EdgeInsets.all(6.w),
               itemCount: filteredHadiths.length,
               itemBuilder: (context, index) {
@@ -86,6 +109,10 @@ class _FehresHadithNawawiState extends State<FehresHadithNawawi> {
             return const SizedBox.shrink();
           }
         },
+      ),
+      floatingActionButton: ReBuildScrollToTop(
+        showScrollToTop: _showScrollToTop,
+        scrollController: _scrollController,
       ),
     );
   }

@@ -56,6 +56,7 @@ class _QuranHomePageState extends State<QuranHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBarWidget(
         title: "المصحف الشريف",
       ),
@@ -110,11 +111,6 @@ class _QuranHomePageState extends State<QuranHomePage> {
                         itemCount: surahs.length,
                         itemBuilder: (context, index) {
                           final surah = surahs[index];
-                          final highlightsForSurah = highlightState.forSurah(surah.number);
-                          double highlightProgress = 0.0;
-                          if (highlightsForSurah.isNotEmpty && surah.totalAyahs > 0) {
-                            highlightProgress = highlightsForSurah.keys.length / surah.totalAyahs;
-                          }
 
                           return SurahCard(
                             surah: surah,

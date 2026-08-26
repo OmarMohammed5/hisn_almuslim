@@ -9,6 +9,7 @@ import 'package:hisn_almuslim/features/hadith/books/reyad%20al%20salehin/screen/
 import 'package:hisn_almuslim/features/hadith/widgets/chapter_card.dart';
 import 'package:hisn_almuslim/features/quran/widgets/search_field.dart';
 
+import '../../../../../core/shared/re_build_scroll_To_Top.dart';
 import '../../../../../core/utils/arabic_search_utils.dart';
 
 class FehresReyadAlSaliheen extends StatefulWidget {
@@ -19,12 +20,31 @@ class FehresReyadAlSaliheen extends StatefulWidget {
 }
 
 class _FehresReyadAlSaliheenState extends State<FehresReyadAlSaliheen> {
-
   String searchQuery = "";
+
+  /// Scroll
+  final ScrollController _scrollController = ScrollController();
+  final ValueNotifier<bool> _showScrollToTop = ValueNotifier(false);
+
+  @override
+  void initState() {
+    _scrollController.addListener(() {
+      _showScrollToTop.value = _scrollController.offset > 300;
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    _showScrollToTop.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         toolbarHeight: 80.h,
         elevation: 0,
@@ -56,14 +76,12 @@ class _FehresReyadAlSaliheenState extends State<FehresReyadAlSaliheen> {
 
             if (filteredChapters.isEmpty) {
               return Center(
-                child: CustomText(
-                  'لا توجد نتائج',
-                  fontSize: 16.sp,
-                ),
+                child: CustomText('لا توجد نتائج', fontSize: 16.sp),
               );
             }
 
             return ListView.builder(
+              controller: _scrollController,
               padding: EdgeInsets.all(6.w),
               itemCount: filteredChapters.length,
               itemBuilder: (context, index) {
@@ -87,7 +105,11 @@ class _FehresReyadAlSaliheenState extends State<FehresReyadAlSaliheen> {
                   children: [
                     ChapterCard(
                       onTap: () {
-                        Navigator.pushNamed(context, AppRoutes.reyadAlSaliheenDetails , arguments: chapter);
+                        Navigator.pushNamed(
+                          context,
+                          AppRoutes.reyadAlSaliheenDetails,
+                          arguments: chapter,
+                        );
                       },
                       chapterId: chapter.chapterId,
                       chapterTitle: getChapterTitle(),
@@ -105,6 +127,10 @@ class _FehresReyadAlSaliheenState extends State<FehresReyadAlSaliheen> {
 
           return const SizedBox();
         },
+      ),
+      floatingActionButton: ReBuildScrollToTop(
+        showScrollToTop: _showScrollToTop,
+        scrollController: _scrollController,
       ),
     );
   }

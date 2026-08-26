@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -68,7 +69,7 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
               if (state is AudioPlayerError && state.shouldShow) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(state.message),
+                    content: CustomText(state.message),
                     backgroundColor: Colors.red.shade700,
                     behavior: SnackBarBehavior.floating,
                     duration: const Duration(seconds: 3),
@@ -102,7 +103,6 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
     );
   }
 
-  // 1. TOP HEADER ------------------------------------------------------
   Widget _buildTopBar(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
@@ -154,7 +154,7 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const CircularProgressIndicator(color: Colors.white),
+            const CupertinoActivityIndicator(color: Colors.white),
             SizedBox(height: 16.h),
             CustomText(
               state.message ?? 'جاري التحميل...',
@@ -169,7 +169,7 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const CircularProgressIndicator(color: Colors.white),
+          const CupertinoActivityIndicator(color: Colors.white),
           SizedBox(height: 16.h),
           CustomText(
             'جاري تجهيز الصوت...',
@@ -245,7 +245,7 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
                   ),
                   speedChip: _speedChip(context, cubit, state.speed),
                   completionMode:
-                  _buildCompletionModeSelector(context, cubit, state),
+                  CompletionModeSelector(context, cubit, state),
                 ),
               ),
             ),
@@ -283,7 +283,7 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
   }
 
 
-  Widget _buildCompletionModeSelector(
+  Widget CompletionModeSelector(
       BuildContext context,
       AudioPlayerCubit cubit,
       AudioPlayerReady state,
@@ -461,14 +461,14 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
 
   Widget _buildError(BuildContext context, AudioPlayerError state) {
     if (!state.shouldShow) {
-      return const Center(
-        child: CircularProgressIndicator(color: Colors.white),
+      return  Center(
+        child: CupertinoActivityIndicator(color: Colors.white),
       );
     }
 
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(24.0),
+        padding: EdgeInsets.all(24.w),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -505,7 +505,7 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
                 ),
                 onPressed: () => context.read<AudioPlayerCubit>().retry(),
                 icon: const Icon(Icons.refresh_rounded),
-                label: const Text('إعادة المحاولة'),
+                label:  CustomText('إعادة المحاولة'),
               )
             else
               ElevatedButton.icon(
@@ -520,7 +520,7 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
                 ),
                 onPressed: () => Navigator.pop(context),
                 icon: const Icon(Icons.arrow_back_rounded),
-                label: const Text('رجوع'),
+                label:  CustomText('رجوع'),
               ),
           ],
         ),

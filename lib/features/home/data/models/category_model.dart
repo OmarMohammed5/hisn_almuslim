@@ -32,11 +32,6 @@ final List<CategoryModel> categories = [
     route: AppRoutes.eveningAzkar,
   ),
   CategoryModel(
-    title: "أسماء الله الحسنى",
-    icon: FlutterIslamicIcons.allah,
-    route: AppRoutes.asmaAllah,
-  ),
-  CategoryModel(
     title: "الأذكار",
     icon: FlutterIslamicIcons.muslim,
     route: AppRoutes.hisnAlMuslim,
@@ -52,13 +47,18 @@ final List<CategoryModel> categories = [
     route: AppRoutes.dua,
   ),
   CategoryModel(
-    title: "السبحة",
-    icon: FlutterIslamicIcons.tasbihHand,
-    route: AppRoutes.zekrAllah,
+    title: "أسماء الله الحسنى",
+    icon: FlutterIslamicIcons.allah,
+    route: AppRoutes.asmaAllah,
   ),
   CategoryModel(
     title: "قصص الأنبياء",
     icon: Icons.auto_stories_outlined,
     route: AppRoutes.stories,
+  ),
+  CategoryModel(
+    title: "السبحة",
+    icon: FlutterIslamicIcons.tasbihHand,
+    route: AppRoutes.zekrAllah,
   ),
 ];

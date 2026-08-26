@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import '../data/datasource/daily_content_local_data_source.dart';
 import '../data/models/daily_content_model.dart';
 import '../data/models/featured_banner_model.dart';
@@ -196,7 +197,7 @@ class _FeaturedBannersState extends State<FeaturedBanners> {
           options: CarouselOptions(
             height: 140.h,
 
-            viewportFraction: 0.92,
+            viewportFraction: 0.9,
 
             enlargeCenterPage: false,
 
@@ -222,11 +223,8 @@ class _FeaturedBannersState extends State<FeaturedBanners> {
           ),
         ),
 
-        // ======================================================
         // Indicator
-        // ======================================================
-        SizedBox(height: 9.h),
-
+        Gap(18.h),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: List.generate(_banners.length, (index) {

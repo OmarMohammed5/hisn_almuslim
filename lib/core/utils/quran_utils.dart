@@ -4,7 +4,10 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hisn_almuslim/core/shared/custom_text.dart';
+import 'package:hisn_almuslim/core/theme/app_colors.dart';
 
 int getPageNumber(int surahNumber, int ayahNumber) {
   const Map<int, int> surahStartPage = {
@@ -190,7 +193,7 @@ Widget buildEmptyState(BuildContext context, bool isDark) {
       : const Color(0xFF607A76);
 
   return Container(
-    margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+    margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
     padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 22.h),
     decoration: BoxDecoration(
       color: isDark ? const Color(0xFF101F1D) : Colors.white,
@@ -207,49 +210,40 @@ Widget buildEmptyState(BuildContext context, bool isDark) {
           height: 56.w,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: primary.withValues(alpha: isDark ? .10 : .08),
+            color: AppColors.kPrimary.withValues(alpha: isDark ? .10 : .08),
           ),
           child: Icon(
-            Icons.menu_book_rounded,
+            FlutterIslamicIcons.solidQuran2,
             size: 27.sp,
-            color: primary.withValues(alpha: .75),
+            color: AppColors.kPrimary.withValues(alpha: .75),
           ),
         ),
 
         SizedBox(height: 12.h),
 
-        Text(
+       CustomText(
           'لا توجد قراءات سابقة',
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontFamily: 'Noon',
             fontSize: 15.sp,
             fontWeight: FontWeight.w800,
             color: titleColor,
-          ),
         ),
 
         SizedBox(height: 5.h),
 
-        Text(
+        CustomText(
           'ابدأ بقراءة القرآن لتظهر آخر قراءة هنا',
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontFamily: 'Noon',
             fontSize: 11.sp,
             height: 1.5,
             color: subtitleColor,
-          ),
         ),
       ],
     ),
   );
 }
 
-// ============================================================
 // Loading
-// ============================================================
-
 Widget buildLoadingState(BuildContext context, bool isDark) {
   final primary = Theme.of(context).colorScheme.primary;
 

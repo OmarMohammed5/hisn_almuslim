@@ -52,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
             // Calendar
             const SliverToBoxAdapter(child: HijriCalendarCard()),
 
-            SliverToBoxAdapter(child: Gap(20.h)),
+            SliverToBoxAdapter(child: Gap(24.h)),
 
             // Featured content
             const SliverToBoxAdapter(child: FeaturedBanners()),

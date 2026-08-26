@@ -46,17 +46,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 alignment: Alignment.centerRight,
                 child: CustomText(
                   "تغيير المظهر",
-                  color: AppColors.kIconColor,
                   fontWeight: FontWeight.bold,
                   fontSize: 12.sp,
                 ),
               ),
             ),
             Gap(10.h),
-            _sectionCard(
-              isDark,
               ChangeThemeMode(isDark: isDark, isLight: isLight),
-            ),
 
             Gap(25.h),
             Padding(
@@ -65,14 +61,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 alignment: Alignment.centerRight,
                 child: CustomText(
                   "الورد اليومي",
-                  color: AppColors.kIconColor,
                   fontSize: 12.sp,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
             Gap(10.h),
-            _sectionCard(isDark, const WirdNotificationBuild()),
+            const WirdNotificationBuild(),
 
             Gap(25.h),
 
@@ -83,51 +78,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 alignment: Alignment.centerRight,
                 child: CustomText(
                   "منبهات الأذكار",
-                  color: AppColors.kIconColor,
                   fontSize: 12.sp,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
             Gap(10.h),
-            _sectionCard(isDark, const AzkarNotificationsBuild()),
+            const AzkarNotificationsBuild(),
 
             Gap(80.h),
 
-            // ABOUT APP
-            // Padding(
-            //   padding: EdgeInsets.symmetric(horizontal: 16.w),
-            //   child: Align(
-            //     alignment: Alignment.centerRight,
-            //     child: CustomText(
-            //       "عن التطبيق",
-            //       color: AppColors.kIconColor,
-            //       fontSize: 12.sp,
-            //       fontWeight: FontWeight.bold,
-            //     ),
-            //   ),
-            // ),
-            // Gap(10.h),
-            // _sectionCard(isDark, const AboutAppWidget()),
-            //
-            // Gap(120.h),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _sectionCard(bool isDark, Widget child) {
-    return Container(
-      padding: EdgeInsets.all(2.w),
-      decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1E2126) : Colors.white,
-        borderRadius: BorderRadius.circular(20.r),
-        border: Border.all(
-          color: isDark ? Color(0xff023d22) : Colors.grey.shade300,
-        ),
-      ),
-      child: child,
     );
   }
 }

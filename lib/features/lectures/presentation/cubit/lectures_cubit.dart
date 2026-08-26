@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../domain/entities/lecture.dart';
 import '../../domain/entities/sheikh.dart';
 import '../../domain/repositories/lectures_repository.dart';
 import '../../domain/services/islamic_search_validator.dart';
@@ -11,11 +12,43 @@ class LecturesCubit extends Cubit<LecturesState> {
 
   Timer? _searchDebounce;
 
+  // Cache for faster loading
+  static List<Sheikh>? _cachedSheikhs;
+  static List<Lecture>? _cachedLatest;
+  static DateTime? _cacheTime;
+  static const _cacheDuration = Duration(minutes: 5);
+
+
   LecturesCubit({
     required this.repository,
   }) : super(const LecturesState());
 
-  Future<void> loadDashboard() async {
+
+
+  bool get _isCacheValid {
+    if (_cacheTime == null) return false;
+    return DateTime.now().difference(_cacheTime!) < _cacheDuration;
+  }
+
+  Future<void> loadDashboard({bool forceRefresh = false}) async {
+    if (!forceRefresh && _isCacheValid && _cachedSheikhs != null) {
+      emit(
+        state.copyWith(
+          status: LecturesStatus.success,
+          sheikhs: _cachedSheikhs!,
+          latest: _cachedLatest ?? [],
+          clearError: true,
+        ),
+      );
+
+      _fetchDashboardInBackground();
+      return;
+    }
+
+    await _fetchDashboard();
+  }
+
+  Future<void> _fetchDashboard() async {
     emit(
       state.copyWith(
         status: LecturesStatus.loading,
@@ -33,34 +66,76 @@ class LecturesCubit extends Cubit<LecturesState> {
         repository.getFeaturedSheikhs(),
       ]);
 
-      final latestPage =
-      results[0] as LatestLecturesPage;
+      final latestPage = results[0] as LatestLecturesPage;
+      final sheikhs = results[1] as List<Sheikh>;
+
+      // Update cache
+      _cachedSheikhs = sheikhs;
+      _cachedLatest = latestPage.lectures;
+      _cacheTime = DateTime.now();
 
       emit(
         state.copyWith(
           status: LecturesStatus.success,
           latest: latestPage.lectures,
-          sheikhs:
-          results[1] as List<Sheikh>,
-          hasMoreLatest:
-          latestPage.hasMore,
-          latestNextPageToken:
-          latestPage.nextPageToken,
+          sheikhs: sheikhs,
+          hasMoreLatest: latestPage.hasMore,
+          latestNextPageToken: latestPage.nextPageToken,
           isLoadingMore: false,
+          clearError: true,
         ),
       );
     } catch (e) {
-      debugPrint(
-        'Lectures dashboard error: $e',
-      );
+      debugPrint('Lectures dashboard error: $e');
 
-      emit(
-        state.copyWith(
-          status: LecturesStatus.failure,
-          errorMessage:
-          'تعذر تحميل المحاضرات حاليًا',
-        ),
-      );
+      // إذا كان هناك Cache قديم، استخدمه كـ Fallback
+      if (_cachedSheikhs != null) {
+        emit(
+          state.copyWith(
+            status: LecturesStatus.success,
+            sheikhs: _cachedSheikhs!,
+            latest: _cachedLatest ?? [],
+            errorMessage: 'تم عرض البيانات المخزنة مؤقتاً',
+            clearError: false,
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(
+            status: LecturesStatus.failure,
+            errorMessage: 'تعذر تحميل المحاضرات حاليًا',
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _fetchDashboardInBackground() async {
+    try {
+      final results = await Future.wait([
+        repository.getLatestLectures(),
+        repository.getFeaturedSheikhs(),
+      ]);
+
+      final latestPage = results[0] as LatestLecturesPage;
+      final sheikhs = results[1] as List<Sheikh>;
+
+      _cachedSheikhs = sheikhs;
+      _cachedLatest = latestPage.lectures;
+      _cacheTime = DateTime.now();
+
+      if (!isClosed) {
+        emit(
+          state.copyWith(
+            latest: latestPage.lectures,
+            sheikhs: sheikhs,
+            hasMoreLatest: latestPage.hasMore,
+            latestNextPageToken: latestPage.nextPageToken,
+          ),
+        );
+      }
+    } catch (e) {
+      debugPrint('Background fetch error: $e');
     }
   }
 

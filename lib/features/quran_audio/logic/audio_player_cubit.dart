@@ -23,7 +23,6 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
   CompletionMode _currentCompletionMode = CompletionMode.manual;
 
   bool _isSeeking = false;
-  Duration _lastEmittedPosition = Duration.zero;
 
   bool _completionHandled = false;
 
@@ -32,9 +31,7 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
 
   AudioPlayerCubit() : super(const AudioPlayerInitial());
 
-  // ============================================================
   // Initialization
-  // ============================================================
   Future<void> initializePlayer({
     required String audioUrl,
     required SurahAudioModel surah,
@@ -148,10 +145,7 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
     }
   }
 
-  // ============================================================
   // Subscriptions
-  // ============================================================
-
   void _subscribeToStreams() {
     // Player State Stream
     _playerStateSubscription = _service.playerStateStream.listen(
@@ -186,10 +180,7 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
     _durationSubscription = null;
   }
 
-  // ============================================================
   // State Updates
-  // ============================================================
-
   void _updatePosition(Duration position) {
     if (_isClosed) return;
 
@@ -281,10 +272,7 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
     }
   }
 
-  // ============================================================
   // Error Handling
-  // ============================================================
-
   AudioPlayerError _createErrorState(
       String errorMessage,
       String audioUrl,
@@ -358,10 +346,7 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
     );
   }
 
-  // ============================================================
   // Playback Controls
-  // ============================================================
-
   Future<void> play() async {
     if (_isClosed) {
       return;
@@ -483,10 +468,7 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
     }
   }
 
-  // ============================================================
   // Navigation
-  // ============================================================
-
   Future<void> playNext() async {
     if (_isClosed || _surahs.isEmpty) {
       return;
@@ -552,10 +534,7 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
   }
 
 
-  // ============================================================
   // Completion Mode
-  // ============================================================
-
   void setCompletionMode(CompletionMode mode) {
     if (_isClosed) return;
     _currentCompletionMode = mode;
@@ -566,10 +545,7 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
     }
   }
 
-  // ============================================================
   // Helpers
-  // ============================================================
-
   static String formatDuration(Duration duration) {
     if (duration == Duration.zero) return '0:00';
     String twoDigits(int n) => n.toString().padLeft(2, '0');
@@ -578,10 +554,7 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
     return '$minutes:$seconds';
   }
 
-  // ============================================================
   // Lifecycle
-  // ============================================================
-
   Future<void> disposePlayer() async {
     _isClosed = true;
     await _cancelSubscriptions();
