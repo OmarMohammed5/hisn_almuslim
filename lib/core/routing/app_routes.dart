@@ -4,10 +4,6 @@ class AppRoutes {
   static const String welcome = '/welcome';
   static const String home = '/home';
 
-
-
-
-
   // Azkar
   static const String morningAzkar = '/morning-azkar';
   static const String eveningAzkar = '/evening-azkar';
@@ -41,7 +37,6 @@ class AppRoutes {
   // Adhan
   static const String adhan = '/adhan';
 
-
   // Quran
   static const String quran = '/quran';
   static const String quranHome = '/quran-home';
@@ -50,7 +45,7 @@ class AppRoutes {
   static const String quranBookmarks = '/quran-bookmarks';
   static const String quranSearch = '/quran-search';
 
-/// Radio Station
+  /// Radio Station
   static const String radio = '/radio';
 
   // Quran Audio
@@ -76,6 +71,14 @@ class AppRoutes {
   static const String lectureCategory = 'lecture-category';
   static const String lectureSearch = 'lecture-search';
 
+  /// Islamic Quiz
+  static const quizCategories = '/quiz-categories';
 
+  static const quizTopics = '/quiz-topics';
 
+  static const quizLevels = '/quiz-levels';
+
+  static const quizGame = '/quiz-game';
+
+  static const quizResult = '/quiz-result';
 }

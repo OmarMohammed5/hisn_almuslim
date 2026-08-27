@@ -1,23 +1,22 @@
-import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
-import 'package:hisn_almuslim/core/constant/app_constants.dart';
+import 'package:hisn_almuslim/features/islamic_quiz/data/datasources/quiz_local_data_source.dart';
+import 'package:hisn_almuslim/features/islamic_quiz/data/repositories/quiz_repository_impl.dart';
+import 'package:hisn_almuslim/features/islamic_quiz/domain/repositories/quiz_repository.dart';
+import 'package:hisn_almuslim/features/islamic_quiz/domain/usecases/get_quiz_database.dart';
+import 'package:hisn_almuslim/features/islamic_quiz/presentation/cubit/quiz_cubit.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:hisn_almuslim/core/service/notification_service.dart';
 import 'package:hisn_almuslim/core/service/wird_notification.dart';
 import 'package:hisn_almuslim/features/quran/data/models/quran_storage.dart';
 import 'package:hisn_almuslim/features/asma%20allah/data/repo/asma_repositiry.dart';
-
-// Repositories
 import 'package:hisn_almuslim/features/quran_audio/data/repos/quran_audio_repository.dart';
 import 'package:hisn_almuslim/features/quran_audio/data/repos/quran_audio_repository_impl.dart';
-
 import 'package:hisn_almuslim/features/al%20azkar/data/cubit/azkar_cubit.dart';
 import 'package:hisn_almuslim/features/settings/data/cubit/theme_cubit.dart';
 import 'package:hisn_almuslim/features/settings/data/cubit/notification_cubit.dart';
 import 'package:hisn_almuslim/features/quran/data/cubit/cubit/search_cubit.dart';
 import 'package:hisn_almuslim/features/quran/data/cubit/quran_cubit.dart';
-import 'package:hisn_almuslim/features/quran/data/cubit/cubit/quran_progress_cubit.dart';
 import 'package:hisn_almuslim/features/hadith/books/bukhary/data/cubit/chapters_cubit.dart';
 import 'package:hisn_almuslim/features/hadith/books/muslim/data/cubit/sahih_muslim_cubit.dart';
 import 'package:hisn_almuslim/features/hadith/books/nawawi/data/cubit/hadith_cubit.dart';
@@ -31,7 +30,10 @@ import 'package:hisn_almuslim/features/asma%20allah/data/cubit/asma_allah_cubit.
 import 'package:hisn_almuslim/features/adhan/data/cubit/adhan_cubit.dart';
 import 'package:hisn_almuslim/features/quran_audio/logic/quran_audio_cubit.dart';
 import 'package:hisn_almuslim/features/quran_audio/logic/audio_player_cubit.dart';
-
+import '../../features/islamic_quiz/data/datasources/quiz_progress_local_data_source.dart';
+import '../../features/islamic_quiz/data/repositories/quiz_progress_repository_impl.dart';
+import '../../features/islamic_quiz/domain/repositories/quiz_progress_repository.dart';
+import '../../features/islamic_quiz/presentation/cubit/game_cubit.dart';
 import '../../features/lectures/data/datasources/lectures_local_data_source.dart';
 import '../../features/lectures/data/datasources/youtube_remote_data_source.dart';
 import '../../features/lectures/data/repositories/lectures_repository_impl.dart';
@@ -261,10 +263,8 @@ Future<void> setupLocator() async {
     );
   }
 
-// ------------------------------------------------------------
 // Cubit
 // Factory → new Cubit instance whenever needed
-// ------------------------------------------------------------
 
   sl.registerFactory<LecturesCubit>(
         () => LecturesCubit(
@@ -272,6 +272,47 @@ Future<void> setupLocator() async {
     ),
   );
 
+
+  /// Quiz Database ///
+
+  sl.registerLazySingleton<QuizLocalDataSource>(
+      () => QuizLocalDataSource()
+  );
+
+  sl.registerLazySingleton<QuizRepository>(
+      () => QuizRepositoryImpl(localDataSource: sl<QuizLocalDataSource>())
+  );
+
+  sl.registerLazySingleton<GetQuizDatabase>(
+      () => GetQuizDatabase(repository: sl<QuizRepository>())
+  );
+
+  sl.registerFactory<QuizCubit>(
+      () => QuizCubit(getQuizDatabase: sl<GetQuizDatabase>())
+  );
+
+  /// Game
+  sl.registerLazySingleton<SharedPreferencesAsync>(
+        () => SharedPreferencesAsync(),
+  );
+
+  sl.registerLazySingleton<QuizProgressLocalDataSource>(
+        () => QuizProgressLocalDataSource(
+      preferences: sl<SharedPreferencesAsync>(),
+    ),
+  );
+
+  sl.registerLazySingleton<QuizProgressRepository>(
+        () => QuizProgressRepositoryImpl(
+      localDataSource: sl<QuizProgressLocalDataSource>(),
+    ),
+  );
+
+  sl.registerFactory<QuizGameCubit>(
+        () => QuizGameCubit(
+      progressRepository: sl<QuizProgressRepository>(),
+    ),
+  );
 }
 
 

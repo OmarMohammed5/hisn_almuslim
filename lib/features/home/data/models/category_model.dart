@@ -61,4 +61,9 @@ final List<CategoryModel> categories = [
     icon: FlutterIslamicIcons.tasbihHand,
     route: AppRoutes.zekrAllah,
   ),
+  CategoryModel(
+    title: "اسئلة دينيه",
+    icon: Icons.quiz_sharp,
+    route: AppRoutes.quizCategories,
+  ),
 ];
