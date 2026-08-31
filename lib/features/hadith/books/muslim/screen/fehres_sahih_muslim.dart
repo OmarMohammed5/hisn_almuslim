@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hisn_almuslim/features/hadith/books/muslim/data/cubit/sahih_muslim_cubit.dart';
-import 'package:hisn_almuslim/features/hadith/books/muslim/screen/sahih_muslim_details.dart';
 import 'package:hisn_almuslim/features/hadith/widgets/chapter_card.dart';
-import 'package:hisn_almuslim/features/quran/widgets/search_field.dart';
-
 import '../../../../../core/routing/app_routes.dart';
 import '../../../../../core/shared/custom_text.dart';
 import '../../../../../core/shared/re_build_scroll_To_Top.dart';
+import '../../../../../core/shared/search_field.dart';
 import '../../../../../core/utils/arabic_search_utils.dart';
 
 class FehresSahihMuslim extends StatefulWidget {

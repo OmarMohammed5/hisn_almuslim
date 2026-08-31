@@ -97,7 +97,7 @@ class AppRouter {
     final arguments = settings.arguments;
 
     switch (settings.name) {
-      // ============ SPLASH & WELCOME ============
+    // ============ SPLASH & WELCOME ============
       case AppRoutes.splash:
         return slidePageRoute(
           settings: settings,
@@ -109,13 +109,13 @@ class AppRouter {
       case AppRoutes.welcome:
         return MaterialPageRoute(builder: (_) => const WelcomeScreen());
 
-      // ============ HOME ============
+    // ============ HOME ============
       case AppRoutes.home:
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(
             providers: [
               BlocProvider.value(value: sl<QuranCubit>()),
-              // BlocProvider.value(value: sl<QuranProgressCubit>()),
+              BlocProvider.value(value: sl<AyahHighlightCubit>()),
               BlocProvider.value(value: sl<AdhanCubit>()),
               BlocProvider.value(value: sl<RadioCubit>()),
               BlocProvider.value(value: sl<LecturesCubit>()),
@@ -124,7 +124,7 @@ class AppRouter {
           ),
         );
 
-      // ============ Islamic Lectures ============
+    // ============ Islamic Lectures ============
       case AppRoutes.lectures:
         final preferences = arguments as SharedPreferences;
 
@@ -213,7 +213,7 @@ class AppRouter {
           ),
         );
 
-      // ============ AZKAR ============
+    // ============ AZKAR ============
       case AppRoutes.morningAzkar:
         final initialIndex = arguments is int ? arguments : null;
 
@@ -228,7 +228,7 @@ class AppRouter {
           child: const EveningAzkarScreen(),
         );
 
-      // Hisn Al Muslim
+    // Hisn Al Muslim
 
       case AppRoutes.hisnAlMuslim:
         return slidePageRoute(
@@ -251,7 +251,7 @@ class AppRouter {
           child: ZekrDetailsScreen(zekr: zekr, initialIndex: initialIndex),
         );
 
-      // ============ ASMA ALLAH ============
+    // ============ ASMA ALLAH ============
       case AppRoutes.asmaAllah:
         return slidePageRoute(
           settings: settings,
@@ -261,7 +261,7 @@ class AppRouter {
           ),
         );
 
-      // ============ HADITHS ============
+    // ============ HADITHS ============
       case AppRoutes.hadith:
         return slidePageRoute(settings: settings, child: const HadithScreen());
 
@@ -344,7 +344,7 @@ class AppRouter {
           ),
         );
 
-      // ============ JAMI DUA ============
+    // ============ JAMI DUA ============
       case AppRoutes.dua:
         return slidePageRoute(settings: settings, child: const DuaScreen());
 
@@ -414,7 +414,7 @@ class AppRouter {
           ),
         );
 
-      // ============ QURAN ============
+    // ============ QURAN ============
 
       case AppRoutes.quran:
         return MaterialPageRoute(
@@ -471,7 +471,7 @@ class AppRouter {
           ),
         );
 
-      // ============ QURAN AUDIO ============
+    // ============ QURAN AUDIO ============
       case AppRoutes.quranAudioHome:
         return slidePageRoute(
           settings: settings,
@@ -504,7 +504,7 @@ class AppRouter {
           ),
         );
 
-      // ============ SETTINGS ============
+    // ============ SETTINGS ============
       case AppRoutes.settings:
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(
@@ -516,14 +516,14 @@ class AppRouter {
           ),
         );
 
-      // ============ TASBEEH ============
+    // ============ TASBEEH ============
       case AppRoutes.zekrAllah:
         return slidePageRoute(
           settings: settings,
           child: const ZekrAllahScreen(),
         );
 
-      // ============ TASBEEH ============
+    // ============ TASBEEH ============
 
       case AppRoutes.stories:
         return slidePageRoute(
@@ -534,10 +534,13 @@ class AppRouter {
           ),
         );
 
-      case AppRoutes.stories:
-        final story = arguments as ProphetStory;
-        final allStories = arguments as List<ProphetStory>;
-        final currentIndex = arguments as int;
+      case AppRoutes.storyDetails:
+
+        final args = arguments as Map<String, dynamic>;
+
+        final story = args['story'] as ProphetStory;
+        final allStories = args['allStories'] as List<ProphetStory>;
+        final currentIndex = args['currentIndex'] as int;
 
         return slidePageRoute(
           settings: settings,
@@ -551,7 +554,7 @@ class AppRouter {
           ),
         );
 
-      // ============ Islamic Quiz ============
+    // ============ Islamic Quiz ============
       case AppRoutes.quizCategories:
         return slidePageRoute(
           settings: settings,

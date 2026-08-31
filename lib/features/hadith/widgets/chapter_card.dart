@@ -92,7 +92,7 @@ class ChapterCard extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 17.sp,
                       fontWeight: FontWeight.w700,
-                      fontFamily: "AlqalamQuranMajeed2",
+                      fontFamily: "Noon",
                       color: isDark ? Colors.white : Color(0xFF1A1A2E),
                       height: 1.7,
                     ),
@@ -131,7 +131,7 @@ class ChapterCard extends StatelessWidget {
                                   color: isDark
                                       ? Colors.teal.shade300
                                       : Colors.teal.shade600,
-                                  fontFamily: "Cairo",
+                                  fontFamily: "Noon",
                                 ),
                               ),
                             ],
@@ -147,7 +147,7 @@ class ChapterCard extends StatelessWidget {
                             color: isDark
                                 ? Colors.grey.shade400
                                 : Colors.grey.shade600,
-                            fontFamily: "Cairo",
+                            fontFamily: "Noon",
                           ),
                         ),
                       ],

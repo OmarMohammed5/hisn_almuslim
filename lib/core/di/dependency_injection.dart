@@ -60,6 +60,7 @@ import '../../features/stories/data/repositories/stories_repository.dart';
 import '../../features/stories/data/repositories/stories_repository_impl.dart';
 import '../../features/stories/domain/usecases/get_prophet_stories.dart';
 import '../../features/stories/ui/cubit/stories_cubit.dart';
+import '../config/youtube_api_config.dart';
 
 final GetIt sl = GetIt.instance;
 
@@ -223,20 +224,19 @@ Future<void> setupLocator() async {
 // YouTube Remote Data Source
 // ------------------------------------------------------------
 
-  if (!sl.isRegistered<YoutubeRemoteDataSource>()) {
-    const apiKey = String.fromEnvironment('YOUTUBE_API_KEY');
-    //
-    // debugPrint(
-    //   '🔥 API KEY STATUS: ${apiKey.isEmpty ? 'EMPTY ❌' : 'LOADED ✅ (len=${apiKey.length})'}',
-    // );
 
+  final youtubeApiKey =
+  await YoutubeApiConfig.apiKey;
+
+  if (!sl.isRegistered<YoutubeRemoteDataSource>()) {
     sl.registerLazySingleton<YoutubeRemoteDataSource>(
           () => YoutubeRemoteDataSource(
         client: sl<http.Client>(),
-        apiKey: apiKey,
+        apiKey: youtubeApiKey,
       ),
     );
   }
+
 
 // ------------------------------------------------------------
 // Local Data Source
@@ -276,19 +276,19 @@ Future<void> setupLocator() async {
   /// Quiz Database ///
 
   sl.registerLazySingleton<QuizLocalDataSource>(
-      () => QuizLocalDataSource()
+          () => QuizLocalDataSource()
   );
 
   sl.registerLazySingleton<QuizRepository>(
-      () => QuizRepositoryImpl(localDataSource: sl<QuizLocalDataSource>())
+          () => QuizRepositoryImpl(localDataSource: sl<QuizLocalDataSource>())
   );
 
   sl.registerLazySingleton<GetQuizDatabase>(
-      () => GetQuizDatabase(repository: sl<QuizRepository>())
+          () => GetQuizDatabase(repository: sl<QuizRepository>())
   );
 
   sl.registerFactory<QuizCubit>(
-      () => QuizCubit(getQuizDatabase: sl<GetQuizDatabase>())
+          () => QuizCubit(getQuizDatabase: sl<GetQuizDatabase>())
   );
 
   /// Game

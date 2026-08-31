@@ -1,5 +1,3 @@
-// lib/features/quran/presentation/widgets/surah_header.dart
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

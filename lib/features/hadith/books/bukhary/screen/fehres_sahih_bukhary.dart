@@ -4,10 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hisn_almuslim/features/hadith/books/bukhary/data/cubit/chapters_cubit.dart';
 import 'package:hisn_almuslim/features/hadith/widgets/chapter_card.dart';
-import 'package:hisn_almuslim/features/quran/widgets/search_field.dart';
 import '../../../../../core/routing/app_routes.dart';
 import '../../../../../core/shared/custom_text.dart';
 import '../../../../../core/shared/re_build_scroll_To_Top.dart';
+import '../../../../../core/shared/search_field.dart';
 import '../../../../../core/utils/arabic_search_utils.dart';
 
 class FehresSahihBukhary extends StatefulWidget {

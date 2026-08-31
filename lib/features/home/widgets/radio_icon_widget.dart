@@ -33,6 +33,16 @@ class RadioIconWidget extends StatelessWidget {
         ? RadioColors.darkTealSoft
         : RadioColors.lightTealSoft;
 
+
+    final tealMedium = isDark
+        ? const Color(0xFF4BC2B6)
+        : RadioColors.lightTealMedium;
+
+    final tealSoft = isDark
+        ? const Color(0xFF173632)
+        : RadioColors.lightTealSoft;
+
+
     return RadarPulse(
       active: isPlaying,
       color: radioLight,
@@ -86,12 +96,11 @@ class RadioIconWidget extends StatelessWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
 
+                    color: tealSoft.withValues(alpha: isDark ? 0.45 : 0.85),
                     border: Border.all(
-                      color: radioLight.withValues(
-                        alpha: isDark ? 0.35 : 0.25,
-                      ),
-                      width: 1.5,
+                      color: tealMedium.withValues(alpha: isDark ? 0.20 : 0.25),
                     ),
+
                   ),
                 ),
 

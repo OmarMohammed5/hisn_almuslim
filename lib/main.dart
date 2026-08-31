@@ -1,4 +1,4 @@
- import 'package:audio_service/audio_service.dart';
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
@@ -12,7 +12,6 @@ import 'package:hisn_almuslim/hisn_al_muslim_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/data/latest.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
-
 import 'core/di/dependency_injection.dart';
 import 'features/settings/data/cubit/notification_cubit.dart';
 
@@ -22,8 +21,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
 
-  // ========== SETUP DEPENDENCY INJECTION ==========
+  // SETUP DEPENDENCY INJECTION
   await setupLocator();
+
 
   tzdata.initializeTimeZones();
   await _setDeviceTimeZone();

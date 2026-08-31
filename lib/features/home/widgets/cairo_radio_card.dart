@@ -5,6 +5,7 @@ import 'package:hisn_almuslim/core/shared/custom_text.dart';
 import 'package:hisn_almuslim/features/home/widgets/radio_icon_widget.dart';
 import 'package:hisn_almuslim/features/home/widgets/radio_play_button.dart';
 import '../../../core/shared/live_broadcast_indicator.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/radio_colors.dart';
 import '../../radio/presentation/cubit/radio_cubit.dart';
 import '../../radio/presentation/cubit/radio_state.dart';
@@ -66,17 +67,17 @@ class _CairoRadioCardState extends State<CairoRadioCard>
 
   @override
   Widget build(BuildContext context) {
+
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final isDark = theme.brightness == Brightness.dark;
 
-    final radioPrimary = isDark
-        ? const Color(0xFF35AFA3)
-        : RadioColors.lightPrimary;
+    final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
 
-    final radioDark = isDark
-        ? const Color(0xFF102A27)
-        : RadioColors.lightTealDark;
+
+    final borderColor = isDark
+        ? Colors.white.withValues(alpha: 0.07)
+        : AppColors.kBorderLight;
 
     final radioMedium = isDark
         ? const Color(0xFF4BC2B6)
@@ -108,45 +109,16 @@ class _CairoRadioCardState extends State<CairoRadioCard>
             padding: EdgeInsets.all(22.w),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(22.r),
-
-              gradient: LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-                colors: isDark
-                    ? const [
-                  Color(0xFF152522),
-                  Color(0xFF101A19),
-                ]
-                    : [
-                  radioPrimary.withValues(alpha: 0.12),
-                  radioDark.withValues(alpha: 0.05),
-                ],
-              ),
-
-              border: Border.all(
-                color: isDark
-                    ? radioPrimary.withValues(alpha: 0.28)
-                    : radioMedium.withValues(alpha: 0.30),
-                width: 1,
-              ),
-
-              boxShadow: isDark
-                  ? [
-                BoxShadow(
-                  color: Colors.black.withValues(
-                    alpha: 0.22,
-                  ),
-                  blurRadius: 12.r,
-                  offset: Offset(0, 5.h),
-                ),
-              ]
+              color: bgColor,
+              border: Border.all(color: borderColor, width: 1),
+              boxShadow:
+              isDark
+                  ? const []
                   : [
                 BoxShadow(
-                  color: radioPrimary.withValues(
-                    alpha: 0.08,
-                  ),
-                  blurRadius: 20.r,
-                  offset: Offset(0, 8.h),
+                  color: AppColors.kPrimary.withValues(alpha: 0.05),
+                  blurRadius: 6.r,
+                  offset: Offset(0, 3.h),
                 ),
               ],
             ),

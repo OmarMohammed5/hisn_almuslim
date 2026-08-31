@@ -9,6 +9,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 import 'package:hisn_almuslim/core/theme/app_colors.dart';
 
+import '../routing/app_routes.dart';
+
 int getPageNumber(int surahNumber, int ayahNumber) {
   const Map<int, int> surahStartPage = {
     1: 1,
@@ -182,67 +184,107 @@ int getJuzNumber(int surahNumber, int ayahNumber) {
 
 
 
-
 Widget buildEmptyState(BuildContext context, bool isDark) {
   final primary = Theme.of(context).colorScheme.primary;
 
   final titleColor = isDark ? Colors.white : const Color(0xFF183A36);
-
   final subtitleColor = isDark
       ? Colors.white.withValues(alpha: .52)
       : const Color(0xFF607A76);
 
   return Container(
-    margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
-    padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 22.h),
+    margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 18.h),
     decoration: BoxDecoration(
       color: isDark ? const Color(0xFF101F1D) : Colors.white,
-      borderRadius: BorderRadius.circular(22.r),
+      borderRadius: BorderRadius.circular(18.r),
       border: Border.all(
         color: primary.withValues(alpha: isDark ? .10 : .08),
+        width: 1,
       ),
     ),
     child: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
+        // ===== Small Icon =====
         Container(
-          width: 56.w,
-          height: 56.w,
+          width: 44.w,
+          height: 44.w,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: AppColors.kPrimary.withValues(alpha: isDark ? .10 : .08),
           ),
           child: Icon(
             FlutterIslamicIcons.solidQuran2,
-            size: 27.sp,
+            size: 20.sp,
             color: AppColors.kPrimary.withValues(alpha: .75),
           ),
         ),
 
-        SizedBox(height: 12.h),
+        SizedBox(height: 8.h),
 
-       CustomText(
+        // ===== Title =====
+        CustomText(
           'لا توجد قراءات سابقة',
           textAlign: TextAlign.center,
-            fontSize: 15.sp,
-            fontWeight: FontWeight.w800,
-            color: titleColor,
+          fontSize: 13.sp,
+          fontWeight: FontWeight.w700,
+          color: titleColor,
         ),
 
-        SizedBox(height: 5.h),
+        SizedBox(height: 4.h),
 
+        // ===== Subtitle =====
         CustomText(
-          'ابدأ بقراءة القرآن لتظهر آخر قراءة هنا',
+          'ابدأ بقراءة القرآن وسجل تقدمك',
           textAlign: TextAlign.center,
-            fontSize: 11.sp,
-            height: 1.5,
-            color: subtitleColor,
+          fontSize: 10.sp,
+          height: 1.4,
+          color: subtitleColor,
+        ),
+
+        SizedBox(height: 12.h),
+
+        // ===== Simple CTA Button =====
+        SizedBox(
+          width: 140.w,
+          height: 32.h,
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, AppRoutes.quranHome);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.kPrimary,
+              foregroundColor: Colors.white,
+              elevation: 0,
+              padding: EdgeInsets.symmetric(horizontal: 12.w),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.r),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CustomText(
+                  'اذهب للمصحف',
+                  fontSize: 11.sp,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                ),
+                SizedBox(width: 4.w),
+                Icon(
+                  Icons.arrow_forward_rounded,
+                  size: 14.sp,
+                  color: Colors.white,
+                ),
+              ],
+            ),
+          ),
         ),
       ],
     ),
   );
 }
-
 // Loading
 Widget buildLoadingState(BuildContext context, bool isDark) {
   final primary = Theme.of(context).colorScheme.primary;

@@ -3,16 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hisn_almuslim/core/routing/app_routes.dart';
-
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 import 'package:hisn_almuslim/core/utils/arabic_search_utils.dart';
-
 import 'package:hisn_almuslim/features/al%20azkar/data/cubit/azkar_cubit.dart';
-import 'package:hisn_almuslim/features/hisn%20al-muslim/screen/zekr_details_screen.dart';
 import 'package:hisn_almuslim/features/hisn%20al-muslim/widgets/zekr_card_widget.dart';
-import 'package:hisn_almuslim/features/quran/widgets/search_field.dart';
-
 import '../../../core/shared/re_build_scroll_To_Top.dart';
+import '../../../core/shared/search_field.dart';
 
 class HisnAlmuslimScreen extends StatefulWidget {
   const HisnAlmuslimScreen({super.key});

@@ -1,1 +1,38 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"islamic-app-distribution","appId":"1:400341104315:android:8906328cc3a8726867db9e","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"islamic-app-distribution","configurations":{"android":"1:400341104315:android:8906328cc3a8726867db9e","ios":"1:400341104315:ios:7b3540d2df4de90b67db9e"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "islamic-app-distribution",
+          "appId": "1:400341104315:android:8906328cc3a8726867db9e",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "islamic-app-distribution",
+          "configurations": {
+            "android": "1:400341104315:android:8906328cc3a8726867db9e",
+            "ios": "1:400341104315:ios:7b3540d2df4de90b67db9e"
+          }
+        }
+      }
+    }
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ],
+      "predeploy": [
+        "npm --prefix \"$RESOURCE_DIR\" run lint"
+      ]
+    }
+  ]
+}

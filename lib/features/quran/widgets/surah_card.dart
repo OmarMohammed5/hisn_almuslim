@@ -29,7 +29,6 @@ class SurahCard extends StatelessWidget {
 
   static const Color _darkGold = Color(0xFFCDB878);
 
-  static const Color _lightCard = Color(0xFFFFFCF5);
 
   static const Color _darkCard = Color(0xFF202724);
 
@@ -45,7 +44,7 @@ class SurahCard extends StatelessWidget {
 
     final textColor = isDark ? _darkText : _lightText;
 
-    final cardColor = isDark ? _darkCard : _lightCard;
+    final cardColor = isDark ? _darkCard : Colors.white;
 
     return GestureDetector(
       onTap: onTap,
@@ -122,7 +121,7 @@ class SurahCard extends StatelessWidget {
                           CustomText(
                             surah.displayName,
                             fontSize: 14.6.sp,
-                            fontFamily: 'Al mushaf',
+                            fontFamily: 'Noon',
                             fontWeight: FontWeight.w600,
                             color: textColor,
                             height: 1.35,

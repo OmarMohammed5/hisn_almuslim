@@ -77,18 +77,18 @@ class _HijriCalendarCardState extends State<HijriCalendarCard> {
 
     // ===== Theme-aware palette =====
     final gradientColors = isDark
-        ? [const Color(0xFF0D1F1E), const Color(0xFF163C35)]
-        : [const Color(0xFF0E8A7A), const Color(0xFF1AA892)];
+        ? [const Color(0xFF0D1F1C), const Color(0xFF1A3D36)]
+        : [const Color(0xFF0E8A78), const Color(0xFF1CAA96)];
 
     final primaryTextColor = Colors.white;
-    final secondaryTextColor = Colors.white.withValues(alpha: 0.7);
-    final chipBgColor = Colors.white.withValues(alpha: isDark ? 0.10 : 0.16);
-    final weekStripBg = Colors.white.withValues(alpha: isDark ? 0.06 : 0.14);
-    final selectedDayColor = isDark ? Colors.tealAccent.shade200 : Colors.white;
-    final selectedDayTextColor = isDark ? Colors.black87 : Colors.teal.shade800;
-    final todayAccentColor = AppColors.kAccentGold;
-    final shadowColor = (isDark ? Colors.black : Colors.teal.shade900)
-        .withValues(alpha: isDark ? 0.4 : 0.2);
+    final secondaryTextColor = Colors.white.withValues(alpha: 0.68);
+    final chipBgColor = Colors.white.withValues(alpha: isDark ? 0.11 : 0.17);
+    final weekStripBg = Colors.white.withValues(alpha: isDark ? 0.05 : 0.13);
+    final selectedDayColor = isDark ? const Color(0xFF48C8BC) : const Color(0xFF0E8A78);
+    final selectedDayTextColor = isDark ? const Color(0xFF0D1F1C) : Colors.white;
+    final todayAccentColor = const Color(0xFFFFC107);
+    final shadowColor = (isDark ? Colors.black : const Color(0xFF0E8A78))
+        .withValues(alpha: isDark ? 0.42 : 0.22);
 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 18.w),
@@ -238,7 +238,7 @@ class _HijriCalendarCardState extends State<HijriCalendarCard> {
                               ? selectedDayTextColor
                               : secondaryTextColor,
                           fontSize: 12.sp,
-                          fontFamily: "Al mushaf",
+                          fontFamily: "QuranFont",
                           fontWeight:
                           isSelected ? FontWeight.bold : FontWeight.w600,
                         ),

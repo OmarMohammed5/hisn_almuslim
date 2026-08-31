@@ -1,5 +1,3 @@
-// lib/features/quran/presentation/widgets/page_footer.dart
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -7,8 +5,6 @@ import '../../../../core/utils/arabic_digits.dart';
 import '../domain/entities/mushaf_page_entity.dart';
 import '../theme/mushaf_colors.dart';
 
-/// Minimal footer shown at the bottom of every Mushaf page block:
-/// page number • juz • hizb quarter.
 class PageFooter extends StatelessWidget {
   final MushafPageEntity page;
 

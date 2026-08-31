@@ -101,7 +101,7 @@ class _CategoriesHomeSectionState extends State<CategoriesHomeSection>
                   crossAxisCount: 2,
                   crossAxisSpacing: 12.w,
                   mainAxisSpacing: 12.h,
-                  childAspectRatio: 1.38,
+                  childAspectRatio: 2.2,
                 ),
                 itemBuilder: (context, index) {
                   final category = widget.categories[index];

@@ -7,8 +7,8 @@ import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/features/quran_audio/logic/quran_audio_state.dart';
 import 'package:hisn_almuslim/features/quran_audio/ui/widgets/reciter_selector_button.dart';
 import '../../../../core/shared/custom_text.dart';
+import '../../../../core/shared/search_field.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../quran/widgets/search_field.dart';
 import '../../logic/audio_player_cubit.dart';
 import '../../logic/quran_audio_cubit.dart';
 
@@ -70,27 +70,6 @@ class QuranAudioHeader extends StatelessWidget {
             ),
           ),
           Gap(12.h),
-          // Padding(
-          //   padding: EdgeInsets.only(left: 44.w, right: 8.w),
-          //   child: Row(
-          //     children: [
-          //       Icon(
-          //         Icons.menu_book_rounded,
-          //         size: 12.sp,
-          //         color: Colors.white.withValues(alpha: 0.7),
-          //       ),
-          //       SizedBox(width: 6.w),
-          //       Expanded(
-          //         child: CustomText(
-          //           'استمع للقرآن الكريم بأصوات نخبة من القراء',
-          //           color: Colors.white.withValues(alpha: 0.78),
-          //           fontSize: 10.5.sp,
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
-          // Gap(24.h),
           _buildReciterSection(context, state),
           Gap(18.h),
           SearchField(

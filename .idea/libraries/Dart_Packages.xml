@@ -12,7 +12,7 @@
         <entry key="archive">
           <value>
             <list>
-              <option value="$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/archive-4.0.7/lib" />
+              <option value="$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/archive-4.0.9/lib" />
             </list>
           </value>
         </entry>
@@ -1179,7 +1179,7 @@
       <root url="file://C:/src/flutter/packages/flutter_test/lib" />
       <root url="file://C:/src/flutter/packages/flutter_web_plugins/lib" />
       <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/adhan-2.0.0+1/lib" />
-      <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/archive-4.0.7/lib" />
+      <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/archive-4.0.9/lib" />
       <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/args-2.7.0/lib" />
       <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/async-2.13.0/lib" />
       <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/audio_service-0.18.19/lib" />

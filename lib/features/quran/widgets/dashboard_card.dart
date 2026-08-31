@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/core/theme/app_colors.dart';
-import 'package:hisn_almuslim/features/quran/widgets/build_info_item.dart';
 import '../../../core/routing/app_routes.dart';
-import '../../../core/shared/custom_text.dart';
 import '../domain/entities/surah_entity.dart';
 
 class DashboardCard extends StatelessWidget {
-  final bool isDark;
-
   final SurahEntity surah;
   final int surahNumber;
   final int ayahNumber;
@@ -21,7 +15,6 @@ class DashboardCard extends StatelessWidget {
 
   const DashboardCard({
     super.key,
-    required this.isDark,
     required this.surah,
     required this.surahNumber,
     required this.ayahNumber,
@@ -33,310 +26,373 @@ class DashboardCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final primary = AppColors.kPrimary;
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final primary = AppColors.kPrimary;
 
-    final background = isDark
-        ? const Color(0xFF0C2421)
-        : const Color(0xFFEAF7F4);
+    // Modern color scheme
+    final cardBg = isDark
+        ? Colors.grey.shade900.withValues(alpha: 0.6)
+        : Colors.white;
 
-    final cardGradient = isDark
-        ? const [Color(0xFF123D38), Color(0xFF0C2926)]
-        : const [Color(0xFFF3FBF9), Color(0xFFE3F4F0)];
+    final borderColor = isDark
+        ? Colors.grey.shade700.withValues(alpha: 0.3)
+        : Colors.grey.shade200;
 
-    final mainText = isDark ? Colors.white : const Color(0xFF123330);
+    final shadowColor = isDark
+        ? Colors.black.withValues(alpha: 0.3)
+        : Colors.grey.shade300.withValues(alpha: 0.5);
 
+    final mainText = isDark ? Colors.white : Colors.grey.shade900;
     final secondaryText = isDark
-        ? Colors.white.withValues(alpha: .62)
-        : const Color(0xFF466965);
+        ? Colors.grey.shade400
+        : Colors.grey.shade600;
+
+    final radius = BorderRadius.circular(20.r);
 
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+      margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-          colors: cardGradient,
-        ),
-        borderRadius: BorderRadius.circular(24.r),
-        border: Border.all(
-          color: primary.withValues(alpha: isDark ? .20 : .14),
-        ),
+        color: cardBg,
+        borderRadius: radius,
+        border: Border.all(color: borderColor, width: 1.5),
         boxShadow: [
           BoxShadow(
-            color: primary.withValues(alpha: isDark ? .07 : .08),
-            blurRadius: 22.r,
+            color: shadowColor,
+            blurRadius: 20.r,
             offset: Offset(0, 8.h),
+            spreadRadius: 1,
           ),
         ],
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(24.r),
-        child: Stack(
-          children: [
-            // Decorative circles
-            Positioned(
-              top: -55.h,
-              left: -40.w,
-              child: _buildDecorationCircle(
-                size: 140.w,
-                color: primary.withValues(alpha: isDark ? .055 : .07),
-              ),
-            ),
-
-
-
-            /// Continue Reading
-            Positioned(
-              left: 18.w,
-              top: 50.h,
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(14.r),
-                  onTap: () {
-                    Navigator.pushNamed(
-                      context,
-                      AppRoutes.quranSurah,
-                      arguments: {
-                        'surahNumber': surahNumber,
-                        'initialAyahNumber': ayahNumber,
-                      },
-                    );
-                  },
-                  child: Container(
-                    height: 37.h,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 12.w,
-                    ),
-                    decoration: BoxDecoration(
-                      color: primary,
-                      borderRadius: BorderRadius.circular(14.r),
-                      boxShadow: [
-                        BoxShadow(
-                          color: primary.withValues(
-                            alpha: isDark ? .20 : .16,
-                          ),
-                          blurRadius: 12.r,
-                          offset: Offset(0, 5.h),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        CustomText(
-                          'متابعة القراءة',
-                          fontSize: 11.5.sp,
-                          fontWeight: FontWeight.w800,
-                          color: Colors.white,
-                        ),
-
-                        SizedBox(width: 7.w),
-
-                        Icon(
-                          Icons.arrow_forward_rounded,
-                          size: 15.sp,
-                          color: Colors.white,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-
-            // Content
-            Padding(
-              padding: EdgeInsets.all(18.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Header
-                  Row(
-                    children: [
-                      Container(
-                        width: 35.w,
-                        height: 35.w,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: primary.withValues(alpha: isDark ? .14 : .10),
-                          border: Border.all(
-                            color: primary.withValues(alpha: .18),
-                          ),
-                        ),
-                        child: Icon(
-                          FlutterIslamicIcons.solidQuran2,
-                          color: primary,
-                          size: 20.sp,
+      child: Material(
+        color: Colors.transparent,
+        borderRadius: radius,
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          borderRadius: radius,
+          onTap: () => _goToSurah(context),
+          splashColor: primary.withValues(alpha: 0.1),
+          highlightColor: primary.withValues(alpha: 0.05),
+          child: Padding(
+            padding: EdgeInsets.all(16.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // ===== Modern Header with Progress =====
+                Row(
+                  children: [
+                    // Surah Number Circle with Gradient
+                    Container(
+                      width: 44.w,
+                      height: 44.w,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            primary,
+                            primary.withValues(alpha: 0.7),
+                          ],
                         ),
                       ),
+                      child: Center(
+                        child: Text(
+                          '$surahNumber',
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                            fontFamily: 'Noon',
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 14.w),
 
-                      SizedBox(width: 10.w),
+                    // Surah Name & Progress
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  surah.displayName,
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w700,
+                                    color: mainText,
+                                    fontFamily: 'Noon',
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              // Reading Status Badge
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                                decoration: BoxDecoration(
+                                  color: primary.withValues(alpha: 0.12),
+                                  borderRadius: BorderRadius.circular(12.r),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      Icons.play_arrow_rounded,
+                                      size: 12.sp,
+                                      color: primary,
+                                    ),
+                                    SizedBox(width: 2.w),
+                                    Text(
+                                      'متابعة',
+                                      style: TextStyle(
+                                        fontSize: 8.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: primary,
+                                        fontFamily: 'Noon',
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 4.h),
+                          // Progress Bar
+                          Row(
+                            children: [
+                              Expanded(
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(4.r),
+                                  child: LinearProgressIndicator(
+                                    value: ayahNumber / 286, // Approximate progress
+                                    backgroundColor: isDark
+                                        ? Colors.grey.shade800
+                                        : Colors.grey.shade200,
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      primary.withValues(alpha: 0.8),
+                                    ),
+                                    minHeight: 4.h,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 10.w),
+                              Text(
+                                '$_getProgress%',
+                                style: TextStyle(
+                                  fontSize: 10.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: primary,
+                                  fontFamily: 'Noon',
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
 
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                SizedBox(height: 16.h),
+
+                // ===== Reading Stats Grid =====
+                Container(
+                  padding: EdgeInsets.all(12.w),
+                  decoration: BoxDecoration(
+                    color: isDark
+                        ? Colors.grey.shade800.withValues(alpha: 0.3)
+                        : Colors.grey.shade50,
+                    borderRadius: BorderRadius.circular(14.r),
+                    border: Border.all(
+                      color: isDark
+                          ? Colors.grey.shade700.withValues(alpha: 0.2)
+                          : Colors.grey.shade200,
+                      width: 1,
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      _buildStatItem(
+                        icon: Icons.menu_book_rounded,
+                        value: '$pageNumber',
+                        label: 'صفحة',
+                        primary: primary,
+                        isDark: isDark,
+                      ),
+                      _buildDivider(isDark),
+                      _buildStatItem(
+                        icon: Icons.auto_stories_rounded,
+                        value: '$juzNumber',
+                        label: 'جزء',
+                        primary: primary,
+                        isDark: isDark,
+                      ),
+                      _buildDivider(isDark),
+                      _buildStatItem(
+                        icon: Icons.layers_rounded,
+                        value: '$hizbNumber',
+                        label: 'حزب',
+                        primary: primary,
+                        isDark: isDark,
+                      ),
+                    ],
+                  ),
+                ),
+
+                SizedBox(height: 16.h),
+
+                // ===== Last Reading Time =====
+                Row(
+                  children: [
+                    Icon(
+                      Icons.access_time_rounded,
+                      size: 14.sp,
+                      color: secondaryText,
+                    ),
+                    SizedBox(width: 6.w),
+                    Text(
+                      'آخر قراءة :  ${_getTimeAgo(timestamp)}',
+                      style: TextStyle(
+                        fontSize: 11.sp,
+                        color: secondaryText,
+                        fontFamily: 'Noon',
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    const Spacer(),
+                    // Continue Reading Button
+                    Container(
+                      height: 32.h,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [
+                            primary,
+                            primary.withValues(alpha: 0.8),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(16.r),
+                      ),
+                      child: ElevatedButton(
+                        onPressed: () => _goToSurah(context),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          foregroundColor: Colors.white,
+                          elevation: 0,
+                          padding: EdgeInsets.symmetric(horizontal: 16.w),
+                          minimumSize: Size.zero,
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16.r),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                              'آخر قراءة',
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                              'متابعة',
                               style: TextStyle(
+                                fontSize: 11.sp,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white,
                                 fontFamily: 'Noon',
-                                fontSize: 13.sp,
-                                fontWeight: FontWeight.w800,
-                                color: mainText,
                               ),
                             ),
-
-                            SizedBox(height: 2.h),
-
-                            Text(
-                              _getTimeAgo(timestamp),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontFamily: 'Noon',
-                                fontSize: 10.sp,
-                                color: secondaryText,
-                              ),
+                            SizedBox(width: 4.w),
+                            Icon(
+                              Icons.arrow_forward_rounded,
+                              size: 14.sp,
+                              color: Colors.white,
                             ),
                           ],
                         ),
                       ),
-
-                      // Ayah badge
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 10.w,
-                          vertical: 6.h,
-                        ),
-                        decoration: BoxDecoration(
-                          color: primary.withValues(alpha: isDark ? .13 : .09),
-                          borderRadius: BorderRadius.circular(12.r),
-                          border: Border.all(
-                            color: primary.withValues(alpha: .15),
-                          ),
-                        ),
-                        child: CustomText(
-                          'آية $ayahNumber',
-                            fontSize: 10.5.sp,
-                            fontWeight: FontWeight.w700,
-                            color: primary,
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  SizedBox(height: 12.h),
-
-                  // Surah Information
-                     Row(
-                       crossAxisAlignment: CrossAxisAlignment.center,
-                       children: [
-                         Container(
-                           width: 38.w,
-                           height: 38.w,
-                           decoration: BoxDecoration(
-                             shape: BoxShape.circle,
-                             color: primary.withValues(alpha: isDark ? .10 : .08),
-                             border: Border.all(
-                               color: primary.withValues(alpha: .16),
-                             ),
-                           ),
-                           child: Center(
-                             child: CustomText(
-                               '$surahNumber',
-                               fontSize: 13.sp,
-                               fontWeight: FontWeight.w900,
-                               color: primary,
-                             ),
-                           ),
-                         ),
-
-                         SizedBox(width: 12.w),
-
-                         Expanded(
-                           child: Column(
-                             crossAxisAlignment: CrossAxisAlignment.start,
-                             children: [
-                               CustomText(
-                                 surah.displayName,
-                                 fontSize: 18.sp,
-                                 fontWeight: FontWeight.w900,
-                                 color: mainText,
-                               ),
-
-                               SizedBox(height: 4.h),
-
-                               CustomText(
-                                 'متابعة من الآية $ayahNumber',
-                                 maxLines: 1,
-                                 fontSize: 11.sp,
-                                 color: secondaryText,
-                               ),
-                             ],
-                           ),
-                         ),
-
-                       ],
-                     ),
-
-
-                  SizedBox(height: 18.h),
-
-                  // Reading Info
-                  Row(
-                    children: [
-                      Expanded(
-                        child: BuildInfoItem(
-                          icon: Icons.menu_book_rounded,
-                          value: '$pageNumber',
-                          label: 'صفحة',
-                          primary: primary,
-                        ),
-                      ),
-
-                      SizedBox(width: 8.w),
-
-                      Expanded(
-                        child: BuildInfoItem(
-                          icon: Icons.auto_stories_rounded,
-                          value: '$juzNumber',
-                          label: 'جزء',
-                          primary: primary,
-                        ),
-                      ),
-
-                      SizedBox(width: 8.w),
-
-                      Expanded(
-                        child: BuildInfoItem(
-                          icon: Icons.layers_rounded,
-                          value: '$hizbNumber',
-                          label: 'حزب',
-                          primary: primary,
-                        ),
-                      ),
-                    ],
-                  ),
-
-
-                ],
-              ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
   }
 
+  int get _getProgress {
+    return ((ayahNumber / 286) * 100).round().clamp(0, 100);
+  }
+
+  Widget _buildStatItem({
+    required IconData icon,
+    required String value,
+    required String label,
+    required Color primary,
+    required bool isDark,
+  }) {
+    return Expanded(
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                size: 16.sp,
+                color: primary.withValues(alpha: 0.7),
+              ),
+              SizedBox(width: 6.w),
+              Text(
+                value,
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w700,
+                  color: isDark ? Colors.white : Colors.grey.shade800,
+                  fontFamily: 'Noon',
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 2.h),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 9.sp,
+              fontWeight: FontWeight.w500,
+              color: isDark ? Colors.grey.shade500 : Colors.grey.shade500,
+              fontFamily: 'Noon',
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDivider(bool isDark) {
+    return Container(
+      width: 1,
+      height: 30.h,
+      color: isDark
+          ? Colors.grey.shade700.withValues(alpha: 0.3)
+          : Colors.grey.shade300.withValues(alpha: 0.5),
+    );
+  }
+
+  void _goToSurah(BuildContext context) {
+    Navigator.pushNamed(
+      context,
+      AppRoutes.quranSurah,
+      arguments: {'surahNumber': surahNumber, 'initialAyahNumber': ayahNumber},
+    );
+  }
+
   String _getTimeAgo(int timestamp) {
     final now = DateTime.now();
-
     final date = DateTime.fromMillisecondsSinceEpoch(timestamp);
-
     final difference = now.difference(date);
 
     if (difference.inDays > 0) {
@@ -348,15 +404,5 @@ class DashboardCard extends StatelessWidget {
     } else {
       return 'الآن';
     }
-  }
-
-  Widget _buildDecorationCircle({required double size, required Color color}) {
-    return IgnorePointer(
-      child: Container(
-        width: size,
-        height: size,
-        decoration: BoxDecoration(shape: BoxShape.circle, color: color),
-      ),
-    );
   }
 }

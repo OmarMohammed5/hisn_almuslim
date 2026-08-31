@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 import 'package:hisn_almuslim/core/theme/app_colors.dart';
-
 class CategoryCardWidget extends StatelessWidget {
   const CategoryCardWidget({
     super.key,
@@ -18,7 +17,7 @@ class CategoryCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final radius = BorderRadius.circular(20.r);
+    final radius = BorderRadius.circular(16.r);
 
     final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
     final borderColor = isDark
@@ -39,7 +38,7 @@ class CategoryCardWidget extends StatelessWidget {
         splashColor: AppColors.kPrimary.withValues(alpha: 0.08),
         highlightColor: AppColors.kPrimary.withValues(alpha: 0.04),
         child: Container(
-          padding: EdgeInsets.all(14.w),
+          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h), // بدل all(14.w)
           decoration: BoxDecoration(
             color: bgColor,
             borderRadius: radius,
@@ -55,23 +54,23 @@ class CategoryCardWidget extends StatelessWidget {
               ),
             ],
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            spacing: 10.h,
             children: [
               Container(
-                width: 40.w,
-                height: 40.w,
+                width: 32.w,
+                height: 32.w,
                 decoration: BoxDecoration(
                   color: iconBg,
-                  borderRadius: BorderRadius.circular(13.r),
+                 borderRadius: BorderRadius.circular(10.r),
                 ),
-                child: Icon(icon, size: 20.sp, color: iconColor),
+                child: Icon(icon, size: 16.sp, color: iconColor),
               ),
-              SizedBox(height: 10.h),
               CustomText(
                 title,
-                fontSize: 12.5.sp,
+                fontSize: 11.5.sp,
                 fontWeight: FontWeight.w700,
                 color: textColor,
                 maxLines: 2,

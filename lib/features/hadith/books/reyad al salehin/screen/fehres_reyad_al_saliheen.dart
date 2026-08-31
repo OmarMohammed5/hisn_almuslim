@@ -5,11 +5,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hisn_almuslim/core/routing/app_routes.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 import 'package:hisn_almuslim/features/hadith/books/reyad%20al%20salehin/data/cubit/reyad_al_saliheen_cubit.dart';
-import 'package:hisn_almuslim/features/hadith/books/reyad%20al%20salehin/screen/reyad_al_saliheen_details.dart';
 import 'package:hisn_almuslim/features/hadith/widgets/chapter_card.dart';
-import 'package:hisn_almuslim/features/quran/widgets/search_field.dart';
-
 import '../../../../../core/shared/re_build_scroll_To_Top.dart';
+import '../../../../../core/shared/search_field.dart';
 import '../../../../../core/utils/arabic_search_utils.dart';
 
 class FehresReyadAlSaliheen extends StatefulWidget {

@@ -5,69 +5,46 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:hisn_almuslim/features/adhan/screen/adhan_screen.dart';
 import 'package:hisn_almuslim/features/home/screen/home_screen.dart';
-import 'package:hisn_almuslim/features/quran/data/cubit/ayah_highlight_cubit.dart';
 import 'package:hisn_almuslim/features/quran_audio/ui/screens/quran.dart';
 import 'package:hisn_almuslim/features/settings/screen/settings_screen.dart';
 
 import 'core/di/dependency_injection.dart';
 import 'features/adhan/data/cubit/adhan_cubit.dart';
 import 'features/lectures/presentation/cubit/lectures_cubit.dart';
-import 'features/quran/data/cubit/cubit/search_cubit.dart';
+import 'features/quran/data/cubit/ayah_highlight_cubit.dart';
 import 'features/quran/data/cubit/quran_cubit.dart';
 import 'features/quran_audio/logic/quran_audio_cubit.dart';
 import 'features/radio/presentation/cubit/radio_cubit.dart';
 
 class Root extends StatefulWidget {
-  const Root({
-    super.key,
-  });
+  const Root({super.key});
 
   @override
   State<Root> createState() => _RootState();
 }
 
 class _RootState extends State<Root> {
-  final ValueNotifier<int> _currentIndexNotifier =
-  ValueNotifier<int>(0);
+  final ValueNotifier<int> _currentIndexNotifier = ValueNotifier<int>(0);
 
   final List<Widget> _pages = [
     MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (_) => sl<QuranCubit>(),
-        ),
-        BlocProvider.value(
-          value: sl<RadioCubit>(),
-        ),
-        BlocProvider.value(
-          value: sl<LecturesCubit>(),
-        ),
+        BlocProvider.value(value: sl<RadioCubit>()),
+        BlocProvider.value(value: sl<QuranCubit>()),
+        BlocProvider.value(value: sl<AyahHighlightCubit>()),
+        BlocProvider.value(value: sl<LecturesCubit>()),
       ],
       child: const HomeScreen(),
     ),
 
     MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (_) => sl<QuranCubit>(),
-        ),
-        BlocProvider(
-          create: (_) => sl<SearchCubit>(),
-        ),
-        BlocProvider(
-          create: (_) => sl<AyahHighlightCubit>(),
-        ),
-        BlocProvider(
-          create: (_) => sl<QuranAudioCubit>(),
-        ),
+        BlocProvider(create: (_) => sl<QuranAudioCubit>()),
       ],
       child: const Quran(),
     ),
 
-    BlocProvider(
-      create: (_) => sl<AdhanCubit>(),
-      child: const AdhanScreen(),
-    ),
+    BlocProvider(create: (_) => sl<AdhanCubit>(), child: const AdhanScreen()),
 
     const SettingsScreen(),
   ];
@@ -87,17 +64,9 @@ class _RootState extends State<Root> {
         body: Stack(
           children: [
             ValueListenableBuilder<int>(
-              valueListenable:
-              _currentIndexNotifier,
-              builder: (
-                  context,
-                  currentIndex,
-                  child,
-                  ) {
-                return IndexedStack(
-                  index: currentIndex,
-                  children: _pages,
-                );
+              valueListenable: _currentIndexNotifier,
+              builder: (context, currentIndex, child) {
+                return IndexedStack(index: currentIndex, children: _pages);
               },
             ),
 
@@ -105,9 +74,7 @@ class _RootState extends State<Root> {
               left: 0,
               right: 0,
               bottom: 0,
-              child: _buildBottomNavigation(
-                context,
-              ),
+              child: _buildBottomNavigation(context),
             ),
           ],
         ),
@@ -119,16 +86,10 @@ class _RootState extends State<Root> {
   // Floating Navigation Dock
   // ===============================================================
 
-  Widget _buildBottomNavigation(
-      BuildContext context,
-      ) {
-    final isDark =
-        Theme.of(context).brightness ==
-            Brightness.dark;
+  Widget _buildBottomNavigation(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    final backgroundColor = isDark
-        ? const Color(0xFF111918)
-        : Colors.white;
+    final backgroundColor = isDark ? const Color(0xFF111918) : Colors.white;
 
     final borderColor = isDark
         ? Colors.white.withValues(alpha: 0.07)
@@ -140,34 +101,20 @@ class _RootState extends State<Root> {
 
     return SafeArea(
       top: false,
-      minimum: EdgeInsets.fromLTRB(
-        14.w,
-        0,
-        14.w,
-        10.h,
-      ),
+      minimum: EdgeInsets.fromLTRB(14.w, 0, 14.w, 10.h),
       child: Container(
         height: 56.h,
-        padding: EdgeInsets.symmetric(
-          horizontal: 8.w,
-          vertical: 7.h,
-        ),
+        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 7.h),
         decoration: BoxDecoration(
           color: backgroundColor,
-          borderRadius:
-          BorderRadius.circular(28.r),
-          border: Border.all(
-            color: borderColor,
-          ),
+          borderRadius: BorderRadius.circular(28.r),
+          border: Border.all(color: borderColor),
           boxShadow: [
             BoxShadow(
               color: shadowColor,
               blurRadius: 25.r,
               spreadRadius: -5,
-              offset: Offset(
-                0,
-                8.h,
-              ),
+              offset: Offset(0, 8.h),
             ),
           ],
         ),
@@ -215,23 +162,15 @@ class _RootState extends State<Root> {
   }) {
     return Expanded(
       child: ValueListenableBuilder<int>(
-        valueListenable:
-        _currentIndexNotifier,
-        builder: (
-            context,
-            currentIndex,
-            child,
-            ) {
-          final isActive =
-              currentIndex == index;
+        valueListenable: _currentIndexNotifier,
+        builder: (context, currentIndex, child) {
+          final isActive = currentIndex == index;
 
           return GestureDetector(
-            behavior:
-            HitTestBehavior.opaque,
+            behavior: HitTestBehavior.opaque,
             onTap: () {
               if (!isActive) {
-                _currentIndexNotifier.value =
-                    index;
+                _currentIndexNotifier.value = index;
               }
             },
             child: SizedBox(
@@ -243,43 +182,23 @@ class _RootState extends State<Root> {
                   // =================================================
                   // Inactive Icon
                   // =================================================
-
                   AnimatedOpacity(
-                    duration:
-                    const Duration(
-                      milliseconds: 180,
-                    ),
-                    opacity:
-                    isActive ? 0 : 1,
-                    child: _buildInactiveIcon(
-                      icon,
-                      isDark,
-                    ),
+                    duration: const Duration(milliseconds: 180),
+                    opacity: isActive ? 0 : 1,
+                    child: _buildInactiveIcon(icon, isDark),
                   ),
 
                   // =================================================
                   // Active Floating Button
                   // =================================================
-
                   AnimatedPositioned(
-                    duration:
-                    const Duration(
-                      milliseconds: 320,
-                    ),
-                    curve:
-                    Curves.easeOutBack,
-                    top: isActive
-                        ? -17.h
-                        : 20.h,
+                    duration: const Duration(milliseconds: 320),
+                    curve: Curves.easeOutBack,
+                    top: isActive ? -17.h : 20.h,
                     child: AnimatedOpacity(
-                      duration:
-                      const Duration(
-                        milliseconds: 180,
-                      ),
-                      opacity:
-                      isActive ? 1 : 0,
-                      child:
-                      _buildActiveItem(
+                      duration: const Duration(milliseconds: 180),
+                      opacity: isActive ? 1 : 0,
+                      child: _buildActiveItem(
                         icon: icon,
                         label: label,
                         isDark: isDark,
@@ -322,54 +241,39 @@ class _RootState extends State<Root> {
             shape: BoxShape.circle,
             color: activeColor,
             border: Border.all(
-              color: isDark
-                  ? const Color(0xFF0E2522)
-                  : Colors.white,
+              color: isDark ? const Color(0xFF0E2522) : Colors.white,
               width: 4.w,
             ),
             boxShadow: [
               BoxShadow(
-                color: activeColor.withValues(
-                  alpha: 0.28,
-                ),
+                color: activeColor.withValues(alpha: 0.28),
                 blurRadius: 14.r,
-                offset: Offset(
-                  0,
-                  5.h,
-                ),
+                offset: Offset(0, 5.h),
               ),
             ],
           ),
           child: Icon(
             icon,
             size: 21.sp,
-            color: isDark
-                ? const Color(0xFF0D2824)
-                : Colors.white,
+            color: isDark ? const Color(0xFF0D2824) : Colors.white,
           ),
         ),
 
         SizedBox(height: 3.h),
 
         Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: 9.w,
-            vertical: 3.h,
-          ),
+          padding: EdgeInsets.symmetric(horizontal: 9.w, vertical: 3.h),
           decoration: BoxDecoration(
             color: activeBackground,
-            borderRadius:
-            BorderRadius.circular(10.r),
+            borderRadius: BorderRadius.circular(10.r),
           ),
           child: Text(
             label,
             maxLines: 1,
-            overflow:
-            TextOverflow.ellipsis,
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(
               fontSize: 8.5.sp,
-              fontWeight:
-              FontWeight.w800,
+              fontWeight: FontWeight.w800,
               color: activeColor,
               fontFamily: 'QuranFont',
               height: 1,
@@ -384,10 +288,7 @@ class _RootState extends State<Root> {
   // Inactive Item
   // ===============================================================
 
-  Widget _buildInactiveIcon(
-      IconData icon,
-      bool isDark,
-      ) {
+  Widget _buildInactiveIcon(IconData icon, bool isDark) {
     return Container(
       width: 44.w,
       height: 44.w,
@@ -396,12 +297,8 @@ class _RootState extends State<Root> {
         icon,
         size: 20.sp,
         color: isDark
-            ? Colors.white.withValues(
-          alpha: 0.42,
-        )
-            : Colors.black.withValues(
-          alpha: 0.42,
-        ),
+            ? Colors.white.withValues(alpha: 0.42)
+            : Colors.black.withValues(alpha: 0.42),
       ),
     );
   }

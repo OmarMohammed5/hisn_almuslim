@@ -159,7 +159,7 @@ class QuizQuestionCard extends StatelessWidget {
                     textTheme.headlineSmall?.copyWith(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.w700,
-                      fontFamily: "QuranFont",
+                      fontFamily: "Noon",
                       height: 1.8,
                       color: isDark ? Colors.white : Colors.grey[900],
                       letterSpacing: 0.3,
@@ -169,7 +169,7 @@ class QuizQuestionCard extends StatelessWidget {
                       fontWeight: FontWeight.w700,
                       height: 1.8,
                       color: isDark ? Colors.white : Colors.grey[900],
-                      fontFamily: "QuranFont",
+                      fontFamily: "Noon",
                       letterSpacing: 0.3,
                     ),
               ),

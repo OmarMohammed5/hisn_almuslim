@@ -7,7 +7,7 @@ import 'package:hisn_almuslim/features/lectures/presentation/cubit/lectures_stat
 import 'package:hisn_almuslim/features/lectures/presentation/widgets/lecture_card.dart';
 import 'package:hisn_almuslim/features/lectures/presentation/widgets/lecture_state_views.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../quran/widgets/search_field.dart';
+import '../../../../core/shared/search_field.dart';
 import '../../domain/entities/lecture.dart';
 import 'lecture_player_screen.dart';
 

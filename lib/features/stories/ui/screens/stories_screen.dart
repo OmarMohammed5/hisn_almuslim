@@ -1,16 +1,19 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hisn_almuslim/core/routing/app_routes.dart';
 import 'package:hisn_almuslim/core/shared/app_bar_widget.dart';
-import 'package:hisn_almuslim/features/quran/widgets/search_field.dart';
-import 'package:hisn_almuslim/features/stories/ui/screens/story_details_screen.dart';
+import 'package:hisn_almuslim/core/theme/app_colors.dart';
+import '../../../../core/shared/re_build_scroll_To_Top.dart';
+import '../../../../core/shared/search_field.dart';
 import '../../domain/entities/prophet_story.dart';
 import '../cubit/stories_cubit.dart';
 import '../cubit/stories_state.dart';
 import '../widgets/story_card.dart';
 
 class StoriesScreen extends StatefulWidget {
-  const StoriesScreen({Key? key}) : super(key: key);
+  const StoriesScreen({super.key});
 
   @override
   State<StoriesScreen> createState() => _StoriesScreenState();
@@ -19,15 +22,26 @@ class StoriesScreen extends StatefulWidget {
 class _StoriesScreenState extends State<StoriesScreen> {
   final TextEditingController _searchController = TextEditingController();
 
+  /// Scroll
+  final ScrollController _scrollController = ScrollController();
+  final ValueNotifier<bool> _showScrollToTop = ValueNotifier(false);
+
+
   @override
   void initState() {
     super.initState();
     context.read<StoriesCubit>().loadStories();
+
+    _scrollController.addListener(() {
+      _showScrollToTop.value = _scrollController.offset > 300;
+    });
   }
 
   @override
   void dispose() {
     _searchController.dispose();
+    _scrollController.dispose();
+    _showScrollToTop.dispose();
     super.dispose();
   }
 
@@ -79,6 +93,7 @@ class _StoriesScreenState extends State<StoriesScreen> {
                     }
 
                     return _StoriesListView(
+                      controller: _scrollController,
                       stories: state.filteredStories,
                       totalStories: state.stories.length,
                       searchQuery: state.searchQuery,
@@ -95,6 +110,10 @@ class _StoriesScreenState extends State<StoriesScreen> {
             ),
           ],
         ),
+      ),
+      floatingActionButton: ReBuildScrollToTop(
+        showScrollToTop: _showScrollToTop,
+        scrollController: _scrollController,
       ),
     );
   }
@@ -113,9 +132,8 @@ class _LoadingView extends StatelessWidget {
           SizedBox(
             width: 28.w,
             height: 28.w,
-            child: CircularProgressIndicator(
-              strokeWidth: 2.5.w,
-              color: Theme.of(context).primaryColor.withOpacity(0.6),
+            child: CupertinoActivityIndicator(
+              color: AppColors.kPrimary,
             ),
           ),
           SizedBox(height: 16.h),
@@ -295,6 +313,7 @@ class _EmptyView extends StatelessWidget {
 
 // ===== Stories List View =====
 class _StoriesListView extends StatelessWidget {
+  final ScrollController? controller;
   final List<ProphetStory> stories;
   final int totalStories;
   final String? searchQuery;
@@ -304,12 +323,13 @@ class _StoriesListView extends StatelessWidget {
     required this.stories,
     required this.totalStories,
     this.searchQuery,
-    required this.onSearchCleared,
+    required this.onSearchCleared, this.controller,
   });
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      controller: controller,
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 4.h),
       itemCount: stories.length,
       itemBuilder: (context, index) {
@@ -335,14 +355,16 @@ class _StoriesListView extends StatelessWidget {
               story: story,
               index: index,
               onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => StoryDetailsScreen(
-                      story: story,
-                      allStories: stories,
-                      currentIndex: index,
-                    ),
-                  ),
+
+
+                Navigator.pushNamed(
+                    context,
+                  AppRoutes.storyDetails,
+                  arguments: {
+                      'story' : story,
+                    'allStories' : stories,
+                    'currentIndex' : index,
+                  }
                 );
               },
             ),

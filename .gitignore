@@ -7,6 +7,9 @@ build/
 # Android
 android/.gradle/
 android/app/build/
+android/local.properties
+android/key.properties
+android/app/hisn-almuslim-release.jks
 
 # iOS
 ios/Pods/

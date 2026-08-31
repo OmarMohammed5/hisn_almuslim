@@ -67,7 +67,6 @@ class ReadingDashboard extends StatelessWidget {
             final hizbNumber = _getHizbNumber(surahNumber, ayahNumber);
 
             return DashboardCard(
-              isDark: isDark,
               surah: surah,
               surahNumber: surahNumber,
               ayahNumber: ayahNumber,
@@ -76,6 +75,9 @@ class ReadingDashboard extends StatelessWidget {
               hizbNumber: hizbNumber,
               timestamp: latestEntry.value.timestamp,
             );
+
+            // return buildEmptyState(context, isDark);
+
           },
         );
       },

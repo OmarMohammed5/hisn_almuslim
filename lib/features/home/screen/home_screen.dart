@@ -8,9 +8,11 @@ import 'package:hisn_almuslim/features/home/widgets/hijri_calender.dart';
 import 'package:hisn_almuslim/features/home/widgets/home_categories_section.dart';
 import 'package:hisn_almuslim/features/home/widgets/home_section_header.dart';
 import 'package:hisn_almuslim/features/home/widgets/lectures_and_lessons_card.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../hisn_al_muslim_app.dart';
-import '../widgets/featured_banners.dart';
+import '../../quran/data/cubit/ayah_highlight_cubit.dart';
+import '../../quran/data/cubit/quran_cubit.dart';
+import '../../quran/widgets/reading_dashboard.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -29,6 +31,14 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
     if (route is PageRoute) {
       routeObserver.subscribe(this, route);
     }
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<QuranCubit>().loadAllSurahs();
+    context.read<AyahHighlightCubit>().loadAll();
   }
 
   @override
@@ -54,10 +64,24 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
 
             SliverToBoxAdapter(child: Gap(24.h)),
 
-            // Featured content
-            const SliverToBoxAdapter(child: FeaturedBanners()),
+            SliverToBoxAdapter(child: const ReadingDashboard()),
 
             SliverToBoxAdapter(child: Gap(24.h)),
+
+            // Featured content
+            // const SliverToBoxAdapter(child: FeaturedBanners()),
+            //
+            // SliverToBoxAdapter(child: Gap(24.h)),
+
+            // Categories
+            SliverToBoxAdapter(
+              child: CategoriesHomeSection(
+                categories: categories,
+                initialVisibleCount: 2,
+              ),
+            ),
+
+            SliverToBoxAdapter(child: Gap(30.h)),
 
             // Quick access section
             SliverToBoxAdapter(
@@ -69,7 +93,6 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
                 ),
               ),
             ),
-
             SliverToBoxAdapter(child: Gap(12.h)),
 
             // Quran Radio
@@ -79,16 +102,6 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
 
             // Lectures
             const SliverToBoxAdapter(child: LecturesAndLessonsCard()),
-
-            SliverToBoxAdapter(child: Gap(30.h)),
-
-            // Categories
-            SliverToBoxAdapter(
-              child: CategoriesHomeSection(
-                categories: categories,
-                initialVisibleCount: 2,
-              ),
-            ),
 
             // Bottom spacing
             SliverToBoxAdapter(child: Gap(110.h)),

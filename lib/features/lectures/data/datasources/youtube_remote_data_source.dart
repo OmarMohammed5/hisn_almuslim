@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import '../../domain/entities/lecture_playlist.dart';
 import '../models/lecture_model.dart';
@@ -42,16 +43,77 @@ class YoutubeRemoteDataSource {
     required this.apiKey,
   });
 
+  // Future<Map<String, dynamic>> _get(
+  //     String path,
+  //     Map<String, String> params,
+  //     ) async {
+  //   if (apiKey.isEmpty) {
+  //     throw const YoutubeApiException(
+  //       'YouTube API key is missing. Start the app with '
+  //           '--dart-define=YOUTUBE_API_KEY=...',
+  //     );
+  //   }
+  //
+  //   final uri = Uri.parse('$_baseUrl/$path').replace(
+  //     queryParameters: {
+  //       ...params,
+  //       'key': apiKey,
+  //     },
+  //   );
+  //
+  //   final response = await client.get(uri);
+  //
+  //   if (response.statusCode < 200 ||
+  //       response.statusCode >= 300) {
+  //     String details = 'HTTP ${response.statusCode}';
+  //
+  //     try {
+  //       final body =
+  //       jsonDecode(response.body)
+  //       as Map<String, dynamic>;
+  //
+  //       final error =
+  //       body['error'] as Map<String, dynamic>?;
+  //
+  //       final errors =
+  //       error?['errors'] as List<dynamic>?;
+  //
+  //       final first = errors?.isNotEmpty == true
+  //           ? errors!.first as Map<String, dynamic>
+  //           : null;
+  //
+  //       details = first?['reason'] as String? ??
+  //           error?['message'] as String? ??
+  //           details;
+  //     } catch (_) {}
+  //
+  //     throw YoutubeApiException(details);
+  //   }
+  //
+  //   final decoded = jsonDecode(response.body);
+  //
+  //   if (decoded is! Map<String, dynamic>) {
+  //     throw const YoutubeApiException(
+  //       'Invalid YouTube API response.',
+  //     );
+  //   }
+  //
+  //   return decoded;
+  // }
+
   Future<Map<String, dynamic>> _get(
       String path,
       Map<String, String> params,
       ) async {
     if (apiKey.isEmpty) {
       throw const YoutubeApiException(
-        'YouTube API key is missing. Start the app with '
-            '--dart-define=YOUTUBE_API_KEY=...',
+        'YouTube API key is missing.',
       );
     }
+
+    final androidCertSha1 = kReleaseMode
+        ? '41:04:0F:76:9A:07:AD:5F:83:C6:A8:B4:7C:23:05:7E:02:8B:1A:8B'
+        : '0C:FE:4D:F2:33:CA:11:F0:3E:30:49:D7:49:AD:ED:F7:29:4A:A5:1C';
 
     final uri = Uri.parse('$_baseUrl/$path').replace(
       queryParameters: {
@@ -60,7 +122,13 @@ class YoutubeRemoteDataSource {
       },
     );
 
-    final response = await client.get(uri);
+    final response = await client.get(
+      uri,
+      headers: {
+        'X-Android-Package': 'com.example.hisn_almuslim',
+        'X-Android-Cert': androidCertSha1,
+      },
+    );
 
     if (response.statusCode < 200 ||
         response.statusCode >= 300) {
@@ -68,8 +136,7 @@ class YoutubeRemoteDataSource {
 
       try {
         final body =
-        jsonDecode(response.body)
-        as Map<String, dynamic>;
+        jsonDecode(response.body) as Map<String, dynamic>;
 
         final error =
         body['error'] as Map<String, dynamic>?;

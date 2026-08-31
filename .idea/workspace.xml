@@ -10,48 +10,98 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8994c64f-2425-4304-931e-2db017ba0e3b" name="Changes" comment="Add initial git directory for version control">
-      <change afterPath="$PROJECT_DIR$/lib/features/islamic_quiz/data/datasources/quiz_local_data_source.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/islamic_quiz/data/datasources/quiz_progress_local_data_source.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/islamic_quiz/data/models/answer_model.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/islamic_quiz/data/models/level_model.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/islamic_quiz/data/models/main_category_model.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/islamic_quiz/data/models/question_model.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/islamic_quiz/data/models/quiz_database_model.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/islamic_quiz/data/models/topic_model.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/islamic_quiz/data/repositories/quiz_progress_repository_impl.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/islamic_quiz/data/repositories/quiz_repository_impl.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/islamic_quiz/domain/entities/answer_entity.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/islamic_quiz/domain/entities/level_entity.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/islamic_quiz/domain/entities/main_category_entity.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/islamic_quiz/domain/entities/question_entity.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/islamic_quiz/domain/entities/quiz_database_entity.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/islamic_quiz/domain/entities/topic_entity.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/islamic_quiz/domain/repositories/quiz_progress_repository.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/islamic_quiz/domain/repositories/quiz_repository.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/islamic_quiz/domain/usecases/get_quiz_database.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/islamic_quiz/presentation/cubit/game_cubit.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/islamic_quiz/presentation/cubit/game_state.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/islamic_quiz/presentation/cubit/quiz_cubit.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/islamic_quiz/presentation/cubit/quiz_state.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/islamic_quiz/presentation/screens/quiz_categories_screen.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/islamic_quiz/presentation/screens/quiz_game_screen.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/islamic_quiz/presentation/screens/quiz_levels_screen.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/islamic_quiz/presentation/screens/quiz_result_screen.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/islamic_quiz/presentation/screens/quiz_topics_screen.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/islamic_quiz/presentation/widgets/header_hero.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/islamic_quiz/presentation/widgets/quiz_answer_card.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/islamic_quiz/presentation/widgets/quiz_category_card.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/islamic_quiz/presentation/widgets/quiz_level_card.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/islamic_quiz/presentation/widgets/quiz_progress_header.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/islamic_quiz/presentation/widgets/quiz_result_stat.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/islamic_quiz/presentation/widgets/quiz_topic_card.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/core/config/youtube_api_config.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/core/shared/search_field.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/features/quran/theme/quran_view_settings.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/main_dart.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/main_dart.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/kotlin/com/example/hisn_almuslim/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/kotlin/com/example/hisn_almuslim/MainActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase.json" beforeDir="false" afterPath="$PROJECT_DIR$/firebase.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/core/di/dependency_injection.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/di/dependency_injection.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/core/routing/app_router.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/routing/app_router.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/core/routing/app_routes.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/routing/app_routes.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/features/home/data/models/category_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/home/data/models/category_model.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/core/utils/quran_utils.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/utils/quran_utils.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/hadith/books/bukhary/screen/fehres_sahih_bukhary.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/hadith/books/bukhary/screen/fehres_sahih_bukhary.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/hadith/books/muslim/screen/fehres_sahih_muslim.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/hadith/books/muslim/screen/fehres_sahih_muslim.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/hadith/books/nawawi/screen/fehres_hadith_nawawi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/hadith/books/nawawi/screen/fehres_hadith_nawawi.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/hadith/books/reyad al salehin/screen/fehres_reyad_al_saliheen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/hadith/books/reyad al salehin/screen/fehres_reyad_al_saliheen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/hadith/widgets/chapter_card.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/hadith/widgets/chapter_card.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/hisn al-muslim/screen/hisn_al_muslim_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/hisn al-muslim/screen/hisn_al_muslim_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/home/screen/home_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/home/screen/home_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/home/widgets/cairo_radio_card.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/home/widgets/cairo_radio_card.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/home/widgets/category_card.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/home/widgets/category_card.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/home/widgets/hijri_calender.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/home/widgets/hijri_calender.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/home/widgets/home_categories_section.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/home/widgets/home_categories_section.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/home/widgets/lectures_and_lessons_card.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/home/widgets/lectures_and_lessons_card.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/home/widgets/radio_icon_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/home/widgets/radio_icon_widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/islamic_quiz/presentation/widgets/quiz_answer_card.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/islamic_quiz/presentation/widgets/quiz_answer_card.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/islamic_quiz/presentation/widgets/quiz_question_card.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/islamic_quiz/presentation/widgets/quiz_question_card.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/lectures/data/datasources/youtube_remote_data_source.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/lectures/data/datasources/youtube_remote_data_source.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/lectures/presentation/screens/category_lectures_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/lectures/presentation/screens/category_lectures_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/data/cubit/ayah_highlight_cubit.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/data/cubit/ayah_highlight_cubit.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/data/cubit/ayah_highlight_state.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/data/cubit/ayah_highlight_state.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/data/cubit/reading_progress_cubit.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/data/cubit/reading_progress_cubit.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/data/cubit/reading_progress_state.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/data/cubit/reading_progress_state.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/data/datasource/ayah_highlight_data_source.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/data/datasource/ayah_highlight_data_source.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/data/datasource/quran_local_data_source.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/data/datasource/quran_local_data_source.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/data/datasource/quran_local_data_source_impl.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/data/datasource/quran_local_data_source_impl.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/data/datasource/reading_progress_local_data_source.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/data/datasource/reading_progress_local_data_source.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/data/datasource/reading_progress_local_data_source_impl.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/data/datasource/reading_progress_local_data_source_impl.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/data/models/ayah_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/data/models/ayah_model.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/data/models/last_page_storage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/data/models/last_page_storage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/data/models/quran_data_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/data/models/quran_data_model.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/data/models/quran_response_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/data/models/quran_response_model.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/data/models/quran_storage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/data/models/quran_storage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/data/models/reading_progress_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/data/models/reading_progress_model.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/data/models/surah_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/data/models/surah_model.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/domain/entities/ayah_entity.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/domain/entities/ayah_entity.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/domain/entities/ayah_highlight_entity.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/domain/entities/ayah_highlight_entity.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/domain/entities/mushaf_page_entity.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/domain/entities/mushaf_page_entity.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/domain/entities/mushaf_page_group_entity.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/domain/entities/mushaf_page_group_entity.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/domain/entities/reading_progress_entity.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/domain/entities/reading_progress_entity.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/domain/entities/surah_entity.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/domain/entities/surah_entity.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/domain/mapper/mushaf_page_mapper.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/domain/mapper/mushaf_page_mapper.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/domain/repositories/quran_repository.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/domain/repositories/quran_repository.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/domain/repositories/quran_repository_impl.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/domain/repositories/quran_repository_impl.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/domain/repositories/reading_progress_repository.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/domain/repositories/reading_progress_repository.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/domain/repositories/reading_progress_repository_impl.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/domain/repositories/reading_progress_repository_impl.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/domain/usecases/get_all_surahs_use_case.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/domain/usecases/get_all_surahs_use_case.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/screen/quran_home_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/screen/quran_home_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/screen/quran_surah_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/screen/quran_surah_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/screen/quran_tafsir_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/screen/quran_tafsir_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/service/book_mark_color_dialog.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/service/book_mark_color_dialog.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/service/book_mark_manager.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/service/book_mark_manager.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/theme/mushaf_colors.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/theme/mushaf_colors.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/widgets/ayah_actions_sheet.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/widgets/ayah_actions_sheet.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/widgets/ayah_badge.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/widgets/ayah_badge.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/widgets/ayah_card.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/widgets/ayah_card.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/widgets/ayah_item.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/widgets/book_mark_indicator.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/widgets/build_info_item.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/widgets/build_info_item.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/widgets/build_progress_state.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/widgets/current_page_widget.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/widgets/dashboard_card.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/widgets/dashboard_card.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/widgets/mushaf_page_block.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/widgets/mushaf_page_block.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/widgets/page_footer.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/widgets/page_footer.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/widgets/quran_dashboard.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/widgets/quran_khatma_card.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/widgets/reading_dashboard.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/widgets/reading_dashboard.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/widgets/search_field.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/widgets/search_field.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/widgets/stat_card.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/widgets/stat_card.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/widgets/surah_card.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/widgets/surah_card.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran/widgets/surah_header.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran/widgets/surah_header.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran_audio/data/models/quran_modeel.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran_audio/data/models/quran_modeel.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran_audio/ui/screens/quran.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran_audio/ui/screens/quran.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran_audio/ui/screens/quran_audio_home_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran_audio/ui/screens/quran_audio_home_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/quran_audio/ui/widgets/quran_audio_header.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/quran_audio/ui/widgets/quran_audio_header.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/stories/ui/screens/stories_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/stories/ui/screens/stories_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/root.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/root.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,24 +165,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Flutter.main.dart.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "main",
-    "io.flutter.reload.alreadyRun": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/FLUTTER/Practice_Zone/machinfy_app",
-    "settings.editor.selected.configurable": "preferences.rainbow.brackets.stop.list",
-    "show.migrate.to.gradle.popup": "false"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Flutter.main.dart.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;io.flutter.reload.alreadyRun&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/FLUTTER/Practice_Zone/machinfy_app&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.rainbow.brackets.stop.list&quot;,
+    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">

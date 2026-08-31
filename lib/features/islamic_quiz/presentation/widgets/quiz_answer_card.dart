@@ -125,6 +125,7 @@ class _QuizAnswerCardState extends State<QuizAnswerCard> {
                     textAlign: TextAlign.right,
                     fontSize: 16.sp,
                     maxLines: 30,
+                    fontFamily: "Noon",
                     height: 1.6,
                     fontWeight: emphasized ? FontWeight.w700 : FontWeight.w500,
                     color: isDark ? const Color(0xFFF3F6F4) : const Color(0xFF14211A),
