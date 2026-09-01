@@ -31,8 +31,11 @@ class DashboardCard extends StatelessWidget {
 
     // Modern color scheme
     final cardBg = isDark
-        ? Colors.grey.shade900.withValues(alpha: 0.6)
+        ? Colors.grey.shade900.withValues(alpha: 0.2)
         : Colors.white;
+
+    final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
+
 
     final borderColor = isDark
         ? Colors.grey.shade700.withValues(alpha: 0.3)
@@ -52,7 +55,7 @@ class DashboardCard extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
       decoration: BoxDecoration(
-        color: cardBg,
+        color: bgColor,
         borderRadius: radius,
         border: Border.all(color: borderColor, width: 1.5),
         boxShadow: [
@@ -83,8 +86,8 @@ class DashboardCard extends StatelessWidget {
                   children: [
                     // Surah Number Circle with Gradient
                     Container(
-                      width: 44.w,
-                      height: 44.w,
+                      width: 32.w,
+                      height: 32.w,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         gradient: LinearGradient(
@@ -100,7 +103,7 @@ class DashboardCard extends StatelessWidget {
                         child: Text(
                           '$surahNumber',
                           style: TextStyle(
-                            fontSize: 16.sp,
+                            fontSize: 14.sp,
                             fontWeight: FontWeight.w700,
                             color: Colors.white,
                             fontFamily: 'Noon',
@@ -121,7 +124,7 @@ class DashboardCard extends StatelessWidget {
                                 child: Text(
                                   surah.displayName,
                                   style: TextStyle(
-                                    fontSize: 16.sp,
+                                    fontSize: 14.sp,
                                     fontWeight: FontWeight.w700,
                                     color: mainText,
                                     fontFamily: 'Noon',
@@ -201,11 +204,9 @@ class DashboardCard extends StatelessWidget {
 
                 // ===== Reading Stats Grid =====
                 Container(
-                  padding: EdgeInsets.all(12.w),
+                  padding: EdgeInsets.all(6.w),
                   decoration: BoxDecoration(
-                    color: isDark
-                        ? Colors.grey.shade800.withValues(alpha: 0.3)
-                        : Colors.grey.shade50,
+                    color:cardBg,
                     borderRadius: BorderRadius.circular(14.r),
                     border: Border.all(
                       color: isDark
@@ -243,7 +244,7 @@ class DashboardCard extends StatelessWidget {
                   ),
                 ),
 
-                SizedBox(height: 16.h),
+                SizedBox(height: 13.h),
 
                 // ===== Last Reading Time =====
                 Row(
@@ -349,7 +350,7 @@ class DashboardCard extends StatelessWidget {
               Text(
                 value,
                 style: TextStyle(
-                  fontSize: 16.sp,
+                  fontSize: 13.sp,
                   fontWeight: FontWeight.w700,
                   color: isDark ? Colors.white : Colors.grey.shade800,
                   fontFamily: 'Noon',

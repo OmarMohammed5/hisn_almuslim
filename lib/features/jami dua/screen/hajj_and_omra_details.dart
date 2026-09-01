@@ -54,8 +54,19 @@ class _HajjAndOmraDetailsState extends State<HajjAndOmraDetails> {
       appBar: AppBarWidget(
         title: widget.title,
         actions: [   Padding(
-          padding: EdgeInsets.only(right: 12.w),
+          padding: EdgeInsets.only(left: 8.w),
           child: IconButton(
+            style: IconButton.styleFrom(
+              backgroundColor: Theme.of(context).brightness == Brightness.dark
+                  ? const Color(0xFF1A2723)
+                  : const Color(0xFFEAF2F0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14.r),
+                side: BorderSide(
+                  color: const Color(0xFF087F73).withValues(alpha: .14),
+                ),
+              ),
+            ),
             icon: Icon(
               Icons.text_fields,
               color: Colors.teal.shade700,

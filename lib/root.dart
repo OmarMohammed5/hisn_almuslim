@@ -24,30 +24,43 @@ class Root extends StatefulWidget {
 }
 
 class _RootState extends State<Root> {
-  final ValueNotifier<int> _currentIndexNotifier = ValueNotifier<int>(0);
+  final ValueNotifier<int> _currentIndexNotifier =
+  ValueNotifier<int>(0);
 
-  final List<Widget> _pages = [
-    MultiBlocProvider(
-      providers: [
-        BlocProvider.value(value: sl<RadioCubit>()),
-        BlocProvider.value(value: sl<QuranCubit>()),
-        BlocProvider.value(value: sl<AyahHighlightCubit>()),
-        BlocProvider.value(value: sl<LecturesCubit>()),
-      ],
-      child: const HomeScreen(),
-    ),
+  late final List<Widget> _pages;
 
-    MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (_) => sl<QuranAudioCubit>()),
-      ],
-      child: const Quran(),
-    ),
+  @override
+  void initState() {
+    super.initState();
 
-    BlocProvider(create: (_) => sl<AdhanCubit>(), child: const AdhanScreen()),
+    _pages = [
+      MultiBlocProvider(
+        providers: [
+          BlocProvider.value(value: sl<RadioCubit>()),
+          BlocProvider.value(value: sl<QuranCubit>()),
+          BlocProvider.value(value: sl<AyahHighlightCubit>()),
+          BlocProvider.value(value: sl<LecturesCubit>()),
+        ],
+        child: const HomeScreen(),
+      ),
 
-    const SettingsScreen(),
-  ];
+      MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) => sl<QuranAudioCubit>(),
+          ),
+        ],
+        child: const Quran(),
+      ),
+
+      BlocProvider(
+        create: (_) => sl<AdhanCubit>(),
+        child: const AdhanScreen(),
+      ),
+
+      const SettingsScreen(),
+    ];
+  }
 
   @override
   void dispose() {
@@ -63,12 +76,27 @@ class _RootState extends State<Root> {
         resizeToAvoidBottomInset: false,
         body: Stack(
           children: [
+            // =====================================================
+            // PAGES
+            // =====================================================
+
             ValueListenableBuilder<int>(
               valueListenable: _currentIndexNotifier,
-              builder: (context, currentIndex, child) {
-                return IndexedStack(index: currentIndex, children: _pages);
+              builder: (
+                  context,
+                  currentIndex,
+                  child,
+                  ) {
+                return IndexedStack(
+                  index: currentIndex,
+                  children: _pages,
+                );
               },
             ),
+
+            // =====================================================
+            // BOTTOM NAVIGATION
+            // =====================================================
 
             Positioned(
               left: 0,
@@ -82,67 +110,138 @@ class _RootState extends State<Root> {
     );
   }
 
-  // ===============================================================
-  // Floating Navigation Dock
-  // ===============================================================
+  // BOTTOM NAVIGATION
 
   Widget _buildBottomNavigation(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark =
+        Theme.of(context).brightness == Brightness.dark;
 
-    final backgroundColor = isDark ? const Color(0xFF111918) : Colors.white;
+    final backgroundColor = isDark
+        ? const Color(0xFF101815)
+        : const Color(0xFFF7F4EC);
 
-    final borderColor = isDark
-        ? Colors.white.withValues(alpha: 0.07)
-        : Colors.black.withValues(alpha: 0.06);
+    final navigationColor = isDark
+        ? const Color(0xFF17211E)
+        : Colors.white;
 
-    final shadowColor = isDark
-        ? Colors.black.withValues(alpha: 0.45)
-        : Colors.black.withValues(alpha: 0.12);
+    final inactiveColor = isDark
+        ? const Color(0xFF83908A)
+        : const Color(0xFFA7ADB4);
+
+    final activeColor = isDark
+        ? const Color(0xFF78D7C4)
+        : const Color(0xFF087F73);
+
+    final activeLabelBackground = isDark
+        ? const Color(0xFF203B35)
+        : const Color(0xFFE6F3F0);
 
     return SafeArea(
       top: false,
-      minimum: EdgeInsets.fromLTRB(14.w, 0, 14.w, 10.h),
-      child: Container(
-        height: 56.h,
-        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 7.h),
-        decoration: BoxDecoration(
-          color: backgroundColor,
-          borderRadius: BorderRadius.circular(28.r),
-          border: Border.all(color: borderColor),
-          boxShadow: [
-            BoxShadow(
-              color: shadowColor,
-              blurRadius: 25.r,
-              spreadRadius: -5,
-              offset: Offset(0, 8.h),
-            ),
-          ],
-        ),
-        child: Row(
+      minimum: EdgeInsets.only(
+        left: 14.w,
+        right: 14.w,
+        bottom: 9.h,
+      ),
+      child: SizedBox(
+        height: 78.h,
+        child: Stack(
+          clipBehavior: Clip.none,
           children: [
-            _buildNavigationItem(
-              index: 0,
-              icon: Icons.home_rounded,
-              label: 'الرئيسية',
-              isDark: isDark,
+            // MAIN CAPSULE
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: Container(
+                height: 55.h,
+                decoration: BoxDecoration(
+                  color: navigationColor,
+                  borderRadius:
+                  BorderRadius.circular(40.r),
+                  border: Border.all(
+                    color: isDark
+                        ? Colors.white.withValues(
+                      alpha: .055,
+                    )
+                        : Colors.black.withValues(
+                      alpha: .035,
+                    ),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(
+                        alpha: isDark ? .32 : .10,
+                      ),
+                      blurRadius: 28.r,
+                      spreadRadius: -5,
+                      offset: Offset(0, 8.h),
+                    ),
+                  ],
+                ),
+              ),
             ),
-            _buildNavigationItem(
-              index: 1,
-              icon: FlutterIslamicIcons.quran2,
-              label: 'القرآن',
-              isDark: isDark,
-            ),
-            _buildNavigationItem(
-              index: 2,
-              icon: FlutterIslamicIcons.mosque,
-              label: 'الصلاة',
-              isDark: isDark,
-            ),
-            _buildNavigationItem(
-              index: 3,
-              icon: Icons.settings_rounded,
-              label: 'الإعدادات',
-              isDark: isDark,
+
+            // NAVIGATION ITEMS
+            Positioned.fill(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 5.w,
+                ),
+                child: Row(
+                  crossAxisAlignment:
+                  CrossAxisAlignment.stretch,
+                  children: [
+                    _buildNavigationItem(
+                      index: 0,
+                      icon: Icons.home_rounded,
+                      label: 'الرئيسية',
+                      activeColor: activeColor,
+                      inactiveColor: inactiveColor,
+                      activeLabelBackground:
+                      activeLabelBackground,
+                      navigationColor: navigationColor,
+                      backgroundColor: backgroundColor,
+                    ),
+
+                    _buildNavigationItem(
+                      index: 1,
+                      icon: FlutterIslamicIcons.quran2,
+                      label: 'القرآن',
+                      activeColor: activeColor,
+                      inactiveColor: inactiveColor,
+                      activeLabelBackground:
+                      activeLabelBackground,
+                      navigationColor: navigationColor,
+                      backgroundColor: backgroundColor,
+                    ),
+
+                    _buildNavigationItem(
+                      index: 2,
+                      icon: FlutterIslamicIcons.mosque,
+                      label: 'الصلاة',
+                      activeColor: activeColor,
+                      inactiveColor: inactiveColor,
+                      activeLabelBackground:
+                      activeLabelBackground,
+                      navigationColor: navigationColor,
+                      backgroundColor: backgroundColor,
+                    ),
+
+                    _buildNavigationItem(
+                      index: 3,
+                      icon: Icons.settings_rounded,
+                      label: 'الإعدادات',
+                      activeColor: activeColor,
+                      inactiveColor: inactiveColor,
+                      activeLabelBackground:
+                      activeLabelBackground,
+                      navigationColor: navigationColor,
+                      backgroundColor: backgroundColor,
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),
@@ -150,20 +249,26 @@ class _RootState extends State<Root> {
     );
   }
 
-  // ===============================================================
-  // Navigation Item
-  // ===============================================================
+  // NAVIGATION ITEM
 
   Widget _buildNavigationItem({
     required int index,
     required IconData icon,
     required String label,
-    required bool isDark,
+    required Color activeColor,
+    required Color inactiveColor,
+    required Color activeLabelBackground,
+    required Color navigationColor,
+    required Color backgroundColor,
   }) {
     return Expanded(
       child: ValueListenableBuilder<int>(
         valueListenable: _currentIndexNotifier,
-        builder: (context, currentIndex, child) {
+        builder: (
+            context,
+            currentIndex,
+            child,
+            ) {
           final isActive = currentIndex == index;
 
           return GestureDetector(
@@ -173,40 +278,62 @@ class _RootState extends State<Root> {
                 _currentIndexNotifier.value = index;
               }
             },
-            child: SizedBox(
-              height: double.infinity,
-              child: Stack(
-                alignment: Alignment.center,
-                clipBehavior: Clip.none,
-                children: [
-                  // =================================================
-                  // Inactive Icon
-                  // =================================================
-                  AnimatedOpacity(
-                    duration: const Duration(milliseconds: 180),
-                    opacity: isActive ? 0 : 1,
-                    child: _buildInactiveIcon(icon, isDark),
-                  ),
+            child: Stack(
+              clipBehavior: Clip.none,
+              alignment: Alignment.bottomCenter,
+              children: [
+                // =================================================
+                // INACTIVE ITEM
+                // =================================================
 
-                  // =================================================
-                  // Active Floating Button
-                  // =================================================
-                  AnimatedPositioned(
-                    duration: const Duration(milliseconds: 320),
-                    curve: Curves.easeOutBack,
-                    top: isActive ? -17.h : 20.h,
-                    child: AnimatedOpacity(
-                      duration: const Duration(milliseconds: 180),
-                      opacity: isActive ? 1 : 0,
-                      child: _buildActiveItem(
-                        icon: icon,
-                        label: label,
-                        isDark: isDark,
-                      ),
+                AnimatedOpacity(
+                  duration: const Duration(
+                    milliseconds: 180,
+                  ),
+                  curve: Curves.easeOut,
+                  opacity: isActive ? 0 : 1,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      bottom: 8.h,
+                    ),
+                    child: _buildInactiveItem(
+                      icon: icon,
+                      label: label,
+                      color: inactiveColor,
                     ),
                   ),
-                ],
-              ),
+                ),
+
+                // =================================================
+                // ACTIVE ITEM
+                // =================================================
+
+                AnimatedOpacity(
+                  duration: const Duration(
+                    milliseconds: 180,
+                  ),
+                  curve: Curves.easeOut,
+                  opacity: isActive ? 1 : 0,
+                  child: AnimatedSlide(
+                    duration: const Duration(
+                      milliseconds: 320,
+                    ),
+                    curve: Curves.easeOutBack,
+                    offset: isActive
+                        ? Offset.zero
+                        : const Offset(0, .18),
+                    child: _buildActiveItem(
+                      icon: icon,
+                      label: label,
+                      activeColor: activeColor,
+                      activeLabelBackground:
+                      activeLabelBackground,
+                      navigationColor: navigationColor,
+                      backgroundColor: backgroundColor,
+                    ),
+                  ),
+                ),
+              ],
             ),
           );
         },
@@ -214,92 +341,155 @@ class _RootState extends State<Root> {
     );
   }
 
-  // ===============================================================
-  // Active Item
-  // ===============================================================
+  // INACTIVE ITEM
 
-  Widget _buildActiveItem({
+  Widget _buildInactiveItem({
     required IconData icon,
     required String label,
-    required bool isDark,
+    required Color color,
   }) {
-    final activeColor = isDark
-        ? const Color(0xFF7BE4D1)
-        : const Color(0xFF087F73);
-
-    final activeBackground = isDark
-        ? const Color(0xFF173B36)
-        : const Color(0xFFE1F2EF);
-
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          width: 48.w,
-          height: 48.w,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: activeColor,
-            border: Border.all(
-              color: isDark ? const Color(0xFF0E2522) : Colors.white,
-              width: 4.w,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: activeColor.withValues(alpha: 0.28),
-                blurRadius: 14.r,
-                offset: Offset(0, 5.h),
-              ),
-            ],
-          ),
-          child: Icon(
+    return SizedBox(
+      height: 49.h,
+      child: Column(
+        mainAxisAlignment:
+        MainAxisAlignment.center,
+        children: [
+          Icon(
             icon,
             size: 21.sp,
-            color: isDark ? const Color(0xFF0D2824) : Colors.white,
+            color: color,
           ),
-        ),
 
-        SizedBox(height: 3.h),
+          SizedBox(height: 4.h),
 
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 9.w, vertical: 3.h),
-          decoration: BoxDecoration(
-            color: activeBackground,
-            borderRadius: BorderRadius.circular(10.r),
-          ),
-          child: Text(
+          Text(
             label,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
-              fontSize: 8.5.sp,
-              fontWeight: FontWeight.w800,
-              color: activeColor,
               fontFamily: 'QuranFont',
+              fontSize: 8.5.sp,
+              fontWeight: FontWeight.w500,
+              color: color,
               height: 1,
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
-  // ===============================================================
-  // Inactive Item
-  // ===============================================================
+  // ACTIVE ITEM
 
-  Widget _buildInactiveIcon(IconData icon, bool isDark) {
-    return Container(
-      width: 44.w,
-      height: 44.w,
-      alignment: Alignment.center,
-      child: Icon(
-        icon,
-        size: 20.sp,
-        color: isDark
-            ? Colors.white.withValues(alpha: 0.42)
-            : Colors.black.withValues(alpha: 0.42),
+  Widget _buildActiveItem({
+    required IconData icon,
+    required String label,
+    required Color activeColor,
+    required Color activeLabelBackground,
+    required Color navigationColor,
+    required Color backgroundColor,
+  }) {
+    return SizedBox(
+      height: 82.h,
+      child: Stack(
+        alignment: Alignment.topCenter,
+        clipBehavior: Clip.none,
+        children: [
+          // NOTCH / CUTOUT
+          Container(
+            width: 68.w,
+            height: 68.w,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: backgroundColor,
+            ),
+          ),
+
+          // ACTIVE CIRCLE
+          Positioned(
+            top: -2.h,
+            child: Container(
+              width: 58.w,
+              height: 58.w,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: navigationColor,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(
+                      alpha: .06,
+                    ),
+                    blurRadius: 12.r,
+                    offset: Offset(0, 3.h),
+                  ),
+                ],
+              ),
+              child: Container(
+                margin: EdgeInsets.all(5.w),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: activeColor,
+                  boxShadow: [
+                    BoxShadow(
+                      color: activeColor.withValues(
+                        alpha: .28,
+                      ),
+                      blurRadius: 14.r,
+                      offset: Offset(0, 5.h),
+                    ),
+                  ],
+                ),
+                child: Icon(
+                  icon,
+                  size: 23.sp,
+                  color: isDarkTheme(context)
+                      ? const Color(0xFF10201B)
+                      : Colors.white,
+                ),
+              ),
+            ),
+          ),
+
+          // ACTIVE LABEL
+          Positioned(
+            bottom: 7.h,
+            child: AnimatedContainer(
+              duration: const Duration(
+                milliseconds: 220,
+              ),
+              curve: Curves.easeOut,
+              padding: EdgeInsets.symmetric(
+                horizontal: 9.w,
+                vertical: 4.h,
+              ),
+              decoration: BoxDecoration(
+                color: activeLabelBackground,
+                borderRadius:
+                BorderRadius.circular(10.r),
+              ),
+              child: Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontFamily: 'QuranFont',
+                  fontSize: 8.5.sp,
+                  fontWeight: FontWeight.w700,
+                  color: activeColor,
+                  height: 1,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
+  }
+
+  // DARK MODE HELPER
+
+  bool isDarkTheme(BuildContext context) {
+    return Theme.of(context).brightness ==
+        Brightness.dark;
   }
 }

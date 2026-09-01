@@ -75,7 +75,7 @@ class ZekrCardWidget extends StatelessWidget {
                           title,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 18.sp,
+                            fontSize: 15.sp,
                             fontFamily: "QuranFont",
                             color: isDark ? Colors.white : const Color(0xFF1A1A1A),
                             height: 1.4,

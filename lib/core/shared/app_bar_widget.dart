@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gap/gap.dart';
+
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
@@ -10,7 +10,8 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
     this.isHomePage = false,
     this.showBackButton = true,
     this.actions,
-    this.subtitle, this.leading,
+    this.subtitle,
+    this.leading,
   });
 
   final String title;
@@ -21,7 +22,9 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final Widget? leading;
 
   @override
-  Size get preferredSize => Size.fromHeight(subtitle != null ? 65.h : 46.h);
+  Size get preferredSize {
+    return Size.fromHeight(subtitle != null ? 70.h : 58.h);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,143 +32,210 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
 
     if (isHomePage) {
       return _buildHomeAppBar(context, isDark);
-    } else {
-      return _buildRegularAppBar(context, isDark);
     }
+
+    return _buildRegularAppBar(context, isDark);
   }
 
+  // ===============================================================
+  // HOME APP BAR
+  // ===============================================================
+
   AppBar _buildHomeAppBar(BuildContext context, bool isDark) {
+    final backgroundColor = isDark
+        ? const Color(0xFF111614)
+        : const Color(0xFFF8FAF9);
+
+    final titleColor = isDark
+        ? const Color(0xFFF1F5F3)
+        : const Color(0xFF1D2925);
+
+    final accentColor = isDark
+        ? const Color(0xFF63DCC6)
+        : const Color(0xFF087F73);
+
     return AppBar(
       centerTitle: true,
-      scrolledUnderElevation: 0,
-      backgroundColor: isDark ? Color(0xFF0F1419) : Color(0xFFF5F7FA),
       elevation: 0,
+      scrolledUnderElevation: 0,
+      backgroundColor: backgroundColor,
       automaticallyImplyLeading: false,
-      actions: actions,
+
       leading: leading,
-      flexibleSpace: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: isDark
-                ? [Color(0xFF1A4D4D).withValues(alpha: 0.1), Colors.transparent]
-                : [
-                    Colors.teal.shade50.withValues(alpha: 0.3),
-                    Colors.transparent,
-                  ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
-      ),
+      actions: actions,
+
       title: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Gap(10.h),
-          Container(
-            padding: EdgeInsets.all(8.w),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: isDark
-                    ? [Colors.teal.shade700, Colors.teal.shade600]
-                    : [Colors.teal.shade500, Colors.teal.shade600],
+          if (subtitle == null) SizedBox(height: 3.h),
+
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildTitleLine(accentColor),
+
+              SizedBox(width: 12.w),
+
+              CustomText(
+                title,
+                color: titleColor,
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w800,
+                maxLines: 1,
               ),
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.teal.withValues(alpha: 0.3),
-                  blurRadius: 8,
-                  offset: Offset(0, 4),
-                ),
-              ],
-            ),
-            child: Icon(Icons.mosque, color: Colors.white, size: 24.sp),
+
+              SizedBox(width: 12.w),
+
+              _buildTitleLine(accentColor),
+            ],
           ),
-          Gap(8.h),
-          CustomText(
-            title,
-            color: isDark ? Colors.white : Color(0xFF1A1A2E),
-            fontSize: 13.sp,
-            fontWeight: FontWeight.bold,
-          ),
+
           if (subtitle != null) ...[
-            Gap(4.h),
+            SizedBox(height: 4.h),
+
             CustomText(
               subtitle!,
-              color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
-              fontSize: 12.sp,
+              color: isDark ? const Color(0xFF929D99) : const Color(0xFF7D8985),
+              fontSize: 10.sp,
+              fontWeight: FontWeight.w500,
+              maxLines: 1,
             ),
           ],
         ],
       ),
+
+      bottom: PreferredSize(
+        preferredSize: Size.fromHeight(1.h),
+        child: Container(
+          height: 1.h,
+          margin: EdgeInsets.symmetric(horizontal: 24.w),
+          decoration: BoxDecoration(
+            color: accentColor.withValues(alpha: .16),
+            borderRadius: BorderRadius.circular(10.r),
+          ),
+        ),
+      ),
     );
   }
 
+  // ===============================================================
+  // REGULAR APP BAR
+  // ===============================================================
+
   AppBar _buildRegularAppBar(BuildContext context, bool isDark) {
+    final backgroundColor = isDark
+        ? const Color(0xFF111614)
+        : const Color(0xFFF8FAF9);
+
+    final titleColor = isDark
+        ? const Color(0xFFF1F5F3)
+        : const Color(0xFF202A27);
+
+    final accentColor = isDark
+        ? const Color(0xFF63DCC6)
+        : const Color(0xFF087F73);
+
+    final iconColor = isDark
+        ? const Color(0xFFE5ECE9)
+        : const Color(0xFF26322F);
+
     return AppBar(
       centerTitle: true,
-      scrolledUnderElevation: 0,
-      backgroundColor: isDark ? Color(0xFF1A1A1A) : Colors.white,
       elevation: 0,
+      scrolledUnderElevation: 0,
+      backgroundColor: backgroundColor,
       leading:
           (!isHomePage &&
               showBackButton &&
               ModalRoute.of(context)?.isFirst == false)
-          ?  IconButton(onPressed: ()=> Navigator.pop(context),
-            icon:
-            Icon(
-              Icons.arrow_back_ios_rounded,
-              color:  isDark ? Colors.white :  Colors.black87,
-              size: 18.sp,
-            ),
-          )
-          : null,
+          ? _buildBackButton(context: context, iconColor: iconColor)
+          : leading,
 
       actions: actions,
+
       title: Row(
         mainAxisSize: MainAxisSize.min,
-        spacing: 12,
         children: [
-          Container(
-            width: 3,
-            height: 24,
-            decoration: BoxDecoration(
-              color: Colors.teal.shade600,
-              borderRadius: BorderRadius.circular(2),
-            ),
-          ),
+          _buildTitleLine(accentColor),
+
+          SizedBox(width: 11.w),
+
           Flexible(
             child: CustomText(
               title,
-              color: isDark ? Colors.white : Color(0xFF2D3748),
+              color: titleColor,
               fontSize: 15.sp,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w800,
               maxLines: 1,
             ),
           ),
-          Container(
-            width: 3,
-            height: 24,
-            decoration: BoxDecoration(
-              color: Colors.teal.shade600,
-              borderRadius: BorderRadius.circular(2),
-            ),
-          ),
+
+          SizedBox(width: 11.w),
+
+          _buildTitleLine(accentColor),
         ],
       ),
+
       bottom: PreferredSize(
-        preferredSize: Size.fromHeight(1),
+        preferredSize: Size.fromHeight(1.h),
         child: Container(
-          height: 1,
-          margin: EdgeInsets.symmetric(horizontal: 40),
+          height: 1.h,
+          margin: EdgeInsets.symmetric(horizontal: 24.w),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
                 Colors.transparent,
-                Colors.teal.shade400,
+                accentColor.withValues(alpha: .22),
+                accentColor.withValues(alpha: .22),
                 Colors.transparent,
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  // TITLE LINE
+  Widget _buildTitleLine(Color color) {
+    return Container(
+      width: 3.w,
+      height: 25.h,
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(10.r),
+      ),
+    );
+  }
+
+  // BACK BUTTON
+  Widget _buildBackButton({
+    required BuildContext context,
+    required Color iconColor,
+  }) {
+    return Padding(
+      padding: EdgeInsets.only(right: 12.w, top: 10.h, bottom: 10.h),
+      child: IconButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        style: IconButton.styleFrom(
+          backgroundColor: Theme.of(context).brightness == Brightness.dark
+              ? const Color(0xFF1A2723)
+              : const Color(0xFFEAF2F0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14.r),
+            side: BorderSide(
+              color: const Color(0xFF087F73).withValues(alpha: .14),
+            ),
+          ),
+        ),
+        icon: Icon(
+          Icons.arrow_back_ios_new_rounded,
+          color: iconColor,
+          size: 17.sp,
+        ),
+        splashRadius: 20.r,
       ),
     );
   }

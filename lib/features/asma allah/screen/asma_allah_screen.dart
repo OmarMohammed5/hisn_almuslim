@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gap/gap.dart';
+
 import 'package:hisn_almuslim/features/asma%20allah/data/cubit/asma_allah_cubit.dart';
 import 'package:hisn_almuslim/features/asma%20allah/widgets/asma_card.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
@@ -15,28 +15,38 @@ class AsmaAllahScreen extends StatefulWidget {
 }
 
 class _AsmaAllahScreenState extends State<AsmaAllahScreen> {
-  late final PageController _controller = PageController(
-    viewportFraction: 0.82,
-  );
+  late final PageController _controller;
+
   int currentIndex = 0;
 
   @override
   void initState() {
+    super.initState();
+
+    _controller = PageController(viewportFraction: .88);
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         context.read<AsmaAllahCubit>().loadNames();
       }
     });
-    super.initState();
   }
 
-  void _goToNextPage(AsmaAllahLoaded loadedState) {
-    if (currentIndex < loadedState.names.length - 1) {
-      _controller.nextPage(
-        duration: const Duration(milliseconds: 550),
-        curve: Curves.easeOutCubic,
-      );
+  void _goToNextPage(AsmaAllahLoaded state) {
+    if (currentIndex >= state.names.length - 1) {
+      return;
     }
+
+    _controller.nextPage(
+      duration: const Duration(milliseconds: 280),
+      curve: Curves.easeOutCubic,
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -46,208 +56,307 @@ class _AsmaAllahScreenState extends State<AsmaAllahScreen> {
     return BlocBuilder<AsmaAllahCubit, AsmaAllahState>(
       builder: (context, state) {
         if (state is AsmaAllahLoading) {
-          return Center(
-            child: CupertinoActivityIndicator(color: Colors.teal.shade700),
+          return Scaffold(
+            backgroundColor: _backgroundColor(isDark),
+            body: Center(
+              child: CupertinoActivityIndicator(
+                color: _accentColor(isDark),
+                radius: 14.r,
+              ),
+            ),
           );
         }
 
-        if (state is AsmaAllahLoaded) {
-          final namesList = state.names;
-
+        if (state is AsmaAllahError) {
           return Scaffold(
-            body: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: isDark
-                      ? [const Color(0xFF0D2B2B), const Color(0xFF0A1A1A)]
-                      : [const Color(0xFFE0F7F5), const Color(0xFFF5FDFC)],
-                ),
+            backgroundColor: _backgroundColor(isDark),
+            body: Center(
+              child: CustomText(
+                state.message,
+                color: isDark ? Colors.white70 : Colors.black54,
               ),
+            ),
+          );
+        }
+
+        if (state is! AsmaAllahLoaded) {
+          return const SizedBox.shrink();
+        }
+
+        final names = state.names;
+
+        return Scaffold(
+          backgroundColor: _backgroundColor(isDark),
+
+          body: SafeArea(
+            child: Column(
+              children: [
+                // HEADER
+                _buildHeader(
+                  context: context,
+                  isDark: isDark,
+                  total: names.length,
+                ),
+
+                // PROGRESS
+                _buildProgress(isDark: isDark, total: names.length),
+
+                SizedBox(height: 18.h),
+
+                Expanded(
+                  child: PageView.builder(
+                    controller: _controller,
+                    itemCount: names.length,
+
+                    onPageChanged: (index) {
+                      setState(() {
+                        currentIndex = index;
+                      });
+                    },
+
+                    itemBuilder: (context, index) {
+                      return AnimatedBuilder(
+                        animation: _controller,
+
+                        builder: (context, child) {
+                          double page = currentIndex.toDouble();
+
+                          if (_controller.hasClients &&
+                              _controller.page != null) {
+                            page = _controller.page!;
+                          }
+
+                          final difference = (index - page).abs().clamp(
+                            0.0,
+                            1.0,
+                          );
+
+                          final scale = 1.0 - (difference * .035);
+
+                          final opacity = 1.0 - (difference * .22);
+
+                          final offsetY = difference * 10.h;
+
+                          return Opacity(
+                            opacity: opacity,
+
+                            child: Transform.translate(
+                              offset: Offset(0, offsetY),
+
+                              child: Transform.scale(
+                                scale: scale,
+
+                                child: child,
+                              ),
+                            ),
+                          );
+                        },
+
+                        child: AsmaCard(
+                          key: ValueKey(index),
+                          model: names[index],
+                          onTap: () {
+                            _goToNextPage(state);
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  // HEADER
+  Widget _buildHeader({
+    required BuildContext context,
+    required bool isDark,
+    required int total,
+  }) {
+    final accent = _accentColor(isDark);
+    final textColor = _textColor(isDark);
+
+    return Padding(
+      padding: EdgeInsets.fromLTRB(18.w, 10.h, 18.w, 18.h),
+      child: Row(
+        children: [
+          _buildIconButton(
+            icon: Icons.arrow_back_ios_new_rounded,
+            isDark: isDark,
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+
+          const Spacer(),
+
+          // TITLE
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CustomText(
+                'أسماء الله الحسنى',
+                color: textColor,
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w800,
+              ),
+
+              SizedBox(height: 3.h),
+
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 4.w,
+                    height: 4.w,
+                    decoration: BoxDecoration(
+                      color: accent,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+
+                  SizedBox(width: 5.w),
+
+                  CustomText(
+                    'تعرّف على أسماء الله',
+                    color: isDark ? Colors.white38 : Colors.black38,
+                    fontSize: 8.5.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ],
+              ),
+            ],
+          ),
+
+          const Spacer(),
+
+          // COUNTER
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 11.w, vertical: 8.h),
+            decoration: BoxDecoration(
+              color: accent.withValues(alpha: .08),
+              borderRadius: BorderRadius.circular(13.r),
+              border: Border.all(color: accent.withValues(alpha: .15)),
+            ),
+            child: Text(
+              '${_arabicNumber(currentIndex + 1)} / ${_arabicNumber(total)}',
+              style: TextStyle(
+                fontSize: 9.5.sp,
+                fontWeight: FontWeight.w800,
+                color: accent,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // PROGRESS
+  Widget _buildProgress({required bool isDark, required int total}) {
+    final accent = _accentColor(isDark);
+
+    final progress = total == 0 ? 0.0 : (currentIndex + 1) / total;
+
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 22.w),
+      child: TweenAnimationBuilder<double>(
+        tween: Tween(begin: 0, end: progress),
+        duration: const Duration(milliseconds: 260),
+        curve: Curves.easeOutCubic,
+        builder: (context, value, child) {
+          return ClipRRect(
+            borderRadius: BorderRadius.circular(20.r),
+            child: SizedBox(
+              height: 3.h,
               child: Stack(
                 children: [
-                  Positioned(
-                    top: -60.h,
-                    right: -60.w,
-                    child: Container(
-                      width: 200.w,
-                      height: 200.h,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.teal.withOpacity(isDark ? 0.08 : 0.12),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: -80.h,
-                    left: -40.w,
-                    child: Container(
-                      width: 260.w,
-                      height: 260.h,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.teal.withOpacity(isDark ? 0.06 : 0.09),
-                      ),
-                    ),
+                  Container(
+                    width: double.infinity,
+                    color: accent.withValues(alpha: .08),
                   ),
 
-                  SafeArea(
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 24.w,
-                            vertical: 16.h,
-                          ),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  IconButton(
-                                    onPressed: () => Navigator.pop(context),
-                                    icon: const Icon(Icons.arrow_back),
-                                  ),
-                                  const Spacer(),
-                                  Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 16.w,
-                                      vertical: 6.h,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: Colors.teal.withOpacity(0.15),
-                                      borderRadius: BorderRadius.circular(20.r),
-                                      border: Border.all(
-                                        color: Colors.teal.withOpacity(0.3),
-                                        width: 1.w,
-                                      ),
-                                    ),
-                                    child: Text(
-                                      "${currentIndex + 1} / ${namesList.length}",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 13.sp,
-                                        color: isDark
-                                            ? Colors.teal.shade200
-                                            : Colors.teal.shade800,
-                                        letterSpacing: 0.5,
-                                      ),
-                                    ),
-                                  ),
-                                  const Spacer(),
-                                  Gap(40.w),
-                                ],
-                              ),
-                              Gap(12.h),
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(8.r),
-                                child: LinearProgressIndicator(
-                                  value: (currentIndex + 1) / namesList.length,
-                                  minHeight: 6,
-                                  backgroundColor: isDark
-                                      ? Colors.white12
-                                      : Colors.teal.shade100,
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                    Colors.teal.shade600,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        Expanded(
-                          child: PageView.builder(
-                            pageSnapping: true,
-                            controller: _controller,
-                            itemCount: namesList.length,
-                            onPageChanged: (index) {
-                              setState(() {
-                                currentIndex = index;
-                              });
-                            },
-                            itemBuilder: (context, index) {
-                              return AnimatedBuilder(
-                                animation: _controller,
-                                builder: (context, child) {
-                                  final page = _controller.hasClients
-                                      ? (_controller.page ?? currentIndex.toDouble())
-                                      : currentIndex.toDouble();
-
-                                  final difference = index - page;
-
-                                  final distance = difference.abs().clamp(0.0, 1.0);
-
-                                  final scale = 1.0 - (distance * 0.10);
-
-
-                                  final opacity = 1.0 - (distance * 0.35);
-
-                                  final translateY = distance * 18.h;
-
-                                  final rotationY = difference * 0.08;
-
-                                  return Center(
-                                    child: Opacity(
-                                      opacity: opacity.clamp(0.0, 1.0),
-
-                                      child: Transform.translate(
-                                        offset: Offset(0, translateY),
-                                        child: Transform.scale(
-                                          scale: scale,
-
-                                          child: Transform(
-                                            alignment: Alignment.center,
-                                            transform: Matrix4.identity()
-                                              ..setEntry(3, 2, 0.001)
-                                              ..rotateY(rotationY),
-
-                                            child: child,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                },
-
-                                child: AsmaCard(
-                                  key: ValueKey(index),
-                                  model: namesList[index],
-                                  onTap: () => _goToNextPage(state),
-                                ),
-                              );
-                            },
-
-                          ),
-                        ),
-
-                        // Swipe hint
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 20.h),
-                          child: Text(
-                            "اسحب للتنقل",
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              color: isDark
-                                  ? Colors.white30
-                                  : Colors.teal.shade300,
-                              letterSpacing: 0.5,
-                            ),
-                          ),
-                        ),
-                      ],
+                  FractionallySizedBox(
+                    widthFactor: value.clamp(0.0, 1.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: accent,
+                        borderRadius: BorderRadius.circular(20.r),
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
           );
-        } else if (state is AsmaAllahError) {
-          return Center(child: CustomText(state.message));
-        } else {
-          return const SizedBox.shrink();
-        }
-      },
+        },
+      ),
     );
+  }
+
+  // ICON BUTTON
+  Widget _buildIconButton({
+    required IconData icon,
+    required bool isDark,
+    required VoidCallback onTap,
+  }) {
+    final accent = _accentColor(isDark);
+
+    return Material(
+      color: Colors.transparent,
+
+      child: InkWell(
+        onTap: onTap,
+
+        borderRadius: BorderRadius.circular(14.r),
+
+        child: Container(
+          width: 42.w,
+          height: 42.w,
+
+          decoration: BoxDecoration(
+            color: isDark ? Colors.white.withValues(alpha: .045) : Colors.white,
+            borderRadius: BorderRadius.circular(14.r),
+
+            border: Border.all(color: accent.withValues(alpha: .10)),
+          ),
+
+          child: Icon(
+            icon,
+            size: 16.sp,
+            color: isDark ? Colors.white70 : Colors.black54,
+          ),
+        ),
+      ),
+    );
+  }
+
+
+  // COLORS
+  Color _backgroundColor(bool isDark) {
+    return isDark ? const Color(0xFF0E1715) : const Color(0xFFF7F9F7);
+  }
+
+  Color _accentColor(bool isDark) {
+    return isDark ? const Color(0xFF63D8C2) : const Color(0xFF087F73);
+  }
+
+  Color _textColor(bool isDark) {
+    return isDark ? const Color(0xFFE9F0ED) : const Color(0xFF1E2925);
+  }
+
+  // ARABIC NUMBERS
+  String _arabicNumber(int number) {
+    const digits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+
+    return number
+        .toString()
+        .split('')
+        .map((digit) => digits[int.parse(digit)])
+        .join();
   }
 }

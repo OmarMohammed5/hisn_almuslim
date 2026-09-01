@@ -14,6 +14,7 @@ import '../../../../core/theme/app_colors.dart';
 
 class MorningAzkarScreen extends StatefulWidget {
   const MorningAzkarScreen({super.key, this.initialIndex});
+
   final int? initialIndex;
 
   @override
@@ -52,6 +53,7 @@ class _MorningAzkarScreenState extends State<MorningAzkarScreen> {
   // Control of font size
 
   final ValueNotifier<double> _fontSizeNotifire = ValueNotifier(16.sp);
+
   // Immersive Reading Mode
   bool _isUiVisible = true;
 
@@ -73,7 +75,7 @@ class _MorningAzkarScreenState extends State<MorningAzkarScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     final accentColor = isDark
-        ? Colors.tealAccent.shade200
+        ? Colors.tealAccent.shade700
         : Colors.teal.shade700;
     final textColor = isDark ? Colors.white : Colors.black87;
 
@@ -92,60 +94,58 @@ class _MorningAzkarScreenState extends State<MorningAzkarScreen> {
     return Scaffold(
       appBar: AppBarWidget(
         title: "${morningAzkar['title']}",
-         actions: [
+        actions: [
           GestureDetector(
-              onTap: () => FontSizeController.showFontSizeSlider(
+            onTap: () => FontSizeController.showFontSizeSlider(
               context: context,
               fontSizeNotifire: _fontSizeNotifire,
             ),
             child: Container(
               padding: EdgeInsets.all(8.w),
               decoration: BoxDecoration(
-                color: isDark ? Color(0xff273835) : Color(0xffe0efed),
+                color: isDark
+                    ? const Color(0xFF1A2723)
+                    : const Color(0xFFEAF2F0),
                 borderRadius: BorderRadius.circular(12.r),
-                border: Border.all(color: Colors.teal.shade200),
               ),
               child: Icon(
                 Icons.text_fields,
-                color: isDark ? Color(0xff61f9d5) : Color(0xff2f8a7e),
+                color: accentColor,
                 size: 20.sp,
               ),
             ),
           ),
-           Gap(10.w),
-           GestureDetector(
-             onTap: () {
-               final currentZekr =
-               morningAzkar['content'][_currentIndex]
-               as Map<String, dynamic>;
+          Gap(10.w),
+          GestureDetector(
+            onTap: () {
+              final currentZekr =
+                  morningAzkar['content'][_currentIndex]
+                      as Map<String, dynamic>;
 
-               ZekrInfoDialog.show(
-                 context,
-                 source: currentZekr['source']?.toString(),
-                 count: currentZekr['count']?.toString(),
-                 accentColor: accentColor,
-                 textColor: textColor,
-               );
-             },
-             child: Container(
-               padding: EdgeInsets.all(8.w),
-               decoration: BoxDecoration(
-                 color: accentColor.withValues(alpha: 0.12),
-                 borderRadius: BorderRadius.circular(12.r),
-                 border: Border.all(
-                   color: accentColor.withValues(alpha: 0.2),
-                   width: 1,
-                 ),
-               ),
-               child: Icon(
-                 Icons.info_outline_rounded,
-                 color: accentColor,
-                 size: 22.sp,
-               ),
-             ),
-           ),
-           Gap(16.w),
-
+              ZekrInfoDialog.show(
+                context,
+                source: currentZekr['source']?.toString(),
+                count: currentZekr['count']?.toString(),
+                accentColor: accentColor,
+                textColor: textColor,
+              );
+            },
+            child: Container(
+              padding: EdgeInsets.all(8.w),
+              decoration: BoxDecoration(
+                color: isDark
+                    ? const Color(0xFF1A2723)
+                    : const Color(0xFFEAF2F0),
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+              child: Icon(
+                Icons.info_outline_rounded,
+                color: accentColor,
+                size: 22.sp,
+              ),
+            ),
+          ),
+          Gap(16.w),
         ],
       ),
       body: Stack(
@@ -168,20 +168,17 @@ class _MorningAzkarScreenState extends State<MorningAzkarScreen> {
                     },
                     itemBuilder: (context, index) {
                       final zekr = morningAzkar['content'][index];
-                      final isLast = index == morningAzkar['content'].length - 1;
+                      final isLast =
+                          index == morningAzkar['content'].length - 1;
                       final count = int.tryParse('${zekr['count']}') ?? 1;
 
                       return ValueListenableBuilder(
                         valueListenable: _fontSizeNotifire,
                         builder: (context, fontSize, child) {
+                          final total = morningAzkar['content'].length;
                           return ListView(
                             physics: BouncingScrollPhysics(),
-                            padding: EdgeInsets.fromLTRB(
-                              2.w,
-                              20.h,
-                              2.w,
-                              110.h,
-                            ),
+                            padding: EdgeInsets.fromLTRB(2.w, 20.h, 2.w, 110.h),
                             children: [
                               InteractiveZekrCard(
                                 key: ValueKey(index),
@@ -191,12 +188,16 @@ class _MorningAzkarScreenState extends State<MorningAzkarScreen> {
                                 onCompleted: () {
                                   if (!isLast) {
                                     _pageController!.nextPage(
-                                      duration: const Duration(milliseconds: 400),
+                                      duration: const Duration(
+                                        milliseconds: 400,
+                                      ),
                                       curve: Curves.easeInOut,
                                     );
                                   }
                                 },
                                 size: fontSize,
+                                currentIndex: _currentIndex,
+                                total: total,
                               ),
                             ],
                           );
@@ -208,37 +209,17 @@ class _MorningAzkarScreenState extends State<MorningAzkarScreen> {
               ),
             ],
           ),
-
-          // Actions
           Positioned(
-            left: 0.w,
-            right: 0.w,
-            bottom: 12.h,
-            child: SafeArea(
-              top: false,
-              child: AnimatedSlide(
-                duration: const Duration(milliseconds: 250),
-                offset: _isUiVisible ? Offset.zero : const Offset(0, 1),
-                child: AnimatedOpacity(
-                  duration: const Duration(milliseconds: 250),
-                  opacity: _isUiVisible ? 1 : 0,
-                  child:ZekrActionsWidget(
-                    zekrText: morningAzkar['content'][_currentIndex]['text']
-                        ?.toString() ??
-                        '',
-                    currentIndex: _currentIndex,
-                    total: morningAzkar['content'].length,
-                    pageController: _pageController!,
-                  ),
-                ),
-              ),
+            left: 16.w,
+            bottom: 16.h,
+            child: ZekrActionsWidget(
+              zekrText:
+                  morningAzkar['content'][_currentIndex]['text']?.toString() ??
+                  '',
             ),
           ),
         ],
       ),
     );
   }
-
 }
-
-

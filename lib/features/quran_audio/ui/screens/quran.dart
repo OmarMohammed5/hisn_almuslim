@@ -1,176 +1,206 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gap/gap.dart';
-import 'package:hisn_almuslim/features/home/widgets/category_card.dart';
 import 'package:hisn_almuslim/features/quran_audio/data/models/quran_modeel.dart';
+import 'package:hisn_almuslim/core/shared/app_bar_widget.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
-import '../../../../core/shared/app_bar_widget.dart';
-import '../../../../core/theme/app_colors.dart';
+import 'package:hisn_almuslim/core/theme/app_colors.dart';
+
+import '../widgets/quran_section_card.dart';
 
 class Quran extends StatelessWidget {
   const Quran({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
       appBar: AppBarWidget(title: "القرآن الكريم"),
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: [
-          SliverToBoxAdapter(child: _buildHeroHeader(context)),
+          SliverToBoxAdapter(child: _buildHeroHeader(context, isDark)),
+          // SECTION TITLE
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(20.w, 2.h, 20.w, 14.h),
+              child: Row(
+                children: [
+                  Container(
+                    width: 4.w,
+                    height: 18.h,
+                    decoration: BoxDecoration(
+                      color: AppColors.kPrimary,
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                  ),
 
-          // Categories
-          SliverPadding(
-            padding: EdgeInsets.fromLTRB(18.w, 4.h, 18.w, 12.h),
-            sliver: SliverGrid.builder(
-              itemCount: sections.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16.w,
-                mainAxisSpacing: 12.h,
-                childAspectRatio: 2.h,
+                  SizedBox(width: 8.w),
+
+                  CustomText(
+                    "اقرأ واستمع",
+                    fontSize: 13.sp,
+                    fontWeight: FontWeight.w800,
+                    color: isDark ? Colors.white : const Color(0xFF1C2B27),
+                  ),
+                ],
               ),
-              itemBuilder: (context, index) {
-                final section = sections[index];
-                return CategoryCardWidget(
-                  title: section.title,
-                  icon: section.icon,
-                  onTap: () {
-                    Navigator.pushNamed(context, section.route);
-                  },
-                );
-              },
             ),
           ),
 
-          SliverToBoxAdapter(child: Gap(100.h)),
+          // QURAN SECTIONS
+          SliverPadding(
+            padding: EdgeInsets.symmetric(horizontal: 18.w),
+
+            sliver: SliverList(
+              delegate: SliverChildBuilderDelegate((context, index) {
+                final section = sections[index];
+
+                return Padding(
+                  padding: EdgeInsets.only(bottom: 12.h),
+
+                  child: QuranSectionCard(
+                    title: section.title,
+                    icon: section.icon,
+                    subtitle: _getSubtitle(index),
+                    onTap: () {
+                      Navigator.pushNamed(context, section.route);
+                    },
+                  ),
+                );
+              }, childCount: sections.length),
+            ),
+          ),
+
+          SliverToBoxAdapter(child: SizedBox(height: 100.h)),
         ],
       ),
     );
   }
 
-  Widget _buildHeroHeader(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
 
+  String _getSubtitle(int index) {
+    switch (index) {
+      case 0:
+        return 'قراءة المصحف الشريف';
+      case 1:
+        return 'استمع إلى تلاوات القرآن';
+      default:
+        return 'اكتشف المزيد';
+    }
+  }
+
+
+  Widget _buildHeroHeader(BuildContext context, bool isDark) {
     final primary = AppColors.kPrimary;
 
-    final backgroundColors = isDark
-        ? const [Color(0xFF155A52), Color(0xFF0C3934)]
-        : const [Color(0xFF0F9F8E), Color(0xFF08796D)];
+    final background = isDark
+        ? const Color(0xFF123F3A)
+        : const Color(0xFF087F73);
 
-    final titleColor = Colors.white.withValues(alpha: .96);
+    final background2 = isDark
+        ? const Color(0xFF0C2D2A)
+        : const Color(0xFF0A6D63);
 
     return Container(
-      width: double.infinity,
       height: 178.h,
-      margin: EdgeInsets.fromLTRB(18.w, 16.h, 18.w, 24.h),
+
+      margin: EdgeInsets.fromLTRB(18.w, 16.h, 18.w, 22.h),
+
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(26.r),
+        borderRadius: BorderRadius.circular(28.r),
+
         gradient: LinearGradient(
           begin: Alignment.topRight,
           end: Alignment.bottomLeft,
-          colors: backgroundColors,
+
+          colors: [background, background2],
         ),
-        border: Border.all(
-          color: primary.withValues(alpha: isDark ? .35 : .20),
-          width: 1,
-        ),
+
         boxShadow: [
           BoxShadow(
-            color: primary.withValues(alpha: isDark ? .16 : .18),
-            blurRadius: 24.r,
+            color: primary.withValues(alpha: isDark ? .12 : .16),
+            blurRadius: 25.r,
             offset: Offset(0, 10.h),
           ),
         ],
       ),
+
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(26.r),
+        borderRadius: BorderRadius.circular(28.r),
+
         child: Stack(
           children: [
-            // Decorative circles
+
+            // DECORATION
             Positioned(
-              top: -55.h,
-              right: -35.w,
-              child: IgnorePointer(
-                child: Container(
-                  width: 135.w,
-                  height: 135.w,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white.withValues(alpha: isDark ? .035 : .055),
-                  ),
+              top: -65.h,
+              right: -40.w,
+
+              child: Container(
+                width: 170.w,
+                height: 170.w,
+
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+
+                  color: Colors.white.withValues(alpha: .045),
                 ),
               ),
             ),
 
             Positioned(
-              bottom: -70.h,
-              left: -45.w,
-              child: IgnorePointer(
-                child: Container(
-                  width: 150.w,
-                  height: 150.w,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white.withValues(alpha: isDark ? .025 : .045),
+              bottom: -85.h,
+              left: -55.w,
+
+              child: Container(
+                width: 180.w,
+                height: 180.w,
+
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+
+                  border: Border.all(
+                    color: Colors.white.withValues(alpha: .035),
+                    width: 22.w,
                   ),
                 ),
               ),
             ),
 
-
-
-            // Main content
+            // CONTENT
             Center(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 18.h),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // Icon
-                    Container(
-                      width: 62.w,
-                      height: 62.w,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white.withValues(
-                          alpha: isDark ? .10 : .14,
-                        ),
-                        border: Border.all(
-                          color: Colors.white.withValues(alpha: .24),
-                          width: 1,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: .08),
-                            blurRadius: 12.r,
-                            offset: Offset(0, 5.h),
-                          ),
-                        ],
-                      ),
-                      child: Icon(
-                        FlutterIslamicIcons.solidQuran2,
-                        size: 30.sp,
-                        color: Colors.white,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 62.w,
+                    height: 62.w,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white.withValues(alpha: .09),
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: .22),
+                        width: 1,
                       ),
                     ),
-
-                    SizedBox(height: 13.h),
-
-                    // Title
-                    CustomText(
-                      'القرآن الكريم',
-                      maxLines: 1,
-                      textAlign: TextAlign.center,
-                      fontSize: 19.sp,
-                      fontWeight: FontWeight.w800,
-                      color: titleColor,
+                    child: Icon(
+                      FlutterIslamicIcons.solidQuran2,
+                      size: 31.sp,
+                      color: Colors.white,
                     ),
+                  ),
+                  SizedBox(height: 14.h),
+                  CustomText(
+                    'القرآن الكريم',
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.white,
+                    textAlign: TextAlign.center,
+                  ),
 
-                  ],
-                ),
+                ],
               ),
             ),
           ],

@@ -1,43 +1,103 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/core/helpers/share_helper.dart';
-import 'package:hisn_almuslim/core/shared/custom_text.dart';
+import 'package:hisn_almuslim/core/theme/app_colors.dart';
 
 import 'custom_snack_bar.dart';
 
-class ZekrActionsWidget extends StatelessWidget {
-
+class ZekrActionsWidget extends StatefulWidget {
   final String zekrText;
 
-  final int currentIndex;
-  final PageController pageController;
-  final int total;
+  const ZekrActionsWidget({super.key, required this.zekrText});
 
-  const ZekrActionsWidget({
-    super.key,
-    required this.zekrText,
-    required this.currentIndex,
-    required this.total,
-    required this.pageController,
-  });
+  @override
+  State<ZekrActionsWidget> createState() => _ZekrActionsWidgetState();
+}
 
-  void _goToNext(BuildContext context) {
-    if (currentIndex < total - 1) {
-      pageController.nextPage(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-      );
+class _ZekrActionsWidgetState extends State<ZekrActionsWidget>
+    with SingleTickerProviderStateMixin {
+  bool _isOpen = false;
+
+  final ValueNotifier<bool> _copyNotifire = ValueNotifier(false);
+
+  late final AnimationController _controller;
+
+  late final Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 220),
+    );
+
+    _animation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeOutCubic,
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _toggle() {
+    setState(() {
+      _isOpen = !_isOpen;
+    });
+
+    if (_isOpen) {
+      _controller.forward();
+    } else {
+      _controller.reverse();
     }
   }
 
-  void _goToPrevious(BuildContext context) {
-    if (currentIndex > 0) {
-      pageController.previousPage(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-      );
+  void _close() {
+    if (!_isOpen) return;
+
+    setState(() {
+      _isOpen = false;
+    });
+
+    _controller.reverse();
+  }
+
+  Future<void> _copy() async {
+    await Clipboard.setData(ClipboardData(text: widget.zekrText));
+
+    if (!mounted) return;
+
+    _copyNotifire.value = true;
+
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(customSnackBar('تم النسخ', Icons.check_circle, context));
+
+    _close();
+
+    Future.delayed(const Duration(seconds: 2), () {
+      if (mounted) {
+        _copyNotifire.value = false;
+      }
+    });
+  }
+
+  Future<void> _share() async {
+    await ShareHelper.shareAsImage(
+      context,
+      widget.zekrText,
+      category: "أَذْكَارُ الصَّبَاح",
+      isDark: Theme.of(context).brightness == Brightness.dark,
+    );
+
+    if (mounted) {
+      _close();
     }
   }
 
@@ -45,236 +105,150 @@ class ZekrActionsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    final cardColor = isDark
-        ? const Color(0xFF1C2227)
-        : Colors.white;
-
     final accentColor = isDark
-        ? Colors.tealAccent.shade200
+        ? Colors.tealAccent.shade700
         : Colors.teal.shade700;
 
-    final textColor = isDark
-        ? Colors.white
-        : const Color(0xFF1A1A1A);
+    final buttonColor = isDark ? const Color(0xFF18332F) : Colors.white;
 
-    return Container(
-      margin: EdgeInsets.symmetric(
-        horizontal: 12.w,
-        vertical: 8.h,
-      ),
-      padding: EdgeInsets.symmetric(
-        horizontal: 12.w,
-        vertical: 10.h,
-      ),
-      decoration: BoxDecoration(
-        color: cardColor,
-        borderRadius: BorderRadius.circular(24.r),
-        border: Border.all(
-          color: isDark
-              ? Colors.white.withOpacity(0.08)
-              : Colors.grey.withOpacity(0.15),
-          width: 1.5,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.06),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          // =========================
-          // COPY
-          // =========================
+    final textColor = isDark ? Colors.white : const Color(0xFF252A28);
 
-          _buildActionButton(
-            context: context,
-            icon: Icons.copy_rounded,
-            isDark: isDark,
-            accentColor: accentColor,
-            onTap: () {
-              Clipboard.setData(
-                ClipboardData(text: zekrText),
-              );
-
-              ScaffoldMessenger.of(context).showSnackBar(
-                customSnackBar(
-                  "تم نسخ الذكر بنجاح",
-                  Icons.check_circle,
-                  context,
-                  lightColor: Colors.teal,
-                  darkColor: Colors.teal.shade400,
-                ),
-              );
-            },
-          ),
-
-          // =========================
-          // NAVIGATION
-          // =========================
-
-          Row(
-            mainAxisSize: MainAxisSize.min,
+    return AnimatedBuilder(
+      animation: _animation,
+      builder: (context, child) {
+        return SizedBox(
+          width: 145.w,
+          height: 155.h,
+          child: Stack(
+            alignment: Alignment.bottomLeft,
+            clipBehavior: Clip.none,
             children: [
-              _buildNavButton(
-                icon: Icons.arrow_back_ios_rounded,
-                onTap: () => _goToPrevious(context),
-                isDark: isDark,
+              // SHARE
+              _buildAction(
+                icon: Icons.share_outlined,
+                label: 'مشاركة',
+                bottom: 110.h,
+                animationOffset: -18.h,
+                onTap: _share,
                 accentColor: accentColor,
-                isDisabled: currentIndex == 0,
+                buttonColor: buttonColor,
+                textColor: textColor,
               ),
 
-              Gap(8.w),
+              // COPY
+              _buildAction(
+                icon: Icons.copy_rounded,
+                label: 'نسخ',
+                bottom: 65.h,
+                animationOffset: -10.h,
+                onTap: _copy,
+                accentColor: accentColor,
+                buttonColor: buttonColor,
+                textColor: textColor,
+              ),
 
-              Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 10.w,
-                  vertical: 4.h,
-                ),
-                decoration: BoxDecoration(
-                  color: accentColor.withOpacity(0.12),
-                  borderRadius: BorderRadius.circular(12.r),
-                  border: Border.all(
-                    color: accentColor.withOpacity(0.2),
-                    width: 1,
+              // MAIN FAB
+              Positioned(
+                left: 0,
+                bottom: 0,
+                child: GestureDetector(
+                  onTap: _toggle,
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 180),
+                    curve: Curves.easeOutCubic,
+                    width: 58.w,
+                    height: 58.w,
+                    transform: Matrix4.identity()
+                      ..rotateZ(_animation.value * 0.785),
+                    transformAlignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: AppColors.kPrimary.withValues(alpha: 0.6),
+                      borderRadius: BorderRadius.circular(18.r),
+                    ),
+                    child: Icon(
+                      _isOpen ? Icons.close_rounded : Icons.more_horiz_rounded,
+                      color: Colors.white,
+                      size: 25.sp,
+                    ),
                   ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildAction({
+    required IconData icon,
+    required String label,
+    required double bottom,
+    required double animationOffset,
+    required VoidCallback onTap,
+    required Color accentColor,
+    required Color buttonColor,
+    required Color textColor,
+  }) {
+    final value = _animation.value;
+
+    return Positioned(
+      left: 0,
+      bottom: bottom - (animationOffset * (1 - value)),
+      child: IgnorePointer(
+        ignoring: value < .8,
+        child: Opacity(
+          opacity: value,
+          child: Transform.scale(
+            scale: .85 + (.15 * value),
+            alignment: Alignment.bottomLeft,
+            child: GestureDetector(
+              onTap: onTap,
+              child: Container(
+                height: 40.h,
+                padding: EdgeInsets.only(left: 7.w, right: 7.w),
+                decoration: BoxDecoration(
+                  color: buttonColor,
+                  borderRadius: BorderRadius.circular(20.r),
+                  border: Border.all(color: accentColor.withValues(alpha: .10)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: .08),
+                      blurRadius: 12.r,
+                      offset: Offset(0, 4.h),
+                    ),
+                  ],
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    CustomText(
-                      '${currentIndex + 1}',
-                      color: accentColor,
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.bold,
+                    Container(
+                      width: 30.w,
+                      height: 30.w,
+                      decoration: BoxDecoration(
+                        color: accentColor.withValues(alpha: .10),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(icon, color: accentColor, size: 16.sp),
                     ),
 
-                    CustomText(
-                      ' / ',
-                      color: textColor.withOpacity(0.4),
-                      fontSize: 12.sp,
+                    SizedBox(width: 7.w),
+
+                    Text(
+                      label,
+                      style: TextStyle(
+                        fontFamily: 'Noon',
+                        fontSize: 9.5.sp,
+                        fontWeight: FontWeight.w700,
+                        color: textColor,
+                      ),
                     ),
 
-                    CustomText(
-                      '$total',
-                      color: textColor.withOpacity(0.6),
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    SizedBox(width: 8.w),
                   ],
                 ),
               ),
-
-              Gap(8.w),
-
-              _buildNavButton(
-                icon: Icons.arrow_forward_ios_rounded,
-                onTap: () => _goToNext(context),
-                isDark: isDark,
-                accentColor: accentColor,
-                isDisabled: currentIndex == total - 1,
-              ),
-            ],
-          ),
-
-          // =========================
-          // SHARE
-          // =========================
-
-          _buildActionButton(
-            context: context,
-            icon: Icons.share_outlined,
-            isDark: isDark,
-            accentColor: accentColor,
-            onTap: () async {
-              await ShareHelper.shareAsImage(
-                context,
-                zekrText,
-                category: "أَذْكَارُ الْمَسَاءِ",
-                isDark: isDark,
-              );
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildActionButton({
-    required BuildContext context,
-    required IconData icon,
-    required bool isDark,
-    required Color accentColor,
-    required VoidCallback onTap,
-  }) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12.r),
-        splashColor: accentColor.withOpacity(0.3),
-        highlightColor: accentColor.withOpacity(0.15),
-        child: Container(
-          padding: EdgeInsets.all(10.w),
-          decoration: BoxDecoration(
-            color: accentColor.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(12.r),
-            border: Border.all(
-              color: accentColor.withOpacity(0.2),
-              width: 1,
             ),
-          ),
-          child: Icon(
-            icon,
-            color: accentColor,
-            size: 20.sp,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNavButton({
-    required IconData icon,
-    required VoidCallback onTap,
-    required bool isDark,
-    required Color accentColor,
-    bool isDisabled = false,
-  }) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: isDisabled ? null : onTap,
-        borderRadius: BorderRadius.circular(12.r),
-        splashColor: isDisabled
-            ? Colors.transparent
-            : accentColor.withOpacity(0.3),
-        highlightColor: isDisabled
-            ? Colors.transparent
-            : accentColor.withOpacity(0.15),
-        child: Container(
-          padding: EdgeInsets.all(8.w),
-          decoration: BoxDecoration(
-            color: isDisabled
-                ? Colors.grey.withOpacity(0.1)
-                : accentColor.withOpacity(0.12),
-            borderRadius: BorderRadius.circular(12.r),
-            border: Border.all(
-              color: isDisabled
-                  ? Colors.grey.withOpacity(0.15)
-                  : accentColor.withOpacity(0.2),
-              width: 1,
-            ),
-          ),
-          child: Icon(
-            icon,
-            color: isDisabled
-                ? Colors.grey.withOpacity(0.4)
-                : accentColor,
-            size: 18.sp,
           ),
         ),
       ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/features/home/data/models/category_model.dart';
@@ -7,12 +6,12 @@ import 'package:hisn_almuslim/features/home/widgets/cairo_radio_card.dart';
 import 'package:hisn_almuslim/features/home/widgets/hijri_calender.dart';
 import 'package:hisn_almuslim/features/home/widgets/home_categories_section.dart';
 import 'package:hisn_almuslim/features/home/widgets/home_section_header.dart';
-import 'package:hisn_almuslim/features/home/widgets/lectures_and_lessons_card.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../hisn_al_muslim_app.dart';
 import '../../quran/data/cubit/ayah_highlight_cubit.dart';
 import '../../quran/data/cubit/quran_cubit.dart';
 import '../../quran/widgets/reading_dashboard.dart';
+import '../widgets/featured_banners.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -68,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
 
             SliverToBoxAdapter(child: Gap(24.h)),
 
-            // Featured content
+            // // Featured content
             // const SliverToBoxAdapter(child: FeaturedBanners()),
             //
             // SliverToBoxAdapter(child: Gap(24.h)),
@@ -88,8 +87,8 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
                 child: HomeSectionHeader(
-                  title: 'المحتوى الإسلامي',
-                  icon: FlutterIslamicIcons.islam,
+                  title: ' الإذاعة',
+                  icon: Icons.radio_outlined,
                 ),
               ),
             ),
@@ -98,10 +97,10 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
             // Quran Radio
             const SliverToBoxAdapter(child: CairoRadioCard()),
 
-            SliverToBoxAdapter(child: Gap(14.h)),
-
-            // Lectures
-            const SliverToBoxAdapter(child: LecturesAndLessonsCard()),
+            // SliverToBoxAdapter(child: Gap(14.h)),
+            //
+            // // Lectures
+            // const SliverToBoxAdapter(child: LecturesAndLessonsCard()),
 
             // Bottom spacing
             SliverToBoxAdapter(child: Gap(110.h)),

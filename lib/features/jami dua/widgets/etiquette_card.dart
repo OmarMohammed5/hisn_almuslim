@@ -79,7 +79,7 @@ class _EtiquetteCardState extends State<EtiquetteCard> {
             widget.item.arabic,
             textDirection: TextDirection.rtl,
             style: TextStyle(
-              fontFamily: 'QuranFont',
+              fontFamily: 'Noon',
               fontSize: widget.fontSize.sp,
               height: 1.8.h,
               fontWeight: FontWeight.w600,
@@ -96,7 +96,7 @@ class _EtiquetteCardState extends State<EtiquetteCard> {
               Text(
                 widget.item.reference,
                 style: TextStyle(
-                  fontFamily: 'QuranFont',
+                  fontFamily: 'Noon',
                   fontSize: 13.sp,
                   color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
                   fontStyle: FontStyle.italic,
@@ -132,7 +132,7 @@ class _EtiquetteCardState extends State<EtiquetteCard> {
                       Text(
                         _showHadith ? 'إخفاء الدليل' : 'عرض الدليل من السنة',
                         style: TextStyle(
-                          fontFamily: 'QuranFont',
+                          fontFamily: 'Noon',
                           fontSize: 14.sp,
                           color: Colors.teal.shade700,
                           fontWeight: FontWeight.w600,
@@ -164,7 +164,7 @@ class _EtiquetteCardState extends State<EtiquetteCard> {
                   widget.item.hadithText,
                   textDirection: TextDirection.rtl,
                   style: TextStyle(
-                    fontFamily: 'QuranFont',
+                    fontFamily: 'Noon',
                     fontSize: widget.fontSize.sp,
                     height: 1.7.h,
                     color: isDark ? const Color(0xFFE0E0E0) : const Color(0xff2F2F2F),
@@ -227,7 +227,7 @@ class _CustomActionButton extends StatelessWidget {
               Text(
                 label,
                 style: TextStyle(
-                  fontFamily: 'QuranFont',
+                  fontFamily: 'Noon',
                   fontSize: 13.sp,
                   fontWeight: FontWeight.w600,
                   color: isDark ? Colors.white70 : const Color(0xFF3E4D5C),

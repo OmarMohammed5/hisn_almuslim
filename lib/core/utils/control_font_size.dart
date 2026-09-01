@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hisn_almuslim/core/shared/custom_text.dart';
 
 class FontSizeController {
   static void showFontSizeSlider({
@@ -8,8 +9,8 @@ class FontSizeController {
   }) {
     showModalBottomSheet(
       context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      shape:  RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(36.r)),
       ),
       builder: (context) {
         final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -20,13 +21,10 @@ class FontSizeController {
             mainAxisSize: MainAxisSize.min,
             spacing: 16.h,
             children: [
-              Text(
+              CustomText(
                 'حجم الخط',
-                style: TextStyle(
                   fontSize: 16.sp,
-                  fontFamily: "Cairo",
                   fontWeight: FontWeight.bold,
-                ),
               ),
 
               ValueListenableBuilder<double>(
@@ -46,13 +44,10 @@ class FontSizeController {
                 },
               ),
 
-              Text(
+              CustomText(
                 'اسحب لتكبير أو تصغير الخط',
-                style: TextStyle(
                   fontSize: 12.sp,
-                  color: isDark ? Colors.white70 : Colors.black54,
-                  fontFamily: "Cairo",
-                ),
+                  color: isDark ? Colors.black26 : Colors.black54,
               ),
             ],
           ),

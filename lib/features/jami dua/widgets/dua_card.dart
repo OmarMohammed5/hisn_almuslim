@@ -78,9 +78,8 @@ class _DuaCardState extends State<DuaCard> {
           if (widget.title != null && widget.title!.isNotEmpty) ...[
             Text(
               widget.title!,
-              textDirection: TextDirection.rtl,
               style: TextStyle(
-                fontFamily: 'QuranFont',
+                fontFamily: 'Noon',
                 fontSize: 17.sp,
                 fontWeight: FontWeight.bold,
                 color: Colors.teal.shade700,
@@ -93,7 +92,7 @@ class _DuaCardState extends State<DuaCard> {
             widget.content,
             textDirection: TextDirection.rtl,
             style: TextStyle(
-              fontFamily: 'QuranFont',
+              fontFamily: 'Noon',
               fontSize: widget.fontSize.sp,
               height: 1.8,
               fontWeight: FontWeight.w600,
@@ -108,7 +107,7 @@ class _DuaCardState extends State<DuaCard> {
               "[ ${widget.reference} ]",
               textDirection: TextDirection.rtl,
               style: TextStyle(
-                fontFamily: 'QuranFont',
+                fontFamily: 'Noon',
                 fontSize: 13.sp,
                 color: Colors.grey.shade600,
                 fontStyle: FontStyle.italic,
