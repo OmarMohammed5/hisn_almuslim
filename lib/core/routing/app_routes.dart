@@ -1,6 +1,6 @@
 // core/routing/app_routes.dart
 class AppRoutes {
-  static const String splash = '/';
+  static const String root = '/';
   static const String welcome = '/welcome';
   static const String home = '/home';
 

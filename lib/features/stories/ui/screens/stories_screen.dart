@@ -355,8 +355,6 @@ class _StoriesListView extends StatelessWidget {
               story: story,
               index: index,
               onTap: () {
-
-
                 Navigator.pushNamed(
                     context,
                   AppRoutes.storyDetails,

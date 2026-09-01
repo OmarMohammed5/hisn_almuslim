@@ -50,7 +50,6 @@ void main() async {
   final prefs = sl<SharedPreferences>();
   final seenWelcome = prefs.getBool('seen_onboarding') ?? false;
 
-  // ========== RUN APP ==========
   runApp(
     MultiBlocProvider(
       providers: [

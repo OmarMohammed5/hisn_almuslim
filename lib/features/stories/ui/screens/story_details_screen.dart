@@ -114,7 +114,7 @@ class _StoryDetailsScreenState extends State<StoryDetailsScreen> {
                       fontSize: _fontSize.sp,
                       height: 2.0,
                       color: Theme.of(context).textTheme.bodyLarge?.color,
-                      fontFamily: 'QuranFont',
+                      fontFamily: 'Noon',
                     ),
                     textAlign: TextAlign.justify,
                   ),

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hisn_almuslim/core/shared/app_bar_widget.dart';
 import 'package:hisn_almuslim/features/quran_audio/data/models/surah_audio_model.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -349,13 +350,13 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           border: Border.all(
-            color: const Color(0xFFC9A24B).withValues(alpha: 0.55),
+            color: const Color(0xFFC9A24B).withValues(alpha: 0.65),
             width: 1.4.w,
           ),
         ),
         child: Center(
           child: Padding(
-            padding: EdgeInsets.all(18.w),
+            padding: EdgeInsets.all(8.w),
             child: Image.asset(
               'assets/icons/loogo.png',
               fit: BoxFit.contain,

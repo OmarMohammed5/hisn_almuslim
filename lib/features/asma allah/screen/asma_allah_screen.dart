@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/features/asma%20allah/data/cubit/asma_allah_cubit.dart';
 import 'package:hisn_almuslim/features/asma%20allah/widgets/asma_card.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
@@ -86,8 +86,6 @@ class _AsmaAllahScreenState extends State<AsmaAllahScreen> {
         final names = state.names;
 
         return Scaffold(
-          backgroundColor: _backgroundColor(isDark),
-
           body: SafeArea(
             child: Column(
               children: [
@@ -181,8 +179,9 @@ class _AsmaAllahScreenState extends State<AsmaAllahScreen> {
     final textColor = _textColor(isDark);
 
     return Padding(
-      padding: EdgeInsets.fromLTRB(18.w, 10.h, 18.w, 18.h),
+      padding: EdgeInsets.fromLTRB(12.w, 8.h, 12.w, 12.h),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           _buildIconButton(
             icon: Icons.arrow_back_ios_new_rounded,
@@ -191,63 +190,30 @@ class _AsmaAllahScreenState extends State<AsmaAllahScreen> {
               Navigator.pop(context);
             },
           ),
-
-          const Spacer(),
-
           // TITLE
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              CustomText(
-                'أسماء الله الحسنى',
-                color: textColor,
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w800,
-              ),
-
-              SizedBox(height: 3.h),
-
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    width: 4.w,
-                    height: 4.w,
-                    decoration: BoxDecoration(
-                      color: accent,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-
-                  SizedBox(width: 5.w),
-
-                  CustomText(
-                    'تعرّف على أسماء الله',
-                    color: isDark ? Colors.white38 : Colors.black38,
-                    fontSize: 8.5.sp,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ],
-              ),
-            ],
+          CustomText(
+            'أسماء الله الحسنى',
+            color: textColor,
+            fontSize: 15.sp,
+            fontWeight: FontWeight.w800,
           ),
-
-          const Spacer(),
-
           // COUNTER
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 11.w, vertical: 8.h),
+            width: 65.w,
+            height: 30.h,
             decoration: BoxDecoration(
               color: accent.withValues(alpha: .08),
               borderRadius: BorderRadius.circular(13.r),
               border: Border.all(color: accent.withValues(alpha: .15)),
             ),
-            child: Text(
-              '${_arabicNumber(currentIndex + 1)} / ${_arabicNumber(total)}',
-              style: TextStyle(
-                fontSize: 9.5.sp,
-                fontWeight: FontWeight.w800,
-                color: accent,
+            child: Center(
+              child: Text(
+                '${_arabicNumber(currentIndex + 1)} / ${_arabicNumber(total)}',
+                style: TextStyle(
+                  fontSize: 11.sp,
+                  fontWeight: FontWeight.w800,
+                  color: accent,
+                ),
               ),
             ),
           ),
@@ -315,8 +281,8 @@ class _AsmaAllahScreenState extends State<AsmaAllahScreen> {
         borderRadius: BorderRadius.circular(14.r),
 
         child: Container(
-          width: 42.w,
-          height: 42.w,
+          width: 37.w,
+          height: 37.w,
 
           decoration: BoxDecoration(
             color: isDark ? Colors.white.withValues(alpha: .045) : Colors.white,
@@ -334,7 +300,6 @@ class _AsmaAllahScreenState extends State<AsmaAllahScreen> {
       ),
     );
   }
-
 
   // COLORS
   Color _backgroundColor(bool isDark) {

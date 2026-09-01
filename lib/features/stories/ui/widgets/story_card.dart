@@ -82,17 +82,11 @@ class StoryCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // ==================================================
                 // TOP ROW
-                // ==================================================
-
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // ------------------------------------------------
                     // STORY NUMBER
-                    // ------------------------------------------------
-
                     Text(
                       '${(index + 1).toString().padLeft(2, '0')}',
                       style: TextStyle(
@@ -106,19 +100,16 @@ class StoryCard extends StatelessWidget {
 
                     SizedBox(width: 12.w),
 
-                    // ------------------------------------------------
                     // PROPHET NAME
-                    // ------------------------------------------------
-
                     Expanded(
                       child: Text(
                         story.prophet,
                         textAlign: TextAlign.right,
                         style: TextStyle(
-                          fontSize: 18.sp,
+                          fontSize: 16.sp,
                           fontWeight: FontWeight.w800,
                           color: titleColor,
-                          fontFamily: 'QuranFont',
+                          fontFamily: 'Noon',
                           height: 1.35,
                         ),
                       ),
@@ -127,11 +118,7 @@ class StoryCard extends StatelessWidget {
                 ),
 
                 SizedBox(height: 10.h),
-
-                // ==================================================
                 // STORY PREVIEW
-                // ==================================================
-
                 Padding(
                   padding: EdgeInsets.only(
                     left: 26.w,
@@ -145,7 +132,7 @@ class StoryCard extends StatelessWidget {
                       fontSize: 12.5.sp,
                       fontWeight: FontWeight.w400,
                       color: previewColor,
-                      fontFamily: 'QuranFont',
+                      fontFamily: 'Noon',
                       height: 1.65,
                     ),
                   ),
@@ -153,10 +140,7 @@ class StoryCard extends StatelessWidget {
 
                 SizedBox(height: 14.h),
 
-                // ==================================================
                 // DIVIDER
-                // ==================================================
-
                 Container(
                   height: 1,
                   color: borderColor,
@@ -164,20 +148,17 @@ class StoryCard extends StatelessWidget {
 
                 SizedBox(height: 10.h),
 
-                // ==================================================
                 // READ ACTION
-                // ==================================================
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
                       'اقرأ القصة',
                       style: TextStyle(
-                        fontSize: 11.5.sp,
+                        fontSize: 11.sp,
                         fontWeight: FontWeight.w700,
                         color: accentColor,
-                        fontFamily: 'QuranFont',
+                        fontFamily: 'Noon',
                       ),
                     ),
 

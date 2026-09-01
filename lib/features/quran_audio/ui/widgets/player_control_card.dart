@@ -32,13 +32,13 @@ class PlayerControlCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            arabicTitle,
+            " سورة ${arabicTitle}",
             textAlign: TextAlign.center,
             style: TextStyle(
-            fontSize: 19.sp,
+            fontSize: 16.sp,
             fontWeight: FontWeight.w600,
             color: Colors.white,
-              fontFamily: "QuranFont",
+              fontFamily: "Noon",
             ),
           ),
           SizedBox(height: 6.h),
@@ -46,10 +46,10 @@ class PlayerControlCard extends StatelessWidget {
             "القارئ الشيخ /  ${reciterName}",
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 16.sp,
+              fontSize: 14.sp,
               fontWeight: FontWeight.w600,
               color: Colors.white,
-              fontFamily: "QuranFont",
+              fontFamily: "Noon",
             ),
           ),
           if (riwayaText != null && riwayaText!.trim().isNotEmpty) ...[
@@ -60,7 +60,7 @@ class PlayerControlCard extends StatelessWidget {
               style: TextStyle(
                 fontSize: 10.5.sp,
                 color: Colors.white.withValues(alpha: 0.42),
-                fontFamily: "QuranFont",
+                fontFamily: "Noon",
               ),
             ),
           ],

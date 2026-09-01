@@ -59,9 +59,6 @@ class AsmaCard extends StatelessWidget {
 
             child: Stack(
               children: [
-                // =================================================
-                // BACKGROUND WATERMARK
-                // =================================================
                 Positioned(
                   top: -35.h,
                   right: -25.w,
@@ -95,9 +92,7 @@ class AsmaCard extends StatelessWidget {
                   ),
                 ),
 
-                // =================================================
                 // CONTENT
-                // =================================================
                 Padding(
                   padding: EdgeInsets.fromLTRB(24.w, 28.h, 24.w, 24.h),
 
@@ -105,9 +100,7 @@ class AsmaCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
 
                     children: [
-                      // ===========================================
                       // SMALL LABEL
-                      // ===========================================
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
 
@@ -150,9 +143,7 @@ class AsmaCard extends StatelessWidget {
 
                       SizedBox(height: 28.h),
 
-                      // ===========================================
                       // NAME
-                      // ===========================================
                       Text(
                         model.name,
                         textAlign: TextAlign.center,
@@ -168,9 +159,7 @@ class AsmaCard extends StatelessWidget {
 
                       SizedBox(height: 14.h),
 
-                      // ===========================================
                       // DECORATIVE LINE
-                      // ===========================================
                       Container(
                         width: 42.w,
                         height: 3.h,
@@ -183,9 +172,7 @@ class AsmaCard extends StatelessWidget {
 
                       SizedBox(height: 30.h),
 
-                      // ===========================================
                       // DESCRIPTION
-                      // ===========================================
                       Text(
                         model.text,
                         textAlign: TextAlign.center,
@@ -201,9 +188,7 @@ class AsmaCard extends StatelessWidget {
 
                       SizedBox(height: 30.h),
 
-                      // ===========================================
                       // TAP INDICATOR
-                      // ===========================================
                       Container(
                         padding: EdgeInsets.symmetric(
                           horizontal: 13.w,

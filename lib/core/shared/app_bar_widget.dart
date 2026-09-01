@@ -37,10 +37,6 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
     return _buildRegularAppBar(context, isDark);
   }
 
-  // ===============================================================
-  // HOME APP BAR
-  // ===============================================================
-
   AppBar _buildHomeAppBar(BuildContext context, bool isDark) {
     final backgroundColor = isDark
         ? const Color(0xFF111614)
@@ -117,10 +113,6 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       ),
     );
   }
-
-  // ===============================================================
-  // REGULAR APP BAR
-  // ===============================================================
 
   AppBar _buildRegularAppBar(BuildContext context, bool isDark) {
     final backgroundColor = isDark

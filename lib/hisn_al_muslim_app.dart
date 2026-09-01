@@ -31,7 +31,7 @@ class HisnAlMuslimApp extends StatelessWidget {
               themeMode: themeMode,
               theme: AppThemes.light,
               darkTheme: AppThemes.dark,
-              initialRoute: AppRoutes.splash,
+              initialRoute: AppRoutes.root,
               onGenerateRoute: appRouter.generateRoute,
               builder: (context, child) {
                 return Directionality(

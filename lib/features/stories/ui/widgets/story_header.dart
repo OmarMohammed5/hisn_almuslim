@@ -1,11 +1,5 @@
-// ============================================================
-// STORY HEADER
-// ============================================================
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../domain/entities/prophet_story.dart';
 
 class StoryHeader extends StatelessWidget {
@@ -13,7 +7,7 @@ class StoryHeader extends StatelessWidget {
   final int currentIndex;
   final int totalStories;
 
-  const StoryHeader({
+  const StoryHeader({super.key,
     required this.story,
     required this.currentIndex,
     required this.totalStories,
@@ -68,10 +62,10 @@ class StoryHeader extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontSize: 20.sp,
+                      fontSize: 16.sp,
                       fontWeight: FontWeight.w800,
                       color: titleColor,
-                      fontFamily: 'QuranFont',
+                      fontFamily: 'Noon',
                       height: 1.25,
                     ),
                   ),
@@ -91,8 +85,8 @@ class StoryHeader extends StatelessWidget {
                     child: Text(
                       '${(currentIndex + 1).toString().padLeft(2, '0')}',
                       style: TextStyle(
-                        fontSize: 13.sp,
-                        fontWeight: FontWeight.w700,
+                        fontSize: 11.sp,
+                        fontWeight: FontWeight.w600,
                         color: accentColor,
                         fontFamily: 'QuranFont',
                       ),
@@ -103,10 +97,10 @@ class StoryHeader extends StatelessWidget {
                   Text(
                     'من $totalStories',
                     style: TextStyle(
-                      fontSize: 13.sp,
-                      fontWeight: FontWeight.w500,
+                      fontSize: 11.sp,
+                      fontWeight: FontWeight.w600,
                       color: mutedColor,
-                      fontFamily: 'QuranFont',
+                      fontFamily: 'Noon',
                     ),
                   ),
                 ],
@@ -122,7 +116,7 @@ class StoryHeader extends StatelessWidget {
               fontSize: 11.5.sp,
               fontWeight: FontWeight.w500,
               color: secondaryColor,
-              fontFamily: 'Cairo',
+              fontFamily: 'Noon',
             ),
           ),
 
