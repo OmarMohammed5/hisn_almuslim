@@ -20,10 +20,8 @@ late final AppAudioHandler audioHandler;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-
   // SETUP DEPENDENCY INJECTION
   await setupLocator();
-
 
   tzdata.initializeTimeZones();
   await _setDeviceTimeZone();
@@ -45,29 +43,21 @@ void main() async {
   );
   AudioPlayerService.instance.attachHandler(audioHandler);
 
-
   // Get SharedPreferences from locator
   final prefs = sl<SharedPreferences>();
   final seenWelcome = prefs.getBool('seen_onboarding') ?? false;
 
   runApp(
-    MultiBlocProvider(
-      providers: [
-        BlocProvider<ThemeCubit>(create: (_) => sl<ThemeCubit>()),
-        // NotificationCubit
-        BlocProvider<NotificationCubit>(create: (_) => sl<NotificationCubit>()),
-      ],
-      child: HisnAlMuslimApp(
-        // seenWelcomeScreen: seenWelcome,
-        appRouter: AppRouter(),
-      ),
+    HisnAlMuslimApp(
+      // seenWelcomeScreen: seenWelcome,
+      appRouter: AppRouter(),
     ),
   );
 }
 
 Future<void> _setDeviceTimeZone() async {
   try {
-    final  TimezoneInfo timezoneInfo = await FlutterTimezone.getLocalTimezone();
+    final TimezoneInfo timezoneInfo = await FlutterTimezone.getLocalTimezone();
     tz.setLocalLocation(tz.getLocation(timezoneInfo.identifier));
   } catch (e) {
     tz.setLocalLocation(tz.getLocation('Africa/Cairo'));

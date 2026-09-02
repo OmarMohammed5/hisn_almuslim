@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 import 'package:intl/intl.dart';
 
@@ -21,129 +22,113 @@ class PrayerTimings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String formattedTime = DateFormat(
-      'hh:mm a',
-    ).format(time).replaceAll('AM', 'ص').replaceAll('PM', 'م');
+    final formattedTime = DateFormat('hh:mm a')
+        .format(time)
+        .replaceAll('AM', 'ص')
+        .replaceAll('PM', 'م');
+
+    final surface = isDark ? const Color(0xFF171A19) : Colors.white;
+    final text = isDark ? Colors.white : const Color(0xFF17231F);
+    final muted = isDark ? Colors.white.withValues(alpha: .52) : const Color(0xFF71807B);
+    final accent = isCurrentPrayer
+        ? const Color(0xFF0E8A78)
+        : isNextPrayer
+        ? const Color(0xFFD99727)
+        : muted;
 
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 24.w),
-      padding: EdgeInsets.all(8.w),
+      margin: EdgeInsets.symmetric(horizontal: 18.w, vertical: 4.h),
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 9.h),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20.r),
         color: isCurrentPrayer
-            ? isDark
-                  ? Colors.teal.shade700.withValues(alpha: 0.35)
-                  : Colors.teal.shade600.withValues(alpha: 0.20)
+            ? (isDark ? const Color(0xFF123A34) : const Color(0xFFE6F5F1))
             : isNextPrayer
-            ? Colors.orange.withValues(alpha: 0.12)
-            : isDark
-            ? Colors.grey.shade800.withValues(alpha: 0.30)
-            : Colors.white.withValues(alpha: 0.80),
-        border: isCurrentPrayer
-            ? Border.all(
-                color: isDark
-                    ? Colors.teal.shade500.withValues(alpha: 0.50)
-                    : Colors.teal.shade400.withValues(alpha: 0.60),
-                width: 1.2,
-              )
-            : null,
+            ? (isDark ? const Color(0xFF30250F) : const Color(0xFFFFF7E7))
+            : surface,
+        borderRadius: BorderRadius.circular(17.r),
+        border: Border.all(
+          color: isCurrentPrayer
+              ? const Color(0xFF0E8A78).withValues(alpha: .22)
+              : isNextPrayer
+              ? const Color(0xFFD99727).withValues(alpha: .20)
+              : (isDark ? Colors.white.withValues(alpha: .05) : const Color(0xFFE9EFED)),
+        ),
         boxShadow: [
-          BoxShadow(
-            color: isCurrentPrayer
-                ? Colors.teal.withValues(alpha: 0.15)
-                : isDark
-                ? Colors.black.withValues(alpha: 0.20)
-                : Colors.grey.withValues(alpha: 0.15),
-            blurRadius: isCurrentPrayer ? 8 : 4,
-            offset: const Offset(0, 2),
-          ),
+          if (!isDark)
+            BoxShadow(
+              color: Colors.black.withValues(alpha: .035),
+              blurRadius: 8,
+              offset: const Offset(0, 3),
+            ),
         ],
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            spacing: 10.w,
-            children: [
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 400),
-                width: 8.w,
-                height: 8.w,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: isCurrentPrayer
-                      ? Colors.teal.shade300
-                      : isNextPrayer
-                      ? Colors.orange
-                      : Colors.grey.shade500,
-                ),
-              ),
-
-              // CustomText(
-              //   prayer,
-              //   fontSize: 13.sp,
-              //   color: isCurrentPrayer
-              //       ? (isDark ? Colors.teal.shade200 : Colors.teal.shade800)
-              //       : Colors.black87,
-              //   fontWeight: isCurrentPrayer ? FontWeight.w800 : FontWeight.w600,
-              // ),
-              CustomText(
-                prayer,
-                fontSize: 13.sp,
-                color: isDark
-                    ? Colors.white.withValues(alpha: 0.90) // Dark Mode → فاتح
-                    : Colors.black87, // Light Mode → أسود
-                fontWeight: isCurrentPrayer ? FontWeight.w800 : FontWeight.w600,
-              ),
-
-              ///  BADGES
-              if (isCurrentPrayer) ...[
-                SizedBox(width: 8.w),
-                _badge("الآن", Colors.teal, isDark),
-              ] else if (isNextPrayer) ...[
-                SizedBox(width: 8.w),
-                _badge("الصلاة القادمة", Colors.orange.shade700, isDark),
-              ],
-            ],
-          ),
-
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 8.h),
+            width: 7.w,
+            height: 7.w,
+            decoration: BoxDecoration(shape: BoxShape.circle, color: accent),
+          ),
+          Gap(8.w),
+          Expanded(
+            child: Row(
+              children: [
+                CustomText(
+                  prayer,
+                  fontSize: 13.sp,
+                  color: text,
+                  fontWeight: isCurrentPrayer || isNextPrayer
+                      ? FontWeight.w800
+                      : FontWeight.w600,
+                ),
+                if (isCurrentPrayer) ...[
+                  Gap(7.w),
+                  _Badge(text: 'الآن', color: const Color(0xFF0E8A78), isDark: isDark),
+                ] else if (isNextPrayer) ...[
+                  Gap(7.w),
+                  _Badge(text: 'القادمة', color: const Color(0xFFD99727), isDark: isDark),
+                ],
+              ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 11.w, vertical: 6.h),
             decoration: BoxDecoration(
-              color: isCurrentPrayer
-                  ? (isDark
-                        ? Colors.teal.shade800.withValues(alpha: 0.50)
-                        : Colors.teal.shade100.withValues(alpha: 0.80))
-                  : isDark
-                  ? Colors.grey.shade700.withValues(alpha: 0.30)
-                  : Colors.grey.shade400.withValues(alpha: 0.30),
-              borderRadius: BorderRadius.circular(25.r),
+              color: isDark ? Colors.white.withValues(alpha: .06) : const Color(0xFFF2F4F3),
+              borderRadius: BorderRadius.circular(12.r),
             ),
             child: CustomText(
               formattedTime,
-              fontSize: 11.sp,
-              fontWeight: isCurrentPrayer ? FontWeight.w800 : FontWeight.w600,
+              fontSize: 10.sp,
+              color: text,
+              fontWeight: FontWeight.w700,
             ),
           ),
         ],
       ),
     );
   }
+}
 
-  Widget _badge(String text, Color color, bool isDark) {
+class _Badge extends StatelessWidget {
+  const _Badge({required this.text, required this.color, required this.isDark});
+  final String text;
+  final Color color;
+  final bool isDark;
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 7.w, vertical: 5.h),
+      padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 3.h),
       decoration: BoxDecoration(
+        color: color.withValues(alpha: isDark ? .18 : .12),
         borderRadius: BorderRadius.circular(20.r),
-        color: color.withValues(alpha: 0.20),
       ),
       child: CustomText(
         text,
         fontSize: 8.sp,
-        color: isDark
-            ? color.withValues(alpha: 0.9)
-            : color.withValues(alpha: 0.8),
-        fontWeight: FontWeight.w700,
+        color: isDark ? color.withValues(alpha: .95) : color,
+        fontWeight: FontWeight.w800,
       ),
     );
   }

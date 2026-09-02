@@ -107,13 +107,13 @@ class _AdhanScreenState extends State<AdhanScreen> {
                       spacing: 8.h,
                       children: List.generate(
                         state.prayerTimes.length,
-                        (index) => PrayerTimings(
+                            (index) => PrayerTimings(
                           isDark: isDark,
                           prayer: state.prayerTimes[index].name,
                           time: state.prayerTimes[index].time,
                           isCurrentPrayer: index == currentIndex,
                           isNextPrayer:
-                              currentIndex == -1 && index == nextIndex,
+                          currentIndex == -1 && index == nextIndex,
                         ),
                       ),
                     ),

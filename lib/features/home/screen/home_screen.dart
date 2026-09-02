@@ -4,6 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/features/home/data/models/category_model.dart';
 import 'package:hisn_almuslim/features/home/widgets/cairo_radio_card.dart';
 import 'package:hisn_almuslim/features/home/widgets/hijri_calender.dart';
+import 'package:hisn_almuslim/features/home/widgets/prayer_home_card.dart';
 import 'package:hisn_almuslim/features/home/widgets/home_categories_section.dart';
 import 'package:hisn_almuslim/features/home/widgets/home_section_header.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -61,7 +62,11 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
             // Calendar
             const SliverToBoxAdapter(child: HijriCalendarCard()),
 
-            SliverToBoxAdapter(child: Gap(24.h)),
+            SliverToBoxAdapter(child: Gap(14.h)),
+
+            const SliverToBoxAdapter(child: PrayerHomeCard()),
+
+            SliverToBoxAdapter(child: Gap(22.h)),
 
             SliverToBoxAdapter(child: const ReadingDashboard()),
 

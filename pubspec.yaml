@@ -1,7 +1,7 @@
 name: hisn_almuslim
 description: "A new Flutter project."
 
-publish_to: 'none' 
+publish_to: 'none'
 
 
 version: 1.0.0+1
@@ -55,15 +55,17 @@ dev_dependencies:
   flutter_lints: ^5.0.0
   flutter_test:
     sdk: flutter
-  flutter_native_splash: ^2.4.7
 
 flutter_launcher_icons:
   android: true
   ios: true
   remove_alpha_ios: true
+
   image_path: "assets/icons/loogo.png"
-  adaptive_icon_background: "#FFFFFF"
+
+  adaptive_icon_background: "#063F3A"
   adaptive_icon_foreground: "assets/icons/loogo.png"
+
   min_sdk_android: 21
 
 
@@ -81,7 +83,7 @@ flutter:
     - assets/hadith.json
     - assets/json/daily_content.json
     - assets/questions/database.json
- 
+
 
   fonts:
     - family: Cairo

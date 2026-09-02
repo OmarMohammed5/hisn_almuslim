@@ -39,6 +39,7 @@ class _RootState extends State<Root> {
           BlocProvider.value(value: sl<RadioCubit>()),
           BlocProvider.value(value: sl<QuranCubit>()),
           BlocProvider.value(value: sl<AyahHighlightCubit>()),
+          BlocProvider.value(value: sl<AdhanCubit>()),
           BlocProvider.value(value: sl<LecturesCubit>()),
         ],
         child: const HomeScreen(),

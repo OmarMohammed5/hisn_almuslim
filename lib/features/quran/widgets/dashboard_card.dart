@@ -133,34 +133,6 @@ class DashboardCard extends StatelessWidget {
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
-                              // Reading Status Badge
-                              // Container(
-                              //   padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-                              //   decoration: BoxDecoration(
-                              //     color: primary.withValues(alpha: 0.12),
-                              //     borderRadius: BorderRadius.circular(12.r),
-                              //   ),
-                              //   child: Row(
-                              //     mainAxisSize: MainAxisSize.min,
-                              //     children: [
-                              //       Icon(
-                              //         Icons.play_arrow_rounded,
-                              //         size: 12.sp,
-                              //         color: primary,
-                              //       ),
-                              //       SizedBox(width: 2.w),
-                              //       Text(
-                              //         'متابعة',
-                              //         style: TextStyle(
-                              //           fontSize: 8.sp,
-                              //           fontWeight: FontWeight.w600,
-                              //           color: primary,
-                              //           fontFamily: 'Noon',
-                              //         ),
-                              //       ),
-                              //     ],
-                              //   ),
-                              // ),
                             ],
                           ),
                           SizedBox(height: 4.h),
@@ -199,50 +171,6 @@ class DashboardCard extends StatelessWidget {
                     ),
                   ],
                 ),
-
-                // SizedBox(height: 16.h),
-
-                // ===== Reading Stats Grid =====
-                // Container(
-                //   padding: EdgeInsets.all(6.w),
-                //   decoration: BoxDecoration(
-                //     color:cardBg,
-                //     borderRadius: BorderRadius.circular(14.r),
-                //     border: Border.all(
-                //       color: isDark
-                //           ? Colors.grey.shade700.withValues(alpha: 0.2)
-                //           : Colors.grey.shade200,
-                //       width: 1,
-                //     ),
-                //   ),
-                //   child: Row(
-                //     children: [
-                //       _buildStatItem(
-                //         icon: Icons.menu_book_rounded,
-                //         value: '$pageNumber',
-                //         label: 'صفحة',
-                //         primary: primary,
-                //         isDark: isDark,
-                //       ),
-                //       _buildDivider(isDark),
-                //       _buildStatItem(
-                //         icon: Icons.auto_stories_rounded,
-                //         value: '$juzNumber',
-                //         label: 'جزء',
-                //         primary: primary,
-                //         isDark: isDark,
-                //       ),
-                //       _buildDivider(isDark),
-                //       _buildStatItem(
-                //         icon: Icons.layers_rounded,
-                //         value: '$hizbNumber',
-                //         label: 'حزب',
-                //         primary: primary,
-                //         isDark: isDark,
-                //       ),
-                //     ],
-                //   ),
-                // ),
 
                 SizedBox(height: 13.h),
 
@@ -328,60 +256,7 @@ class DashboardCard extends StatelessWidget {
     return ((ayahNumber / 286) * 100).round().clamp(0, 100);
   }
 
-  Widget _buildStatItem({
-    required IconData icon,
-    required String value,
-    required String label,
-    required Color primary,
-    required bool isDark,
-  }) {
-    return Expanded(
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                icon,
-                size: 16.sp,
-                color: primary.withValues(alpha: 0.7),
-              ),
-              SizedBox(width: 6.w),
-              Text(
-                value,
-                style: TextStyle(
-                  fontSize: 13.sp,
-                  fontWeight: FontWeight.w700,
-                  color: isDark ? Colors.white : Colors.grey.shade800,
-                  fontFamily: 'Noon',
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 2.h),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 9.sp,
-              fontWeight: FontWeight.w500,
-              color: isDark ? Colors.grey.shade500 : Colors.grey.shade500,
-              fontFamily: 'Noon',
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
-  Widget _buildDivider(bool isDark) {
-    return Container(
-      width: 1,
-      height: 30.h,
-      color: isDark
-          ? Colors.grey.shade700.withValues(alpha: 0.3)
-          : Colors.grey.shade300.withValues(alpha: 0.5),
-    );
-  }
 
   void _goToSurah(BuildContext context) {
     Navigator.pushNamed(

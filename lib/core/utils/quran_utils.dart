@@ -262,7 +262,7 @@ Widget buildEmptyState(BuildContext context, bool isDark) {
               elevation: 0,
               padding: EdgeInsets.symmetric(horizontal: 12.w),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.r),
+                borderRadius: BorderRadius.circular(16.r),
               ),
               minimumSize: Size.zero,
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,

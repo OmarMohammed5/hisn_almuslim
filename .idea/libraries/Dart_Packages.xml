@@ -9,13 +9,6 @@
             </list>
           </value>
         </entry>
-        <entry key="ansicolor">
-          <value>
-            <list>
-              <option value="$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/ansicolor-2.0.3/lib" />
-            </list>
-          </value>
-        </entry>
         <entry key="archive">
           <value>
             <list>
@@ -219,13 +212,6 @@
             </list>
           </value>
         </entry>
-        <entry key="csslib">
-          <value>
-            <list>
-              <option value="$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/csslib-1.0.2/lib" />
-            </list>
-          </value>
-        </entry>
         <entry key="cupertino_icons">
           <value>
             <list>
@@ -415,13 +401,6 @@
             </list>
           </value>
         </entry>
-        <entry key="flutter_native_splash">
-          <value>
-            <list>
-              <option value="$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/flutter_native_splash-2.4.7/lib" />
-            </list>
-          </value>
-        </entry>
         <entry key="flutter_screenutil">
           <value>
             <list>
@@ -531,13 +510,6 @@
           <value>
             <list>
               <option value="$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/hijri-3.0.0/lib" />
-            </list>
-          </value>
-        </entry>
-        <entry key="html">
-          <value>
-            <list>
-              <option value="$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/html-0.15.7/lib" />
             </list>
           </value>
         </entry>
@@ -1045,13 +1017,6 @@
             </list>
           </value>
         </entry>
-        <entry key="universal_io">
-          <value>
-            <list>
-              <option value="$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/universal_io-2.3.1/lib" />
-            </list>
-          </value>
-        </entry>
         <entry key="url_launcher">
           <value>
             <list>
@@ -1214,7 +1179,6 @@
       <root url="file://C:/src/flutter/packages/flutter_test/lib" />
       <root url="file://C:/src/flutter/packages/flutter_web_plugins/lib" />
       <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/adhan-2.0.0+1/lib" />
-      <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/ansicolor-2.0.3/lib" />
       <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/archive-4.0.9/lib" />
       <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/args-2.7.0/lib" />
       <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/async-2.13.0/lib" />
@@ -1244,7 +1208,6 @@
       <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/collection-1.19.1/lib" />
       <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/cross_file-0.3.4+2/lib" />
       <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/crypto-3.0.6/lib" />
-      <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/csslib-1.0.2/lib" />
       <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/cupertino_icons-1.0.8/lib" />
       <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/dartz-0.10.1/lib" />
       <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/dbus-0.7.11/lib" />
@@ -1271,7 +1234,6 @@
       <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/flutter_local_notifications_linux-6.0.0/lib" />
       <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/flutter_local_notifications_platform_interface-9.1.0/lib" />
       <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/flutter_local_notifications_windows-1.0.3/lib" />
-      <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/flutter_native_splash-2.4.7/lib" />
       <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/flutter_screenutil-5.9.3/lib" />
       <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/flutter_timezone-5.1.0/lib" />
       <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/gap-3.0.1/lib" />
@@ -1286,7 +1248,6 @@
       <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/get_it-9.2.1/lib" />
       <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/gsettings-0.2.8/lib" />
       <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/hijri-3.0.0/lib" />
-      <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/html-0.15.7/lib" />
       <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/http-1.6.0/lib" />
       <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/http_parser-4.1.2/lib" />
       <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/image-4.5.4/lib" />
@@ -1358,7 +1319,6 @@
       <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/test_api-0.7.7/lib" />
       <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/timezone-0.10.1/lib" />
       <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/typed_data-1.4.0/lib" />
-      <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/universal_io-2.3.1/lib" />
       <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/url_launcher-6.3.2/lib" />
       <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/url_launcher_android-6.3.30/lib" />
       <root url="file://$PROJECT_DIR$/../../../PubCache/hosted/pub.dev/url_launcher_ios-6.4.1/lib" />
