@@ -1,14 +1,9 @@
-// ============================================================
-// Page Number
-// ============================================================
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 import 'package:hisn_almuslim/core/theme/app_colors.dart';
-
 import '../routing/app_routes.dart';
 
 int getPageNumber(int surahNumber, int ayahNumber) {
@@ -131,10 +126,6 @@ int getPageNumber(int surahNumber, int ayahNumber) {
   return surahStartPage[surahNumber] ?? 1;
 }
 
-// ============================================================
-// Juz Number
-// ============================================================
-
 int getJuzNumber(int surahNumber, int ayahNumber) {
   const List<Map<String, int>> juzBoundaries = [
     {'surah': 1, 'ayah': 1},
@@ -183,90 +174,104 @@ int getJuzNumber(int surahNumber, int ayahNumber) {
 }
 
 
-
 Widget buildEmptyState(BuildContext context, bool isDark) {
-  final primary = Theme.of(context).colorScheme.primary;
 
+  final primary = Theme.of(context).colorScheme.primary;
   final titleColor = isDark ? Colors.white : const Color(0xFF183A36);
-  final subtitleColor = isDark
-      ? Colors.white.withValues(alpha: .52)
-      : const Color(0xFF607A76);
+
 
   return Container(
-    margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 18.h),
+    margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
+    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
     decoration: BoxDecoration(
-      color: isDark ? const Color(0xFF101F1D) : Colors.white,
+      gradient: LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: isDark
+            ? [
+          const Color(0xFF101F1D),
+          const Color(0xFF1A2E2B),
+        ]
+            : [
+          Colors.white,
+          const Color(0xFFF8FAF9),
+        ],
+      ),
       borderRadius: BorderRadius.circular(18.r),
       border: Border.all(
-        color: primary.withValues(alpha: isDark ? .10 : .08),
+        color: primary.withValues(alpha: isDark ? .12 : .08),
         width: 1,
       ),
+      boxShadow: [
+        BoxShadow(
+          color: isDark
+              ? Colors.black.withValues(alpha: .15)
+              : primary.withValues(alpha: .05),
+          blurRadius: 12.r,
+          offset: Offset(0, 2.h),
+        ),
+      ],
     ),
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
+    child: Row(
       children: [
-        // ===== Small Icon =====
+        // ===== Icon =====
         Container(
-          width: 44.w,
-          height: 44.w,
+          width: 48.w,
+          height: 48.w,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: AppColors.kPrimary.withValues(alpha: isDark ? .10 : .08),
+            color: AppColors.kPrimary.withValues(alpha: .7),
           ),
           child: Icon(
             FlutterIslamicIcons.solidQuran2,
-            size: 20.sp,
-            color: AppColors.kPrimary.withValues(alpha: .75),
+            size: 22.sp,
+            color:  Colors.white ,
           ),
         ),
 
-        SizedBox(height: 8.h),
+        SizedBox(width: 14.w),
 
-        // ===== Title =====
-        CustomText(
-          'لا توجد قراءات سابقة',
-          textAlign: TextAlign.center,
-          fontSize: 13.sp,
-          fontWeight: FontWeight.w700,
-          color: titleColor,
+        // ===== Text Column =====
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CustomText(
+                "قم بتظليل آخر ما قرأت\n لتسجيل تقدمك",
+                fontSize: 11.sp,
+                maxLines: 3,
+                fontWeight: FontWeight.w700,
+                color: titleColor,
+                height: 1.6,
+              ),
+            ],
+          ),
         ),
 
-        SizedBox(height: 4.h),
-
-        // ===== Subtitle =====
-        CustomText(
-          'ابدأ بقراءة القرآن وسجل تقدمك',
-          textAlign: TextAlign.center,
-          fontSize: 10.sp,
-          height: 1.4,
-          color: subtitleColor,
-        ),
-
-        SizedBox(height: 12.h),
-
-        // ===== Simple CTA Button =====
+        // ===== Button =====
         SizedBox(
-          width: 140.w,
-          height: 32.h,
+          height: 34.h,
           child: ElevatedButton(
             onPressed: () {
               Navigator.pushNamed(context, AppRoutes.quranHome);
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.kPrimary,
+              backgroundColor: AppColors.kPrimary.withValues(alpha: .7),
               foregroundColor: Colors.white,
               elevation: 0,
               padding: EdgeInsets.symmetric(horizontal: 12.w),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.r),
+                borderRadius: BorderRadius.circular(8.r),
               ),
+              minimumSize: Size.zero,
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 CustomText(
-                  'اذهب للمصحف',
+                  'افتح المصحف',
                   fontSize: 11.sp,
                   fontWeight: FontWeight.w700,
                   color: Colors.white,
@@ -274,7 +279,7 @@ Widget buildEmptyState(BuildContext context, bool isDark) {
                 SizedBox(width: 4.w),
                 Icon(
                   Icons.arrow_forward_rounded,
-                  size: 14.sp,
+                  size: 13.sp,
                   color: Colors.white,
                 ),
               ],
@@ -285,6 +290,7 @@ Widget buildEmptyState(BuildContext context, bool isDark) {
     ),
   );
 }
+
 // Loading
 Widget buildLoadingState(BuildContext context, bool isDark) {
   final primary = Theme.of(context).colorScheme.primary;
@@ -306,4 +312,3 @@ Widget buildLoadingState(BuildContext context, bool isDark) {
     ),
   );
 }
-

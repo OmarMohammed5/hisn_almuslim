@@ -98,6 +98,7 @@ class AppRouter {
       case AppRoutes.root:
         return MaterialPageRoute(builder: (_) => const Root());
 
+
       case AppRoutes.welcome:
         return MaterialPageRoute(builder: (_) => const WelcomeScreen());
 

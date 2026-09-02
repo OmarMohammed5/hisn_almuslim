@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:hisn_almuslim/features/adhan/screen/adhan_screen.dart';
 import 'package:hisn_almuslim/features/home/screen/home_screen.dart';
 import 'package:hisn_almuslim/features/quran_audio/ui/screens/quran.dart';
 import 'package:hisn_almuslim/features/settings/screen/settings_screen.dart';
+
 import 'core/di/dependency_injection.dart';
 import 'features/adhan/data/cubit/adhan_cubit.dart';
 import 'features/lectures/presentation/cubit/lectures_cubit.dart';
@@ -347,14 +349,14 @@ class _RootState extends State<Root> {
     required Color color,
   }) {
     return SizedBox(
-      height: 49.h,
+      height: 33.h,
       child: Column(
         mainAxisAlignment:
         MainAxisAlignment.center,
         children: [
           Icon(
             icon,
-            size: 21.sp,
+            size: 18.sp,
             color: color,
           ),
 

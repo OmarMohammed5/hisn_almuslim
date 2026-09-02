@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
@@ -148,10 +147,6 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       title: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildTitleLine(accentColor),
-
-          SizedBox(width: 11.w),
-
           Flexible(
             child: CustomText(
               title,
@@ -161,10 +156,6 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
               maxLines: 1,
             ),
           ),
-
-          SizedBox(width: 11.w),
-
-          _buildTitleLine(accentColor),
         ],
       ),
 

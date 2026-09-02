@@ -65,24 +65,8 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
 
             SliverToBoxAdapter(child: const ReadingDashboard()),
 
-            SliverToBoxAdapter(child: Gap(24.h)),
-
-            // // Featured content
-            // const SliverToBoxAdapter(child: FeaturedBanners()),
-            //
-            // SliverToBoxAdapter(child: Gap(24.h)),
-
-            // Categories
-            SliverToBoxAdapter(
-              child: CategoriesHomeSection(
-                categories: categories,
-                initialVisibleCount: 2,
-              ),
-            ),
-
             SliverToBoxAdapter(child: Gap(30.h)),
 
-            // Quick access section
             SliverToBoxAdapter(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -92,10 +76,28 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
                 ),
               ),
             ),
-            SliverToBoxAdapter(child: Gap(12.h)),
+
+            SliverToBoxAdapter(child: Gap(16.h)),
 
             // Quran Radio
             const SliverToBoxAdapter(child: CairoRadioCard()),
+
+            // // Featured content
+            // const SliverToBoxAdapter(child: FeaturedBanners()),
+            //
+            SliverToBoxAdapter(child: Gap(24.h)),
+
+            // Categories
+            SliverToBoxAdapter(
+              child: CategoriesHomeSection(
+                categories: categories,
+                initialVisibleCount: 2,
+              ),
+            ),
+
+
+
+
 
             // SliverToBoxAdapter(child: Gap(14.h)),
             //
