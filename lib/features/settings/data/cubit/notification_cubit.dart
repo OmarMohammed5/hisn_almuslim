@@ -51,24 +51,38 @@ class NotificationCubit extends Cubit<NotificationState> {
     );
 
     if (enableMorning) {
-      await _service.scheduleMorning(state.morningTime);
+      try {
+        await _service.scheduleMorning(state.morningTime);
+      } catch (e) {
+        // print('Failed to load morning notification: $e');
+      }
     }
 
     if (enableEvening) {
-      await _service.scheduleEvening(state.eveningTime);
+      try {
+        await _service.scheduleEvening(state.eveningTime);
+      } catch (e) {
+        // print('Failed to load evening notification: $e');
+      }
     }
 
     if (enableWird) {
-      await DailyWirdNotificationService.schedule(
-        TimeOfDay(hour: wirdHour, minute: wirdMinute),
-      );
+      try {
+        await DailyWirdNotificationService.schedule(
+          TimeOfDay(hour: wirdHour, minute: wirdMinute),
+        );
+      } catch (e) {
+        // print('Failed to load wird notification: $e');
+      }
     }
 
     if (enableDhikrReminder) {
       try {
         await _service.scheduleDhikrReminder(dhikrReminderMinutes);
-      } catch (_) {
-        // Keep the saved setting without crashing app startup.
+      } catch (e) {
+        // print('Failed to load dhikr reminder: $e');
+        // Disable it if loading fails
+        await prefs.setBool('enable_dhikr_reminder', false);
       }
     }
   }
@@ -82,8 +96,12 @@ class NotificationCubit extends Cubit<NotificationState> {
     emit(state.copyWith(morningTime: time));
 
     if (state.enableMorning) {
-      await _service.cancel(NotificationService.morningNotificationId);
-      await _service.scheduleMorning(time);
+      try {
+        await _service.cancel(NotificationService.morningNotificationId);
+        await _service.scheduleMorning(time);
+      } catch (e) {
+        // print('Failed to update morning notification: $e');
+      }
     }
   }
 
@@ -96,8 +114,12 @@ class NotificationCubit extends Cubit<NotificationState> {
     emit(state.copyWith(eveningTime: time));
 
     if (state.enableEvening) {
-      await _service.cancel(NotificationService.eveningNotificationId);
-      await _service.scheduleEvening(time);
+      try {
+        await _service.cancel(NotificationService.eveningNotificationId);
+        await _service.scheduleEvening(time);
+      } catch (e) {
+        // print('Failed to update evening notification: $e');
+      }
     }
   }
 
@@ -109,9 +131,19 @@ class NotificationCubit extends Cubit<NotificationState> {
     emit(state.copyWith(enableMorning: value));
 
     if (value) {
-      await _service.scheduleMorning(state.morningTime);
+      try {
+        await _service.scheduleMorning(state.morningTime);
+      } catch (e) {
+        // print('Failed to enable morning notification: $e');
+        await prefs.setBool('enable_morning', false);
+        emit(state.copyWith(enableMorning: false));
+      }
     } else {
-      await _service.cancel(NotificationService.morningNotificationId);
+      try {
+        await _service.cancel(NotificationService.morningNotificationId);
+      } catch (e) {
+        // print('Failed to disable morning notification: $e');
+      }
     }
   }
 
@@ -123,9 +155,19 @@ class NotificationCubit extends Cubit<NotificationState> {
     emit(state.copyWith(enableEvening: value));
 
     if (value) {
-      await _service.scheduleEvening(state.eveningTime);
+      try {
+        await _service.scheduleEvening(state.eveningTime);
+      } catch (e) {
+        // print('Failed to enable evening notification: $e');
+        await prefs.setBool('enable_evening', false);
+        emit(state.copyWith(enableEvening: false));
+      }
     } else {
-      await _service.cancel(NotificationService.eveningNotificationId);
+      try {
+        await _service.cancel(NotificationService.eveningNotificationId);
+      } catch (e) {
+        // print('Failed to disable evening notification: $e');
+      }
     }
   }
 
@@ -137,9 +179,19 @@ class NotificationCubit extends Cubit<NotificationState> {
     await prefs.setBool('enable_wird', value);
 
     if (value) {
-      await DailyWirdNotificationService.schedule(state.dailyWirdTime);
+      try {
+        await DailyWirdNotificationService.schedule(state.dailyWirdTime);
+      } catch (e) {
+        // print('Failed to enable wird notification: $e');
+        await prefs.setBool('enable_wird', false);
+        emit(state.copyWith(enableDailyWird: false));
+      }
     } else {
-      await DailyWirdNotificationService.cancel();
+      try {
+        await DailyWirdNotificationService.cancel();
+      } catch (e) {
+        // print('Failed to disable wird notification: $e');
+      }
     }
   }
 
@@ -153,8 +205,12 @@ class NotificationCubit extends Cubit<NotificationState> {
     emit(state.copyWith(dailyWirdTime: time));
 
     if (state.enableDailyWird) {
-      await DailyWirdNotificationService.cancel();
-      await DailyWirdNotificationService.schedule(time);
+      try {
+        await DailyWirdNotificationService.cancel();
+        await DailyWirdNotificationService.schedule(time);
+      } catch (e) {
+        // print('Failed to update wird notification: $e');
+      }
     }
   }
 
@@ -182,9 +238,13 @@ class NotificationCubit extends Cubit<NotificationState> {
     }
 
     try {
-      // Activate the recurring reminder first. The optional immediate test
-      // notification must not control whether the switch stays enabled.
-      await _service.scheduleDhikrReminder(state.dhikrReminderMinutes);
+      // Show an immediate notification when the user enables the reminder.
+      await _service.showDhikrReminderNow();
+
+      // Then activate the recurring reminder.
+      await _service.scheduleDhikrReminder(
+        state.dhikrReminderMinutes,
+      );
 
       await prefs.setBool('enable_dhikr_reminder', true);
       await prefs.setInt(
@@ -193,7 +253,9 @@ class NotificationCubit extends Cubit<NotificationState> {
       );
 
       emit(state.copyWith(enableDhikrReminder: true));
-    } catch (_) {
+    } catch (e) {
+      // print('Failed to enable dhikr reminder: $e');
+
       await prefs.setBool('enable_dhikr_reminder', false);
       emit(state.copyWith(enableDhikrReminder: false));
     }
@@ -213,8 +275,8 @@ class NotificationCubit extends Cubit<NotificationState> {
     if (state.enableDhikrReminder) {
       try {
         await _service.scheduleDhikrReminder(minutes);
-      } catch (_) {
-        // Keep the selected interval in preferences/state.
+      } catch (e) {
+        // print('Failed to update dhikr reminder interval: $e');
       }
     }
   }

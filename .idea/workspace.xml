@@ -10,51 +10,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8994c64f-2425-4304-931e-2db017ba0e3b" name="Changes" comment="Add initial git directory for version control">
-      <change afterPath="$PROJECT_DIR$/lib/features/adhan/data/cubit/adhan_settings_cubit.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/adhan/data/models/adhan_settings.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/adhan/services/adhan_alarm_scheduler.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/adhan/services/adhan_settings_store.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/home/widgets/calender_day_item.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/home/widgets/calender_header.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/settings/screen/adhan_settings_screen.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/settings/widgets/build_adhan_card.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/features/settings/widgets/custom_switch_widget.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/android/app/src/main/res/raw/keep.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable-hdpi/android12splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable-hdpi/splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable-mdpi/android12splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable-mdpi/splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable-night-hdpi/android12splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable-night-mdpi/android12splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable-night-xhdpi/android12splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable-night-xxhdpi/android12splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable-night-xxxhdpi/android12splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable-v21/launch_background.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable-xhdpi/android12splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable-xhdpi/splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable-xxhdpi/android12splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable-xxhdpi/splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable-xxxhdpi/android12splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable-xxxhdpi/splash.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable/launch_background.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/raw/yaamsallyallaelnaby.mp3" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/values-night-v31/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/values-night-v31/styles.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/values-night/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/values-night/styles.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/values-v31/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/values-v31/styles.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/res/values/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/res/values/styles.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/core/di/dependency_injection.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/di/dependency_injection.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/core/routing/app_router.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/routing/app_router.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/core/routing/app_routes.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/routing/app_routes.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/core/service/notification_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/service/notification_service.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/core/theme/app_colors.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/theme/app_colors.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/features/home/widgets/hijri_calender.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/home/widgets/hijri_calender.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/core/service/wird_notification.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/core/service/wird_notification.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/adhan/services/adhan_alarm_scheduler.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/adhan/services/adhan_alarm_scheduler.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/features/settings/data/cubit/notification_cubit.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/settings/data/cubit/notification_cubit.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/features/settings/data/cubit/notification_state.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/settings/data/cubit/notification_state.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/features/settings/screen/settings_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/settings/screen/settings_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/features/settings/widgets/azkar_notifications_build.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/settings/widgets/azkar_notifications_build.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/root.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/root.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

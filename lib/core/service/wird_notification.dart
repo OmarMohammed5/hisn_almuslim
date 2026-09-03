@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
+import 'notification_service.dart';
 
 class DailyWirdNotificationService {
-  static final FlutterLocalNotificationsPlugin _notifications =
-      FlutterLocalNotificationsPlugin();
+  // Use the SHARED plugin instance from NotificationService
+  static FlutterLocalNotificationsPlugin get _notifications =>
+      NotificationService.service.plugin;
 
   static const int _notificationId = 500;
 
@@ -16,17 +18,14 @@ class DailyWirdNotificationService {
   );
 
   static Future<void> init() async {
-    const android = AndroidInitializationSettings('@mipmap/ic_launcher');
-
-    const settings = InitializationSettings(android: android);
-
-    await _notifications.initialize(settings);
-
-    await _notifications
+    // Create the notification channel explicitly
+    final android = _notifications
         .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin
-        >()
-        ?.createNotificationChannel(_channel);
+        AndroidFlutterLocalNotificationsPlugin>();
+
+    if (android != null) {
+      await android.createNotificationChannel(_channel);
+    }
   }
 
   static NotificationDetails _details() {

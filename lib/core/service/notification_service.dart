@@ -12,6 +12,9 @@ class NotificationService {
   final FlutterLocalNotificationsPlugin _plugin =
   FlutterLocalNotificationsPlugin();
 
+  // EXPOSE the plugin for use by other services
+  FlutterLocalNotificationsPlugin get plugin => _plugin;
+
   /// Notification IDs used by this service.
   static const int morningNotificationId = 1;
   static const int eveningNotificationId = 2;
@@ -41,11 +44,41 @@ class NotificationService {
       await Permission.notification.request();
     }
 
+    // Request exact alarm permission on Android
+    final android = _plugin.resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>();
+    if (android != null) {
+      await android.requestExactAlarmsPermission();
+    }
+
     await _plugin
         .resolvePlatformSpecificImplementation<
-        IOSFlutterLocalNotificationsPlugin
-    >()
+        IOSFlutterLocalNotificationsPlugin>()
         ?.requestPermissions(alert: true, badge: true, sound: true);
+
+    // Create dhikr reminder channel explicitly
+    await _createDhikrReminderChannel();
+  }
+
+  /// Create the dhikr reminder notification channel explicitly
+  Future<void> _createDhikrReminderChannel() async {
+    final android = _plugin
+        .resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>();
+
+    if (android == null) return;
+
+    const channel = AndroidNotificationChannel(
+      _dhikrReminderChannelId,
+      'الصلاة على النبي ﷺ',
+      description: 'تذكير متكرر بالصلاة على النبي ﷺ',
+      importance: Importance.max,
+      playSound: true,
+      sound: RawResourceAndroidNotificationSound(_dhikrReminderSound),
+      audioAttributesUsage: AudioAttributesUsage.notification,
+    );
+
+    await android.createNotificationChannel(channel);
   }
 
   Future<bool> requestDhikrReminderPermissions() async {
@@ -57,8 +90,15 @@ class NotificationService {
         .resolvePlatformSpecificImplementation<
         AndroidFlutterLocalNotificationsPlugin>();
 
-    // This reminder does not need an exact alarm.
-    return await android?.requestNotificationsPermission() ?? true;
+    if (android == null) return true;
+
+    // Request BOTH notification and exact alarm permissions
+    final notificationGranted =
+        await android.requestNotificationsPermission() ?? true;
+    final exactAlarmsGranted =
+        await android.requestExactAlarmsPermission() ?? true;
+
+    return notificationGranted && exactAlarmsGranted;
   }
 
   /// Calculate the next daily occurrence for morning/evening notifications.
@@ -150,13 +190,14 @@ class NotificationService {
       ),
     );
 
+    // CHANGED: Use exactAndAllowWhileIdle instead of inexactAllowWhileIdle
     await _plugin.periodicallyShowWithDuration(
       dhikrReminderNotificationId,
-      'صلِّ على النبي ﷺ 🤍',
+      'صلِّ على النبي ﷺ 🤍',
       'اللهم صل وسلم وبارك على نبينا محمد ﷺ',
       Duration(minutes: minutes),
       notificationDetails,
-      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
     );
   }
 
@@ -184,7 +225,7 @@ class NotificationService {
 
     await _plugin.show(
       dhikrReminderNotificationId + 1,
-      'صلِّ على النبي ﷺ 🤍',
+      'صلِّ على النبي ﷺ 🤍',
       'اللهم صل وسلم وبارك على نبينا محمد ﷺ',
       notificationDetails,
     );

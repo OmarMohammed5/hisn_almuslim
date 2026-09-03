@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="@raw/dhikr_reminder,@raw/adhan_banna,@raw/adhan_mishary,@raw/adhan_refaat,@raw/adhan_zahrani" />
