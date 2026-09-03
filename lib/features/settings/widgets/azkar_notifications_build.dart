@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/features/settings/data/cubit/notification_cubit.dart';
@@ -160,6 +161,48 @@ class AzkarNotificationsBuild extends StatelessWidget {
                 ),
                 Gap(4.h),
               ],
+
+              Divider(
+                color: isDark
+                    ? Colors.grey.shade800.withOpacity(0.3)
+                    : Colors.grey.shade200,
+                height: 1.h,
+                indent: 16.w,
+                endIndent: 16.w,
+              ),
+
+              /// Recurring Salat upon the Prophet reminder
+              _buildAzkarToggle(
+                context: context,
+                isDark: isDark,
+                isEnabled: state.enableDhikrReminder,
+                title: 'الصلاة على النبي ﷺ',
+                icon: state.enableDhikrReminder
+                    ? FlutterIslamicIcons.mohammad
+                    : FlutterIslamicIcons.mohammad,
+                activeColor: Colors.teal.shade600,
+                onToggle: (value) {
+                  context.read<NotificationCubit>().toggleDhikrReminder(value);
+                },
+              ),
+
+              if (state.enableDhikrReminder) ...[
+                Divider(
+                  color: isDark
+                      ? Colors.grey.shade800.withOpacity(0.3)
+                      : Colors.grey.shade200,
+                  height: 1.h,
+                  indent: 16.w,
+                  endIndent: 16.w,
+                ),
+                Gap(4.h),
+                _buildDhikrReminderIntervalTile(
+                  context: context,
+                  isDark: isDark,
+                  minutes: state.dhikrReminderMinutes,
+                ),
+                Gap(4.h),
+              ],
             ],
           ),
         );
@@ -263,6 +306,108 @@ class AzkarNotificationsBuild extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDhikrReminderIntervalTile({
+    required BuildContext context,
+    required bool isDark,
+    required int minutes,
+  }) {
+    return Material(
+      color: Colors.transparent,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
+        child: Row(
+          children: [
+            Container(
+              padding: EdgeInsets.all(8.w),
+              decoration: BoxDecoration(
+                color: isDark
+                    ? Colors.teal.shade800.withOpacity(0.2)
+                    : Colors.teal.shade50,
+                borderRadius: BorderRadius.circular(12.r),
+                border: Border.all(
+                  color: isDark
+                      ? Colors.teal.shade800.withOpacity(0.2)
+                      : Colors.teal.shade100,
+                ),
+              ),
+              child: Icon(
+                Icons.schedule_rounded,
+                size: 20.sp,
+                color: isDark
+                    ? Colors.teal.shade300
+                    : Colors.teal.shade700,
+              ),
+            ),
+            Gap(14.w),
+            Expanded(
+              child: CustomText(
+                'التذكير كل',
+                fontSize: 13.sp,
+                fontWeight: FontWeight.w600,
+                color: isDark ? Colors.grey.shade300 : Colors.grey.shade700,
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 4.w),
+              decoration: BoxDecoration(
+                color: isDark
+                    ? Colors.teal.shade900.withOpacity(0.25)
+                    : Colors.teal.shade50,
+                borderRadius: BorderRadius.circular(10.r),
+                border: Border.all(
+                  color: isDark
+                      ? Colors.teal.shade800.withOpacity(0.3)
+                      : Colors.teal.shade100,
+                ),
+              ),
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<int>(
+                  value: minutes,
+                  isDense: true,
+                  borderRadius: BorderRadius.circular(12.r),
+                  icon: Icon(
+                    Icons.keyboard_arrow_down_rounded,
+                    size: 20.sp,
+                    color: isDark
+                        ? Colors.teal.shade300
+                        : Colors.teal.shade700,
+                  ),
+                  dropdownColor: isDark
+                      ? Colors.grey.shade900
+                      : Colors.white,
+                  items: NotificationCubit.dhikrReminderIntervals
+                      .map(
+                        (value) => DropdownMenuItem<int>(
+                      value: value,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 6.w),
+                        child: CustomText(
+                          '$value دقيقة',
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w700,
+                          color: isDark
+                              ? Colors.teal.shade200
+                              : Colors.teal.shade700,
+                        ),
+                      ),
+                    ),
+                  )
+                      .toList(),
+                  onChanged: (value) {
+                    if (value == null) return;
+                    context
+                        .read<NotificationCubit>()
+                        .setDhikrReminderMinutes(value);
+                  },
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

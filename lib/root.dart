@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hisn_almuslim/core/theme/app_colors.dart';
+import 'package:hisn_almuslim/features/adhan/data/cubit/adhan_settings_cubit.dart';
 
 import 'package:hisn_almuslim/features/adhan/screen/adhan_screen.dart';
 import 'package:hisn_almuslim/features/home/screen/home_screen.dart';
@@ -24,8 +26,7 @@ class Root extends StatefulWidget {
 }
 
 class _RootState extends State<Root> {
-  final ValueNotifier<int> _currentIndexNotifier =
-  ValueNotifier<int>(0);
+  final ValueNotifier<int> _currentIndexNotifier = ValueNotifier<int>(0);
 
   late final List<Widget> _pages;
 
@@ -46,20 +47,27 @@ class _RootState extends State<Root> {
       ),
 
       MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (_) => sl<QuranAudioCubit>(),
-          ),
-        ],
+        providers: [BlocProvider(create: (_) => sl<QuranAudioCubit>())],
         child: const Quran(),
       ),
 
-      BlocProvider(
-        create: (_) => sl<AdhanCubit>(),
+      MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (_) => sl<AdhanCubit>()),
+          BlocProvider(create: (_) => sl<AdhanSettingsCubit>()),
+        ],
         child: const AdhanScreen(),
       ),
 
-      const SettingsScreen(),
+
+      MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (_) => sl<AdhanCubit>()),
+          BlocProvider(create: (_) => sl<AdhanSettingsCubit>()),
+        ],
+        child:  const SettingsScreen(),
+      ),
+
     ];
   }
 
@@ -80,25 +88,16 @@ class _RootState extends State<Root> {
             // =====================================================
             // PAGES
             // =====================================================
-
             ValueListenableBuilder<int>(
               valueListenable: _currentIndexNotifier,
-              builder: (
-                  context,
-                  currentIndex,
-                  child,
-                  ) {
-                return IndexedStack(
-                  index: currentIndex,
-                  children: _pages,
-                );
+              builder: (context, currentIndex, child) {
+                return IndexedStack(index: currentIndex, children: _pages);
               },
             ),
 
             // =====================================================
             // BOTTOM NAVIGATION
             // =====================================================
-
             Positioned(
               left: 0,
               right: 0,
@@ -114,16 +113,13 @@ class _RootState extends State<Root> {
   // BOTTOM NAVIGATION
 
   Widget _buildBottomNavigation(BuildContext context) {
-    final isDark =
-        Theme.of(context).brightness == Brightness.dark;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     final backgroundColor = isDark
         ? const Color(0xFF101815)
         : const Color(0xFFF7F4EC);
 
-    final navigationColor = isDark
-        ? const Color(0xFF17211E)
-        : Colors.white;
+    final navigationColor = isDark ? const Color(0xFF17211E) : Colors.white;
 
     final inactiveColor = isDark
         ? const Color(0xFF83908A)
@@ -131,7 +127,7 @@ class _RootState extends State<Root> {
 
     final activeColor = isDark
         ? const Color(0xFF78D7C4)
-        : const Color(0xFF087F73);
+        : AppColors.kPrimary;
 
     final activeLabelBackground = isDark
         ? const Color(0xFF203B35)
@@ -139,11 +135,7 @@ class _RootState extends State<Root> {
 
     return SafeArea(
       top: false,
-      minimum: EdgeInsets.only(
-        left: 14.w,
-        right: 14.w,
-        bottom: 9.h,
-      ),
+      minimum: EdgeInsets.only(left: 14.w, right: 14.w, bottom: 9.h),
       child: SizedBox(
         height: 78.h,
         child: Stack(
@@ -158,22 +150,15 @@ class _RootState extends State<Root> {
                 height: 55.h,
                 decoration: BoxDecoration(
                   color: navigationColor,
-                  borderRadius:
-                  BorderRadius.circular(40.r),
+                  borderRadius: BorderRadius.circular(40.r),
                   border: Border.all(
                     color: isDark
-                        ? Colors.white.withValues(
-                      alpha: .055,
-                    )
-                        : Colors.black.withValues(
-                      alpha: .035,
-                    ),
+                        ? Colors.white.withValues(alpha: .055)
+                        : Colors.black.withValues(alpha: .035),
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(
-                        alpha: isDark ? .32 : .10,
-                      ),
+                      color: Colors.black.withValues(alpha: isDark ? .32 : .10),
                       blurRadius: 28.r,
                       spreadRadius: -5,
                       offset: Offset(0, 8.h),
@@ -186,12 +171,9 @@ class _RootState extends State<Root> {
             // NAVIGATION ITEMS
             Positioned.fill(
               child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 5.w,
-                ),
+                padding: EdgeInsets.symmetric(horizontal: 5.w),
                 child: Row(
-                  crossAxisAlignment:
-                  CrossAxisAlignment.stretch,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     _buildNavigationItem(
                       index: 0,
@@ -199,8 +181,7 @@ class _RootState extends State<Root> {
                       label: 'الرئيسية',
                       activeColor: activeColor,
                       inactiveColor: inactiveColor,
-                      activeLabelBackground:
-                      activeLabelBackground,
+                      activeLabelBackground: activeLabelBackground,
                       navigationColor: navigationColor,
                       backgroundColor: backgroundColor,
                     ),
@@ -211,8 +192,7 @@ class _RootState extends State<Root> {
                       label: 'القرآن',
                       activeColor: activeColor,
                       inactiveColor: inactiveColor,
-                      activeLabelBackground:
-                      activeLabelBackground,
+                      activeLabelBackground: activeLabelBackground,
                       navigationColor: navigationColor,
                       backgroundColor: backgroundColor,
                     ),
@@ -223,8 +203,7 @@ class _RootState extends State<Root> {
                       label: 'الصلاة',
                       activeColor: activeColor,
                       inactiveColor: inactiveColor,
-                      activeLabelBackground:
-                      activeLabelBackground,
+                      activeLabelBackground: activeLabelBackground,
                       navigationColor: navigationColor,
                       backgroundColor: backgroundColor,
                     ),
@@ -235,8 +214,7 @@ class _RootState extends State<Root> {
                       label: 'الإعدادات',
                       activeColor: activeColor,
                       inactiveColor: inactiveColor,
-                      activeLabelBackground:
-                      activeLabelBackground,
+                      activeLabelBackground: activeLabelBackground,
                       navigationColor: navigationColor,
                       backgroundColor: backgroundColor,
                     ),
@@ -265,11 +243,7 @@ class _RootState extends State<Root> {
     return Expanded(
       child: ValueListenableBuilder<int>(
         valueListenable: _currentIndexNotifier,
-        builder: (
-            context,
-            currentIndex,
-            child,
-            ) {
+        builder: (context, currentIndex, child) {
           final isActive = currentIndex == index;
 
           return GestureDetector(
@@ -286,17 +260,12 @@ class _RootState extends State<Root> {
                 // =================================================
                 // INACTIVE ITEM
                 // =================================================
-
                 AnimatedOpacity(
-                  duration: const Duration(
-                    milliseconds: 180,
-                  ),
+                  duration: const Duration(milliseconds: 180),
                   curve: Curves.easeOut,
                   opacity: isActive ? 0 : 1,
                   child: Padding(
-                    padding: EdgeInsets.only(
-                      bottom: 8.h,
-                    ),
+                    padding: EdgeInsets.only(bottom: 8.h),
                     child: _buildInactiveItem(
                       icon: icon,
                       label: label,
@@ -308,27 +277,19 @@ class _RootState extends State<Root> {
                 // =================================================
                 // ACTIVE ITEM
                 // =================================================
-
                 AnimatedOpacity(
-                  duration: const Duration(
-                    milliseconds: 180,
-                  ),
+                  duration: const Duration(milliseconds: 180),
                   curve: Curves.easeOut,
                   opacity: isActive ? 1 : 0,
                   child: AnimatedSlide(
-                    duration: const Duration(
-                      milliseconds: 320,
-                    ),
+                    duration: const Duration(milliseconds: 320),
                     curve: Curves.easeOutBack,
-                    offset: isActive
-                        ? Offset.zero
-                        : const Offset(0, .18),
+                    offset: isActive ? Offset.zero : const Offset(0, .18),
                     child: _buildActiveItem(
                       icon: icon,
                       label: label,
                       activeColor: activeColor,
-                      activeLabelBackground:
-                      activeLabelBackground,
+                      activeLabelBackground: activeLabelBackground,
                       navigationColor: navigationColor,
                       backgroundColor: backgroundColor,
                     ),
@@ -352,14 +313,9 @@ class _RootState extends State<Root> {
     return SizedBox(
       height: 33.h,
       child: Column(
-        mainAxisAlignment:
-        MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            icon,
-            size: 18.sp,
-            color: color,
-          ),
+          Icon(icon, size: 18.sp, color: color),
 
           SizedBox(height: 4.h),
 
@@ -417,9 +373,7 @@ class _RootState extends State<Root> {
                 color: navigationColor,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withValues(
-                      alpha: .06,
-                    ),
+                    color: Colors.black.withValues(alpha: .06),
                     blurRadius: 12.r,
                     offset: Offset(0, 3.h),
                   ),
@@ -432,9 +386,7 @@ class _RootState extends State<Root> {
                   color: activeColor,
                   boxShadow: [
                     BoxShadow(
-                      color: activeColor.withValues(
-                        alpha: .28,
-                      ),
+                      color: activeColor.withValues(alpha: .28),
                       blurRadius: 14.r,
                       offset: Offset(0, 5.h),
                     ),
@@ -455,18 +407,12 @@ class _RootState extends State<Root> {
           Positioned(
             bottom: 7.h,
             child: AnimatedContainer(
-              duration: const Duration(
-                milliseconds: 220,
-              ),
+              duration: const Duration(milliseconds: 220),
               curve: Curves.easeOut,
-              padding: EdgeInsets.symmetric(
-                horizontal: 9.w,
-                vertical: 4.h,
-              ),
+              padding: EdgeInsets.symmetric(horizontal: 9.w, vertical: 4.h),
               decoration: BoxDecoration(
                 color: activeLabelBackground,
-                borderRadius:
-                BorderRadius.circular(10.r),
+                borderRadius: BorderRadius.circular(10.r),
               ),
               child: Text(
                 label,
@@ -490,7 +436,6 @@ class _RootState extends State<Root> {
   // DARK MODE HELPER
 
   bool isDarkTheme(BuildContext context) {
-    return Theme.of(context).brightness ==
-        Brightness.dark;
+    return Theme.of(context).brightness == Brightness.dark;
   }
 }

@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:hisn_almuslim/features/adhan/data/cubit/adhan_settings_cubit.dart';
 import 'package:hisn_almuslim/features/islamic_quiz/data/datasources/quiz_local_data_source.dart';
 import 'package:hisn_almuslim/features/islamic_quiz/data/repositories/quiz_repository_impl.dart';
 import 'package:hisn_almuslim/features/islamic_quiz/domain/repositories/quiz_repository.dart';
@@ -151,6 +152,9 @@ Future<void> setupLocator() async {
         () => LastTenDuasCubit()..loadLastTenDuas(),
   );
   sl.registerFactory<AdhanCubit>(() => AdhanCubit()..loadPrayerTimes());
+
+  sl.registerFactory<AdhanSettingsCubit>(() => AdhanSettingsCubit());
+
   // sl.registerFactory<QuranProgressCubit>(
   //       () => QuranProgressCubit(sl<QuranStorage>())..loadSavedProgress(),
   // );

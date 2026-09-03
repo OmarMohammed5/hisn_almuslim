@@ -11,6 +11,7 @@ import 'package:hisn_almuslim/features/lectures/presentation/screens/lectures_sc
 import 'package:hisn_almuslim/features/lectures/presentation/screens/playlist_details_screen.dart';
 import 'package:hisn_almuslim/features/lectures/presentation/screens/sheikh_details_screen.dart';
 import 'package:hisn_almuslim/features/radio/presentation/cubit/radio_cubit.dart';
+import 'package:hisn_almuslim/features/settings/screen/adhan_settings_screen.dart';
 import 'package:hisn_almuslim/features/stories/domain/entities/prophet_story.dart';
 import 'package:hisn_almuslim/features/stories/ui/cubit/stories_cubit.dart';
 import 'package:hisn_almuslim/features/stories/ui/screens/stories_screen.dart';
@@ -18,6 +19,7 @@ import 'package:hisn_almuslim/features/stories/ui/screens/story_details_screen.d
 import 'package:hisn_almuslim/root.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../features/adhan/data/cubit/adhan_cubit.dart';
+import '../../features/adhan/data/cubit/adhan_settings_cubit.dart';
 import '../../features/al azkar/data/cubit/azkar_cubit.dart';
 import '../../features/al azkar/evening azkar/screen/evening_azkar_screen.dart';
 import '../../features/al azkar/morning azkar/screen/morning_azkar_screen.dart';
@@ -504,10 +506,26 @@ class AppRouter {
             providers: [
               BlocProvider.value(value: sl<ThemeCubit>()),
               BlocProvider.value(value: sl<NotificationCubit>()),
+              BlocProvider(create: (_) => sl<AdhanCubit>()),
+              BlocProvider(create: (_) => sl<AdhanSettingsCubit>()),
             ],
             child: const SettingsScreen(),
           ),
         );
+
+      case AppRoutes.adhanSettings:
+        return slidePageRoute(
+          settings: settings,
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider.value(value: sl<NotificationCubit>()),
+              BlocProvider(create: (_) => sl<AdhanCubit>()),
+              BlocProvider(create: (_) => sl<AdhanSettingsCubit>()),
+            ],
+            child: const AdhanSettingsScreen(),
+          ),
+        );
+
 
       // ============ TASBEEH ============
       case AppRoutes.zekrAllah:

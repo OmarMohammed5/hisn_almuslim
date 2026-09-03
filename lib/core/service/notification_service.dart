@@ -1,17 +1,26 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-// import 'package:timezone/data/latest.dart' as tzdata;
-import 'package:timezone/timezone.dart' as tz;
 import 'package:permission_handler/permission_handler.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 class NotificationService {
   NotificationService._();
   static final NotificationService service = NotificationService._();
 
   final FlutterLocalNotificationsPlugin _plugin =
-      FlutterLocalNotificationsPlugin();
+  FlutterLocalNotificationsPlugin();
 
-  /// initialize the notification service
+  /// Notification IDs used by this service.
+  static const int morningNotificationId = 1;
+  static const int eveningNotificationId = 2;
+  static const int dhikrReminderNotificationId = 300;
+
+  static const String _dhikrReminderChannelId = 'dhikr_reminder_channel_v2';
+  static const String _dhikrReminderSound = 'dhikr_reminder';
+
+  /// Initialize the notification service.
   Future<void> init() async {
     final status = await Permission.ignoreBatteryOptimizations.status;
     if (status.isDenied) {
@@ -34,12 +43,25 @@ class NotificationService {
 
     await _plugin
         .resolvePlatformSpecificImplementation<
-          IOSFlutterLocalNotificationsPlugin
-        >()
+        IOSFlutterLocalNotificationsPlugin
+    >()
         ?.requestPermissions(alert: true, badge: true, sound: true);
   }
 
-  // //// Method to Calculate the time
+  Future<bool> requestDhikrReminderPermissions() async {
+    if (!Platform.isAndroid) {
+      return true;
+    }
+
+    final android = _plugin
+        .resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>();
+
+    // This reminder does not need an exact alarm.
+    return await android?.requestNotificationsPermission() ?? true;
+  }
+
+  /// Calculate the next daily occurrence for morning/evening notifications.
   tz.TZDateTime _nextInstanceOfTime(int hour, int minute) {
     final now = tz.TZDateTime.now(tz.local);
     var target = tz.TZDateTime(
@@ -50,20 +72,22 @@ class NotificationService {
       hour,
       minute,
     );
+
     if (target.isBefore(now)) {
       target = target.add(const Duration(days: 1));
     }
+
     return target;
   }
 
-  // Morning Azkar with custom time
+  /// Morning Azkar with custom time.
   Future<void> scheduleMorning(TimeOfDay time) async {
     await _plugin.zonedSchedule(
-      1,
-      "أذكار الصباح ☀️",
-      "ابدأ يومك بذكر الله 🤍",
+      morningNotificationId,
+      'أذكار الصباح ☀️',
+      'ابدأ يومك بذكر الله 🤍',
       _nextInstanceOfTime(time.hour, time.minute),
-      NotificationDetails(
+      const NotificationDetails(
         android: AndroidNotificationDetails(
           'morning_channel',
           'Morning Azkar',
@@ -77,14 +101,14 @@ class NotificationService {
     );
   }
 
-  // Evening Azkar with custom time
+  /// Evening Azkar with custom time.
   Future<void> scheduleEvening(TimeOfDay time) async {
     await _plugin.zonedSchedule(
-      2,
-      "أذكار المساء 🌙",
-      "اختم يومك بذكر الله 🤍",
+      eveningNotificationId,
+      'أذكار المساء 🌙',
+      'اختم يومك بذكر الله 🤍',
       _nextInstanceOfTime(time.hour, time.minute),
-      NotificationDetails(
+      const NotificationDetails(
         android: AndroidNotificationDetails(
           'evening_channel',
           'Evening Azkar',
@@ -98,12 +122,85 @@ class NotificationService {
     );
   }
 
-  /// Cancel a notifiction
+  Future<void> scheduleDhikrReminder(int minutes) async {
+    const allowedIntervals = <int>{5, 10, 15, 30};
+
+    if (!allowedIntervals.contains(minutes)) {
+      throw ArgumentError('مدة التذكير غير مدعومة: $minutes دقيقة');
+    }
+
+    await cancelDhikrReminder();
+
+    const notificationDetails = NotificationDetails(
+      android: AndroidNotificationDetails(
+        _dhikrReminderChannelId,
+        'الصلاة على النبي ﷺ',
+        channelDescription: 'تذكير متكرر بالصلاة على النبي ﷺ',
+        importance: Importance.max,
+        priority: Priority.high,
+        playSound: true,
+        sound: RawResourceAndroidNotificationSound(_dhikrReminderSound),
+        category: AndroidNotificationCategory.reminder,
+        audioAttributesUsage: AudioAttributesUsage.notification,
+      ),
+      iOS: DarwinNotificationDetails(
+        presentAlert: true,
+        presentBadge: true,
+        presentSound: true,
+      ),
+    );
+
+    await _plugin.periodicallyShowWithDuration(
+      dhikrReminderNotificationId,
+      'صلِّ على النبي ﷺ 🤍',
+      'اللهم صل وسلم وبارك على نبينا محمد ﷺ',
+      Duration(minutes: minutes),
+      notificationDetails,
+      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+    );
+  }
+
+  /// Show one immediate reminder so the user can confirm
+  /// that notifications and the custom sound are working.
+  Future<void> showDhikrReminderNow() async {
+    const notificationDetails = NotificationDetails(
+      android: AndroidNotificationDetails(
+        _dhikrReminderChannelId,
+        'الصلاة على النبي ﷺ',
+        channelDescription: 'تذكير متكرر بالصلاة على النبي ﷺ',
+        importance: Importance.max,
+        priority: Priority.high,
+        playSound: true,
+        sound: RawResourceAndroidNotificationSound(_dhikrReminderSound),
+        category: AndroidNotificationCategory.reminder,
+        audioAttributesUsage: AudioAttributesUsage.notification,
+      ),
+      iOS: DarwinNotificationDetails(
+        presentAlert: true,
+        presentBadge: true,
+        presentSound: true,
+      ),
+    );
+
+    await _plugin.show(
+      dhikrReminderNotificationId + 1,
+      'صلِّ على النبي ﷺ 🤍',
+      'اللهم صل وسلم وبارك على نبينا محمد ﷺ',
+      notificationDetails,
+    );
+  }
+
+  /// Stop the recurring "الصلاة على النبي ﷺ" reminder only.
+  Future<void> cancelDhikrReminder() async {
+    await _plugin.cancel(dhikrReminderNotificationId);
+  }
+
+  /// Cancel a specific notification.
   Future<void> cancel(int id) async {
     await _plugin.cancel(id);
   }
 
-  /// Cancel All Notification
+  /// Cancel all notifications managed by this service instance.
   Future<void> cancelAll() async {
     await _plugin.cancelAll();
   }

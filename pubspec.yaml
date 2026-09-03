@@ -75,6 +75,8 @@ flutter:
 
   assets:
     - assets/
+    - assets/audio/adhan/
+    - assets/audio/dhikr/
     - assets/fonts/
     - assets/images/
     - assets/questions/

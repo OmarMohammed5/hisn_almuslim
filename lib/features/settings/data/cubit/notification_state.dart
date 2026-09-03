@@ -1,4 +1,3 @@
-// notification_state.dart
 import 'package:flutter/material.dart';
 
 class NotificationState {
@@ -8,19 +7,23 @@ class NotificationState {
   final TimeOfDay morningTime;
   final TimeOfDay eveningTime;
 
-  // ✅ جديد للورد اليومي
+  // Daily Quran Wird.
   final bool enableDailyWird;
   final TimeOfDay dailyWirdTime;
+
+  // Recurring "الصلاة على النبي ﷺ" reminder.
+  final bool enableDhikrReminder;
+  final int dhikrReminderMinutes;
 
   NotificationState({
     this.enableMorning = false,
     this.enableEvening = false,
     this.morningTime = const TimeOfDay(hour: 5, minute: 30),
     this.eveningTime = const TimeOfDay(hour: 15, minute: 30),
-
-    // ✅ قيم افتراضية للورد
     this.enableDailyWird = false,
     this.dailyWirdTime = const TimeOfDay(hour: 6, minute: 0),
+    this.enableDhikrReminder = false,
+    this.dhikrReminderMinutes = 5,
   });
 
   NotificationState copyWith({
@@ -28,20 +31,20 @@ class NotificationState {
     bool? enableEvening,
     TimeOfDay? morningTime,
     TimeOfDay? eveningTime,
-
-    // ✅ جديد
     bool? enableDailyWird,
     TimeOfDay? dailyWirdTime,
+    bool? enableDhikrReminder,
+    int? dhikrReminderMinutes,
   }) {
     return NotificationState(
       enableMorning: enableMorning ?? this.enableMorning,
       enableEvening: enableEvening ?? this.enableEvening,
       morningTime: morningTime ?? this.morningTime,
       eveningTime: eveningTime ?? this.eveningTime,
-
-      // ✅ جديد
       enableDailyWird: enableDailyWird ?? this.enableDailyWird,
       dailyWirdTime: dailyWirdTime ?? this.dailyWirdTime,
+      enableDhikrReminder: enableDhikrReminder ?? this.enableDhikrReminder,
+      dhikrReminderMinutes: dhikrReminderMinutes ?? this.dhikrReminderMinutes,
     );
   }
 }

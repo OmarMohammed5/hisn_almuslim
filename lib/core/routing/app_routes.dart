@@ -36,6 +36,7 @@ class AppRoutes {
 
   // Adhan
   static const String adhan = '/adhan';
+  static const String adhanSettings = '/adhan-settings';
 
   // Quran
   static const String quran = '/quran';
