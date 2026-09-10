@@ -17,7 +17,7 @@ class AdhanSettingsStore {
   }
 
   Future<void> save(AdhanSettings s) async {
-    (await SharedPreferences.getInstance()).setString(
+    await (await SharedPreferences.getInstance()).setString(
       _key,
       jsonEncode(s.toJson()),
     );

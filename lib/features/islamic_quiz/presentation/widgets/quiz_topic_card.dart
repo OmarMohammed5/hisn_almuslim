@@ -25,6 +25,15 @@ class QuizTopicCard extends StatelessWidget {
     final progress = total == 0 ? 0.0 : completedLevels / total;
     final hasProgress = completedLevels > 0;
 
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
+    final borderColor = isDark
+        ? Colors.white.withValues(alpha: 0.07)
+        : AppColors.kBorderLight;
+
+
+
     return QuizPressScale(
       child: Material(
         color: Colors.transparent,
@@ -34,9 +43,8 @@ class QuizTopicCard extends StatelessWidget {
           child: Ink(
             padding: EdgeInsets.all(17.w),
             decoration: BoxDecoration(
-              color: QuizColors.card(context),
-              borderRadius: BorderRadius.circular(QuizRadius.md.r),
-              border: Border.all(color: QuizColors.border(context)),
+              color: bgColor,
+              border: Border.all(color: borderColor, width: 1),              borderRadius: BorderRadius.circular(QuizRadius.md.r),
             ),
             child: Row(
               children: [
@@ -45,8 +53,8 @@ class QuizTopicCard extends StatelessWidget {
                   height: 45.w,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: QuizColors.primarySoft(context),
-                  ),
+                    color: bgColor,
+                    border: Border.all(color: borderColor, width: 1),                  ),
                   alignment: Alignment.center,
                   child: Icon(
                     Icons.menu_book_rounded,
@@ -93,9 +101,8 @@ class QuizTopicCard extends StatelessWidget {
                   height: 27.w,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: QuizColors.primarySoft(
-                      context,
-                    ),
+                    color: bgColor,
+                    border: Border.all(color: borderColor, width: 1),
                   ),
                   alignment: Alignment.center,
                   child: Icon(

@@ -27,6 +27,11 @@ class LecturesState extends Equatable {
   final bool hasMoreLatest;
   final String? latestNextPageToken;
 
+  final bool isLoadingMoreCategory;
+  final bool hasMoreCategory;
+  final String? categoryNextPageToken;
+  final String? activeCategory;
+
   const LecturesState({
     this.status = LecturesStatus.initial,
     this.latest = const [],
@@ -39,6 +44,10 @@ class LecturesState extends Equatable {
     this.isLoadingMore = false,
     this.hasMoreLatest = true,
     this.latestNextPageToken,
+    this.isLoadingMoreCategory = false,
+    this.hasMoreCategory = false,
+    this.categoryNextPageToken,
+    this.activeCategory,
   });
 
   LecturesState copyWith({
@@ -55,48 +64,60 @@ class LecturesState extends Equatable {
     bool? isLoadingMore,
     bool? hasMoreLatest,
     String? latestNextPageToken,
+    bool clearLatestNextPageToken = false,
+    bool? isLoadingMoreCategory,
+    bool? hasMoreCategory,
+    String? categoryNextPageToken,
+    bool clearCategoryNextPageToken = false,
+    String? activeCategory,
+    bool clearActiveCategory = false,
   }) {
     return LecturesState(
       status: status ?? this.status,
       latest: latest ?? this.latest,
       sheikhs: sheikhs ?? this.sheikhs,
-      searchResults:
-      searchResults ?? this.searchResults,
-      errorMessage: clearError
-          ? null
-          : errorMessage ?? this.errorMessage,
-      searchQuery:
-      searchQuery ?? this.searchQuery,
+      searchResults: searchResults ?? this.searchResults,
+      errorMessage: clearError ? null : errorMessage ?? this.errorMessage,
+      searchQuery: searchQuery ?? this.searchQuery,
       continueProgress: clearContinue
           ? null
-          : continueProgress ??
-          this.continueProgress,
+          : continueProgress ?? this.continueProgress,
       continueLecture: clearContinue
           ? null
-          : continueLecture ??
-          this.continueLecture,
-      isLoadingMore:
-      isLoadingMore ?? this.isLoadingMore,
-      hasMoreLatest:
-      hasMoreLatest ?? this.hasMoreLatest,
-      latestNextPageToken:
-      latestNextPageToken ??
-          this.latestNextPageToken,
+          : continueLecture ?? this.continueLecture,
+      isLoadingMore: isLoadingMore ?? this.isLoadingMore,
+      hasMoreLatest: hasMoreLatest ?? this.hasMoreLatest,
+      latestNextPageToken: clearLatestNextPageToken
+          ? null
+          : latestNextPageToken ?? this.latestNextPageToken,
+      isLoadingMoreCategory:
+          isLoadingMoreCategory ?? this.isLoadingMoreCategory,
+      hasMoreCategory: hasMoreCategory ?? this.hasMoreCategory,
+      categoryNextPageToken: clearCategoryNextPageToken
+          ? null
+          : categoryNextPageToken ?? this.categoryNextPageToken,
+      activeCategory: clearActiveCategory
+          ? null
+          : activeCategory ?? this.activeCategory,
     );
   }
 
   @override
   List<Object?> get props => [
-    status,
-    latest,
-    sheikhs,
-    searchResults,
-    errorMessage,
-    searchQuery,
-    continueProgress,
-    continueLecture,
-    isLoadingMore,
-    hasMoreLatest,
-    latestNextPageToken,
-  ];
+        status,
+        latest,
+        sheikhs,
+        searchResults,
+        errorMessage,
+        searchQuery,
+        continueProgress,
+        continueLecture,
+        isLoadingMore,
+        hasMoreLatest,
+        latestNextPageToken,
+        isLoadingMoreCategory,
+        hasMoreCategory,
+        categoryNextPageToken,
+        activeCategory,
+      ];
 }

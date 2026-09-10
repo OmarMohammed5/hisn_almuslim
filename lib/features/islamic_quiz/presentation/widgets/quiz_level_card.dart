@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../core/theme/app_colors.dart';
 import '../../domain/entities/level_entity.dart';
 
 class QuizLevelCard extends StatelessWidget {
@@ -25,6 +26,12 @@ class QuizLevelCard extends StatelessWidget {
         Theme.of(context).brightness ==
             Brightness.dark;
 
+    final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
+    final borderColor = isDark
+        ? Colors.white.withValues(alpha: 0.07)
+        : AppColors.kBorderLight;
+
+
     return AnimatedOpacity(
       duration:
       const Duration(milliseconds: 250),
@@ -38,20 +45,10 @@ class QuizLevelCard extends StatelessWidget {
           child: Ink(
             padding: EdgeInsets.all(20.w),
             decoration: BoxDecoration(
-              color: isDark
-                  ? const Color(0xff1C2227)
-                  : Colors.white,
+              color: bgColor,
+              border: Border.all(color: borderColor, width: 1),
               borderRadius:
               BorderRadius.circular(25.r),
-              border: Border.all(
-                color: unlocked
-                    ? Colors.green.withValues(
-                  alpha: .25,
-                )
-                    : Colors.grey.withValues(
-                  alpha: .2,
-                ),
-              ),
             ),
             child: Row(
               children: [

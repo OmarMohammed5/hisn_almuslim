@@ -56,6 +56,12 @@ class _QuranSectionCardState extends State<QuranSectionCard> {
         ? Colors.white.withValues(alpha: .42)
         : const Color(0xFF75847F);
 
+    final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
+    final borderColor = isDark
+        ? Colors.white.withValues(alpha: 0.07)
+        : AppColors.kBorderLight;
+
+
     return GestureDetector(
       onTap: _handleTap,
       child: AnimatedScale(
@@ -68,11 +74,8 @@ class _QuranSectionCardState extends State<QuranSectionCard> {
           height: 75.h,
           padding: EdgeInsets.symmetric(horizontal: 14.w),
           decoration: BoxDecoration(
-            color: background,
-            borderRadius: BorderRadius.circular(20.r),
-            border: Border.all(
-              color: primary.withValues(alpha: isDark ? .12 : .08),
-            ),
+            color: bgColor,
+            border: Border.all(color: borderColor, width: 1),            borderRadius: BorderRadius.circular(20.r),
             boxShadow: [
               if (!isDark)
                 BoxShadow(

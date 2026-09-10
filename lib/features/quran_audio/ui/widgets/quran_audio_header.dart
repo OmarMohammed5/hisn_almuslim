@@ -31,10 +31,13 @@ class QuranAudioHeader extends StatelessWidget {
 
     final double statusBarHeight = MediaQuery.paddingOf(context).top;
 
+    final background = isDark
+        ? AppColors.kSurfaceDark
+        : const Color(0xFF087F73);
 
-    final backgroundColors = isDark
-        ? const [Color(0xFF155A52), Color(0xFF0C3934)]
-        : const [Color(0xFF0F9F8E), Color(0xFF08796D)];
+    final primary = AppColors.kPrimary;
+
+
 
     return Container(
       width: double.infinity,
@@ -44,16 +47,12 @@ class QuranAudioHeader extends StatelessWidget {
           bottomLeft: Radius.circular(45.r),
           bottomRight: Radius.circular(45.r),
         ),
-        gradient: LinearGradient(
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-          colors: backgroundColors,
-        ),
+        color: background,
         boxShadow: [
           BoxShadow(
-            color: AppColors.kPrimary.withValues(alpha: 0.28),
-            blurRadius: 0,
-            offset: const Offset(0, 2),
+            color: primary.withValues(alpha: isDark ? .12 : .16),
+            blurRadius: 2.r,
+            offset: Offset(0, 2.h),
           ),
         ],
       ),

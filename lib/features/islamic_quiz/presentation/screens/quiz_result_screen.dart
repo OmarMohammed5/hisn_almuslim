@@ -34,6 +34,11 @@ class QuizResultScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
+    final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
+    final borderColor = isDark
+        ? Colors.white.withValues(alpha: 0.07)
+        : AppColors.kBorderLight;
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -70,8 +75,8 @@ class QuizResultScreen extends StatelessWidget {
                     vertical: 8.h,
                   ),
                   decoration: BoxDecoration(
-                    color: QuizColors.successSoft,
-                    borderRadius: BorderRadius.circular(QuizRadius.pill),
+                    color: bgColor,
+                    border: Border.all(color: borderColor, width: 1),                    borderRadius: BorderRadius.circular(QuizRadius.pill),
                   ),
                   child: CustomText(
                     'المستوى التالي مفتوح الآن',

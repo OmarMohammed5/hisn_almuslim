@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hisn_almuslim/core/shared/app_bar_widget.dart';
 import 'package:hisn_almuslim/features/hadith/books/bukhary/data/cubit/chapters_cubit.dart';
 import 'package:hisn_almuslim/features/hadith/widgets/chapter_card.dart';
 import '../../../../../core/routing/app_routes.dart';
@@ -43,13 +44,17 @@ class _FehresSahihBukharyState extends State<FehresSahihBukhary> {
 
   @override
   Widget build(BuildContext context) {
-    // final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         toolbarHeight: 80.h,
         elevation: 0,
         scrolledUnderElevation: 0,
+        leading: Padding(
+          padding:  EdgeInsets.only(top: 12.h ,bottom: 12.h ),
+          child: BuildBackButton(context: context, iconColor: isDark ? Colors.white : Colors.black87),
+        ),
         title: SearchField(
           hint: 'ابحث في الأبواب ...',
           onChanged: (value) {

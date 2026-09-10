@@ -161,7 +161,32 @@ class PlayerMainContent extends StatelessWidget {
 
           Gap(22.h),
 
-
+          if (lecture.description.trim().isNotEmpty) ...[
+            CustomText(
+              'عن المحاضرة',
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w900,
+            ),
+            Gap(8.h),
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(14.w),
+              decoration: BoxDecoration(
+                color: scheme.surface,
+                borderRadius: BorderRadius.circular(16.r),
+                border: Border.all(
+                  color: scheme.onSurface.withValues(alpha: .07),
+                ),
+              ),
+              child: CustomText(
+                lecture.description.trim(),
+                fontSize: 11.5.sp,
+                height: 1.7,
+                color: scheme.onSurface.withValues(alpha: .68),
+              ),
+            ),
+            Gap(20.h),
+          ],
         ],
       ),
     );

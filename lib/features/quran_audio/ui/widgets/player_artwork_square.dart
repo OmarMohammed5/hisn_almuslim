@@ -1,47 +1,3 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter_screenutil/flutter_screenutil.dart';
-//
-//
-// class PlayerArtworkSquare extends StatelessWidget {
-//   final Widget child;
-//   final double size;
-//
-//   const PlayerArtworkSquare({super.key, required this.child, this.size = 220});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return TweenAnimationBuilder<double>(
-//       tween: Tween(begin: 0.92, end: 1.0),
-//       duration: const Duration(milliseconds: 320),
-//       curve: Curves.easeOutCubic,
-//       builder: (context, scale, v) => Transform.scale(scale: scale, child: v),
-//       child: RepaintBoundary(
-//         child: Container(
-//           width: size.w,
-//           height: size.w,
-//           decoration: BoxDecoration(
-//            shape: BoxShape.circle,
-//             boxShadow: [
-//               BoxShadow(
-//                 color: Colors.black.withValues(alpha: 0.30),
-//                 blurRadius: 2,
-//                 offset: const Offset(0, 2),
-//               ),
-//             ],
-//           ),
-//           child: ClipRRect(
-//             borderRadius: BorderRadius.circular(24.r),
-//             child: child,
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -96,6 +52,7 @@ class PlayerArtworkSquare extends StatelessWidget {
               height: size.w,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
+                color: const Color(0xFF063F3A),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withValues(alpha: 0.35),

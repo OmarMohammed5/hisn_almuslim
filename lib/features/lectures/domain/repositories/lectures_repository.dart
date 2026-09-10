@@ -14,29 +14,45 @@ class LatestLecturesPage {
   });
 }
 
+class SearchLecturesPage {
+  final List<Lecture> lectures;
+  final String? nextPageToken;
+  final bool hasMore;
+
+  const SearchLecturesPage({
+    required this.lectures,
+    required this.nextPageToken,
+    required this.hasMore,
+  });
+}
+
 abstract class LecturesRepository {
   Future<LatestLecturesPage> getLatestLectures({
     String? pageToken,
+    bool forceRefresh = false,
   });
 
-  Future<List<Lecture>> getLecturesBySheikh(
-      String channelId,
-      );
+  Future<List<Lecture>> getLecturesBySheikh(String channelId);
 
-  Future<List<Sheikh>> getFeaturedSheikhs();
+  Future<List<Sheikh>> getFeaturedSheikhs({
+    bool forceRefresh = false,
+  });
 
-  Future<List<Lecture>> searchLectures(
-      String query,
-      );
+  /// Backward-compatible first-page search.
+  Future<List<Lecture>> searchLectures(String query);
 
-  Future<List<LecturePlaylist>>
-  getSheikhPlaylists(
-      String channelId,
-      );
+  /// Paginated search used by the category screen.
+  Future<SearchLecturesPage> searchLecturesPage({
+    required String query,
+    String? pageToken,
+    String? category,
+    String? userQuery,
+  });
 
-  Future<PlaylistLecturesPage>
-  getPlaylistLectures(
-      String playlistId, {
-        String? pageToken,
-      });
+  Future<List<LecturePlaylist>> getSheikhPlaylists(String channelId);
+
+  Future<PlaylistLecturesPage> getPlaylistLectures(
+    String playlistId, {
+    String? pageToken,
+  });
 }

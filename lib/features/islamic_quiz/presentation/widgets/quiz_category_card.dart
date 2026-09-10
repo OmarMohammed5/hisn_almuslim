@@ -111,6 +111,14 @@ class QuizCategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
+    final borderColor = isDark
+        ? Colors.white.withValues(alpha: 0.07)
+        : AppColors.kBorderLight;
+
+
     return QuizPressScale(
       child: Material(
         color: Colors.transparent,
@@ -128,10 +136,8 @@ class QuizCategoryCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(
                 QuizRadius.lg.r,
               ),
-              color: QuizColors.card(context),
-              border: Border.all(
-                color: QuizColors.border(context),
-              ),
+              color: bgColor,
+              border: Border.all(color: borderColor, width: 1),
             ),
             child: Row(
               children: [
@@ -142,9 +148,8 @@ class QuizCategoryCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(
                       QuizRadius.md.r,
                     ),
-                    color: QuizColors.primarySoft(
-                      context,
-                    ),
+                    color: bgColor,
+                    border: Border.all(color: borderColor, width: 1),
                   ),
                   alignment: Alignment.center,
                   child: Icon(
@@ -184,9 +189,8 @@ class QuizCategoryCard extends StatelessWidget {
                   height: 27.w,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: QuizColors.primarySoft(
-                      context,
-                    ),
+                    color: bgColor,
+                    border: Border.all(color: borderColor, width: 1),
                   ),
                   alignment: Alignment.center,
                   child: Icon(

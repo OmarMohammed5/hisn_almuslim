@@ -1,18 +1,20 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hisn_almuslim/core/shared/app_bar_widget.dart';
+import 'package:hisn_almuslim/core/shared/search_field.dart';
+import 'package:hisn_almuslim/core/theme/app_colors.dart';
+import 'package:hisn_almuslim/features/lectures/domain/entities/lecture.dart';
 import 'package:hisn_almuslim/features/lectures/presentation/cubit/lectures_cubit.dart';
 import 'package:hisn_almuslim/features/lectures/presentation/cubit/lectures_state.dart';
 import 'package:hisn_almuslim/features/lectures/presentation/widgets/lecture_card.dart';
 import 'package:hisn_almuslim/features/lectures/presentation/widgets/lecture_state_views.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../../core/shared/search_field.dart';
-import '../../domain/entities/lecture.dart';
-import 'lecture_player_screen.dart';
 
-class CategoryLecturesScreen
-    extends StatefulWidget {
+import '../../../../core/routing/app_routes.dart';
+
+class CategoryLecturesScreen extends StatefulWidget {
   final SharedPreferences preferences;
   final String category;
 
@@ -23,70 +25,81 @@ class CategoryLecturesScreen
   });
 
   @override
-  State<CategoryLecturesScreen>
-  createState() =>
-      _CategoryLecturesScreenState();
+  State<CategoryLecturesScreen> createState() => _CategoryLecturesScreenState();
 }
 
-class _CategoryLecturesScreenState
-    extends State<CategoryLecturesScreen> {
-
-  // Search Controller
+class _CategoryLecturesScreenState extends State<CategoryLecturesScreen> {
   late final TextEditingController _controller;
+  late final ScrollController _scrollController;
 
   @override
   void initState() {
     super.initState();
-
     _controller = TextEditingController();
+    _scrollController = ScrollController()..addListener(_onScroll);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-      context.read<LecturesCubit>().searchCategory(widget.category,);
-
+      context.read<LecturesCubit>().searchCategory(widget.category);
     });
+  }
+
+  void _onScroll() {
+    if (!_scrollController.hasClients) return;
+
+    final position = _scrollController.position;
+    const threshold = 500.0;
+
+    if (position.maxScrollExtent - position.pixels <= threshold) {
+      context.read<LecturesCubit>().loadMoreCategory();
+    }
+  }
+
+  void _submitSearch() {
+    FocusScope.of(context).unfocus();
+    context.read<LecturesCubit>().searchInCategory(
+          category: widget.category,
+          query: _controller.text,
+        );
+  }
+
+  void _clearSearch() {
+    _controller.clear();
+    FocusScope.of(context).unfocus();
+    context.read<LecturesCubit>().searchCategory(widget.category);
+    setState(() {});
+  }
+
+  Future<void> _openLecture(Lecture lecture) async {
+    final raw = widget.preferences.getString('lecture_progress_${lecture.id}');
+    double? position;
+
+    if (raw != null && raw.isNotEmpty) {
+      final parts = raw.split('|');
+      if (parts.length >= 3 && parts[2] != 'true') {
+        final value = double.tryParse(parts[0]);
+        if (value != null && value > 10) position = value;
+      }
+    }
+
+    await Navigator.pushNamed(
+      context,
+      AppRoutes.lecturePlayer,
+      arguments: {
+        'lecture': lecture,
+        'preferences': widget.preferences,
+        'initialPositionSeconds': position,
+      },
+    );
   }
 
   @override
   void dispose() {
+    _scrollController
+      ..removeListener(_onScroll)
+      ..dispose();
     _controller.dispose();
     super.dispose();
-  }
-
-  // Open Lecture
-  void _openLecture(
-      Lecture lecture,
-      ) {
-    final raw =
-    widget.preferences.getString(
-      'lecture_progress_${lecture.id}',
-    );
-
-    double? position;
-
-    if (raw != null) {
-      final parts = raw.split('|');
-
-      if (parts.length >= 3 &&
-          parts[2] != 'true') {
-        position =
-            double.tryParse(parts[0]);
-      }
-    }
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) =>
-            LecturePlayerScreen(
-              lecture: lecture,
-              preferences:
-              widget.preferences,
-              initialPositionSeconds:
-              position,
-            ),
-      ),
-    );
   }
 
   @override
@@ -94,40 +107,27 @@ class _CategoryLecturesScreenState
     final scheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      appBar: AppBarWidget(title: widget.category,),
-
+      appBar: AppBarWidget(title: widget.category),
       body: BlocBuilder<LecturesCubit, LecturesState>(
         builder: (context, state) {
+          final isInitialLoading =
+              state.status == LecturesStatus.loading &&
+              state.searchResults.isEmpty &&
+              !state.isLoadingMoreCategory;
+
           return Column(
             children: [
-              // Search
               Padding(
-                padding:  EdgeInsets.symmetric(horizontal: 16.w , vertical: 16.h),
-                child: SearchField(
-                  controller: _controller,
-                  hint: 'ابحث داخل ${widget.category}...',
-                  onChanged: (query) {
-                    context
-                        .read<LecturesCubit>()
-                        .searchInCategory(
-                      category:
-                      widget.category,
-                      query: query,
-                    );
-                  },
-                ),
+                padding: EdgeInsets.fromLTRB(16.w, 14.h, 16.w, 8.h),
+                child: _buildSearchField(scheme, state),
               ),
-
               Expanded(
-                child: ListView.builder(
-                  itemCount: _getItemCount(state),
-                  physics: const BouncingScrollPhysics(),
-                  padding: EdgeInsets.fromLTRB(16.w, 14.h, 16.w, 100.h,),
-                  itemBuilder: (context , index){
-                 return _buildItem( context, state, index);
-                  },
-
-                ),
+                child: isInitialLoading
+                    ? const SingleChildScrollView(
+                        physics: NeverScrollableScrollPhysics(),
+                        child: LectureResultsSkeleton(count: 6),
+                      )
+                    : _buildResults(context, state),
               ),
             ],
           );
@@ -136,72 +136,129 @@ class _CategoryLecturesScreenState
     );
   }
 
-  // Build Results
-  Widget _buildItem(
-      BuildContext context,
-      LecturesState state,
-      int index,
-      ) {
+  Widget _buildSearchField(ColorScheme scheme, LecturesState state) {
+    final hasText = _controller.text.trim().isNotEmpty;
+    final isLoading = state.status == LecturesStatus.loading &&
+        state.searchResults.isEmpty;
+
+    return SearchField(
+      controller: _controller,
+      onChanged: (value) {
+        setState(() {});
+        context.read<LecturesCubit>().onCategorySearchChanged(
+              category: widget.category,
+              query: value,
+            );
+      },
+      onSubmitted: (_) => _submitSearch(),
+      hint:  'ابحث داخل ${widget.category}...',
+    );
+  }
+
+  Widget _buildResults(BuildContext context, LecturesState state) {
     switch (state.status) {
-      case LecturesStatus.loading:
-        return const LectureCardSkeleton();
-
-      case LecturesStatus.success:
-        final lecture =
-        state.searchResults[index];
-
-        return LectureCard(
-          lecture: lecture,
-          onTap: () {
-            _openLecture(lecture);
-          },
-        );
-
       case LecturesStatus.invalidQuery:
-        return LectureFeedbackView.invalidQuery(
-          message:
-          state.errorMessage ??
-              'يمكنك البحث فقط عن المحتوى الإسلامي.',
+        return ListView(
+          controller: _scrollController,
+          padding: EdgeInsets.fromLTRB(16.w, 10.h, 16.w, 100.h),
+          children: [
+            LectureFeedbackView.invalidQuery(
+              message: state.errorMessage ?? 'اكتب بحثًا صالحًا.',
+            ),
+          ],
         );
 
       case LecturesStatus.failure:
-        return LectureFeedbackView(
-          icon: Icons.wifi_off_rounded,
-          message:
-          state.errorMessage ??
-              'تعذر تحميل المحاضرات.',
-          actionLabel: 'إعادة المحاولة',
-          onAction: () {
-            context
-                .read<LecturesCubit>()
-                .searchCategory(
-              widget.category,
-            );
-          },
+        return ListView(
+          controller: _scrollController,
+          padding: EdgeInsets.fromLTRB(16.w, 10.h, 16.w, 100.h),
+          children: [
+            LectureFeedbackView(
+              icon: Icons.wifi_off_rounded,
+              message: state.errorMessage ?? 'تعذر تحميل المحاضرات.',
+              actionLabel: 'إعادة المحاولة',
+              onAction: () {
+                context.read<LecturesCubit>().searchInCategory(
+                      category: widget.category,
+                      query: _controller.text,
+                    );
+              },
+            ),
+          ],
         );
 
       case LecturesStatus.empty:
-        return const LectureFeedbackView.empty();
+        return ListView(
+          controller: _scrollController,
+          padding: EdgeInsets.fromLTRB(16.w, 10.h, 16.w, 100.h),
+          children: const [LectureFeedbackView.empty()],
+        );
 
       case LecturesStatus.initial:
-        return const LectureFeedbackView(
-          icon: Icons.auto_stories_rounded,
-          message: 'جاري تحميل المحاضرات...',
+        return ListView(
+          controller: _scrollController,
+          padding: EdgeInsets.fromLTRB(16.w, 10.h, 16.w, 100.h),
+          children: const [
+            LectureFeedbackView(
+              icon: Icons.auto_stories_rounded,
+              message: 'جاري تحميل المحاضرات...',
+            ),
+          ],
+        );
+
+      case LecturesStatus.loading:
+      case LecturesStatus.success:
+        final showPaginationError =
+            state.searchResults.isNotEmpty &&
+            state.errorMessage != null &&
+            !state.isLoadingMoreCategory;
+        final itemCount = state.searchResults.length +
+            (state.isLoadingMoreCategory || showPaginationError ? 1 : 0);
+
+        if (state.searchResults.isEmpty) {
+          return const LectureFeedbackView.empty();
+        }
+
+        return ListView.builder(
+          controller: _scrollController,
+          physics: const BouncingScrollPhysics(),
+          padding: EdgeInsets.fromLTRB(16.w, 10.h, 16.w, 100.h),
+          itemCount: itemCount,
+          itemBuilder: (context, index) {
+            if (index >= state.searchResults.length) {
+              if (state.isLoadingMoreCategory) {
+                return Padding(
+                  padding: EdgeInsets.symmetric(vertical: 18.h),
+                  child:  Center(
+                    child: CupertinoActivityIndicator(
+                      color: AppColors.kPrimary,
+                    ),
+                  ),
+                );
+              }
+
+              return Padding(
+                padding: EdgeInsets.only(top: 4.h, bottom: 20.h),
+                child: Center(
+                  child: OutlinedButton.icon(
+                    onPressed: () => context.read<LecturesCubit>().loadMoreCategory(),
+                    icon: const Icon(Icons.refresh_rounded),
+                    label: const Text('إعادة تحميل المزيد'),
+                  ),
+                ),
+              );
+            }
+
+            final lecture = state.searchResults[index];
+            return Padding(
+              padding: EdgeInsets.only(bottom: 12.h),
+              child: LectureCard(
+                lecture: lecture,
+                onTap: () => _openLecture(lecture),
+              ),
+            );
+          },
         );
     }
   }
-
-  int _getItemCount(LecturesState state) {
-    switch (state.status) {
-      case LecturesStatus.success:
-        return state.searchResults.length;
-
-      case LecturesStatus.loading:
-        return 6;
-
-      default:
-        return 1;
-    }
-  }
-
 }

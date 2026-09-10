@@ -7,6 +7,7 @@ import 'package:hisn_almuslim/features/hadith/widgets/hadith_number.dart';
 import 'package:hisn_almuslim/features/hadith/widgets/hadith_title.dart';
 
 import '../../../core/helpers/share_helper.dart';
+import '../../../core/theme/app_colors.dart';
 
 class Content extends StatelessWidget {
   const Content({
@@ -44,6 +45,11 @@ class Content extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
+    final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
+    final borderColor = isDark
+        ? Colors.white.withValues(alpha: 0.07)
+        : AppColors.kBorderLight;
+
     return Column(
       spacing: 16.h,
       children: [
@@ -58,14 +64,9 @@ class Content extends StatelessWidget {
         Container(
           padding: EdgeInsets.all(20.w),
           decoration: BoxDecoration(
-            color: isDark ? Color(0xFF1A1A2E) : Colors.white,
+            color: bgColor,
+            border: Border.all(color: borderColor, width: 1),
             borderRadius: BorderRadius.circular(16.r),
-            border: Border.all(
-              color: isDark
-                  ? Colors.grey.shade800
-                  : Colors.grey.shade200,
-              width: 1,
-            ),
             boxShadow: [
               BoxShadow(
                 color: isDark

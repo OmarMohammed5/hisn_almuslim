@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 
+import '../theme/app_colors.dart';
+
 class InteractiveZekrCard extends StatefulWidget {
   final String text;
   final int count;
@@ -112,6 +114,15 @@ class _InteractiveZekrCardState extends State<InteractiveZekrCard> {
         ? 0.0
         : (_repetition / widget.count).clamp(0.0, 1.0);
 
+
+
+    final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
+    final borderColor = isDark
+        ? Colors.white.withValues(alpha: 0.07)
+        : AppColors.kBorderLight;
+
+
+
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: _handleTap,
@@ -124,11 +135,8 @@ class _InteractiveZekrCardState extends State<InteractiveZekrCard> {
           margin: EdgeInsets.symmetric(horizontal: 15.w, vertical: 9.h),
           padding: EdgeInsets.all(18.w),
           decoration: BoxDecoration(
-            color: cardColor,
-            borderRadius: BorderRadius.circular(22.r),
-            border: Border.all(
-              color: accentColor.withValues(alpha: _isCompleted ? .25 : .055),
-            ),
+            color: bgColor,
+            border: Border.all(color: borderColor, width: 1),            borderRadius: BorderRadius.circular(22.r),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: isDark ? .16 : .055),
@@ -259,7 +267,7 @@ class _InteractiveZekrCardState extends State<InteractiveZekrCard> {
                 decoration: BoxDecoration(
                   color: isDark
                       ? Colors.white.withValues(alpha: .025)
-                      : const Color(0xFFFAFAF7),
+                      : AppColors.kPrimary.withValues(alpha: 0.06),
                   borderRadius: BorderRadius.circular(17.r),
                 ),
                 child: Text(

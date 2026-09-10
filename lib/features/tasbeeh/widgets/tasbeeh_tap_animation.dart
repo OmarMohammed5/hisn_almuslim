@@ -19,13 +19,12 @@ class TasbeehTapAnimation extends StatefulWidget {
 
 class _TasbeehTapAnimationState extends State<TasbeehTapAnimation>
     with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _scaleAnimation;
-  late Animation<double> _fadePlusOne;
-  late Animation<Offset> _slidePlusOne;
+  late final AnimationController _controller;
+  late final Animation<double> _scaleAnimation;
+  late final Animation<double> _fadePlusOne;
+  late final Animation<Offset> _slidePlusOne;
 
   bool _showPlusOne = false;
-  bool _isAnimating = false;
 
   @override
   void initState() {
@@ -33,35 +32,33 @@ class _TasbeehTapAnimationState extends State<TasbeehTapAnimation>
 
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 400),
+      duration: const Duration(milliseconds: 300),
     );
 
-    // ✅ Scale: ينكمش ويرجع ببساطة
     _scaleAnimation = TweenSequence<double>([
       TweenSequenceItem(
-        tween: Tween<double>(begin: 1.0, end: 0.90),
-        weight: 40,
+        tween: Tween(begin: 1.0, end: .965),
+        weight: 35,
       ),
       TweenSequenceItem(
-        tween: Tween<double>(begin: 0.90, end: 1.0),
-        weight: 60,
+        tween: Tween(begin: .965, end: 1.0),
+        weight: 65,
       ),
     ]).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: Curves.easeInOut,
+        curve: Curves.easeOutCubic,
       ),
     );
 
-    // ✅ +1 Fade
     _fadePlusOne = TweenSequence<double>([
       TweenSequenceItem(
-        tween: Tween<double>(begin: 0.0, end: 1.0),
-        weight: 30,
+        tween: Tween(begin: 0.0, end: 1.0),
+        weight: 18,
       ),
       TweenSequenceItem(
-        tween: Tween<double>(begin: 1.0, end: 0.0),
-        weight: 70,
+        tween: Tween(begin: 1.0, end: 0.0),
+        weight: 82,
       ),
     ]).animate(
       CurvedAnimation(
@@ -71,8 +68,8 @@ class _TasbeehTapAnimationState extends State<TasbeehTapAnimation>
     );
 
     _slidePlusOne = Tween<Offset>(
-      begin: const Offset(0, 0),
-      end: const Offset(0, -0.8),
+      begin: Offset.zero,
+      end: const Offset(0, -1.0),
     ).animate(
       CurvedAnimation(
         parent: _controller,
@@ -81,25 +78,17 @@ class _TasbeehTapAnimationState extends State<TasbeehTapAnimation>
     );
 
     _controller.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        setState(() {
-          _showPlusOne = false;
-          _isAnimating = false;
-        });
-        _controller.reset();
+      if (status == AnimationStatus.completed && mounted) {
+        setState(() => _showPlusOne = false);
       }
     });
   }
 
   void _handleTap() {
-    if (_isAnimating) return;
-
-    setState(() {
-      _showPlusOne = true;
-      _isAnimating = true;
-    });
-
-    _controller.forward(from: 0.0);
+    // Do not lock the user for the duration of the animation.
+    // Every tap is immediately forwarded to the counter.
+    setState(() => _showPlusOne = true);
+    _controller.forward(from: 0);
     widget.onTap();
   }
 
@@ -119,7 +108,6 @@ class _TasbeehTapAnimationState extends State<TasbeehTapAnimation>
       onTap: _handleTap,
       behavior: HitTestBehavior.opaque,
       child: Stack(
-        alignment: Alignment.topCenter,
         clipBehavior: Clip.none,
         children: [
           AnimatedBuilder(
@@ -132,42 +120,44 @@ class _TasbeehTapAnimationState extends State<TasbeehTapAnimation>
             },
             child: widget.child,
           ),
-
           if (_showPlusOne)
             Positioned(
-              top: -10.h,
-              child: AnimatedBuilder(
-                animation: _controller,
-                builder: (context, child) {
-                  return Opacity(
-                    opacity: _fadePlusOne.value,
-                    child: Transform.translate(
-                      offset: _slidePlusOne.value * 50.h,
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 10.w,
-                          vertical: 4.h,
-                        ),
-                        decoration: BoxDecoration(
-                          color: accentColor.withValues(alpha: 0.12),
-                          borderRadius: BorderRadius.circular(12.r),
-                          border: Border.all(
-                            color: accentColor.withValues(alpha: 0.2),
+              top: -7.h,
+              right: 18.w,
+              child: IgnorePointer(
+                child: AnimatedBuilder(
+                  animation: _controller,
+                  builder: (context, child) {
+                    return Opacity(
+                      opacity: _fadePlusOne.value,
+                      child: Transform.translate(
+                        offset: _slidePlusOne.value * 34.h,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 8.w,
+                            vertical: 3.h,
                           ),
-                        ),
-                        child: Text(
-                          '+1',
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.bold,
-                            color: accentColor,
-                            fontFamily: 'QuranFont',
+                          decoration: BoxDecoration(
+                            color: accentColor.withValues(alpha: .10),
+                            borderRadius: BorderRadius.circular(10.r),
+                            border: Border.all(
+                              color: accentColor.withValues(alpha: .18),
+                            ),
+                          ),
+                          child: Text(
+                            '+١',
+                            style: TextStyle(
+                              fontSize: 11.sp,
+                              fontWeight: FontWeight.w800,
+                              color: accentColor,
+                              fontFamily: 'Cairo',
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
             ),
         ],

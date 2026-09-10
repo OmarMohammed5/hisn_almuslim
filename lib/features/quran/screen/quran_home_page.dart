@@ -64,9 +64,6 @@ class _QuranHomePageState extends State<QuranHomePage> {
         children: [
           _buildSearchBar(context),
 
-          // Dashboard
-          // const ReadingDashboard(),
-
           Expanded(
             child: BlocBuilder<QuranCubit, QuranState>(
               builder: (context, state) {

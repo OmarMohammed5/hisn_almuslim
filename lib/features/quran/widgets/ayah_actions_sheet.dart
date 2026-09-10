@@ -1,4 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -272,8 +273,7 @@ class _AyahActionsSheetState extends State<AyahActionsSheet> {
                           child: _loading
                               ? Padding(
                                   padding: EdgeInsets.all(12.w),
-                                  child: const CircularProgressIndicator(
-                                    strokeWidth: 2,
+                                  child: CupertinoActivityIndicator(
                                     color: Colors.white,
                                   ),
                                 )

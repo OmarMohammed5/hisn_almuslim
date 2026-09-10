@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/shared/custom_text.dart';
+import '../../../../core/theme/app_colors.dart';
 import '../../domain/entities/answer_entity.dart';
 import '../theme/quiz_tokens.dart';
 
@@ -64,6 +65,9 @@ class _QuizAnswerCardState extends State<QuizAnswerCard> {
     Color? iconColor;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
+    final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
+
+
     if (_showCorrect) {
       borderColor = QuizColors.success;
       backgroundColor = QuizColors.successSoft;
@@ -78,12 +82,17 @@ class _QuizAnswerCardState extends State<QuizAnswerCard> {
 
     final emphasized = _showCorrect || _showWrong;
 
+
+
+
+
+
     Widget card = AnimatedContainer(
       duration: QuizDurations.normal,
       curve: Curves.easeOut,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: backgroundColor ?? QuizColors.card(context),
+        color: bgColor,
         borderRadius: BorderRadius.circular(QuizRadius.md.r),
         border: Border.all(color: borderColor, width: emphasized ? 2 : 1),
       ),
@@ -104,9 +113,8 @@ class _QuizAnswerCardState extends State<QuizAnswerCard> {
                   height: 38.w,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: widget.isAnswered
-                        ? borderColor.withValues(alpha: .14)
-                        : QuizColors.primarySoft(context),
+                    color: bgColor,
+                    border: Border.all(color: borderColor, width: 1),
                   ),
                   alignment: Alignment.center,
                   child: icon != null

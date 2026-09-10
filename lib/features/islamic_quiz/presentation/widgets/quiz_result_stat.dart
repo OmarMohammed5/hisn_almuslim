@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 
+import '../../../../core/theme/app_colors.dart';
 import '../theme/quiz_tokens.dart';
 
 class QuizResultStat extends StatelessWidget {
@@ -22,12 +23,21 @@ class QuizResultStat extends StatelessWidget {
   Widget build(BuildContext context) {
     final tint = color ?? QuizColors.textSecondary(context);
 
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
+    final borderColor = isDark
+        ? Colors.white.withValues(alpha: 0.07)
+        : AppColors.kBorderLight;
+
+
+
     return Container(
       padding: EdgeInsets.symmetric(vertical: 18.h, horizontal: 12.w),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(QuizRadius.md.r),
-        color: QuizColors.card(context),
-        border: Border.all(color: QuizColors.border(context)),
+        color: bgColor,
+        border: Border.all(color: borderColor, width: 1),
       ),
       child: Column(
         children: [

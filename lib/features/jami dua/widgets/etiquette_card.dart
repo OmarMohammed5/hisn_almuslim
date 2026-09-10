@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/features/jami%20dua/data/models/etiquette_item.dart';
 
+import '../../../core/theme/app_colors.dart';
+
 class EtiquetteCard extends StatefulWidget {
   final EtiquetteItem item;
   final VoidCallback onCopy;
@@ -28,11 +30,18 @@ class _EtiquetteCardState extends State<EtiquetteCard> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
+    final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
+    final borderColor = isDark
+        ? Colors.white.withValues(alpha: 0.07)
+        : AppColors.kBorderLight;
+
+
     return Container(
       margin: EdgeInsets.only(bottom: 16.h),
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xff1c2227) : Colors.white,
+        color: bgColor,
+        border: Border.all(color: borderColor, width: 1),
         borderRadius: BorderRadius.circular(18.r),
         boxShadow: [
           BoxShadow(

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 
+import '../../../core/theme/app_colors.dart';
+
 class DuaCard extends StatefulWidget {
   final String content;
   final String? title;
@@ -29,11 +31,18 @@ class _DuaCardState extends State<DuaCard> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
+    final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
+    final borderColor = isDark
+        ? Colors.white.withValues(alpha: 0.07)
+        : AppColors.kBorderLight;
+
+
     return Container(
       margin: EdgeInsets.only(bottom: 16.h),
       padding: EdgeInsets.all(12.w),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xff1c2227) : Colors.white,
+        color: bgColor,
+        border: Border.all(color: borderColor, width: 1),
         borderRadius: BorderRadius.circular(18.r),
         boxShadow: [
           BoxShadow(
@@ -164,7 +173,7 @@ class _CustomActionButton extends StatelessWidget {
               Text(
                 label,
                 style: TextStyle(
-                  fontFamily: 'QuranFont',
+                  fontFamily: 'Noon',
                   fontSize: 13.sp,
                   fontWeight: FontWeight.w600,
                   color: isDark ? Colors.white70 : const Color(0xFF3E4D5C),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/shared/custom_text.dart';
+import '../../../../core/theme/app_colors.dart';
 import '../../domain/entities/level_entity.dart';
 import '../theme/quiz_tokens.dart';
 import 'quiz_press_scale.dart';
@@ -48,13 +49,22 @@ class QuizLevelNode extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = _nodeColor(context);
 
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
+    final borderColor = isDark
+        ? Colors.white.withValues(alpha: 0.07)
+        : AppColors.kBorderLight;
+
+
+
     Widget circle = Container(
       width: 64.w,
       height: 64.w,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: color.withValues(alpha: unlocked ? .14 : .08),
-        border: Border.all(color: color.withValues(alpha: unlocked ? .8 : .4), width: 2),
+        color: bgColor,
+        border: Border.all(color: borderColor, width: 1),
       ),
       alignment: Alignment.center,
       child: Icon(_nodeIcon, size: 28.sp, color: color),
@@ -86,9 +96,8 @@ class QuizLevelNode extends StatelessWidget {
                     width: 3.w,
                     margin: EdgeInsets.symmetric(vertical: 4.h),
                     decoration: BoxDecoration(
-                      color: passed
-                          ? QuizColors.success.withValues(alpha: .5)
-                          : QuizColors.border(context),
+                      color: bgColor,
+                      border: Border.all(color: borderColor, width: 1),
                       borderRadius: BorderRadius.circular(QuizRadius.pill),
                     ),
                   ),
@@ -112,13 +121,9 @@ class QuizLevelNode extends StatelessWidget {
                       child: Ink(
                         padding: EdgeInsets.all(18.w),
                         decoration: BoxDecoration(
-                          color: QuizColors.card(context),
-                          borderRadius: BorderRadius.circular(QuizRadius.lg.r),
-                          border: Border.all(
-                            color: unlocked
-                                ? color.withValues(alpha: .28)
-                                : QuizColors.border(context),
-                          ),
+                          color: bgColor,
+                          border: Border.all(color: borderColor, width: 1),
+                          borderRadius: BorderRadius.circular(18.r)
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

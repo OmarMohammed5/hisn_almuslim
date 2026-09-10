@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 
+import '../../../core/theme/app_colors.dart';
+
 class HadithCard extends StatelessWidget {
   final String content;
   final int index;
@@ -24,6 +26,11 @@ class HadithCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
+    final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
+    final borderColor = isDark
+        ? Colors.white.withValues(alpha: 0.07)
+        : AppColors.kBorderLight;
+
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 10.h),
       child: Stack(
@@ -32,14 +39,9 @@ class HadithCard extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(8.w),
             decoration: BoxDecoration(
-              color: isDark ? Color(0xFF1A1A2E) : Colors.white,
+              color: bgColor,
+              border: Border.all(color: borderColor, width: 1),
               borderRadius: BorderRadius.circular(16.r),
-              border: Border.all(
-                color: isDark
-                    ? Colors.grey.shade800
-                    : Colors.grey.shade200,
-                width: 1,
-              ),
               boxShadow: [
                 BoxShadow(
                   color: isDark

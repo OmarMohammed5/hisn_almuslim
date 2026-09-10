@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 
+import '../theme/app_colors.dart';
+
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   const AppBarWidget({
     super.key,
@@ -49,11 +51,14 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
         ? const Color(0xFF63DCC6)
         : const Color(0xFF087F73);
 
+    final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
+    
+
     return AppBar(
       centerTitle: true,
       elevation: 0,
       scrolledUnderElevation: 0,
-      backgroundColor: backgroundColor,
+      backgroundColor: bgColor,
       automaticallyImplyLeading: false,
 
       leading: leading,
@@ -105,7 +110,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
           height: 1.h,
           margin: EdgeInsets.symmetric(horizontal: 24.w),
           decoration: BoxDecoration(
-            color: accentColor.withValues(alpha: .16),
+            color: bgColor,
             borderRadius: BorderRadius.circular(10.r),
           ),
         ),
@@ -130,16 +135,21 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
         ? const Color(0xFFE5ECE9)
         : const Color(0xFF26322F);
 
+    final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
+    final borderColor = isDark
+        ? Colors.white.withValues(alpha: 0.07)
+        : AppColors.kBorderLight;
+
     return AppBar(
       centerTitle: true,
       elevation: 0,
       scrolledUnderElevation: 0,
-      backgroundColor: backgroundColor,
+      backgroundColor: bgColor,
       leading:
           (!isHomePage &&
               showBackButton &&
               ModalRoute.of(context)?.isFirst == false)
-          ? _buildBackButton(context: context, iconColor: iconColor)
+          ? BuildBackButton(context: context, iconColor: iconColor)
           : leading,
 
       actions: actions,
@@ -191,35 +201,38 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  // BACK BUTTON
-  Widget _buildBackButton({
-    required BuildContext context,
-    required Color iconColor,
-  }) {
-    return Padding(
-      padding: EdgeInsets.only(right: 12.w, top: 10.h, bottom: 10.h),
-      child: IconButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        style: IconButton.styleFrom(
-          backgroundColor: Theme.of(context).brightness == Brightness.dark
-              ? const Color(0xFF1A2723)
-              : const Color(0xFFEAF2F0),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14.r),
-            side: BorderSide(
-              color: const Color(0xFF087F73).withValues(alpha: .14),
-            ),
+
+}
+
+
+// BACK BUTTON
+Widget BuildBackButton({
+  required BuildContext context,
+  required Color iconColor,
+}) {
+  return Padding(
+    padding: EdgeInsets.only(right: 12.w, top: 10.h, bottom: 10.h),
+    child: IconButton(
+      onPressed: () {
+        Navigator.pop(context);
+      },
+      style: IconButton.styleFrom(
+        backgroundColor: Theme.of(context).brightness == Brightness.dark
+            ? const Color(0xFF1A2723)
+            : const Color(0xFFEAF2F0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(14.r),
+          side: BorderSide(
+            color: const Color(0xFF087F73).withValues(alpha: .14),
           ),
         ),
-        icon: Icon(
-          Icons.arrow_back_ios_new_rounded,
-          color: iconColor,
-          size: 17.sp,
-        ),
-        splashRadius: 20.r,
       ),
-    );
-  }
+      icon: Icon(
+        Icons.arrow_back_ios_new_rounded,
+        color: iconColor,
+        size: 17.sp,
+      ),
+      splashRadius: 20.r,
+    ),
+  );
 }

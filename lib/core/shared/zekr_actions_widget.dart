@@ -159,7 +159,7 @@ class _ZekrActionsWidgetState extends State<ZekrActionsWidget>
                     width: 58.w,
                     height: 58.w,
                     transform: Matrix4.identity()
-                      ..rotateZ(_animation.value * 0.785),
+                      ..rotateZ(_animation.value * 0.4),
                     transformAlignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: AppColors.kPrimary.withValues(alpha: 0.6),

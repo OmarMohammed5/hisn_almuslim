@@ -8,17 +8,16 @@ class ZekrCounterBuild extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return GridView.builder(
-      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 8.h),
+      padding: EdgeInsets.only(top: 2.h),
       itemCount: zekrList.length,
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        crossAxisSpacing: 14.w,
-        mainAxisSpacing: 14.h,
-        childAspectRatio: 1.05,
+        crossAxisSpacing: 12.w,
+        mainAxisSpacing: 12.h,
+        childAspectRatio: 1.20,
       ),
       itemBuilder: (context, index) {
         final zekr = zekrList[index];

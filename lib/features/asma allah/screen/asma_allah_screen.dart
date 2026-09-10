@@ -7,6 +7,8 @@ import 'package:hisn_almuslim/features/asma%20allah/data/cubit/asma_allah_cubit.
 import 'package:hisn_almuslim/features/asma%20allah/widgets/asma_card.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 
+import '../../../core/theme/app_colors.dart';
+
 class AsmaAllahScreen extends StatefulWidget {
   const AsmaAllahScreen({super.key});
 
@@ -178,6 +180,12 @@ class _AsmaAllahScreenState extends State<AsmaAllahScreen> {
     final accent = _accentColor(isDark);
     final textColor = _textColor(isDark);
 
+    final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
+    final borderColor = isDark
+        ? Colors.white.withValues(alpha: 0.07)
+        : AppColors.kBorderLight;
+
+
     return Padding(
       padding: EdgeInsets.fromLTRB(12.w, 8.h, 12.w, 12.h),
       child: Row(
@@ -202,9 +210,8 @@ class _AsmaAllahScreenState extends State<AsmaAllahScreen> {
             width: 65.w,
             height: 30.h,
             decoration: BoxDecoration(
-              color: accent.withValues(alpha: .08),
-              borderRadius: BorderRadius.circular(13.r),
-              border: Border.all(color: accent.withValues(alpha: .15)),
+              color: bgColor,
+              border: Border.all(color: borderColor, width: 1),              borderRadius: BorderRadius.circular(13.r),
             ),
             child: Center(
               child: Text(

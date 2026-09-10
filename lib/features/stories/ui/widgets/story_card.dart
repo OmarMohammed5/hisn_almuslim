@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../core/theme/app_colors.dart';
 import '../../domain/entities/prophet_story.dart';
 
 class StoryCard extends StatelessWidget {
@@ -36,10 +37,10 @@ class StoryCard extends StatelessWidget {
     final surfaceColor = isDark
         ? const Color(0xFF171C1D)
         : Colors.white;
-
-    final borderColor = isDark
-        ? Colors.white.withValues(alpha: 0.07)
-        : Colors.black.withValues(alpha: 0.06);
+    //
+    // final borderColor = isDark
+    //     ? Colors.white.withValues(alpha: 0.07)
+    //     : Colors.black.withValues(alpha: 0.06);
 
     final indexColor = isDark
         ? Colors.white.withValues(alpha: 0.30)
@@ -53,7 +54,10 @@ class StoryCard extends StatelessWidget {
         ? '${preview.substring(0, 110).trim()}...'
         : preview;
 
-    // CARD
+    final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
+    final borderColor = isDark
+        ? Colors.white.withValues(alpha: 0.07)
+        : AppColors.kBorderLight;
 
     return Padding(
       padding: EdgeInsets.only(bottom: 12.h),
@@ -72,12 +76,9 @@ class StoryCard extends StatelessWidget {
               14.h,
             ),
             decoration: BoxDecoration(
-              color: surfaceColor,
+              color: bgColor,
+              border: Border.all(color: borderColor, width: 1),
               borderRadius: BorderRadius.circular(20.r),
-              border: Border.all(
-                color: borderColor,
-                width: 1,
-              ),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

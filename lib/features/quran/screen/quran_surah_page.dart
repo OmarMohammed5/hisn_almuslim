@@ -452,9 +452,7 @@ class _QuranSurahPageState extends State<QuranSurahPage> {
                     ? Padding(
                         padding: EdgeInsets.all(11.w),
 
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-
+                        child: CupertinoActivityIndicator(
                           color: primary,
                         ),
                       )

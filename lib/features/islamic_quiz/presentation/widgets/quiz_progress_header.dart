@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 
+import '../../../../core/theme/app_colors.dart';
 import '../theme/quiz_tokens.dart';
 
 class QuizProgressHeader extends StatelessWidget {
@@ -18,10 +19,20 @@ class QuizProgressHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
+    final borderColor = isDark
+        ? Colors.white.withValues(alpha: 0.07)
+        : AppColors.kBorderLight;
+
+
+
     return Row(
       children: [
         Material(
-          color: QuizColors.card(context),
+          color: bgColor,
           shape: const CircleBorder(),
           child: InkWell(
             customBorder: const CircleBorder(),
@@ -57,7 +68,8 @@ class QuizProgressHeader extends StatelessWidget {
         Container(
           padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
           decoration: BoxDecoration(
-            color: QuizColors.primarySoft(context),
+            color: bgColor,
+            border: Border.all(color: borderColor, width: 1),
             borderRadius: BorderRadius.circular(QuizRadius.pill),
           ),
           child: CustomText(

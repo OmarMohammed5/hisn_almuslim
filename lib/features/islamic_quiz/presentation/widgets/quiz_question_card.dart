@@ -29,27 +29,23 @@ class QuizQuestionCard extends StatelessWidget {
     // Show progress if numbers are provided
     final showProgress = questionNumber != null && totalQuestions != null;
 
+
+    final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
+    final borderColor = isDark
+        ? Colors.white.withValues(alpha: 0.07)
+        : AppColors.kBorderLight;
+
+
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
         width: double.infinity,
         padding: EdgeInsets.all(24.w),
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: isDark
-                ? [
-                    QuizColors.card(context).withValues(alpha: 0.95),
-                    QuizColors.card(context).withValues(alpha: 0.8),
-                  ]
-                : [Colors.white, Colors.white.withValues(alpha: 0.95)],
-          ),
+          color: bgColor,
+          border: Border.all(color: borderColor, width: 1),
           borderRadius: BorderRadius.circular(20.r),
-          border: Border.all(
-            color: AppColors.kPrimary.withValues(alpha: 0.5),
-            width: 1.5,
-          ),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: isDark ? 0.15 : 0.06),

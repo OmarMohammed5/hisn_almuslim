@@ -1,7 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:hisn_almuslim/core/theme/app_colors.dart';
 import '../data/datasource/daily_content_local_data_source.dart';
 import '../data/models/daily_content_model.dart';
 import '../data/models/featured_banner_model.dart';
@@ -148,7 +150,7 @@ class _FeaturedBannersState extends State<FeaturedBanners> {
     if (_isLoading) {
       return SizedBox(
         height: 140.h,
-        child: const Center(child: CircularProgressIndicator()),
+        child:  Center(child: CupertinoActivityIndicator(color: AppColors.kPrimary,)),
       );
     }
 

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -112,8 +113,7 @@ class PlayerControlsRow extends StatelessWidget {
                   ? const Padding(
                 key: ValueKey('buffering'),
                 padding: EdgeInsets.all(18),
-                child: CircularProgressIndicator(
-                  strokeWidth: 2.5,
+                child: CupertinoActivityIndicator(
                   color: Colors.white,
                 ),
               )

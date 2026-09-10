@@ -6,6 +6,7 @@ import 'package:hisn_almuslim/core/routing/app_routes.dart';
 import 'package:hisn_almuslim/features/hadith/books/nawawi/data/cubit/hadith_cubit.dart';
 import 'package:hisn_almuslim/features/hadith/widgets/chapter_card.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
+import '../../../../../core/shared/app_bar_widget.dart';
 import '../../../../../core/shared/re_build_scroll_To_Top.dart';
 import '../../../../../core/shared/search_field.dart';
 import '../../../../../core/utils/arabic_search_utils.dart';
@@ -42,13 +43,17 @@ class _FehresHadithNawawiState extends State<FehresHadithNawawi> {
 
   @override
   Widget build(BuildContext context) {
-    // final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         toolbarHeight: 80.h,
         elevation: 0,
         scrolledUnderElevation: 0,
+        leading: Padding(
+          padding:  EdgeInsets.only(top: 12.h ,bottom: 12.h ),
+          child: BuildBackButton(context: context, iconColor: isDark ? Colors.white : Colors.black87),
+        ),
         title: SearchField(
           onChanged: (v) {
             setState(() {

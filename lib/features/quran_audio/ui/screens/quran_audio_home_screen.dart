@@ -74,7 +74,6 @@ class _QuranAudioHomeScreenState extends State<QuranAudioHomeScreen> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // _buildHeader(context, state),
               QuranAudioHeader(state: state, onSearch: _searchSurah , searchController: _searchSurahController,),
               Expanded(
                 child: Padding(
@@ -82,8 +81,6 @@ class _QuranAudioHomeScreenState extends State<QuranAudioHomeScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // _buildSearchField(context),
-                      // SearchField(onChanged: _searchSurah, hint:  'ابحث في السور ...',controller: _searchSurahController,),
                       Expanded(child: _buildContent(context, state)),
                     ],
                   ),

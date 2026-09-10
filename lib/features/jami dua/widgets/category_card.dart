@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 
+import '../../../core/theme/app_colors.dart';
+
 class CategoryCard extends StatelessWidget {
   final String title;
   final VoidCallback onTap;
@@ -11,6 +13,12 @@ class CategoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
+    final borderColor = isDark
+        ? Colors.white.withValues(alpha: 0.07)
+        : AppColors.kBorderLight;
+
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 4.h),
@@ -24,14 +32,9 @@ class CategoryCard extends StatelessWidget {
           child: Container(
             padding: EdgeInsets.all(12.w),
             decoration: BoxDecoration(
-              color: isDark ? const Color(0xff1c2227) : Colors.white,
+              color: bgColor,
+              border: Border.all(color: borderColor, width: 1),
               borderRadius: BorderRadius.circular(16.r),
-              border: Border.all(
-                color: isDark
-                    ? Colors.white.withOpacity(0.05)
-                    : Colors.grey.withOpacity(0.1),
-                width: 1,
-              ),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.05),
@@ -70,7 +73,7 @@ class CategoryCard extends StatelessWidget {
                   child: Text(
                     title,
                     style: TextStyle(
-                      fontFamily: 'QuranFont',
+                      fontFamily: 'Noon',
                       fontSize: 18.sp,
                       fontWeight: FontWeight.bold,
                       color: isDark ? Colors.white : const Color(0xFF1A1A1A),

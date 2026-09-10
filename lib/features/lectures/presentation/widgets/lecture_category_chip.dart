@@ -23,7 +23,7 @@ class LectureCategoryChip extends StatelessWidget {
     final colorScheme = theme.colorScheme;
     final isDark = theme.brightness == Brightness.dark;
 
-    final foreground = selected ? colorScheme.onPrimary : colorScheme.onSurface;
+    final foreground = selected ? colorScheme.primary : colorScheme.onSurface;
 
     return Material(
       color: Colors.transparent,
@@ -33,7 +33,7 @@ class LectureCategoryChip extends StatelessWidget {
         child: Ink(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(17.r),
-            color: selected ? Colors.grey[750] : Colors.grey[750]?.withValues(alpha: isDark ? 0.10 : 0.055,),
+            color: selected ? AppColors.kPrimary.withValues(alpha: isDark ? 0.14 : 0.08) : colorScheme.surfaceContainerHighest.withValues(alpha: isDark ? 0.38 : 0.72),
             border: Border.all(color: selected ? AppColors.kPrimary : AppColors.kPrimary.withValues(alpha: isDark ? 0.18 : 0.10,), width: 1,),
             boxShadow: [
               if (!selected)

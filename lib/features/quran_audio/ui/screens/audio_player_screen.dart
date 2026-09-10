@@ -341,33 +341,28 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
 
   Widget _artworkFace(AudioPlayerReady state) {
     return Container(
-      decoration: const BoxDecoration(
+      margin: EdgeInsets.all(3.w),
+      decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Color(0xFFFBF6EC),
-      ),
-      child: Container(
-        margin: EdgeInsets.all(3.w),
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(
-            color: const Color(0xFFC9A24B).withValues(alpha: 0.65),
-            width: 1.4.w,
-          ),
+        color: const Color(0xFF063F3A),
+        border: Border.all(
+          color: const Color(0xFFC9A24B).withValues(alpha: 0.65),
+          width: .4.w,
         ),
-        child: Center(
-          child: Padding(
-            padding: EdgeInsets.all(8.w),
-            child: Image.asset(
-              'assets/icons/loogo.png',
-              fit: BoxFit.contain,
-              errorBuilder: (context, error, stackTrace) => Text(
-                '${state.surah.number}',
-                style: TextStyle(
-                  fontSize: 40.sp,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Al mushaf',
-                  color: AppColors.kPrimary,
-                ),
+      ),
+      child: Center(
+        child: Padding(
+          padding: EdgeInsets.all(8.w),
+          child: Image.asset(
+            'assets/icons/loogo.png',
+            fit: BoxFit.contain,
+            errorBuilder: (context, error, stackTrace) => Text(
+              '${state.surah.number}',
+              style: TextStyle(
+                fontSize: 40.sp,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Al mushaf',
+                color: AppColors.kPrimary,
               ),
             ),
           ),

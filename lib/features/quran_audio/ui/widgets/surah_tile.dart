@@ -34,12 +34,6 @@ class SurahTile extends StatelessWidget {
     final isPausedState = isCurrentSurah && isPaused && !isPlaying;
     final isCompletedState = isCurrentSurah && isCompleted;
 
-    Color getCardColor() {
-      if (isActive) return AppColors.kPrimary.withValues(alpha: 0.12);
-      if (isPausedState) return Colors.orange.withValues(alpha: 0.10);
-      if (isCompletedState) return Colors.grey.withValues(alpha: 0.08);
-      return isDark ? const Color(0xff1a1f24) : const Color(0xffFAFBFC);
-    }
 
     Color getBorderColor() {
       if (isActive) return AppColors.kPrimary.withValues(alpha: 0.6);
@@ -60,12 +54,6 @@ class SurahTile extends StatelessWidget {
       return isDark ? Colors.white : const Color(0xff1a1f24);
     }
 
-    String getStatusText() {
-      if (isActive) return 'يُتلى الآن';
-      if (isPausedState) return 'متوقف مؤقتاً';
-      if (isCompletedState) return 'انتهى';
-      return '';
-    }
 
     Color getBadgeColor() {
       if (isActive) return AppColors.kPrimary;
@@ -73,6 +61,12 @@ class SurahTile extends StatelessWidget {
       if (isCompletedState) return Colors.grey;
       return Colors.transparent;
     }
+
+    final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
+    final borderColor = isDark
+        ? Colors.white.withValues(alpha: 0.07)
+        : AppColors.kBorderLight;
+
 
     return GestureDetector(
       onTap: onPressed,
@@ -82,10 +76,8 @@ class SurahTile extends StatelessWidget {
         margin: EdgeInsets.symmetric(vertical: 6.h),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.r),
-          border: Border.all(
-            color: getBorderColor(),
-            width: getBorderWidth(),
-          ),
+          color: bgColor,
+          border: Border.all(color: borderColor, width: 1),
           boxShadow: isActive || isPausedState
               ? [
             BoxShadow(

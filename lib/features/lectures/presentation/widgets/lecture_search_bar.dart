@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -52,8 +53,7 @@ class LectureSearchBar extends StatelessWidget {
             child: SizedBox(
               width: 16.w,
               height: 16.w,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
+              child: CupertinoActivityIndicator(
                 color: scheme.primary,
               ),
             ),

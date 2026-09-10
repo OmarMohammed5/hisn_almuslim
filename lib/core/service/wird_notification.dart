@@ -1,48 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
+
 import 'notification_service.dart';
 
 class DailyWirdNotificationService {
-  // Use the SHARED plugin instance from NotificationService
-  static FlutterLocalNotificationsPlugin get _notifications =>
-      NotificationService.service.plugin;
+  DailyWirdNotificationService._();
 
-  static const int _notificationId = 500;
-
-  static const AndroidNotificationChannel _channel = AndroidNotificationChannel(
-    'daily_wird_channel',
-    'الورد اليومي',
-    description: 'تنبيهات خاصة بالورد اليومي',
-    importance: Importance.high,
-  );
-
-  static Future<void> init() async {
-    // Create the notification channel explicitly
-    final android = _notifications
-        .resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>();
-
-    if (android != null) {
-      await android.createNotificationChannel(_channel);
-    }
-  }
+  static const int notificationId = NotificationService.dailyWirdNotificationId;
+  static const String channelId = 'daily_wird_channel_v2';
 
   static NotificationDetails _details() {
     return const NotificationDetails(
       android: AndroidNotificationDetails(
-        'daily_wird_channel',
+        channelId,
         'الورد اليومي',
-        channelDescription: 'تنبيهات خاصة بالورد اليومي',
-        importance: Importance.high,
+        channelDescription: 'تنبيه يومي للورد اليومي',
+        importance: Importance.max,
         priority: Priority.high,
+        playSound: true,
+      ),
+      iOS: DarwinNotificationDetails(
+        presentAlert: true,
+        presentBadge: true,
+        presentSound: true,
       ),
     );
   }
 
   static Future<void> schedule(TimeOfDay time) async {
-    final now = tz.TZDateTime.now(tz.local);
+    final service = NotificationService.service;
+    await service.init();
 
+    final plugin = service.plugin;
+
+    // Make time changes idempotent: there must be exactly one daily alarm
+    // for this feature.
+    await plugin.cancel(notificationId);
+
+    final now = tz.TZDateTime.now(tz.local);
     var scheduledDate = tz.TZDateTime(
       tz.local,
       now.year,
@@ -52,22 +48,49 @@ class DailyWirdNotificationService {
       time.minute,
     );
 
-    if (scheduledDate.isBefore(now)) {
-      scheduledDate = scheduledDate.add(const Duration(days: 1));
+    if (!scheduledDate.isAfter(now)) {
+      scheduledDate = tz.TZDateTime(
+        tz.local,
+        now.year,
+        now.month,
+        now.day + 1,
+        time.hour,
+        time.minute,
+      );
     }
 
-    await _notifications.zonedSchedule(
-      _notificationId,
-      "الورد اليومي 📖",
-      "لا تنسى قراءة وردك اليومي",
-      scheduledDate,
-      _details(),
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-      matchDateTimeComponents: DateTimeComponents.time,
-    );
+    try {
+      await plugin.zonedSchedule(
+        notificationId,
+        'الورد اليومي 📖',
+        'لا تنسى قراءة وردك اليومي',
+        scheduledDate,
+        _details(),
+        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+        matchDateTimeComponents: DateTimeComponents.time,
+        payload: 'daily_wird',
+      );
+
+      NotificationSchedulerLogger.scheduled(
+        type: 'daily_wird',
+        id: notificationId,
+        scheduledDate: scheduledDate,
+        timezone: tz.local.name,
+      );
+    } catch (e, stack) {
+      NotificationSchedulerLogger.error(
+        type: 'daily_wird',
+        id: notificationId,
+        scheduledDate: scheduledDate,
+        timezone: tz.local.name,
+        error: e,
+        stackTrace: stack,
+      );
+      rethrow;
+    }
   }
 
   static Future<void> cancel() async {
-    await _notifications.cancel(_notificationId);
+    await NotificationService.service.cancel(notificationId);
   }
 }

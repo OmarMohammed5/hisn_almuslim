@@ -15,7 +15,7 @@ class YoutubeApiException implements Exception {
   String toString() => 'YoutubeApiException: $message';
 }
 
-class LatestLecturesPage {
+class LatestLecturesPageModel {
   final List<LectureModel> lectures;
 
 
@@ -24,7 +24,19 @@ class LatestLecturesPage {
 
   final bool hasMore;
 
-  const LatestLecturesPage({
+  const LatestLecturesPageModel({
+    required this.lectures,
+    required this.nextPageToken,
+    required this.hasMore,
+  });
+}
+
+class SearchLecturesPageModel {
+  final List<LectureModel> lectures;
+  final String? nextPageToken;
+  final bool hasMore;
+
+  const SearchLecturesPageModel({
     required this.lectures,
     required this.nextPageToken,
     required this.hasMore,
@@ -262,7 +274,7 @@ class YoutubeRemoteDataSource {
     return result;
   }
 
-  Future<LatestLecturesPage> getLatestLectures({
+  Future<LatestLecturesPageModel> getLatestLectures({
     String? pageToken,
     int perChannel = 8,
   }) async {
@@ -364,7 +376,7 @@ class YoutubeRemoteDataSource {
         final videosData = await _get(
           'videos',
           {
-            'part': 'snippet,contentDetails',
+            'part': 'snippet,contentDetails,status',
             'id': ids.join(','),
           },
         );
@@ -393,6 +405,14 @@ class YoutubeRemoteDataSource {
               video['contentDetails']
               as Map<String, dynamic>? ??
                   const {};
+
+          final status =
+              video['status'] as Map<String, dynamic>? ?? const {};
+
+          final isEmbeddable =
+              status['embeddable'] as bool? ?? true;
+
+          if (!isEmbeddable) continue;
 
           all.add(
             LectureModel(
@@ -450,7 +470,7 @@ class YoutubeRemoteDataSource {
         ? null
         : jsonEncode(nextTokens);
 
-    return LatestLecturesPage(
+    return LatestLecturesPageModel(
       lectures: unique,
       nextPageToken: encodedNextToken,
       hasMore: nextTokens.isNotEmpty,
@@ -698,12 +718,25 @@ class YoutubeRemoteDataSource {
     );
   }
 
-  Future<List<LectureModel>> searchLectures(
-      String query,
-      ) async {
+  /// Search is intentionally kept to a single YouTube API call per page.
+  /// The search endpoint already returns the title, description, channel,
+  /// thumbnail and published date, so we do not make a second `videos.list`
+  /// request just to enrich search results. `videoEmbeddable=true` filters
+  /// out videos that cannot be embedded in the app's player.
+  Future<SearchLecturesPageModel> searchLecturesPage(
+    String query, {
+    String? pageToken,
+    int maxResults = 15,
+  }) async {
     final trimmed = query.trim();
 
-    if (trimmed.isEmpty) return const [];
+    if (trimmed.isEmpty) {
+      return const SearchLecturesPageModel(
+        lectures: [],
+        nextPageToken: null,
+        hasMore: false,
+      );
+    }
 
     final searchData = await _get(
       'search',
@@ -711,75 +744,67 @@ class YoutubeRemoteDataSource {
         'part': 'snippet',
         'q': trimmed,
         'type': 'video',
-        'maxResults': '15',
+        'videoEmbeddable': 'true',
+        'maxResults': '$maxResults',
         'relevanceLanguage': 'ar',
         'safeSearch': 'moderate',
+        if (pageToken != null && pageToken.isNotEmpty)
+          'pageToken': pageToken,
       },
     );
 
-    final items =
-        searchData['items'] as List<dynamic>? ??
-            const [];
+    final items = searchData['items'] as List<dynamic>? ?? const [];
+    final nextPageToken = searchData['nextPageToken'] as String?;
 
-    final ids = <String>[];
-
-    final fallback =
-    <String, Map<String, dynamic>>{};
+    final seen = <String>{};
+    final lectures = <LectureModel>[];
 
     for (final raw in items) {
-      final item =
-      raw as Map<String, dynamic>;
+      if (raw is! Map<String, dynamic>) continue;
 
-      final id =
-          (item['id']
-          as Map<String, dynamic>?)
-          ?['videoId']
-          as String? ??
-              '';
+      final idData = raw['id'] as Map<String, dynamic>? ?? const {};
+      final videoId = idData['videoId'] as String? ?? '';
+      if (videoId.isEmpty || !seen.add(videoId)) continue;
 
-      if (id.isEmpty) continue;
+      final snippet = raw['snippet'] as Map<String, dynamic>? ?? const {};
+      final title = snippet['title'] as String? ?? '';
+      final channelId = snippet['channelId'] as String? ?? '';
+      final channelName = snippet['channelTitle'] as String? ?? '';
+      final publishedAt = DateTime.tryParse(
+            snippet['publishedAt'] as String? ?? '',
+          ) ??
+          DateTime.fromMillisecondsSinceEpoch(0);
 
-      ids.add(id);
+      if (title.trim().isEmpty) continue;
 
-      fallback[id] =
-          item['snippet']
-          as Map<String, dynamic>? ??
-              const {};
+      lectures.add(
+        LectureModel(
+          id: videoId,
+          title: title,
+          description: snippet['description'] as String? ?? '',
+          channelId: channelId,
+          channelName: channelName,
+          thumbnailUrl: _thumbnail(snippet['thumbnails']),
+          publishedAt: publishedAt,
+          // Search results do not include contentDetails.duration. Avoiding
+          // an extra videos.list request is intentional to keep quota low.
+          duration: Duration.zero,
+          isEmbeddable: true,
+        ),
+      );
     }
 
-    if (ids.isEmpty) return const [];
+    return SearchLecturesPageModel(
+      lectures: lectures,
+      nextPageToken: nextPageToken,
+      hasMore: nextPageToken != null && nextPageToken.isNotEmpty,
+    );
+  }
 
-    final videos =
-    await _getVideoModels(ids);
-
-    return videos.map((lecture) {
-      final sn = fallback[lecture.id];
-
-      if (sn == null) return lecture;
-
-      return LectureModel(
-        id: lecture.id,
-        title: lecture.title.isEmpty
-            ? sn['title'] as String? ?? ''
-            : lecture.title,
-        description: lecture.description,
-        channelId: lecture.channelId,
-        channelName:
-        lecture.channelName.isEmpty
-            ? sn['channelTitle']
-        as String? ??
-            ''
-            : lecture.channelName,
-        thumbnailUrl:
-        lecture.thumbnailUrl.isEmpty
-            ? _thumbnail(
-          sn['thumbnails'],
-        )
-            : lecture.thumbnailUrl,
-        publishedAt: lecture.publishedAt,
-        duration: lecture.duration,
-      );
-    }).toList(growable: false);
+  /// Backward-compatible wrapper for callers that only need the first page.
+  Future<List<LectureModel>> searchLectures(String query) async {
+    final page = await searchLecturesPage(query);
+    return page.lectures;
   }
 
   Future<List<LectureModel>> _getVideoModels(
@@ -790,7 +815,7 @@ class YoutubeRemoteDataSource {
     final data = await _get(
       'videos',
       {
-        'part': 'snippet,contentDetails',
+        'part': 'snippet,contentDetails,status',
         'id': ids.join(','),
       },
     );
@@ -812,6 +837,16 @@ class YoutubeRemoteDataSource {
           item['contentDetails']
           as Map<String, dynamic>? ??
               const {};
+
+      final status =
+          item['status'] as Map<String, dynamic>? ?? const {};
+
+      final isEmbeddable =
+          status['embeddable'] as bool? ?? true;
+
+      if (!isEmbeddable) {
+        return null;
+      }
 
       return LectureModel(
         id: item['id'] as String? ?? '',
@@ -850,8 +885,9 @@ class YoutubeRemoteDataSource {
           as String? ??
               'PT0S',
         ),
+        isEmbeddable: isEmbeddable,
       );
-    }).toList(growable: false);
+    }).whereType<LectureModel>().toList(growable: false);
   }
 
   static String _thumbnail(

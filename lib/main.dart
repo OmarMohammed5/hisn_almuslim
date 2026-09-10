@@ -1,9 +1,10 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:hisn_almuslim/core/routing/app_router.dart';
-import 'package:hisn_almuslim/core/service/notification_service.dart';
+import 'package:hisn_almuslim/core/service/notification_scheduler.dart';
 import 'package:hisn_almuslim/core/service/wird_notification.dart';
 import 'package:hisn_almuslim/features/quran_audio/data/services/app_audio_handler.dart';
 import 'package:hisn_almuslim/features/quran_audio/data/services/app_audio_player_service.dart';
@@ -20,6 +21,8 @@ late final AppAudioHandler audioHandler;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
   // SETUP DEPENDENCY INJECTION
   await setupLocator();
 
@@ -27,8 +30,7 @@ void main() async {
   await _setDeviceTimeZone();
 
   // Initialize notifications
-  await NotificationService.service.init();
-  await DailyWirdNotificationService.init();
+  await NotificationScheduler.instance.initialize();
 
   // Initialize audio service
   audioHandler = await AudioService.init(

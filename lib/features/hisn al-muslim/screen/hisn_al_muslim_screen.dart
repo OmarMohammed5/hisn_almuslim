@@ -7,6 +7,7 @@ import 'package:hisn_almuslim/core/shared/custom_text.dart';
 import 'package:hisn_almuslim/core/utils/arabic_search_utils.dart';
 import 'package:hisn_almuslim/features/al%20azkar/data/cubit/azkar_cubit.dart';
 import 'package:hisn_almuslim/features/hisn%20al-muslim/widgets/zekr_card_widget.dart';
+import '../../../core/shared/app_bar_widget.dart';
 import '../../../core/shared/re_build_scroll_To_Top.dart';
 import '../../../core/shared/search_field.dart';
 
@@ -58,16 +59,11 @@ class _HisnAlmuslimScreenState extends State<HisnAlmuslimScreen> {
           toolbarHeight: 80.h,
           elevation: 0,
           scrolledUnderElevation: 0,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(
-              Icons.arrow_back_ios_rounded,
-              color: isDark ? Colors.white : Colors.black87,
-              size: 18.sp,
-            ),
-          ),
+
+          leading: Padding(
+        padding:  EdgeInsets.only(top: 12.h ,bottom: 12.h ),
+        child: BuildBackButton(context: context, iconColor: isDark ? Colors.white : Colors.black87),
+      ),
 
           title: SearchField(
             hint: 'ابحث في الأذكار ...',
@@ -114,6 +110,7 @@ class _HisnAlmuslimScreenState extends State<HisnAlmuslimScreen> {
               // Results
 
               return ListView.builder(
+                padding: EdgeInsets.all(12.w),
                 itemCount: filteredAzkar.length,
                 physics: const BouncingScrollPhysics(),
                 controller: _scrollController,

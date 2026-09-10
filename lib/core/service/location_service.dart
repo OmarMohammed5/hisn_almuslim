@@ -36,6 +36,11 @@ class LocationService {
     }
   }
 
+  static Future<({double lat, double lng})?> getCachedCoordinates() async {
+    final prefs = await SharedPreferences.getInstance();
+    return _getLastKnown(prefs);
+  }
+
   static Future<Position> _getCurrentPosition() async {
     final serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {

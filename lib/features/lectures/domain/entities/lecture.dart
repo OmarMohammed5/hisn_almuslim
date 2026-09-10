@@ -7,6 +7,7 @@ class Lecture {
   final String thumbnailUrl;
   final DateTime publishedAt;
   final Duration duration;
+  final bool isEmbeddable;
 
   const Lecture({
     required this.id,
@@ -17,5 +18,6 @@ class Lecture {
     required this.thumbnailUrl,
     required this.publishedAt,
     required this.duration,
+    this.isEmbeddable = true,
   });
 }

@@ -80,13 +80,6 @@ class _QuizTopicsScreenState extends State<QuizTopicsScreen> {
       appBar: AppBarWidget(title: widget.category.arabicName),
       body: Column(
         children: [
-          // Padding(
-          //   padding:  EdgeInsets.symmetric(horizontal:  12.w , vertical: 16.h),
-          //   child: Align(
-          //     alignment: Alignment.topRight,
-          //       child: CustomText('اختر الموضوع', fontSize: 18.sp)),
-          // ),
-
           Expanded(
             child: ListView.builder(
               controller: _scrollController,

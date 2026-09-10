@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/shared/custom_text.dart';
+import '../../../core/theme/app_colors.dart';
 import '../domain/entities/surah_entity.dart';
 
 class SurahCard extends StatelessWidget {
@@ -44,7 +45,10 @@ class SurahCard extends StatelessWidget {
 
     final textColor = isDark ? _darkText : _lightText;
 
-    final cardColor = isDark ? _darkCard : Colors.white;
+    final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
+    final borderColor = isDark
+        ? Colors.white.withValues(alpha: 0.07)
+        : AppColors.kBorderLight;
 
     return GestureDetector(
       onTap: onTap,
@@ -53,18 +57,9 @@ class SurahCard extends StatelessWidget {
         margin: EdgeInsets.only(bottom: 9.h),
 
         decoration: BoxDecoration(
-          color: cardColor,
-
+          color: bgColor,
+          border: Border.all(color: borderColor, width: 1),
           borderRadius: BorderRadius.circular(18.r),
-
-          border: Border.all(
-            color: isDark
-                ? Colors.white.withValues(alpha: 0.055)
-                : goldColor.withValues(alpha: 0.13),
-
-            width: 0.8,
-          ),
-
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: isDark ? 0.12 : 0.045),

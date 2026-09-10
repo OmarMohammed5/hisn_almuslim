@@ -9,6 +9,8 @@ import 'package:hisn_almuslim/features/adhan/data/models/prayer_time_model.dart'
 import 'package:hisn_almuslim/features/home/widgets/time_line_item.dart';
 import 'package:intl/intl.dart';
 
+import '../../../core/theme/app_colors.dart';
+
 class PrayerHomeCard extends StatelessWidget {
   const PrayerHomeCard({super.key});
 
@@ -69,7 +71,12 @@ class _PrayerHomeCardContent extends StatelessWidget {
   }
 
   Widget _buildMainCard() {
-    final bgColor = isDark ? const Color(0xFF0D2A26) : const Color(0xFFF8FBF9);
+
+    final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
+    final borderColor = isDark
+        ? Colors.white.withValues(alpha: 0.07)
+        : AppColors.kBorderLight;
+
     final accentColor = isDark
         ? const Color(0xFF4DD0B5)
         : const Color(0xFF0E8A78);
@@ -83,18 +90,15 @@ class _PrayerHomeCardContent extends StatelessWidget {
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
         color: bgColor,
+        border: Border.all(color: borderColor, width: 1),
         borderRadius: BorderRadius.circular(24.r),
         boxShadow: [
           BoxShadow(
-            color: accentColor.withValues(alpha: 0.12),
-            blurRadius: 40,
-            offset: Offset(0, 10.h),
+            color: accentColor.withValues(alpha: 0.02),
+            blurRadius: 2,
+            offset: Offset(0, 2.h),
           ),
         ],
-        border: Border.all(
-          color: cardBorderColor.withValues(alpha: isDark ? 0.3 : 0.2),
-          width: 1.5,
-        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -234,19 +238,18 @@ class _PrayerHomeCardContent extends StatelessWidget {
       }
     }
 
+    final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
+    final borderColor = isDark
+        ? Colors.white.withValues(alpha: 0.07)
+        : AppColors.kBorderLight;
+
+
     return Container(
       padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
       decoration: BoxDecoration(
-        color: isDark
-            ? const Color(0xFF0D2A26).withValues(alpha: 0.7)
-            : Colors.white,
+        color: bgColor,
+        border: Border.all(color: borderColor, width: 1),
         borderRadius: BorderRadius.circular(20.r),
-        border: Border.all(
-          color: isDark
-              ? const Color(0xFF1A4A42).withValues(alpha: 0.3)
-              : const Color(0xFFB2DFDB).withValues(alpha: 0.3),
-          width: 1.5,
-        ),
       ),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,

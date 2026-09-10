@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -58,8 +59,7 @@ class QariControlBar extends StatelessWidget {
       child: isLoading
           ? Padding(
         padding: EdgeInsets.all(11.w),
-        child: CircularProgressIndicator(
-          strokeWidth: 2,
+        child: CupertinoActivityIndicator(
           color: colors.primary,
         ),
       )

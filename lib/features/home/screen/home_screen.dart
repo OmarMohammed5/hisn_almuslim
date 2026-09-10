@@ -4,6 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/features/home/data/models/category_model.dart';
 import 'package:hisn_almuslim/features/home/widgets/cairo_radio_card.dart';
 import 'package:hisn_almuslim/features/home/widgets/hijri_calender.dart';
+import 'package:hisn_almuslim/features/home/widgets/lectures_and_lessons_card.dart';
 import 'package:hisn_almuslim/features/home/widgets/prayer_home_card.dart';
 import 'package:hisn_almuslim/features/home/widgets/home_categories_section.dart';
 import 'package:hisn_almuslim/features/home/widgets/home_section_header.dart';
@@ -12,7 +13,6 @@ import '../../../hisn_al_muslim_app.dart';
 import '../../quran/data/cubit/ayah_highlight_cubit.dart';
 import '../../quran/data/cubit/quran_cubit.dart';
 import '../../quran/widgets/reading_dashboard.dart';
-import '../widgets/featured_banners.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -70,7 +70,13 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
 
             SliverToBoxAdapter(child: const ReadingDashboard()),
 
-            SliverToBoxAdapter(child: Gap(30.h)),
+            SliverToBoxAdapter(child: Gap(24.h)),
+
+            const SliverToBoxAdapter(
+              child: LecturesAndLessonsCard(),
+            ),
+
+            SliverToBoxAdapter(child: Gap(28.h)),
 
             SliverToBoxAdapter(
               child: Padding(
@@ -99,15 +105,6 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
                 initialVisibleCount: 2,
               ),
             ),
-
-
-
-
-
-            // SliverToBoxAdapter(child: Gap(14.h)),
-            //
-            // // Lectures
-            // const SliverToBoxAdapter(child: LecturesAndLessonsCard()),
 
             // Bottom spacing
             SliverToBoxAdapter(child: Gap(110.h)),

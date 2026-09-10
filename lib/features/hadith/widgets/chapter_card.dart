@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 
+import '../../../core/theme/app_colors.dart';
+
 class ChapterCard extends StatelessWidget {
   final int chapterId;
   final String chapterTitle;
@@ -23,7 +25,11 @@ class ChapterCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final bgColor = isDark ? const Color(0xFF0F171A) : Colors.white;
+
+    final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
+    final borderColor = isDark
+        ? Colors.white.withValues(alpha: 0.07)
+        : AppColors.kBorderLight;
 
     return GestureDetector(
       onTap: onTap,
@@ -43,12 +49,7 @@ class ChapterCard extends StatelessWidget {
               spreadRadius: 2,
             ),
           ],
-          border: Border.all(
-            color: isDark
-                ? Colors.white.withValues(alpha: 0.05)
-                : Colors.blue.withValues(alpha: 0.1),
-            width: 1,
-          ),
+          border: Border.all(color: borderColor, width: 1),
         ),
         child: Row(
           children: [

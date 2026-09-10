@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:hisn_almuslim/features/asma%20allah/data/model/asma_allah_model.dart';
 
+import '../../../core/theme/app_colors.dart';
+
 class AsmaCard extends StatelessWidget {
   final AsmaAllahModel model;
   final VoidCallback? onTap;
@@ -25,26 +27,22 @@ class AsmaCard extends StatelessWidget {
         ? const Color(0xFFA7B5B0)
         : const Color(0xFF58736D);
 
+    final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
+    final borderColor = isDark
+        ? Colors.white.withValues(alpha: 0.07)
+        : AppColors.kBorderLight;
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 7.w, vertical: 8.h),
-
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: onTap,
-
         child: Container(
           width: double.infinity,
-
           decoration: BoxDecoration(
-            color: cardColor,
-
+            color: bgColor,
+            border: Border.all(color: borderColor, width: 1),
             borderRadius: BorderRadius.circular(30.r),
-
-            border: Border.all(
-              color: accent.withValues(alpha: .12),
-              width: 1.w,
-            ),
-
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: isDark ? .18 : .055),

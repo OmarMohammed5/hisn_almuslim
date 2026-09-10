@@ -1,334 +1,386 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:hisn_almuslim/features/tasbeeh/data/cubit/counter_cubit.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
+import 'package:hisn_almuslim/features/tasbeeh/data/cubit/counter_cubit.dart';
 
-class CardWidget extends StatefulWidget {
+import '../../../core/theme/app_colors.dart';
+
+class CardWidget extends StatelessWidget {
   const CardWidget({super.key});
 
-  @override
-  State<CardWidget> createState() => _CardWidgetState();
-}
-
-class _CardWidgetState extends State<CardWidget> {
-  int _previousTotal = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    context.read<CounterCubit>();
-  }
+  static const _deepGreen = Color(0xFF075847);
+  static const _green = Color(0xFF0D8066);
+  static const _mint = Color(0xFFBFEBDD);
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    // Soft, elegant Islamic color palette
-    final gradientColors = isDark
-        ? [
-      const Color(0xFF003333), // Very dark teal
-      const Color(0xFF005050), // Dark teal
-      // const Color(0xFF007070), // Medium-dark teal
-    ]
-        : [
-      // Light mode (unchanged)
-      const Color(0xFF1B4D3E),
-      const Color(0xFF2D6A4F),
-      const Color(0xFF40916C),
-    ];
+    final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
+    final borderColor = isDark
+        ? Colors.white.withValues(alpha: 0.07)
+        : AppColors.kBorderLight;
 
-
-    final accentColor = isDark ? const Color(0xFF52B788) : const Color(0xFFD4EDDA);
-    final textColor = isDark ? Colors.white : Colors.white;
-    final cardShadow = isDark
-        ? Colors.black.withValues(alpha: 0.5)
-        : const Color(0xFF1B4D3E).withValues(alpha: 0.3);
 
     return BlocBuilder<CounterCubit, Map<int, int>>(
+      buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
         final total = context.read<CounterCubit>().total;
-        final bool totalIncreased = total > _previousTotal;
-        _previousTotal = total;
 
         return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
+          padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 16.h),
           child: Container(
+            constraints: BoxConstraints(minHeight: 176.h, maxHeight: 205.h),
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: gradientColors,
-              ),
+              color: bgColor,
+              border: Border.all(color: borderColor, width: 1),
               borderRadius: BorderRadius.circular(28.r),
               boxShadow: [
                 BoxShadow(
-                  color: cardShadow,
-                  blurRadius: 30,
-                  offset: Offset(0, 10.h),
+                  color: Colors.black.withValues(alpha: isDark ? .20 : .08),
+                  blurRadius: 28.r,
+                  offset: Offset(0, 12.h),
                 ),
               ],
-              border: Border.all(
-                color: accentColor.withValues(alpha: 0.15),
-                width: 1.5.w,
-              ),
             ),
-            child: Stack(
-              children: [
-                // Decorative Islamic pattern overlay
-                Positioned(
-                  top: -20.h,
-                  right: -20.w,
-                  child: Container(
-                    width: 120.w,
-                    height: 120.w,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: RadialGradient(
-                        colors: [
-                          accentColor.withValues(alpha: 0.08),
-                          Colors.transparent,
-                        ],
-                        radius: 1.0,
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  bottom: -30.h,
-                  left: -30.w,
-                  child: Container(
-                    width: 150.w,
-                    height: 150.w,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: RadialGradient(
-                        colors: [
-                          accentColor.withValues(alpha: 0.05),
-                          Colors.transparent,
-                        ],
-                        radius: 1.0,
-                      ),
-                    ),
-                  ),
-                ),
-
-                // Main content
-                Padding(
-                  padding: EdgeInsets.all(14.w),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    spacing: 16.w,
-                    children: [
-                      /// Ayah
-                      Expanded(
-                        flex: 2,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Badge
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 10.w,
-                                vertical: 4.h,
-                              ),
-                              decoration: BoxDecoration(
-                                color: accentColor.withValues(alpha: 0.1),
-                                borderRadius: BorderRadius.circular(12.r),
-                                border: Border.all(
-                                  color: accentColor.withValues(alpha: 0.1),
-                                ),
-                              ),
-                              child: CustomText(
-                                "قال الله تعالى",
-                                fontSize: 10.sp,
-                                fontWeight: FontWeight.w600,
-                                color: accentColor.withValues(alpha: 0.8),
-                              ),
-                            ),
-                            Gap(14.h),
-
-                            // Ayah Text
-                            Container(
-                              padding: EdgeInsets.all(10.w),
-                              decoration: BoxDecoration(
-                                color: accentColor.withValues(alpha: 0.04),
-                                borderRadius: BorderRadius.circular(16.r),
-                                border: Border.all(
-                                  color: accentColor.withValues(alpha: 0.06),
-                                  width: 1.w,
-                                ),
-                              ),
-                              child: Text(
-                                "﴿ وَمَن أَعْرَضَ عَن ذِكْرِي فَإِنَّ لَهُ مَعِيشَةً ضَنكًا وَنَحْشُرُهُ يَوْمَ الْقِيَامَةِ أَعْمَى ﴾",
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w600,
-                                  height: 2.0,
-                                  fontFamily: "QuranFont",
-                                  color: textColor.withValues(alpha: 0.92),
-                                  letterSpacing: 0.5,
-                                  shadows: [
-                                    Shadow(
-                                      color: Colors.black.withValues(alpha: 0.1),
-                                      blurRadius: 4,
-                                      offset: const Offset(0, 1),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Gap(10.h),
-
-                            // Source
-                            CustomText(
-                              "صدق الله العظيم",
-                              fontSize: 10.sp,
-                              color: textColor.withValues(alpha: 0.35),
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ],
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(28.r),
+              child: Stack(
+                children: [
+                  // Very subtle identity accent — no heavy glow/gradient.
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: Container(
+                      width: 92.w,
+                      height: 5.h,
+                      decoration: const BoxDecoration(
+                        color: _green,
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(12),
                         ),
                       ),
-                      /// Total Counter
-                      Expanded(
-                        flex: 1,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(18.w, 18.h, 18.w, 17.h),
+                    child: Column(
+                      children: [
+                        Row(
                           children: [
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 12.w,
-                                vertical: 8.h,
-                              ),
-                              decoration: BoxDecoration(
-                                color: accentColor.withValues(alpha: 0.12),
-                                borderRadius: BorderRadius.circular(20.r),
-                                border: Border.all(
-                                  color: accentColor.withValues(alpha: 0.2),
-                                  width: 1.w,
-                                ),
-                              ),
-                              child: CustomText(
-                                "الإجمالي",
-                                fontSize: 11.sp,
-                                fontWeight: FontWeight.w600,
-                                color: accentColor.withValues(alpha: 0.9),
-                              ),
-                            ),
-                            Gap(10.h),
-                            AnimatedSwitcher(
-                              duration: const Duration(milliseconds: 300),
-                              transitionBuilder: (child, animation) {
-                                return ScaleTransition(
-                                  scale: Tween<double>(begin: 0.5, end: 1.0).animate(
-                                    CurvedAnimation(
-                                      parent: animation,
-                                      curve: Curves.elasticOut,
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 42.w,
+                                    height: 42.w,
+                                    decoration: BoxDecoration(
+                                      color: isDark
+                                          ? _green.withValues(alpha: .18)
+                                          : _green.withValues(alpha: .09),
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                        color: _green.withValues(alpha: .18),
+                                      ),
+                                    ),
+                                    child: Icon(
+                                      FlutterIslamicIcons.tasbihHand,
+                                      size: 19.sp,
+                                      color: isDark ? _mint : _green,
                                     ),
                                   ),
-                                  child: child,
-                                );
-                              },
-                              child: Container(
-                                key: ValueKey(total),
-                                width: 64.w,
-                                height: 64.w,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  gradient: LinearGradient(
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                    colors: [
-                                      accentColor.withValues(alpha: 0.2),
-                                      accentColor.withValues(alpha: 0.05),
-                                    ],
-                                  ),
-                                  border: Border.all(
-                                    color: accentColor.withValues(alpha: 0.3),
-                                    width: 2.5.w,
-                                  ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: accentColor.withValues(alpha: 0.1),
-                                      blurRadius: 15,
-                                      offset: Offset(0, 4.h),
-                                    ),
-                                  ],
-                                ),
-                                child: Center(
-                                  child: CustomText(
-                                    "$total",
-                                    fontSize: 22.sp,
-                                    fontWeight: FontWeight.w800,
-                                    color: textColor,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Gap(12.h),
-                            Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                onTap: () {
-                                  HapticFeedback.mediumImpact();
-
-                                  context.read<CounterCubit>().resetAll();
-                                },
-                                borderRadius: BorderRadius.circular(14.r),
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 14.w,
-                                    vertical: 8.h,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        accentColor.withValues(alpha: 0.15),
-                                        accentColor.withValues(alpha: 0.05),
-                                      ],
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                    ),
-                                    borderRadius: BorderRadius.circular(14.r),
-                                    border: Border.all(
-                                      color: accentColor.withValues(alpha: 0.15),
-                                      width: 1.w,
-                                    ),
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    spacing: 4.w,
+                                  Gap(10.w),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Icon(
-                                        Icons.restart_alt_rounded,
-                                        color: accentColor.withValues(alpha: 0.8),
-                                        size: 16.sp,
-                                      ),
                                       CustomText(
-                                        "إعادة",
-                                        color: accentColor.withValues(alpha: 0.8),
-                                        fontSize: 11.sp,
-                                        fontWeight: FontWeight.w600,
+                                        'عداد التسبيح',
+                                        color: isDark
+                                            ? Colors.white
+                                            : const Color(0xFF18332D),
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w800,
                                       ),
                                     ],
                                   ),
-                                ),
+                                ],
                               ),
+                            ),
+                            _ResetButton(
+                              onTap: () => _reset(context),
+                              isDark: isDark,
                             ),
                           ],
                         ),
-                      ),
-                    ],
+                        Gap(17.h),
+                        Expanded(
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: _TotalCounter(
+                                  total: total,
+                                  isDark: isDark,
+                                ),
+                              ),
+                              Gap(16.w),
+                              SizedBox(
+                                width: 118.w,
+                                child: _ProgressRing(
+                                  total: total,
+                                  isDark: isDark,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );
       },
+    );
+  }
+
+  void _reset(BuildContext context) {
+    HapticFeedback.mediumImpact();
+    context.read<CounterCubit>().resetAll();
+  }
+}
+
+class _TotalCounter extends StatelessWidget {
+  const _TotalCounter({required this.total, required this.isDark});
+
+  final int total;
+  final bool isDark;
+
+  @override
+  Widget build(BuildContext context) {
+    final primary = isDark ? Colors.white : const Color(0xFF17342E);
+    final muted = isDark
+        ? Colors.white.withValues(alpha: .52)
+        : const Color(0xFF17342E).withValues(alpha: .50);
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CustomText(
+          'إجمالي التسبيحات',
+          color: muted,
+          fontSize: 10.sp,
+          fontWeight: FontWeight.w600,
+        ),
+        Gap(4.h),
+        AnimatedSwitcher(
+          duration: const Duration(milliseconds: 180),
+          switchInCurve: Curves.easeOutBack,
+          switchOutCurve: Curves.easeIn,
+          transitionBuilder: (child, animation) =>
+              ScaleTransition(scale: animation, child: child),
+          child: Text(
+            '$total',
+            key: ValueKey(total),
+            maxLines: 1,
+            overflow: TextOverflow.fade,
+            style: TextStyle(
+              fontSize: total > 99999 ? 29.sp : 34.sp,
+              height: 1,
+              fontWeight: FontWeight.w900,
+              color: primary,
+              fontFamily: 'Cairo',
+              letterSpacing: -.5,
+            ),
+          ),
+        ),
+        Gap(8.h),
+        Row(
+          children: [
+            Container(
+              width: 28.w,
+              height: 3.h,
+              decoration: BoxDecoration(
+                color: CardWidget._green,
+                borderRadius: BorderRadius.circular(10.r),
+              ),
+            ),
+            Gap(6.w),
+            Flexible(
+              child: CustomText(
+                total == 0 ? 'ابدأ أول تسبيحة' : 'ما شاء الله، استمر',
+                color: muted,
+                fontSize: 9.sp,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _ProgressRing extends StatelessWidget {
+  const _ProgressRing({required this.total, required this.isDark});
+
+  final int total;
+  final bool isDark;
+
+  @override
+  Widget build(BuildContext context) {
+    final progress = (total % 33) / 33.0;
+    final current = total % 33 == 0 && total > 0 ? 33 : total % 33;
+
+    return SizedBox(
+      width: 108.w,
+      height: 108.w,
+      child: TweenAnimationBuilder<double>(
+        tween: Tween(begin: 0, end: progress),
+        duration: const Duration(milliseconds: 260),
+        curve: Curves.easeOutCubic,
+        builder: (context, value, child) {
+          return CustomPaint(
+            painter: _ProgressPainter(progress: value, isDark: isDark),
+            child: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    '$current / 33',
+                    style: TextStyle(
+                      fontFamily: 'Cairo',
+                      fontSize: 10.5.sp,
+                      fontWeight: FontWeight.w800,
+                      color: isDark
+                          ? Colors.white.withValues(alpha: .82)
+                          : const Color(0xFF17342E).withValues(alpha: .78),
+                    ),
+                  ),
+                  Text(
+                    'هذه الدورة',
+                    style: TextStyle(
+                      fontFamily: 'Cairo',
+                      fontSize: 7.5.sp,
+                      fontWeight: FontWeight.w500,
+                      color: isDark
+                          ? Colors.white.withValues(alpha: .42)
+                          : const Color(0xFF17342E).withValues(alpha: .42),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _ProgressPainter extends CustomPainter {
+  const _ProgressPainter({required this.progress, required this.isDark});
+
+  final double progress;
+  final bool isDark;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final center = size.center(Offset.zero);
+    final radius = math.min(size.width, size.height) / 2 - 5;
+
+    final track = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 7
+      ..strokeCap = StrokeCap.round
+      ..color = (isDark ? Colors.white : CardWidget._deepGreen).withValues(
+        alpha: .08,
+      );
+
+    final active = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 7
+      ..strokeCap = StrokeCap.round
+      ..color = isDark ? CardWidget._mint : CardWidget._green;
+
+    canvas.drawCircle(center, radius, track);
+
+    if (progress > 0) {
+      canvas.drawArc(
+        Rect.fromCircle(center: center, radius: radius),
+        -math.pi / 2,
+        math.pi * 2 * progress,
+        false,
+        active,
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _ProgressPainter oldDelegate) {
+    return oldDelegate.progress != progress || oldDelegate.isDark != isDark;
+  }
+}
+
+class _ResetButton extends StatelessWidget {
+  const _ResetButton({required this.onTap, required this.isDark});
+
+  final VoidCallback onTap;
+  final bool isDark;
+
+  @override
+  Widget build(BuildContext context) {
+    final foreground = isDark ? Colors.white : const Color(0xFF17342E);
+
+    return Semantics(
+      button: true,
+      label: 'إعادة ضبط الإجمالي',
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(14.r),
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 11.w, vertical: 8.h),
+            decoration: BoxDecoration(
+              color: isDark
+                  ? Colors.white.withValues(alpha: .06)
+                  : const Color(0xFFF3F7F5),
+              borderRadius: BorderRadius.circular(14.r),
+              border: Border.all(
+                color: isDark
+                    ? Colors.white.withValues(alpha: .08)
+                    : CardWidget._deepGreen.withValues(alpha: .08),
+              ),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.restart_alt_rounded,
+                  size: 15.sp,
+                  color: foreground.withValues(alpha: .68),
+                ),
+                Gap(4.w),
+                CustomText(
+                  'إعادة',
+                  color: foreground.withValues(alpha: .68),
+                  fontSize: 9.5.sp,
+                  fontWeight: FontWeight.w700,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

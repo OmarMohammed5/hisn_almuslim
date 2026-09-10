@@ -7,11 +7,11 @@ import 'package:hisn_almuslim/core/theme/app_colors.dart';
 
 import '../../domain/entities/lecture.dart';
 
-class LectureCard extends StatelessWidget {
+class FeaturedLectureCard extends StatelessWidget {
   final Lecture lecture;
   final VoidCallback onTap;
 
-  const LectureCard({
+  const FeaturedLectureCard({
     super.key,
     required this.lecture,
     required this.onTap,
@@ -19,12 +19,10 @@ class LectureCard extends StatelessWidget {
 
   String _duration() {
     if (lecture.duration == Duration.zero) return '';
-
-    final h = lecture.duration.inHours;
-    final m = lecture.duration.inMinutes.remainder(60).toString().padLeft(2, '0');
-    final s = lecture.duration.inSeconds.remainder(60).toString().padLeft(2, '0');
-
-    return h > 0 ? '$h:$m:$s' : '$m:$s';
+    final minutes = lecture.duration.inMinutes;
+    final hours = minutes ~/ 60;
+    final remaining = minutes % 60;
+    return hours > 0 ? '${hours}س ${remaining}د' : '$minutes د';
   }
 
   @override
@@ -37,30 +35,33 @@ class LectureCard extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(20.r),
         child: Ink(
-          padding: EdgeInsets.all(9.w),
+          width: 252.w,
           decoration: BoxDecoration(
             color: scheme.surface,
             borderRadius: BorderRadius.circular(20.r),
             border: Border.all(
-              color: scheme.primary.withValues(alpha: .09),
+              color: AppColors.kPrimary.withValues(alpha: .10),
             ),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(
-                  alpha: Theme.of(context).brightness == Brightness.dark ? .05 : .025,
+                  alpha: Theme.of(context).brightness == Brightness.dark ? .04 : .025,
                 ),
                 blurRadius: 12.r,
                 offset: Offset(0, 4.h),
               ),
             ],
           ),
-          child: Row(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.circular(15.r),
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(20.r),
+                ),
                 child: SizedBox(
-                  width: 132.w,
-                  height: 82.h,
+                  height: 124.h,
+                  width: double.infinity,
                   child: CachedNetworkImage(
                     imageUrl: lecture.thumbnailUrl,
                     fit: BoxFit.cover,
@@ -75,21 +76,21 @@ class LectureCard extends StatelessWidget {
                       child: Icon(
                         Icons.ondemand_video_rounded,
                         color: AppColors.kPrimary,
-                        size: 30.sp,
+                        size: 32.sp,
                       ),
                     ),
                   ),
                 ),
               ),
-              SizedBox(width: 11.w),
-              Expanded(
+              Padding(
+                padding: EdgeInsets.fromLTRB(12.w, 11.h, 12.w, 12.h),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomText(
                       lecture.title,
-                      maxLines: 3,
-                      fontSize: 13.5.sp,
+                      maxLines: 2,
+                      fontSize: 12.5.sp,
                       fontWeight: FontWeight.w800,
                       height: 1.35,
                     ),
@@ -104,31 +105,30 @@ class LectureCard extends StatelessWidget {
                         SizedBox(width: 5.w),
                         Expanded(
                           child: CustomText(
-                            'YouTube • ${lecture.channelName}',
+                            lecture.channelName,
                             maxLines: 1,
-                            fontSize: 10.sp,
-                            fontWeight: FontWeight.w600,
+                            fontSize: 9.5.sp,
                             color: scheme.onSurface.withValues(alpha: .55),
                           ),
                         ),
+                        if (_duration().isNotEmpty)
+                          CustomText(
+                            _duration(),
+                            fontSize: 9.sp,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.kPrimary,
+                          ),
                       ],
                     ),
-                    if (_duration().isNotEmpty) ...[
-                      SizedBox(height: 7.h),
-                      CustomText(
-                        _duration(),
-                        fontSize: 9.5.sp,
-                        color: scheme.onSurface.withValues(alpha: .45),
-                      ),
-                    ],
+                    SizedBox(height: 8.h),
+                    CustomText(
+                      'YouTube',
+                      fontSize: 9.sp,
+                      fontWeight: FontWeight.w700,
+                      color: scheme.onSurface.withValues(alpha: .42),
+                    ),
                   ],
                 ),
-              ),
-              SizedBox(width: 5.w),
-              Icon(
-                Icons.arrow_forward_ios_rounded,
-                size: 14.sp,
-                color: AppColors.kPrimary.withValues(alpha: .75),
               ),
             ],
           ),

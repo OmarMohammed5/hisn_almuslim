@@ -1,5 +1,4 @@
 import 'package:get_it/get_it.dart';
-import 'package:hisn_almuslim/features/adhan/data/cubit/adhan_settings_cubit.dart';
 import 'package:hisn_almuslim/features/islamic_quiz/data/datasources/quiz_local_data_source.dart';
 import 'package:hisn_almuslim/features/islamic_quiz/data/repositories/quiz_repository_impl.dart';
 import 'package:hisn_almuslim/features/islamic_quiz/domain/repositories/quiz_repository.dart';
@@ -8,7 +7,6 @@ import 'package:hisn_almuslim/features/islamic_quiz/presentation/cubit/quiz_cubi
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:hisn_almuslim/core/service/notification_service.dart';
-import 'package:hisn_almuslim/core/service/wird_notification.dart';
 import 'package:hisn_almuslim/features/quran/data/models/quran_storage.dart';
 import 'package:hisn_almuslim/features/asma%20allah/data/repo/asma_repositiry.dart';
 import 'package:hisn_almuslim/features/quran_audio/data/repos/quran_audio_repository.dart';
@@ -111,9 +109,6 @@ Future<void> setupLocator() async {
   sl.registerLazySingleton<NotificationService>(
         () => NotificationService.service,
   );
-  sl.registerLazySingleton<DailyWirdNotificationService>(
-        () => DailyWirdNotificationService(),
-  );
 
   // ========== Storage ==========
   sl.registerLazySingleton<QuranStorage>(() => QuranStorage());
@@ -153,11 +148,7 @@ Future<void> setupLocator() async {
   );
   sl.registerFactory<AdhanCubit>(() => AdhanCubit()..loadPrayerTimes());
 
-  sl.registerFactory<AdhanSettingsCubit>(() => AdhanSettingsCubit());
 
-  // sl.registerFactory<QuranProgressCubit>(
-  //       () => QuranProgressCubit(sl<QuranStorage>())..loadSavedProgress(),
-  // );
   sl.registerFactory<AsmaAllahCubit>(
         () => AsmaAllahCubit(sl<AsmaRepository>())..loadNames(),
   );

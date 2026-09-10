@@ -11,7 +11,6 @@ import 'package:hisn_almuslim/features/lectures/presentation/screens/lectures_sc
 import 'package:hisn_almuslim/features/lectures/presentation/screens/playlist_details_screen.dart';
 import 'package:hisn_almuslim/features/lectures/presentation/screens/sheikh_details_screen.dart';
 import 'package:hisn_almuslim/features/radio/presentation/cubit/radio_cubit.dart';
-import 'package:hisn_almuslim/features/settings/screen/adhan_settings_screen.dart';
 import 'package:hisn_almuslim/features/stories/domain/entities/prophet_story.dart';
 import 'package:hisn_almuslim/features/stories/ui/cubit/stories_cubit.dart';
 import 'package:hisn_almuslim/features/stories/ui/screens/stories_screen.dart';
@@ -19,7 +18,6 @@ import 'package:hisn_almuslim/features/stories/ui/screens/story_details_screen.d
 import 'package:hisn_almuslim/root.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../features/adhan/data/cubit/adhan_cubit.dart';
-import '../../features/adhan/data/cubit/adhan_settings_cubit.dart';
 import '../../features/al azkar/data/cubit/azkar_cubit.dart';
 import '../../features/al azkar/evening azkar/screen/evening_azkar_screen.dart';
 import '../../features/al azkar/morning azkar/screen/morning_azkar_screen.dart';
@@ -132,21 +130,19 @@ class AppRouter {
         );
 
       case AppRoutes.lecturePlayer:
-        final args = arguments as Map<String, dynamic>;
+        final args = settings.arguments as Map<String, dynamic>;
 
-        final preferences = args['preferences'] as SharedPreferences;
         final lecture = args['lecture'] as Lecture;
-        final initialPositionSeconds = args['initialPositionSeconds'] as double;
+        final preferences = args['preferences'] as SharedPreferences;
 
-        return slidePageRoute(
-          settings: settings,
-          child: BlocProvider(
-            create: (_) => sl<LecturesCubit>(),
-            child: LecturePlayerScreen(
-              preferences: preferences,
-              lecture: lecture,
-              initialPositionSeconds: initialPositionSeconds,
-            ),
+        final initialPositionSeconds =
+        (args['initialPositionSeconds'] as num?)?.toDouble();
+
+        return MaterialPageRoute(
+          builder: (_) => LecturePlayerScreen(
+            lecture: lecture,
+            preferences: preferences,
+            initialPositionSeconds: initialPositionSeconds,
           ),
         );
 
@@ -507,22 +503,9 @@ class AppRouter {
               BlocProvider.value(value: sl<ThemeCubit>()),
               BlocProvider.value(value: sl<NotificationCubit>()),
               BlocProvider(create: (_) => sl<AdhanCubit>()),
-              BlocProvider(create: (_) => sl<AdhanSettingsCubit>()),
+              // BlocProvider(create: (_) => sl<AdhanSettingsCubit>()),
             ],
             child: const SettingsScreen(),
-          ),
-        );
-
-      case AppRoutes.adhanSettings:
-        return slidePageRoute(
-          settings: settings,
-          child: MultiBlocProvider(
-            providers: [
-              BlocProvider.value(value: sl<NotificationCubit>()),
-              BlocProvider(create: (_) => sl<AdhanCubit>()),
-              BlocProvider(create: (_) => sl<AdhanSettingsCubit>()),
-            ],
-            child: const AdhanSettingsScreen(),
           ),
         );
 

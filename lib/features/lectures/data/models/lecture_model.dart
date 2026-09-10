@@ -10,6 +10,7 @@ class LectureModel extends Lecture {
     required super.thumbnailUrl,
     required super.publishedAt,
     required super.duration,
+    super.isEmbeddable = true,
   });
 
   factory LectureModel.fromJson(Map<String, dynamic> json) {
@@ -21,12 +22,13 @@ class LectureModel extends Lecture {
       channelName: json['channelName'] as String? ?? '',
       thumbnailUrl: json['thumbnailUrl'] as String? ?? '',
       publishedAt: DateTime.tryParse(
-        json['publishedAt'] as String? ?? '',
-      ) ??
+            json['publishedAt'] as String? ?? '',
+          ) ??
           DateTime.fromMillisecondsSinceEpoch(0),
       duration: Duration(
         seconds: (json['durationSeconds'] as num?)?.toInt() ?? 0,
       ),
+      isEmbeddable: json['isEmbeddable'] as bool? ?? true,
     );
   }
 
@@ -40,6 +42,7 @@ class LectureModel extends Lecture {
       'thumbnailUrl': thumbnailUrl,
       'publishedAt': publishedAt.toIso8601String(),
       'durationSeconds': duration.inSeconds,
+      'isEmbeddable': isEmbeddable,
     };
   }
 }

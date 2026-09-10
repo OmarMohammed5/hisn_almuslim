@@ -179,29 +179,19 @@ Widget buildEmptyState(BuildContext context, bool isDark) {
   final primary = Theme.of(context).colorScheme.primary;
   final titleColor = isDark ? Colors.white : const Color(0xFF183A36);
 
+  final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
+  final borderColor = isDark
+      ? Colors.white.withValues(alpha: 0.07)
+      : AppColors.kBorderLight;
+
 
   return Container(
     margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
     padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
     decoration: BoxDecoration(
-      gradient: LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: isDark
-            ? [
-          const Color(0xFF101F1D),
-          const Color(0xFF1A2E2B),
-        ]
-            : [
-          Colors.white,
-          const Color(0xFFF8FAF9),
-        ],
-      ),
+      color: bgColor,
+      border: Border.all(color: borderColor, width: 1),
       borderRadius: BorderRadius.circular(18.r),
-      border: Border.all(
-        color: primary.withValues(alpha: isDark ? .12 : .08),
-        width: 1,
-      ),
       boxShadow: [
         BoxShadow(
           color: isDark

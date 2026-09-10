@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gap/gap.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:hisn_almuslim/features/home/widgets/calender_day_item.dart';
 import 'package:hisn_almuslim/features/home/widgets/calender_header.dart';
+
+import '../../../core/theme/app_colors.dart';
 
 class HijriCalendarCard extends StatefulWidget {
   const HijriCalendarCard({super.key});
@@ -75,22 +76,21 @@ class _HijriCalendarCardState extends State<HijriCalendarCard> {
     final selectedDate = selectedDay['date'] as DateTime;
     final selectedIsToday = selectedDay['isToday'] as bool;
 
+    final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
+    final borderColor = isDark
+        ? Colors.white.withValues(alpha: 0.07)
+        : AppColors.kBorderLight;
+
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 18.w),
       decoration: BoxDecoration(
-        color: isDark ? _darkSurface : Colors.white,
-        borderRadius: BorderRadius.circular(28.r),
-        border: Border.all(
-          color: isDark
-              ? Colors.white.withValues(alpha: 0.06)
-              : const Color(0xFFE1EEEA),
-          width: 1.5,
-        ),
+        color: bgColor,
+        border: Border.all(color: borderColor, width: 1),        borderRadius: BorderRadius.circular(28.r),
         boxShadow: [
           BoxShadow(
-            color: _primary.withValues(alpha: isDark ? 0.15 : 0.08),
-            blurRadius: 30,
-            offset: Offset(0, 10.h),
+            color: _primary.withValues(alpha: isDark ? 0.01 : 0.08),
+            blurRadius: 2,
+            offset: Offset(0, 2.h),
           ),
         ],
       ),
@@ -119,29 +119,29 @@ class _HijriCalendarCardState extends State<HijriCalendarCard> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Row(
-            children: [
-              Container(
-                width: 3.w,
-                height: 14.h,
-                decoration: BoxDecoration(
-                  color: _primary,
-                  borderRadius: BorderRadius.circular(2.r),
-                ),
-              ),
-              Gap(6.w),
-              Text(
-                'أيام الأسبوع',
-                style: TextStyle(
-                  color: textColor,
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w800,
-                  fontFamily: 'Cairo',
-                ),
-              ),
-            ],
-          ),
-          Gap(10.h),
+          // Row(
+          //   children: [
+          //     Container(
+          //       width: 3.w,
+          //       height: 14.h,
+          //       decoration: BoxDecoration(
+          //         color: _primary,
+          //         borderRadius: BorderRadius.circular(2.r),
+          //       ),
+          //     ),
+              // Gap(6.w),
+              // Text(
+              //   'أيام الأسبوع',
+              //   style: TextStyle(
+              //     color: textColor,
+              //     fontSize: 12.sp,
+              //     fontWeight: FontWeight.w800,
+              //     fontFamily: 'Cairo',
+              //   ),
+              // ),
+            // ],
+          // ),
+          // Gap(10.h),
           SizedBox(
             height: 62.h,
             child: Row(

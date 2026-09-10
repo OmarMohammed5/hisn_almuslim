@@ -14,6 +14,6 @@ class AppColors {
 
   static Color kPrimaryMedium = Colors.teal.shade600;
   static const Color kSurfaceDark = Color(0xFF0F171A);
-  static Color kBorderLight = Colors.grey.shade100;
+  static Color kBorderLight = Colors.grey.shade400;
   static const Color kAccentGold = Color(0xFFD4AF37);
 }

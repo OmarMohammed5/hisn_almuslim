@@ -69,7 +69,7 @@ class _LecturePlayerScreenState
     _controller =
         YoutubePlayerController.fromVideoId(
           videoId: widget.lecture.id,
-          autoPlay: true,
+          autoPlay: false,
           startSeconds: start,
           params: const YoutubePlayerParams(
             showControls: true,

@@ -30,6 +30,11 @@ class _ReciterSelectorButtonState extends State<ReciterSelectorButton> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
+    final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
+    final borderColor = isDark
+        ? Colors.white.withValues(alpha: 0.07)
+        : AppColors.kBorderLight;
+
     return BlocBuilder<AudioPlayerCubit, AudioPlayerState>(
       buildWhen: (previous, current) {
         if (previous is AudioPlayerReady && current is AudioPlayerReady) {
@@ -49,20 +54,9 @@ class _ReciterSelectorButtonState extends State<ReciterSelectorButton> {
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: isDark
-                    ? [const Color(0xFF1A2332), Colors.grey.shade900]
-                    : [Colors.white, const Color(0xFFF8FAFC)],
-              ),
+              color: bgColor,
+              border: Border.all(color: borderColor, width: 1),
               borderRadius: BorderRadius.circular(25.r),
-              border: Border.all(
-                color: isDark
-                    ? Colors.white.withValues(alpha: 0.08)
-                    : Colors.grey.shade200,
-                width: 1.w,
-              ),
               boxShadow: [
                 BoxShadow(
                   color: isDark

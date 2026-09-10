@@ -108,7 +108,7 @@ class StoryShareCard extends StatelessWidget {
                 fontSize: 58,
                 fontWeight: FontWeight.w800,
                 color: titleColor,
-                fontFamily: 'QuranFont',
+                fontFamily: 'Noon',
                 height: 1.3,
               ),
             ),
@@ -140,7 +140,7 @@ class StoryShareCard extends StatelessWidget {
                   fontSize: 34,
                   height: 2.0,
                   color: bodyColor,
-                  fontFamily: 'QuranFont',
+                  fontFamily: 'Noon',
                 ),
                 textAlign: TextAlign.justify,
                 maxLines: 10,
@@ -164,7 +164,7 @@ class StoryShareCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 21,
                     color: bodyColor.withValues(alpha: 0.55),
-                    fontFamily: 'QuranFont',
+                    fontFamily: 'Noon',
                   ),
                 ),
 
