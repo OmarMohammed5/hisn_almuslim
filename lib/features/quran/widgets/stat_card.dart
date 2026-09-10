@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/responsive/app_responsive.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
@@ -22,12 +23,12 @@ class StatCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(14.w),
+      padding: EdgeInsets.all(AppResponsive.widthValue(context, 14)),
       decoration: BoxDecoration(
         color: isDark
             ? Colors.grey.shade800.withOpacity(0.5)
             : Colors.white.withOpacity(0.7),
-        borderRadius: BorderRadius.circular(16.r),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 16)),
         border: Border.all(
           color: isDark ? Colors.grey.shade700 : Colors.grey.shade200,
           width: 1,
@@ -35,13 +36,13 @@ class StatCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Icon(icon, size: 20.sp, color: Colors.teal.shade700),
-          Gap(8.h),
-          CustomText(value, fontSize: 13.sp, fontWeight: FontWeight.bold),
-          Gap(2.h),
-          CustomText(unit, fontSize: 9.sp, color: Colors.grey.shade600),
-          Gap(4.h),
-          CustomText(label, fontSize: 9.sp, color: Colors.grey.shade600),
+          Icon(icon, size: AppResponsive.fontSize(context, 20), color: Colors.teal.shade700),
+          Gap(AppResponsive.heightValue(context, 8)),
+          CustomText(value, fontSize: AppResponsive.fontSize(context, 13), fontWeight: FontWeight.bold),
+          Gap(AppResponsive.heightValue(context, 2)),
+          CustomText(unit, fontSize: AppResponsive.fontSize(context, 9), color: Colors.grey.shade600),
+          Gap(AppResponsive.heightValue(context, 4)),
+          CustomText(label, fontSize: AppResponsive.fontSize(context, 9), color: Colors.grey.shade600),
         ],
       ),
     );

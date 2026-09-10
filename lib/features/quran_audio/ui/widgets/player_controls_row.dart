@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../core/responsive/app_responsive.dart';
 import '../../../../core/theme/app_colors.dart';
 
 
@@ -32,43 +33,54 @@ class PlayerControlsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final compact = constraints.maxWidth < 360;
+
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
         _secondaryButton(
+          context: context,
           icon: Icons.skip_previous_rounded,
           onTap: hasPrevious ? onPrevious : null,
           enabled: hasPrevious,
-          size: 23.sp,
+          size: AppResponsive.fontSize(context, 22),
         ),
-        SizedBox(width: 6.w),
+        SizedBox(width: AppResponsive.widthValue(context, 4)),
         _secondaryButton(
+          context: context,
           icon: Icons.replay_10_rounded,
           onTap: onSeekBack,
           enabled: true,
-          size: 25.sp,
+          size: AppResponsive.fontSize(context, 23),
         ),
-        SizedBox(width: 18.w),
-        _playButton(),
-        SizedBox(width: 18.w),
+        SizedBox(width: AppResponsive.widthValue(context, 12)),
+        _playButton(context),
+        SizedBox(width: AppResponsive.widthValue(context, 12)),
         _secondaryButton(
+          context: context,
           icon: Icons.forward_10_rounded,
           onTap: onSeekForward,
           enabled: true,
-          size: 25.sp,
+          size: AppResponsive.fontSize(context, 23),
         ),
-        SizedBox(width: 6.w),
+        SizedBox(width: AppResponsive.widthValue(context, 4)),
         _secondaryButton(
+          context: context,
           icon: Icons.skip_next_rounded,
           onTap: hasNext ? onNext : null,
           enabled: hasNext,
-          size: 23.sp,
+          size: AppResponsive.fontSize(context, 22),
         ),
-      ],
+          ],
+        );
+      },
     );
   }
 
   Widget _secondaryButton({
+    required BuildContext context,
     required IconData icon,
     required VoidCallback? onTap,
     required bool enabled,
@@ -77,7 +89,7 @@ class PlayerControlsRow extends StatelessWidget {
     return IconButton(
       onPressed: onTap,
       iconSize: size,
-      splashRadius: 24.r,
+      splashRadius: AppResponsive.radius(context, 22),
       color: enabled
           ? Colors.white.withValues(alpha: 0.85)
           : Colors.white.withValues(alpha: 0.22),
@@ -85,7 +97,7 @@ class PlayerControlsRow extends StatelessWidget {
     );
   }
 
-  Widget _playButton() {
+  Widget _playButton( BuildContext context) {
     return Material(
       color: Colors.transparent,
       shape: const CircleBorder(),
@@ -123,7 +135,7 @@ class PlayerControlsRow extends StatelessWidget {
                     : Icons.play_arrow_rounded,
                 key: ValueKey(isPlaying),
                 color: Colors.white,
-                size: 32.sp,
+                size: AppResponsive.fontSize(context, 30),
               ),
             ),
           ),

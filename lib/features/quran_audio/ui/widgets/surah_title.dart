@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../core/responsive/app_responsive.dart';
 
 import '../../../../core/shared/custom_text.dart';
 
@@ -28,18 +29,18 @@ class SurahTitle extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white,
-              fontSize: 26.sp,
+              fontSize: AppResponsive.fontSize(context, 26),
               fontWeight: FontWeight.bold,
               fontFamily: 'Al mushaf',
               height: 1.3,
             ),
           ),
-          SizedBox(height: 4.h),
+          SizedBox(height: AppResponsive.heightValue(context, 4)),
           CustomText(
             englishName,
             textAlign: TextAlign.center,
               color: Colors.white.withValues(alpha: 0.55),
-              fontSize: 13.sp,
+              fontSize: AppResponsive.fontSize(context, 13),
               fontWeight: FontWeight.w400,
           ),
         ],

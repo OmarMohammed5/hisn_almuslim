@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import '../../../core/responsive/app_responsive.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hisn_almuslim/features/quran/widgets/reader_settings.dart';
 import '../../../core/shared/custom_text.dart';
-
-
 
 class QuranReadingModeInfo {
   final QuranReadingMode mode;
@@ -46,10 +45,6 @@ final List<QuranReadingModeInfo> quranReadingModes = [
     icon: Icons.filter_list,
   ),
 ];
-
-
-
-
 
 class ReaderSettingsSheet extends StatefulWidget {
   final QuranReaderSettings settings;
@@ -153,7 +148,7 @@ class _ReaderSettingsSheetState extends State<ReaderSettingsSheet> {
 
       child: SafeArea(
         top: false,
-
+        bottom: false,
         child: Container(
           constraints: BoxConstraints(
             maxHeight: MediaQuery.sizeOf(context).height * .82,
@@ -161,27 +156,33 @@ class _ReaderSettingsSheetState extends State<ReaderSettingsSheet> {
 
           decoration: BoxDecoration(
             color: background,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(28.r)),
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(AppResponsive.radius(context, 28)),
+            ),
           ),
 
           child: Column(
             children: [
-              SizedBox(height: 10.h),
+              SizedBox(height: AppResponsive.heightValue(context, 10)),
 
               Container(
-                width: 38.w,
-                height: 4.h,
+                width: AppResponsive.widthValue(context, 38),
+                height: AppResponsive.heightValue(context, 4),
                 decoration: BoxDecoration(
                   color: muted.withValues(alpha: .25),
-                  borderRadius: BorderRadius.circular(20.r),
+                  borderRadius: BorderRadius.circular(
+                    AppResponsive.radius(context, 20),
+                  ),
                 ),
               ),
 
-              // =================================================
-              // HEADER
-              // =================================================
               Padding(
-                padding: EdgeInsets.fromLTRB(18.w, 12.h, 18.w, 8.h),
+                padding: EdgeInsets.fromLTRB(
+                  AppResponsive.widthValue(context, 18),
+                  AppResponsive.heightValue(context, 12),
+                  AppResponsive.widthValue(context, 18),
+                  AppResponsive.heightValue(context, 8),
+                ),
 
                 child: Row(
                   children: [
@@ -194,46 +195,39 @@ class _ReaderSettingsSheetState extends State<ReaderSettingsSheet> {
                     Expanded(
                       child: CustomText(
                         'إعدادات القراءة',
-
                         textAlign: TextAlign.center,
-
                         color: text,
-
-                        fontSize: 16.sp,
-
+                        fontSize: AppResponsive.fontSize(context, 13),
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-
-                    SizedBox(width: 48.w),
+                    SizedBox(width: AppResponsive.widthValue(context, 48)),
                   ],
                 ),
               ),
 
-              // =================================================
-              // CONTENT
-              // =================================================
               Expanded(
                 child: SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
 
-                  padding: EdgeInsets.fromLTRB(18.w, 4.h, 18.w, 30.h),
+                  padding: EdgeInsets.fromLTRB(
+                    AppResponsive.widthValue(context, 18),
+                    AppResponsive.heightValue(context, 4),
+                    AppResponsive.widthValue(context, 18),
+                    AppResponsive.heightValue(context, 30),
+                  ),
 
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
 
                     children: [
-                      // =========================================
-                      // MODE
-                      // =========================================
-                      _sectionTitle('نمط القراءة', muted),
+                      _sectionTitle(context, 'نمط القراءة', muted),
 
                       _settingCard(
-                        surface,
-
+                        context: context,
+                        color: surface,
                         child: _modeRow(
                           context,
-
                           text: text,
                           muted: muted,
                           primary: primary,
@@ -241,20 +235,18 @@ class _ReaderSettingsSheetState extends State<ReaderSettingsSheet> {
                         ),
                       ),
 
-                      SizedBox(height: 20.h),
+                      SizedBox(height: AppResponsive.heightValue(context, 20)),
 
-                      // =========================================
-                      // FONT SIZE
-                      // =========================================
-                      _sectionTitle('حجم الخط', muted),
+                      _sectionTitle(context, 'حجم الخط', muted),
 
                       _settingCard(
-                        surface,
+                        context: context,
+                        color: surface,
 
                         child: Padding(
                           padding: EdgeInsets.symmetric(
-                            horizontal: 16.w,
-                            vertical: 14.h,
+                            horizontal: AppResponsive.widthValue(context, 16),
+                            vertical: AppResponsive.heightValue(context, 14),
                           ),
 
                           child: Row(
@@ -262,7 +254,7 @@ class _ReaderSettingsSheetState extends State<ReaderSettingsSheet> {
                               CustomText(
                                 _fontLabel(_localSettings.fontSize),
                                 color: text,
-                                fontSize: 13.sp,
+                                fontSize: AppResponsive.fontSize(context, 12),
                                 fontWeight: FontWeight.w600,
                               ),
 
@@ -270,38 +262,35 @@ class _ReaderSettingsSheetState extends State<ReaderSettingsSheet> {
 
                               _fontButton(
                                 context,
-
                                 icon: Icons.remove_rounded,
-
                                 enabled: _localSettings.fontSize > 17,
-
                                 onTap: () {
                                   final value = (_localSettings.fontSize - 2)
                                       .clamp(17, 27)
                                       .toDouble();
-
                                   _updateSettings(
                                     _localSettings.copyWith(fontSize: value),
                                   );
                                 },
                               ),
 
-                              SizedBox(width: 8.w),
-
+                              SizedBox(
+                                width: AppResponsive.widthValue(context, 8),
+                              ),
                               Container(
-                                width: 46.w,
-
+                                width: AppResponsive.widthValue(context, 46),
                                 alignment: Alignment.center,
-
                                 child: CustomText(
                                   'A',
                                   color: primary,
-                                  fontSize: 17.sp,
+                                  fontSize: AppResponsive.fontSize(context, 13),
                                   fontWeight: FontWeight.w700,
                                 ),
                               ),
 
-                              SizedBox(width: 8.w),
+                              SizedBox(
+                                width: AppResponsive.widthValue(context, 8),
+                              ),
 
                               _fontButton(
                                 context,
@@ -325,18 +314,21 @@ class _ReaderSettingsSheetState extends State<ReaderSettingsSheet> {
                         ),
                       ),
 
-                      SizedBox(height: 20.h),
+                      SizedBox(height: AppResponsive.heightValue(context, 20)),
 
                       // =========================================
                       // THEME
                       // =========================================
-                      _sectionTitle('المظهر', muted),
+                      _sectionTitle(context, 'المظهر', muted),
 
                       _settingCard(
-                        surface,
+                        context: context,
+                        color: surface,
 
                         child: Padding(
-                          padding: EdgeInsets.all(12.w),
+                          padding: EdgeInsets.all(
+                            AppResponsive.widthValue(context, 12),
+                          ),
 
                           child: Row(
                             children: [
@@ -362,7 +354,9 @@ class _ReaderSettingsSheetState extends State<ReaderSettingsSheet> {
                                 ),
                               ),
 
-                              SizedBox(width: 10.w),
+                              SizedBox(
+                                width: AppResponsive.widthValue(context, 10),
+                              ),
 
                               Expanded(
                                 child: _themeOption(
@@ -390,19 +384,21 @@ class _ReaderSettingsSheetState extends State<ReaderSettingsSheet> {
                         ),
                       ),
 
-                      SizedBox(height: 20.h),
+                      SizedBox(height: AppResponsive.heightValue(context, 22)),
 
                       // =========================================
                       // READING EXPERIENCE
                       // =========================================
-                      _sectionTitle('تجربة القراءة', muted),
+                      _sectionTitle(context, 'تجربة القراءة', muted),
 
                       _settingCard(
-                        surface,
+                        context: context,
+                        color: surface,
 
                         child: Column(
                           children: [
                             _simpleInfoRow(
+                              context: context,
                               text: text,
                               muted: muted,
                               icon: Icons.touch_app_outlined,
@@ -410,9 +406,10 @@ class _ReaderSettingsSheetState extends State<ReaderSettingsSheet> {
                               subtitle: 'اضغط على الآية لفتح الإجراءات',
                             ),
 
-                            _divider(muted),
+                            _divider(context, muted),
 
                             _simpleInfoRow(
+                              context: context,
                               text: text,
                               muted: muted,
                               icon: Icons.bookmark_border_rounded,
@@ -420,9 +417,10 @@ class _ReaderSettingsSheetState extends State<ReaderSettingsSheet> {
                               subtitle: 'احفظ الآيات المهمة للرجوع إليها',
                             ),
 
-                            _divider(muted),
+                            _divider(context, muted),
 
                             _simpleInfoRow(
+                              context: context,
                               text: text,
                               muted: muted,
                               icon: Icons.volume_up_outlined,
@@ -433,52 +431,7 @@ class _ReaderSettingsSheetState extends State<ReaderSettingsSheet> {
                         ),
                       ),
 
-                      SizedBox(height: 20.h),
-
-                      // =========================================
-                      // INFO
-                      // =========================================
-                      _settingCard(
-                        surface,
-
-                        child: Padding(
-                          padding: EdgeInsets.all(15.w),
-
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 40.w,
-                                height: 40.w,
-
-                                decoration: BoxDecoration(
-                                  color: gold.withValues(alpha: .10),
-                                  borderRadius: BorderRadius.circular(12.r),
-                                ),
-
-                                child: Icon(
-                                  Icons.auto_awesome_rounded,
-                                  color: gold,
-                                  size: 20.sp,
-                                ),
-                              ),
-
-                              SizedBox(width: 12.w),
-
-                              Expanded(
-                                child: CustomText(
-                                  'يمكنك تغيير نمط القراءة في أي وقت، وسيتم تطبيق التغيير مباشرة وحفظ اختيارك تلقائيًا.',
-
-                                  color: muted,
-
-                                  fontSize: 11.sp,
-
-                                  height: 1.7,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      SizedBox(height: AppResponsive.heightValue(context, 20)),
                     ],
                   ),
                 ),
@@ -495,14 +448,14 @@ class _ReaderSettingsSheetState extends State<ReaderSettingsSheet> {
   // ===============================================================
 
   Widget _modeRow(
-      BuildContext context, {
-        required Color text,
-        required Color muted,
-        required Color primary,
-        required Color gold,
-      }) {
+    BuildContext context, {
+    required Color text,
+    required Color muted,
+    required Color primary,
+    required Color gold,
+  }) {
     final current = quranReadingModes.firstWhere(
-          (item) => item.mode == _localSettings.mode,
+      (item) => item.mode == _localSettings.mode,
 
       orElse: () => quranReadingModes.first,
     );
@@ -511,24 +464,33 @@ class _ReaderSettingsSheetState extends State<ReaderSettingsSheet> {
       onTap: widget.onChooseMode,
 
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+        padding: EdgeInsets.symmetric(
+          horizontal: AppResponsive.widthValue(context, 16),
+          vertical: AppResponsive.heightValue(context, 14),
+        ),
 
         child: Row(
           children: [
             Container(
-              width: 42.w,
-              height: 42.w,
+              width: AppResponsive.widthValue(context, 42),
+              height: AppResponsive.widthValue(context, 42),
 
               decoration: BoxDecoration(
                 color: primary.withValues(alpha: .08),
 
-                borderRadius: BorderRadius.circular(13.r),
+                borderRadius: BorderRadius.circular(
+                  AppResponsive.radius(context, 13),
+                ),
               ),
 
-              child: Icon(current.icon, color: primary, size: 21.sp),
+              child: Icon(
+                current.icon,
+                color: primary,
+                size: AppResponsive.fontSize(context, 21),
+              ),
             ),
 
-            SizedBox(width: 12.w),
+            SizedBox(width: AppResponsive.widthValue(context, 12)),
 
             Expanded(
               child: Column(
@@ -537,22 +499,27 @@ class _ReaderSettingsSheetState extends State<ReaderSettingsSheet> {
                 children: [
                   CustomText(
                     current.title,
-
                     color: text,
-
-                    fontSize: 13.sp,
-
+                    fontSize: AppResponsive.fontSize(context, 13),
                     fontWeight: FontWeight.w700,
                   ),
 
-                  SizedBox(height: 6.h),
+                  SizedBox(height: AppResponsive.heightValue(context, 6)),
 
-                  CustomText(current.subtitle, color: muted, fontSize: 11.sp),
+                  CustomText(
+                    current.subtitle,
+                    color: muted,
+                    fontSize: AppResponsive.fontSize(context, 11),
+                  ),
                 ],
               ),
             ),
 
-            Icon(Icons.arrow_forward_ios_sharp, size: 15.sp, color: muted),
+            Icon(
+              Icons.arrow_forward_ios_sharp,
+              size: AppResponsive.fontSize(context, 15),
+              color: muted,
+            ),
           ],
         ),
       ),
@@ -563,17 +530,16 @@ class _ReaderSettingsSheetState extends State<ReaderSettingsSheet> {
   // SECTION TITLE
   // ===============================================================
 
-  Widget _sectionTitle(String title, Color color) {
+  Widget _sectionTitle(BuildContext context, String title, Color color) {
     return Padding(
-      padding: EdgeInsets.only(right: 3.w, bottom: 8.h),
-
+      padding: EdgeInsets.only(
+        right: AppResponsive.widthValue(context, 3),
+        bottom: AppResponsive.heightValue(context, 8),
+      ),
       child: CustomText(
         title,
-
         color: color,
-
-        fontSize: 11.sp,
-
+        fontSize: AppResponsive.fontSize(context, 11),
         fontWeight: FontWeight.w600,
       ),
     );
@@ -583,49 +549,44 @@ class _ReaderSettingsSheetState extends State<ReaderSettingsSheet> {
   // SETTING CARD
   // ===============================================================
 
-  Widget _settingCard(Color color, {required Widget child}) {
+  Widget _settingCard({
+    required BuildContext context,
+    required Color color,
+    required Widget child,
+  }) {
     return Container(
       decoration: BoxDecoration(
         color: color,
 
-        borderRadius: BorderRadius.circular(18.r),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 18)),
       ),
 
       child: child,
     );
   }
 
-  // ===============================================================
   // FONT BUTTON
-  // ===============================================================
 
   Widget _fontButton(
-      BuildContext context, {
-        required IconData icon,
-        required bool enabled,
-        required VoidCallback onTap,
-      }) {
+    BuildContext context, {
+    required IconData icon,
+    required bool enabled,
+    required VoidCallback onTap,
+  }) {
     final dark = _localSettings.darkMode;
 
     return Material(
       color: dark ? const Color(0xFF202A25) : const Color(0xFFF0EBDC),
-
-      borderRadius: BorderRadius.circular(11.r),
-
+      borderRadius: BorderRadius.circular(AppResponsive.radius(context, 11)),
       child: InkWell(
         onTap: enabled ? onTap : null,
-
-        borderRadius: BorderRadius.circular(11.r),
-
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 11)),
         child: SizedBox(
-          width: 38.w,
-          height: 36.w,
-
+          width: AppResponsive.widthValue(context, 38),
+          height: AppResponsive.widthValue(context, 36),
           child: Icon(
             icon,
-
-            size: 18.sp,
-
+            size: AppResponsive.fontSize(context, 17),
             color: enabled
                 ? (dark ? const Color(0xFF7EB6A8) : const Color(0xFF1F5145))
                 : Colors.grey.withValues(alpha: .3),
@@ -635,27 +596,22 @@ class _ReaderSettingsSheetState extends State<ReaderSettingsSheet> {
     );
   }
 
-  // ===============================================================
   // THEME OPTION
-  // ===============================================================
 
   Widget _themeOption(
-      BuildContext context, {
-        required String title,
-        required IconData icon,
-        required bool selected,
-        required Color primary,
-        required Color text,
-        required VoidCallback onTap,
-      }) {
+    BuildContext context, {
+    required String title,
+    required IconData icon,
+    required bool selected,
+    required Color primary,
+    required Color text,
+    required VoidCallback onTap,
+  }) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 180),
-
       decoration: BoxDecoration(
         color: selected ? primary.withValues(alpha: .08) : Colors.transparent,
-
-        borderRadius: BorderRadius.circular(14.r),
-
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 14)),
         border: Border.all(
           color: selected ? primary.withValues(alpha: .45) : Colors.transparent,
         ),
@@ -663,30 +619,27 @@ class _ReaderSettingsSheetState extends State<ReaderSettingsSheet> {
 
       child: InkWell(
         onTap: onTap,
-
-        borderRadius: BorderRadius.circular(14.r),
-
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 14)),
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 10.w),
-
+          padding: EdgeInsets.symmetric(
+            vertical: AppResponsive.heightValue(context, 12),
+            horizontal: AppResponsive.widthValue(context, 10),
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
-
             children: [
               Icon(
                 icon,
-
-                size: 17.sp,
-
+                size: AppResponsive.fontSize(context, 17),
                 color: selected ? primary : text.withValues(alpha: .55),
               ),
 
-              SizedBox(width: 7.w),
+              SizedBox(width: AppResponsive.widthValue(context, 7)),
 
               CustomText(
                 title,
                 color: selected ? primary : text,
-                fontSize: 12.sp,
+                fontSize: AppResponsive.fontSize(context, 11),
                 fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
               ),
             ],
@@ -696,11 +649,10 @@ class _ReaderSettingsSheetState extends State<ReaderSettingsSheet> {
     );
   }
 
-  // ===============================================================
   // INFO ROW
-  // ===============================================================
 
   Widget _simpleInfoRow({
+    required BuildContext context,
     required Color text,
     required Color muted,
     required IconData icon,
@@ -708,13 +660,16 @@ class _ReaderSettingsSheetState extends State<ReaderSettingsSheet> {
     required String subtitle,
   }) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 13.h),
+      padding: EdgeInsets.symmetric(
+        horizontal: AppResponsive.widthValue(context, 15),
+        vertical: AppResponsive.heightValue(context, 13),
+      ),
 
       child: Row(
         children: [
-          Icon(icon, color: muted, size: 20.sp),
+          Icon(icon, color: muted, size: AppResponsive.fontSize(context, 20)),
 
-          SizedBox(width: 12.w),
+          SizedBox(width: AppResponsive.widthValue(context, 14)),
 
           Expanded(
             child: Column(
@@ -724,15 +679,16 @@ class _ReaderSettingsSheetState extends State<ReaderSettingsSheet> {
                 CustomText(
                   title,
                   color: text,
-                  fontSize: 12.sp,
+                  fontSize: AppResponsive.fontSize(context, 10),
                   fontWeight: FontWeight.w600,
                 ),
 
-                SizedBox(height: 2.h),
+                SizedBox(height: AppResponsive.heightValue(context, 12)),
 
                 CustomText(
                   subtitle,
-                  color: muted, fontSize: 9.5.sp,
+                  color: muted,
+                  fontSize: AppResponsive.fontSize(context, 9.5),
                 ),
               ],
             ),
@@ -746,11 +702,11 @@ class _ReaderSettingsSheetState extends State<ReaderSettingsSheet> {
   // DIVIDER
   // ===============================================================
 
-  Widget _divider(Color color) {
+  Widget _divider(BuildContext context, Color color) {
     return Divider(
       height: 1,
       thickness: .5,
-      indent: 48.w,
+      indent: AppResponsive.widthValue(context, 48),
 
       color: color.withValues(alpha: .10),
     );

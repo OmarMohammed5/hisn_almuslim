@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../core/responsive/app_responsive.dart';
 
 class IslamicDivider extends StatelessWidget {
   const IslamicDivider({super.key, required this.isDark});
@@ -10,12 +10,12 @@ class IslamicDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 20.h),
+      margin: EdgeInsets.symmetric(vertical: AppResponsive.heightValue(context, 20)),
       child: Row(
         children: [
           Expanded(
             child: Container(
-              height: 1.h,
+              height: AppResponsive.heightValue(context, 1),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
@@ -27,9 +27,9 @@ class IslamicDivider extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            padding: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 16)),
             child: Container(
-              padding: EdgeInsets.all(8.w),
+              padding: EdgeInsets.all(AppResponsive.widthValue(context, 8)),
               decoration: BoxDecoration(
                 color: isDark
                     ? Colors.teal.shade900.withValues(alpha: 0.3)
@@ -37,19 +37,19 @@ class IslamicDivider extends StatelessWidget {
                 shape: BoxShape.circle,
                 border: Border.all(
                   color: isDark ? Colors.teal.shade700 : Colors.teal.shade400,
-                  width: 2.w,
+                  width: AppResponsive.widthValue(context, 2),
                 ),
               ),
               child: Icon(
                 FlutterIslamicIcons.islam,
                 color: isDark ? Colors.teal.shade400 : Colors.teal.shade700,
-                size: 16.sp,
+                size: AppResponsive.fontSize(context, 16),
               ),
             ),
           ),
           Expanded(
             child: Container(
-              height: 1.h,
+              height: AppResponsive.heightValue(context, 1),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [

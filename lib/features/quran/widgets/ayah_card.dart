@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/responsive/app_responsive.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../domain/entities/ayah_entity.dart';
 
@@ -21,13 +22,13 @@ class AyahCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: EdgeInsets.only(bottom: 12.h),
-        padding: EdgeInsets.all(12.w),
+        margin: EdgeInsets.only(bottom: AppResponsive.heightValue(context, 12)),
+        padding: EdgeInsets.all(AppResponsive.widthValue(context, 12)),
         decoration: BoxDecoration(
           color: isSelected
               ? (isDark ? Colors.green[900]! : Colors.green[50])
               : Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(12.r),
+          borderRadius: BorderRadius.circular(AppResponsive.radius(context, 12)),
           border: isSelected
               ? Border.all(color: Colors.green, width: 2)
               : null,
@@ -47,10 +48,10 @@ class AyahCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                  padding: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 8), vertical: AppResponsive.heightValue(context, 4)),
                   decoration: BoxDecoration(
                     color: isDark ? Colors.green[800] : Colors.green[100],
-                    borderRadius: BorderRadius.circular(16.r),
+                    borderRadius: BorderRadius.circular(AppResponsive.radius(context, 16)),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -59,15 +60,15 @@ class AyahCard extends StatelessWidget {
                         '﴿${ayah.number}﴾',
                         style: TextStyle(
                           fontFamily: 'Uthmanic',
-                          fontSize: 14.sp,
+                          fontSize: AppResponsive.fontSize(context, 14),
                           color: isDark ? Colors.white : Colors.green[800],
                         ),
                       ),
                       if (ayah.isSajdah) ...[
-                        SizedBox(width: 4.w),
+                        SizedBox(width: AppResponsive.widthValue(context, 4)),
                         Icon(
                           Icons.star,
-                          size: 14.sp,
+                          size: AppResponsive.fontSize(context, 14),
                           color: Colors.amber,
                         ),
                       ],
@@ -76,14 +77,14 @@ class AyahCard extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 8.h),
+            SizedBox(height: AppResponsive.heightValue(context, 8)),
 
             // Ayah Text
             Text(
               ayah.text,
               style: TextStyle(
                 fontFamily: 'Uthmanic',
-                fontSize: 20.sp,
+                fontSize: AppResponsive.fontSize(context, 20),
                 height: 1.8,
                 color: isDark ? Colors.white : Colors.black87,
               ),
@@ -92,13 +93,13 @@ class AyahCard extends StatelessWidget {
 
             // Page and Juz info (optional)
             if (ayah.number == 1) ...[
-              SizedBox(height: 8.h),
+              SizedBox(height: AppResponsive.heightValue(context, 8)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  _buildInfoChip('صفحة ${ayah.page}', Icons.description),
-                  SizedBox(width: 8.w),
-                  _buildInfoChip('جزء ${ayah.juz}', Icons.book),
+                  _buildInfoChip(context, 'صفحة ${ayah.page}', Icons.description),
+                  SizedBox(width: AppResponsive.widthValue(context, 8)),
+                  _buildInfoChip(context, 'جزء ${ayah.juz}', Icons.book),
                 ],
               ),
             ],
@@ -108,22 +109,22 @@ class AyahCard extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoChip(String label, IconData icon) {
+  Widget _buildInfoChip(BuildContext context, String label, IconData icon) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h),
+      padding: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 8), vertical: AppResponsive.heightValue(context, 3)),
       decoration: BoxDecoration(
         color: Colors.grey[200],
-        borderRadius: BorderRadius.circular(12.r),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 12)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 12.sp, color: Colors.grey[600]),
-          SizedBox(width: 4.w),
+          Icon(icon, size: AppResponsive.fontSize(context, 12), color: Colors.grey[600]),
+          SizedBox(width: AppResponsive.widthValue(context, 4)),
           Text(
             label,
             style: TextStyle(
-              fontSize: 10.sp,
+              fontSize: AppResponsive.fontSize(context, 10),
               color: Colors.grey[600],
             ),
           ),

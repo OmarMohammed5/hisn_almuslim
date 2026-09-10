@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/responsive/app_responsive.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/utils/arabic_digits.dart';
@@ -15,7 +16,7 @@ class SurahHeader extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return SliverAppBar(
-      expandedHeight: 170.h,
+      expandedHeight: AppResponsive.heightValue(context, 170),
       pinned: true,
       stretch: true,
       backgroundColor:
@@ -29,7 +30,7 @@ class SurahHeader extends StatelessWidget {
           surah.displayName,
           style: TextStyle(
             fontFamily: 'Uthmani',
-            fontSize: 20.sp,
+            fontSize: AppResponsive.fontSize(context, 20),
             color: isDark ? Colors.white : MushafColors.inkLight,
           ),
         ),
@@ -51,19 +52,19 @@ class SurahHeader extends StatelessWidget {
                   'سُورَةُ ${surah.displayName}',
                   style: TextStyle(
                     fontFamily: 'Uthmanic',
-                    fontSize: 30.sp,
+                    fontSize: AppResponsive.fontSize(context, 30),
                     color: isDark ? MushafColors.goldDark : MushafColors.gold,
                   ),
                 ),
-                SizedBox(height: 6.h),
+                SizedBox(height: AppResponsive.heightValue(context, 6)),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _chip(surah.englishName, isDark),
-                    SizedBox(width: 8.w),
-                    _chip(surah.revelationType, isDark),
-                    SizedBox(width: 8.w),
-                    _chip('${toArabicDigits(surah.totalAyahs)} آية', isDark),
+                    _chip(context, surah.englishName, isDark),
+                    SizedBox(width: AppResponsive.widthValue(context, 8)),
+                    _chip(context, surah.revelationType, isDark),
+                    SizedBox(width: AppResponsive.widthValue(context, 8)),
+                    _chip(context, '${toArabicDigits(surah.totalAyahs)} آية', isDark),
                   ],
                 ),
               ],
@@ -74,15 +75,15 @@ class SurahHeader extends StatelessWidget {
     );
   }
 
-  Widget _chip(String text, bool isDark) {
+  Widget _chip(BuildContext context, String text, bool isDark) {
     final color = isDark ? MushafColors.goldDark : MushafColors.gold;
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
+      padding: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 10), vertical: AppResponsive.heightValue(context, 4)),
       decoration: BoxDecoration(
         color: color.withOpacity(0.15),
-        borderRadius: BorderRadius.circular(12.r),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 12)),
       ),
-      child: Text(text, style: TextStyle(fontSize: 11.sp, color: color)),
+      child: Text(text, style: TextStyle(fontSize: AppResponsive.fontSize(context, 11), color: color)),
     );
   }
 }

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../core/responsive/app_responsive.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 import 'package:hisn_almuslim/core/theme/app_colors.dart';
+
 class CategoryCardWidget extends StatelessWidget {
   const CategoryCardWidget({
     super.key,
@@ -17,7 +18,7 @@ class CategoryCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final radius = BorderRadius.circular(16.r);
+    final radius = BorderRadius.circular(AppResponsive.radius(context, 18));
 
     final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
     final borderColor = isDark
@@ -38,7 +39,7 @@ class CategoryCardWidget extends StatelessWidget {
         splashColor: AppColors.kPrimary.withValues(alpha: 0.08),
         highlightColor: AppColors.kPrimary.withValues(alpha: 0.04),
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h), // بدل all(14.w)
+          padding: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 12), vertical: AppResponsive.heightValue(context, 10)), // بدل all(AppResponsive.widthValue(context, 14))
           decoration: BoxDecoration(
             color: bgColor,
             borderRadius: radius,
@@ -49,28 +50,28 @@ class CategoryCardWidget extends StatelessWidget {
                 : [
               BoxShadow(
                 color: AppColors.kPrimary.withValues(alpha: 0.05),
-                blurRadius: 6.r,
-                offset: Offset(0, 3.h),
+                blurRadius: AppResponsive.radius(context, 6),
+                offset: Offset(0, AppResponsive.heightValue(context, 3)),
               ),
             ],
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
-            spacing: 10.h,
+            spacing: AppResponsive.heightValue(context, 10),
             children: [
               Container(
-                width: 32.w,
-                height: 32.w,
+                width: AppResponsive.widthValue(context, 45),
+                height: AppResponsive.widthValue(context, 45),
                 decoration: BoxDecoration(
                   color: iconBg,
-                 borderRadius: BorderRadius.circular(10.r),
+                 borderRadius: BorderRadius.circular(AppResponsive.radius(context, 10)),
                 ),
-                child: Icon(icon, size: 16.sp, color: iconColor),
+                child: Icon(icon, size: AppResponsive.fontSize(context, 20), color: iconColor),
               ),
               CustomText(
                 title,
-                fontSize: 11.5.sp,
+                fontSize: AppResponsive.fontSize(context, 11),
                 fontWeight: FontWeight.w700,
                 color: textColor,
                 maxLines: 2,

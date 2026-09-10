@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import '../../../core/responsive/app_responsive.dart';
 import '../../../core/shared/live_broadcast_indicator.dart';
 import '../../../core/theme/radio_colors.dart';
 
@@ -60,8 +59,8 @@ class RadioIconWidget extends StatelessWidget {
         },
 
         child: Container(
-          width: 62.w,
-          height: 62.w,
+          width: AppResponsive.widthValue(context, 62),
+          height: AppResponsive.widthValue(context, 62),
 
           decoration: BoxDecoration(
             shape: BoxShape.circle,
@@ -90,8 +89,8 @@ class RadioIconWidget extends StatelessWidget {
               // Inner Animated Ring
               if (isPlaying)
                 Container(
-                  width: 62.w,
-                  height: 62.w,
+                  width: AppResponsive.widthValue(context, 62),
+                  height: AppResponsive.widthValue(context, 62),
 
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
@@ -107,7 +106,7 @@ class RadioIconWidget extends StatelessWidget {
               // Radio Icon
               Icon(
                 Icons.radio_rounded,
-                size: 30.sp,
+                size: AppResponsive.fontSize(context, 30),
                 color: radioPrimary,
               ),
             ],

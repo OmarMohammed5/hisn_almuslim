@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../core/responsive/app_responsive.dart';
 import 'package:gap/gap.dart';
 
 class CalenderDayItem extends StatelessWidget {
@@ -40,9 +40,9 @@ class CalenderDayItem extends StatelessWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 50),
         curve: Curves.bounceInOut,
-        margin: EdgeInsets.symmetric(horizontal: 2.w),
-        padding: EdgeInsets.symmetric(vertical: 4.h),
-        height: 58.h,
+        margin: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 2)),
+        padding: EdgeInsets.zero,
+        height: AppResponsive.heightValue(context, 62),
         decoration: BoxDecoration(
           gradient: isSelected
               ? LinearGradient(
@@ -56,13 +56,13 @@ class CalenderDayItem extends StatelessWidget {
               : isToday
               ? _primary.withValues(alpha: isDark ? 0.12 : 0.06)
               : Colors.transparent,
-          borderRadius: BorderRadius.circular(16.r),
+          borderRadius: BorderRadius.circular(AppResponsive.radius(context, 16)),
           boxShadow: isSelected
               ? [
                   BoxShadow(
                     color: _primary.withValues(alpha: 0.25),
                     blurRadius: 14,
-                    offset: Offset(0, 6.h),
+                    offset: Offset(0, AppResponsive.heightValue(context, 6)),
                   ),
                 ]
               : null,
@@ -87,18 +87,18 @@ class CalenderDayItem extends StatelessWidget {
                     : isToday
                     ? _primary
                     : mutedColor,
-                fontSize: 8.sp,
+                fontSize: AppResponsive.fontSize(context, 8),
                 fontWeight: isFriday || isSelected
                     ? FontWeight.bold
                     : FontWeight.w700,
                 fontFamily: 'Cairo',
               ),
             ),
-            Gap(4.h),
+            Gap(AppResponsive.heightValue(context, 2)),
             // Hijri Day Number - Fixed size
             Container(
-              width: 28.w,
-              height: 28.w,
+              width: AppResponsive.widthValue(context, 28),
+              height: AppResponsive.widthValue(context, 28),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: isSelected
@@ -116,7 +116,7 @@ class CalenderDayItem extends StatelessWidget {
                         : isToday
                         ? _primary
                         : textColor,
-                    fontSize: 14.sp,
+                    fontSize: AppResponsive.fontSize(context, 14),
                     fontWeight: isSelected || isToday
                         ? FontWeight.w900
                         : FontWeight.w700,
@@ -126,22 +126,22 @@ class CalenderDayItem extends StatelessWidget {
                 ),
               ),
             ),
-            Gap(4.h),
+            Gap(AppResponsive.heightValue(context, 2)),
             // Indicator - Fixed size
             Container(
               width: isSelected
-                  ? 16.w
+                  ? AppResponsive.widthValue(context, 16)
                   : isToday
-                  ? 12.w
-                  : 6.w,
-              height: 3.h,
+                  ? AppResponsive.widthValue(context, 12)
+                  : AppResponsive.widthValue(context, 6),
+              height: AppResponsive.heightValue(context, 3),
               decoration: BoxDecoration(
                 color: isSelected
                     ? _primaryLight
                     : isToday
                     ? _primary
                     : mutedColor.withValues(alpha: 0.2),
-                borderRadius: BorderRadius.circular(2.r),
+                borderRadius: BorderRadius.circular(AppResponsive.radius(context, 2)),
               ),
             ),
           ],

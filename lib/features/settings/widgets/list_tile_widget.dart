@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 
 import '../../../core/theme/app_colors.dart';
+import '../../../core/responsive/app_responsive.dart';
 
 class ListTileWidget extends StatelessWidget {
   const ListTileWidget({
@@ -21,16 +22,16 @@ class ListTileWidget extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return ListTile(
       leading: Container(
-        padding: EdgeInsets.all(6.w),
+        padding: EdgeInsets.all(AppResponsive.widthValue(context, 6)),
         decoration: BoxDecoration(
           color: isDark
               ? Colors.teal.shade800.withValues(alpha: 0.3)
               : Colors.teal.shade50,
-          borderRadius: BorderRadius.circular(8.r),
+          borderRadius: BorderRadius.circular(AppResponsive.radius(context, 8)),
         ),
-        child: Icon(icon, size: 22.sp, color: AppColors.kIconColor),
+        child: Icon(icon, size: AppResponsive.iconSize(context, 22), color: AppColors.kIconColor),
       ),
-      title: CustomText(title, fontSize: 12.sp, fontWeight: FontWeight.w600),
+      title: CustomText(title, fontSize: AppResponsive.fontSize(context, 12), fontWeight: FontWeight.w600),
       trailing: trailing,
       subtitle: subTitle,
     );

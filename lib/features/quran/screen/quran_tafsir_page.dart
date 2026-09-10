@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hisn_almuslim/core/responsive/app_responsive.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 
@@ -26,7 +27,7 @@ class QuranTafsirPage extends StatelessWidget {
           'تفسير الآية $ayahNumber',
           style: TextStyle(
             fontFamily: 'Cairo',
-            fontSize: 18.sp,
+            fontSize: AppResponsive.fontSize(context, 18),
           ),
         ),
         centerTitle: true,
@@ -35,19 +36,28 @@ class QuranTafsirPage extends StatelessWidget {
             onPressed: () {
               // Share tafsir
             },
-            icon: Icon(Icons.share, size: 22.sp),
+            icon: Icon(Icons.share, size: AppResponsive.fontSize(context, 22)),
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.w),
-        child: Column(
+      body: Center(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: AppResponsive.isDesktop(context)
+                ? 1000.0
+                : AppResponsive.isTablet(context)
+                    ? 820.0
+                    : double.infinity,
+          ),
+          child: SingleChildScrollView(
+            padding: EdgeInsets.all(AppResponsive.widthValue(context, 16)),
+            child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Ayah Card
             Center(
               child: Container(
-                padding: EdgeInsets.all(16.w),
+                padding: EdgeInsets.all(AppResponsive.widthValue(context, 16)),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
@@ -56,7 +66,7 @@ class QuranTafsirPage extends StatelessWidget {
                         ? [Colors.grey[800]!, Colors.grey[900]!]
                         : [Colors.green[50]!, Colors.green[100]!],
                   ),
-                  borderRadius: BorderRadius.circular(12.r),
+                  borderRadius: BorderRadius.circular(AppResponsive.radius(context, 12)),
                   border: Border.all(
                     color: isDark ? Colors.grey[700]! : Colors.green[200]!,
                   ),
@@ -72,28 +82,28 @@ class QuranTafsirPage extends StatelessWidget {
                   children: [
                     // Ayah number
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
+                      padding: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 12), vertical: AppResponsive.heightValue(context, 4)),
                       decoration: BoxDecoration(
                         color: isDark ? Colors.grey[700] : Colors.green[200],
-                        borderRadius: BorderRadius.circular(16.r),
+                        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 16)),
                       ),
                       child: Text(
                         '﴿ $ayahNumber ﴾',
                         style: TextStyle(
                           fontFamily: 'Al mushaf',
-                          fontSize: 16.sp,
+                          fontSize: AppResponsive.fontSize(context, 16),
                           color: isDark ? Colors.white : Colors.green[800],
                         ),
                       ),
                     ),
-                    SizedBox(height: 12.h),
+                    SizedBox(height: AppResponsive.heightValue(context, 12)),
 
                     // Ayah text
                     Text(
                       ayahText,
                       style: TextStyle(
                         fontFamily: 'Al mushaf',
-                        fontSize: 24.sp,
+                        fontSize: AppResponsive.fontSize(context, 24),
                         height: 1.8,
                         color: isDark ? Colors.white : Colors.black87,
                       ),
@@ -104,36 +114,36 @@ class QuranTafsirPage extends StatelessWidget {
               ),
             ),
 
-            SizedBox(height: 24.h),
+            SizedBox(height: AppResponsive.heightValue(context, 24)),
 
             // Tafsir Source
             Row(
               children: [
                 Container(
-                  padding: EdgeInsets.all(8.w),
+                  padding: EdgeInsets.all(AppResponsive.widthValue(context, 8)),
                   decoration: BoxDecoration(
                     color: Colors.green[100],
-                    borderRadius: BorderRadius.circular(8.r),
+                    borderRadius: BorderRadius.circular(AppResponsive.radius(context, 8)),
                   ),
                   child: Icon(
                     Icons.book,
-                    size: 20.sp,
+                    size: AppResponsive.fontSize(context, 20),
                     color: Colors.green[700],
                   ),
                 ),
-                SizedBox(width: 12.w),
+                SizedBox(width: AppResponsive.widthValue(context, 12)),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  spacing: 5.h,
+                  spacing: AppResponsive.heightValue(context, 5),
                   children: [
                     CustomText(
                       'المصدر',
-                        fontSize: 10.sp,
+                        fontSize: AppResponsive.fontSize(context, 10),
                         color: Colors.grey[600],
                     ),
                     CustomText(
                       tafsirSource,
-                        fontSize: 12.sp,
+                        fontSize: AppResponsive.fontSize(context, 12),
                         fontWeight: FontWeight.bold,
                         color: Colors.green[700],
                     ),
@@ -142,7 +152,7 @@ class QuranTafsirPage extends StatelessWidget {
               ],
             ),
 
-            SizedBox(height: 16.h),
+            SizedBox(height: AppResponsive.heightValue(context, 16)),
 
             // Divider
             Divider(
@@ -151,27 +161,23 @@ class QuranTafsirPage extends StatelessWidget {
               thickness: 1,
             ),
 
-            SizedBox(height: 16.h),
+            SizedBox(height: AppResponsive.heightValue(context, 16)),
 
             // Tafsir Title
             CustomText(
               'التفسير',
-                fontSize: 15.sp,
+                fontSize: AppResponsive.fontSize(context, 15),
                 fontWeight: FontWeight.bold,
                 color: isDark ? Colors.white : Colors.black87,
             ),
-            SizedBox(height: 12.h),
-//////// Can you tell me where is the content of tafsir //////
-          ///
-          /// ??
-          /// ??
+            SizedBox(height: AppResponsive.heightValue(context, 12)),
 
 
             // Tafsir Text
             Text(
               tafsirText,
               style: TextStyle(
-                fontSize: 16.sp,
+                fontSize: AppResponsive.fontSize(context, 16),
                 fontFamily: "Uthmani",
                 height: 1.8,
                 color: isDark ? Colors.white70 : Colors.black87,
@@ -179,45 +185,12 @@ class QuranTafsirPage extends StatelessWidget {
               textAlign: TextAlign.right,
             ),
 
-            SizedBox(height: 24.h),
+            SizedBox(height: AppResponsive.heightValue(context, 24)),
 
-            // // Footer
-            // Center(
-            //   child: Column(
-            //     spacing: 8.h,
-            //     children: [
-            //       Text(
-            //         'وَلَقَدْ يَسَّرْنَا الْقُرْآنَ لِلذِّكْرِ فَهَلْ مِن مُّدَّكِرٍ',
-            //         style: TextStyle(
-            //           fontFamily: 'Al mushaf',
-            //           fontSize: 13.sp,
-            //           color: isDark ? Colors.grey[900] : Colors.grey[900],
-            //         ),
-            //         textAlign: TextAlign.center,
-            //       ),
-            //       Container(
-            //         padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 8.h),
-            //         decoration: BoxDecoration(
-            //           color: isDark ? Colors.grey[800] : Colors.green[50],
-            //           borderRadius: BorderRadius.circular(12.r),
-            //         ),
-            //         child: Text(
-            //           'صدق الله العظيم',
-            //           style: TextStyle(
-            //             fontFamily: 'Al mushaf',
-            //             fontSize: 20.sp,
-            //             color: Colors.green[700],
-            //           ),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            //
-            // SizedBox(height: 24.h),
-          ],
+            ],
+          ),
         ),
       ),
-    );
+    ));
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/core/theme/app_colors.dart';
+import '../../../core/responsive/app_responsive.dart';
 import '../data/datasource/daily_content_local_data_source.dart';
 import '../data/models/daily_content_model.dart';
 import '../data/models/featured_banner_model.dart';
@@ -149,7 +150,7 @@ class _FeaturedBannersState extends State<FeaturedBanners> {
   Widget build(BuildContext context) {
     if (_isLoading) {
       return SizedBox(
-        height: 140.h,
+        height: AppResponsive.heightValue(context, 140),
         child:  Center(child: CupertinoActivityIndicator(color: AppColors.kPrimary,)),
       );
     }
@@ -197,7 +198,7 @@ class _FeaturedBannersState extends State<FeaturedBanners> {
           },
 
           options: CarouselOptions(
-            height: 140.h,
+            height: AppResponsive.heightValue(context, 140),
 
             viewportFraction: 0.9,
 
@@ -226,7 +227,7 @@ class _FeaturedBannersState extends State<FeaturedBanners> {
         ),
 
         // Indicator
-        Gap(18.h),
+        Gap(AppResponsive.heightValue(context, 18)),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: List.generate(_banners.length, (index) {
@@ -235,18 +236,18 @@ class _FeaturedBannersState extends State<FeaturedBanners> {
             return AnimatedContainer(
               duration: const Duration(milliseconds: 250),
 
-              margin: EdgeInsets.symmetric(horizontal: 3.w),
+              margin: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 3)),
 
-              width: isActive ? 22.w : 6.w,
+              width: isActive ? AppResponsive.widthValue(context, 22) : AppResponsive.widthValue(context, 6),
 
-              height: 5.w,
+              height: AppResponsive.widthValue(context, 5),
 
               decoration: BoxDecoration(
                 color: isActive
                     ? Colors.teal.shade300
                     : Colors.grey.shade800.withValues(alpha: 0.6),
 
-                borderRadius: BorderRadius.circular(10.r),
+                borderRadius: BorderRadius.circular(AppResponsive.radius(context, 10)),
               ),
             );
           }),

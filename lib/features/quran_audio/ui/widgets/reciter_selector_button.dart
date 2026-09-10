@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../core/responsive/app_responsive.dart';
 import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -49,10 +50,17 @@ class _ReciterSelectorButtonState extends State<ReciterSelectorButton> {
             state is AudioPlayerReady && state.isPlaying && !state.isCompleted;
         final currentSurah = state is AudioPlayerReady ? state.surah : null;
 
-        return GestureDetector(
-          onTap: _showReciterSelectionDialog,
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            final compact = constraints.maxWidth < 360;
+
+            return GestureDetector(
+              onTap: _showReciterSelectionDialog,
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppResponsive.widthValue(context, compact ? 10 : 16),
+                  vertical: AppResponsive.heightValue(context, compact ? 9 : 12),
+                ),
             decoration: BoxDecoration(
               color: bgColor,
               border: Border.all(color: borderColor, width: 1),
@@ -165,8 +173,8 @@ class _ReciterSelectorButtonState extends State<ReciterSelectorButton> {
                 ),
                 Container(
                   padding: EdgeInsets.symmetric(
-                    horizontal: 12.w,
-                    vertical: 8.h,
+                    horizontal: AppResponsive.widthValue(context, compact ? 7 : 12),
+                    vertical: AppResponsive.heightValue(context, compact ? 6 : 8),
                   ),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
@@ -202,7 +210,9 @@ class _ReciterSelectorButtonState extends State<ReciterSelectorButton> {
                 ),
               ],
             ),
-          ),
+              ),
+            );
+          },
         );
       },
     );
@@ -219,8 +229,8 @@ class _ReciterSelectorButtonState extends State<ReciterSelectorButton> {
       alignment: Alignment.center,
       children: [
         Container(
-          width: 48.w,
-          height: 48.w,
+          width: AppResponsive.widthValue(context, 46),
+          height: AppResponsive.widthValue(context, 46),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,

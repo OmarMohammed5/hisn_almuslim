@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
+import 'package:hisn_almuslim/core/responsive/app_responsive.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 import 'package:hisn_almuslim/core/theme/app_colors.dart';
 import '../routing/app_routes.dart';
@@ -173,9 +175,7 @@ int getJuzNumber(int surahNumber, int ayahNumber) {
   return 1;
 }
 
-
 Widget buildEmptyState(BuildContext context, bool isDark) {
-
   final primary = Theme.of(context).colorScheme.primary;
   final titleColor = isDark ? Colors.white : const Color(0xFF183A36);
 
@@ -184,14 +184,19 @@ Widget buildEmptyState(BuildContext context, bool isDark) {
       ? Colors.white.withValues(alpha: 0.07)
       : AppColors.kBorderLight;
 
-
   return Container(
-    margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
-    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+    margin: EdgeInsets.symmetric(
+      horizontal: AppResponsive.widthValue(context, 16),
+      vertical: AppResponsive.heightValue(context, 6),
+    ),
+    padding: EdgeInsets.symmetric(
+      horizontal: AppResponsive.widthValue(context, 16),
+      vertical: AppResponsive.heightValue(context, 16),
+    ),
     decoration: BoxDecoration(
       color: bgColor,
       border: Border.all(color: borderColor, width: 1),
-      borderRadius: BorderRadius.circular(18.r),
+      borderRadius: BorderRadius.circular(AppResponsive.radius(context, 18)),
       boxShadow: [
         BoxShadow(
           color: isDark
@@ -206,20 +211,20 @@ Widget buildEmptyState(BuildContext context, bool isDark) {
       children: [
         // ===== Icon =====
         Container(
-          width: 48.w,
-          height: 48.w,
+          width: AppResponsive.widthValue(context, 48),
+          height: AppResponsive.heightValue(context, 48),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: AppColors.kPrimary.withValues(alpha: .7),
           ),
           child: Icon(
             FlutterIslamicIcons.solidQuran2,
-            size: 22.sp,
-            color:  Colors.white ,
+            size: AppResponsive.iconSize(context, 22),
+            color: Colors.white,
           ),
         ),
 
-        SizedBox(width: 14.w),
+        Gap(AppResponsive.widthValue(context, 14)),
 
         // ===== Text Column =====
         Expanded(
@@ -228,12 +233,12 @@ Widget buildEmptyState(BuildContext context, bool isDark) {
             mainAxisSize: MainAxisSize.min,
             children: [
               CustomText(
-                "قم بتظليل آخر ما قرأت\n لتسجيل تقدمك",
-                fontSize: 11.sp,
+                "قم بتظليل آخر ما قرأت لتسجيل تقدمك",
+                fontSize: AppResponsive.fontSize(context, 11),
                 maxLines: 3,
                 fontWeight: FontWeight.w700,
                 color: titleColor,
-                height: 1.6,
+                height: AppResponsive.heightValue(context, 1),
               ),
             ],
           ),
@@ -241,7 +246,7 @@ Widget buildEmptyState(BuildContext context, bool isDark) {
 
         // ===== Button =====
         SizedBox(
-          height: 34.h,
+          height: AppResponsive.heightValue(context, 37),
           child: ElevatedButton(
             onPressed: () {
               Navigator.pushNamed(context, AppRoutes.quranHome);
@@ -250,9 +255,13 @@ Widget buildEmptyState(BuildContext context, bool isDark) {
               backgroundColor: AppColors.kPrimary.withValues(alpha: .7),
               foregroundColor: Colors.white,
               elevation: 0,
-              padding: EdgeInsets.symmetric(horizontal: 12.w),
+              padding: EdgeInsets.symmetric(
+                horizontal: AppResponsive.widthValue(context, 12),
+              ),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16.r),
+                borderRadius: BorderRadius.circular(
+                  AppResponsive.radius(context, 16),
+                ),
               ),
               minimumSize: Size.zero,
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -262,14 +271,14 @@ Widget buildEmptyState(BuildContext context, bool isDark) {
               children: [
                 CustomText(
                   'افتح المصحف',
-                  fontSize: 11.sp,
+                  fontSize: AppResponsive.fontSize(context, 10),
                   fontWeight: FontWeight.w700,
                   color: Colors.white,
                 ),
-                SizedBox(width: 4.w),
+                Gap(AppResponsive.widthValue(context, 4)),
                 Icon(
                   Icons.arrow_forward_rounded,
-                  size: 13.sp,
+                  size: AppResponsive.iconSize(context, 13),
                   color: Colors.white,
                 ),
               ],
@@ -286,17 +295,20 @@ Widget buildLoadingState(BuildContext context, bool isDark) {
   final primary = Theme.of(context).colorScheme.primary;
 
   return Container(
-    margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-    height: 230.h,
+    margin: EdgeInsets.symmetric(
+      horizontal: AppResponsive.widthValue(context, 16),
+      vertical: AppResponsive.heightValue(context, 8),
+    ),
+    height: AppResponsive.heightValue(context, 230),
     decoration: BoxDecoration(
       color: isDark ? const Color(0xFF101F1D) : Colors.white,
-      borderRadius: BorderRadius.circular(22.r),
+      borderRadius: BorderRadius.circular(AppResponsive.radius(context, 22)),
       border: Border.all(color: primary.withValues(alpha: .08)),
     ),
     child: Center(
       child: SizedBox(
-        width: 24.w,
-        height: 24.w,
+        width: AppResponsive.widthValue(context, 24),
+        height: AppResponsive.heightValue(context, 24),
         child: CupertinoActivityIndicator(color: primary),
       ),
     ),

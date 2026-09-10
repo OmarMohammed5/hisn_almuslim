@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/responsive/app_responsive.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/utils/arabic_digits.dart';
@@ -17,28 +18,28 @@ class PageFooter extends StatelessWidget {
     (isDark ? MushafColors.goldDark : MushafColors.gold).withOpacity(0.85);
 
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8.h),
+      padding: EdgeInsets.symmetric(vertical: AppResponsive.heightValue(context, 8)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text('صفحة ${toArabicDigits(page.pageNumber)}',
-              style: TextStyle(fontSize: 11.sp, color: color)),
-          _dot(color),
+              style: TextStyle(fontSize: AppResponsive.fontSize(context, 11), color: color)),
+          _dot(context, color),
           Text('جزء ${toArabicDigits(page.juz)}',
-              style: TextStyle(fontSize: 11.sp, color: color)),
-          _dot(color),
+              style: TextStyle(fontSize: AppResponsive.fontSize(context, 11), color: color)),
+          _dot(context, color),
           Text('حزب ${toArabicDigits(page.hizbQuarter)}',
-              style: TextStyle(fontSize: 11.sp, color: color)),
+              style: TextStyle(fontSize: AppResponsive.fontSize(context, 11), color: color)),
         ],
       ),
     );
   }
 
-  Widget _dot(Color color) => Padding(
-    padding: EdgeInsets.symmetric(horizontal: 10.w),
+  Widget _dot(BuildContext context, Color color) => Padding(
+    padding: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 10)),
     child: Container(
-      width: 3.w,
-      height: 3.w,
+      width: AppResponsive.widthValue(context, 3),
+      height: AppResponsive.widthValue(context, 3),
       decoration: BoxDecoration(shape: BoxShape.circle, color: color),
     ),
   );

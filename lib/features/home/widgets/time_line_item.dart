@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
+import '../../../core/responsive/app_responsive.dart';
 import '../../../core/shared/custom_text.dart';
 import '../../adhan/data/models/prayer_time_model.dart';
 
@@ -37,8 +37,8 @@ class TimelineItem extends StatelessWidget {
         Column(
           children: [
             Container(
-              width: 14.w,
-              height: 14.w,
+              width: AppResponsive.widthValue(context, 14),
+              height: AppResponsive.widthValue(context, 14),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: isCurrent
@@ -67,8 +67,8 @@ class TimelineItem extends StatelessWidget {
             ),
             if (!isLast)
               Container(
-                width: 2.w,
-                height: 30.h,
+                width: AppResponsive.widthValue(context, 2),
+                height: AppResponsive.heightValue(context, 30),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: isPast
@@ -87,22 +87,22 @@ class TimelineItem extends StatelessWidget {
               ),
           ],
         ),
-        Gap(8.w),
+        Gap(AppResponsive.widthValue(context, 8)),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomText(
               arabicName,
-              fontSize: 12.sp,
+              fontSize: AppResponsive.fontSize(context, 12),
               color: isCurrent
                   ? accentColor
                   : (isPast ? subTextColor.withValues(alpha: 0.5) : textColor),
               fontWeight: isCurrent ? FontWeight.w800 : FontWeight.w600,
             ),
-            Gap(2.h),
+            Gap(AppResponsive.heightValue(context, 2)),
             CustomText(
               formattedTime,
-              fontSize: 10.sp,
+              fontSize: AppResponsive.fontSize(context, 10),
               color: isPast
                   ? subTextColor.withValues(alpha: 0.4)
                   : subTextColor,
@@ -110,7 +110,7 @@ class TimelineItem extends StatelessWidget {
             ),
           ],
         ),
-        if (!isLast) Gap(16.w),
+        if (!isLast) Gap(AppResponsive.widthValue(context, 16)),
       ],
     );
   }

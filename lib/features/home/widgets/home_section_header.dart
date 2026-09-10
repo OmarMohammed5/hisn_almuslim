@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 import 'package:hisn_almuslim/core/theme/app_colors.dart';
+import '../../../core/responsive/app_responsive.dart';
 
 class HomeSectionHeader extends StatelessWidget {
   const HomeSectionHeader({
@@ -35,27 +35,27 @@ class HomeSectionHeader extends StatelessWidget {
         : AppColors.kPrimary;
 
     return SizedBox(
-      height: 38.h,
+      height: AppResponsive.heightValue(context, 38),
       child: Row(
         children: [
 
           // Section title
           Container(
-            width: 4.w,
-            height: 24.h,
+            width: AppResponsive.widthValue(context, 4),
+            height: AppResponsive.heightValue(context, 24),
             decoration: BoxDecoration(
               color: teal,
               borderRadius:
-              BorderRadius.circular(10.r),
+              BorderRadius.circular(AppResponsive.radius(context, 10)),
             ),
           ),
 
-          SizedBox(width: 9.w),
+          SizedBox(width: AppResponsive.widthValue(context, 9)),
 
           Expanded(
             child: CustomText(
               title,
-              fontSize: 17.sp,
+              fontSize: AppResponsive.fontSize(context, 13),
               fontWeight:
               FontWeight.w900,
               color:
@@ -74,7 +74,7 @@ class HomeSectionHeader extends StatelessWidget {
                 onTap: onAction,
                 borderRadius:
                 BorderRadius.circular(
-                  12.r,
+                  AppResponsive.radius(context, 12),
                 ),
                 splashColor:
                 teal.withValues(
@@ -87,8 +87,8 @@ class HomeSectionHeader extends StatelessWidget {
                 child: Padding(
                   padding:
                   EdgeInsets.symmetric(
-                    horizontal: 7.w,
-                    vertical: 6.h,
+                    horizontal: AppResponsive.widthValue(context, 7),
+                    vertical: AppResponsive.heightValue(context, 6),
                   ),
                   child: Row(
                     mainAxisSize:
@@ -96,13 +96,13 @@ class HomeSectionHeader extends StatelessWidget {
                     children: [
                       CustomText(
                         actionLabel!,
-                        fontSize: 11.5.sp,
+                        fontSize: AppResponsive.fontSize(context, 11),
                         fontWeight:
                         FontWeight.w700,
                         color: teal,
                       ),
 
-                      SizedBox(width: 4.w),
+                      SizedBox(width: AppResponsive.widthValue(context, 4)),
 
                       AnimatedRotation(
                         turns:
@@ -120,7 +120,7 @@ class HomeSectionHeader extends StatelessWidget {
                           actionIcon ??
                               Icons
                                   .arrow_back_ios_new_rounded,
-                          size: 11.sp,
+                          size: AppResponsive.iconSize(context, 11),
                           color: teal,
                         ),
                       ),
@@ -133,11 +133,11 @@ class HomeSectionHeader extends StatelessWidget {
           // Section icon
           if (actionLabel == null ||
               onAction == null)
-            SizedBox(width: 8.w),
+            SizedBox(width: AppResponsive.widthValue(context, 8)),
 
           Container(
-            width: 34.w,
-            height: 34.w,
+            width: AppResponsive.widthValue(context, 34),
+            height: AppResponsive.widthValue(context, 34),
             decoration: BoxDecoration(
               color: teal.withValues(
                 alpha: isDark ? .13 : .07,
@@ -146,7 +146,7 @@ class HomeSectionHeader extends StatelessWidget {
             ),
             child: Icon(
               icon,
-              size: 17.sp,
+              size: AppResponsive.fontSize(context, 17),
               color: teal,
             ),
           ),

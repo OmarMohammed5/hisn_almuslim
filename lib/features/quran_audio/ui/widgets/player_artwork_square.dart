@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../core/responsive/app_responsive.dart';
 
 class PlayerArtworkSquare extends StatelessWidget {
   final Widget child;
@@ -19,13 +20,13 @@ class PlayerArtworkSquare extends StatelessWidget {
         opacity: t,
         child: Transform.scale(
           scale: 0.90 + (0.10 * t),
-          child: _artwork(outerSize),
+          child: _artwork(context, outerSize),
         ),
       ),
     );
   }
 
-  Widget _artwork(double outerSize) {
+  Widget _artwork(BuildContext context, double outerSize) {
     return RepaintBoundary(
       child: SizedBox(
         width: outerSize,
@@ -48,8 +49,8 @@ class PlayerArtworkSquare extends StatelessWidget {
               ),
             ),
             Container(
-              width: size.w,
-              height: size.w,
+              width: AppResponsive.widthValue(context, size),
+              height: AppResponsive.widthValue(context, size),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: const Color(0xFF063F3A),

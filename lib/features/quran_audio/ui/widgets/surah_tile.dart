@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../core/responsive/app_responsive.dart';
 import 'package:gap/gap.dart';
 import '../../../../core/shared/custom_text.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -68,9 +69,13 @@ class SurahTile extends StatelessWidget {
         : AppColors.kBorderLight;
 
 
-    return GestureDetector(
-      onTap: onPressed,
-      child: AnimatedContainer(
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final compact = constraints.maxWidth < 360;
+
+        return GestureDetector(
+          onTap: onPressed,
+          child: AnimatedContainer(
         duration: const Duration(milliseconds: 400),
         curve: Curves.easeInOut,
         margin: EdgeInsets.symmetric(vertical: 6.h),
@@ -89,7 +94,10 @@ class SurahTile extends StatelessWidget {
               : null,
         ),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
+          padding: EdgeInsets.symmetric(
+            horizontal: AppResponsive.widthValue(context, compact ? 10 : 14),
+            vertical: AppResponsive.heightValue(context, compact ? 8 : 10),
+          ),
           child: Row(
             children: [
               _buildSurahNumber(
@@ -98,22 +106,24 @@ class SurahTile extends StatelessWidget {
                 isCompleted: isCompletedState,
                 isDark: isDark,
               ),
-              Gap(14.w),
+              Gap(AppResponsive.widthValue(context, compact ? 9 : 14)),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       children: [
-                        Text(
-                          "سورة ${surah.nameArabic}",
+                        Flexible(
+                          child: Text(
+                            "سورة ${surah.nameArabic}",
                           style: TextStyle(
-                            fontSize: 17.sp,
+                            fontSize: AppResponsive.fontSize(context, compact ? 15 : 17),
                             fontWeight: FontWeight.bold,
                             fontFamily: 'Al mushaf',
                             color: getTextColor(),
                             height: 1.2,
                           ),
+                        ),
                         ),
                         if (isCurrentSurah) ...[
                           SizedBox(width: 8.w),
@@ -129,7 +139,7 @@ class SurahTile extends StatelessWidget {
                     Text(
                       surah.nameEnglish,
                       style: TextStyle(
-                        fontSize: 10.sp,
+                        fontSize: AppResponsive.fontSize(context, compact ? 9 : 10),
                         color: isDark
                             ? Colors.white.withValues(alpha: 0.4)
                             : Colors.black.withValues(alpha: 0.3),
@@ -177,7 +187,9 @@ class SurahTile extends StatelessWidget {
             ],
           ),
         ),
-      ),
+          ),
+        );
+      },
     );
   }
 

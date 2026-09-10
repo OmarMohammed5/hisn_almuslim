@@ -6,6 +6,7 @@ import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/features/settings/data/cubit/notification_cubit.dart';
 import 'package:hisn_almuslim/features/settings/data/cubit/notification_state.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
+import '../../../core/responsive/app_responsive.dart';
 
 
 class WirdNotificationBuild extends StatefulWidget {
@@ -32,12 +33,12 @@ class _WirdNotificationBuildState extends State<WirdNotificationBuild> {
         final cubit = context.read<NotificationCubit>();
 
         return Container(
-          padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 4.w),
+          padding: EdgeInsets.symmetric(vertical: AppResponsive.heightValue(context, 8), horizontal: AppResponsive.widthValue(context, 4)),
           decoration: BoxDecoration(
             color: isDark
                 ? Colors.grey.shade900.withOpacity(0.3)
                 : Colors.grey.shade50,
-            borderRadius: BorderRadius.circular(16.r),
+            borderRadius: BorderRadius.circular(AppResponsive.radius(context, 16)),
             border: Border.all(
               color: isDark
                   ? Colors.grey.shade800.withOpacity(0.3)
@@ -61,18 +62,18 @@ class _WirdNotificationBuildState extends State<WirdNotificationBuild> {
                   color: isDark
                       ? Colors.grey.shade800.withOpacity(0.3)
                       : Colors.grey.shade200.withValues(alpha: 0.5),
-                  height: 1.h,
-                  indent: 16.w,
-                  endIndent: 16.w,
+                  height: AppResponsive.heightValue(context, 1),
+                  indent: AppResponsive.widthValue(context, 16),
+                  endIndent: AppResponsive.widthValue(context, 16),
                 ),
-                Gap(4.h),
+                Gap(AppResponsive.heightValue(context, 4)),
                 _buildTimePicker(
                   context: context,
                   state: state,
                   cubit: cubit,
                   isDark: isDark,
                 ),
-                Gap(4.h),
+                Gap(AppResponsive.heightValue(context, 4)),
               ],
             ],
           ),
@@ -93,18 +94,18 @@ class _WirdNotificationBuildState extends State<WirdNotificationBuild> {
         onTap: () {
           cubit.toggleDailyWird(!state.enableDailyWird);
         },
-        borderRadius: BorderRadius.circular(12.r),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 12)),
         splashColor: state.enableDailyWird
             ? Colors.teal.withOpacity(0.1)
             : Colors.grey.withOpacity(0.05),
         highlightColor: Colors.transparent,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
+          padding: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 10), vertical: AppResponsive.heightValue(context, 8)),
           child: Row(
             children: [
               // Icon Container
               Container(
-                padding: EdgeInsets.all(8.w),
+                padding: EdgeInsets.all(AppResponsive.widthValue(context, 8)),
                 decoration: BoxDecoration(
                   gradient: state.enableDailyWird
                       ? LinearGradient(
@@ -123,7 +124,7 @@ class _WirdNotificationBuildState extends State<WirdNotificationBuild> {
                       : (state.enableDailyWird
                       ? Colors.teal.shade50.withOpacity(0.8)
                       : Colors.grey.shade100),
-                  borderRadius: BorderRadius.circular(12.r),
+                  borderRadius: BorderRadius.circular(AppResponsive.radius(context, 12)),
                   border: Border.all(
                     color: state.enableDailyWird
                         ? Colors.teal.shade700.withOpacity(0.2)
@@ -135,7 +136,7 @@ class _WirdNotificationBuildState extends State<WirdNotificationBuild> {
                 ),
                 child: Icon(
                   FlutterIslamicIcons.quran2,
-                  size: 20.sp,
+                  size: AppResponsive.iconSize(context, 20),
                   color: state.enableDailyWird
                       ? Colors.teal.shade700
                       : (isDark
@@ -144,7 +145,7 @@ class _WirdNotificationBuildState extends State<WirdNotificationBuild> {
                 ),
               ),
 
-              Gap(14.w),
+              Gap(AppResponsive.widthValue(context, 14)),
 
               // Title
               Expanded(
@@ -153,7 +154,7 @@ class _WirdNotificationBuildState extends State<WirdNotificationBuild> {
                   children: [
                     CustomText(
                       "ورد القرآن",
-                      fontSize: 13.sp,
+                      fontSize: AppResponsive.fontSize(context, 13),
                       fontWeight: state.enableDailyWird
                           ? FontWeight.w700
                           : FontWeight.w600,
@@ -200,21 +201,21 @@ class _WirdNotificationBuildState extends State<WirdNotificationBuild> {
             cubit.changeDailyWirdTime(picked);
           }
         },
-        borderRadius: BorderRadius.circular(12.r),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 12)),
         splashColor: Colors.teal.withOpacity(0.05),
         highlightColor: Colors.transparent,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+          padding: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 12), vertical: AppResponsive.heightValue(context, 8)),
           child: Row(
             children: [
               // Icon Container
               Container(
-                padding: EdgeInsets.all(8.w),
+                padding: EdgeInsets.all(AppResponsive.widthValue(context, 8)),
                 decoration: BoxDecoration(
                   color: isDark
                       ? Colors.teal.shade800.withOpacity(0.2)
                       : Colors.teal.shade50,
-                  borderRadius: BorderRadius.circular(12.r),
+                  borderRadius: BorderRadius.circular(AppResponsive.radius(context, 12)),
                   border: Border.all(
                     color: isDark
                         ? Colors.teal.shade800.withOpacity(0.2)
@@ -224,20 +225,20 @@ class _WirdNotificationBuildState extends State<WirdNotificationBuild> {
                 ),
                 child: Icon(
                   Icons.access_time,
-                  size: 20.sp,
+                  size: AppResponsive.iconSize(context, 20),
                   color: isDark
                       ? Colors.teal.shade300
                       : Colors.teal.shade700,
                 ),
               ),
 
-              Gap(14.w),
+              Gap(AppResponsive.widthValue(context, 14)),
 
               // Title
               Expanded(
                 child: CustomText(
                   "وقت التنبيه",
-                  fontSize: 13.sp,
+                  fontSize: AppResponsive.fontSize(context, 13),
                   fontWeight: FontWeight.w600,
                   color: isDark ? Colors.grey.shade300 : Colors.grey.shade700,
                 ),
@@ -245,7 +246,7 @@ class _WirdNotificationBuildState extends State<WirdNotificationBuild> {
 
               // Time Display
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),
+                padding: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 14), vertical: AppResponsive.heightValue(context, 6)),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
@@ -257,7 +258,7 @@ class _WirdNotificationBuildState extends State<WirdNotificationBuild> {
                           : Colors.teal.shade50.withOpacity(0.5),
                     ],
                   ),
-                  borderRadius: BorderRadius.circular(10.r),
+                  borderRadius: BorderRadius.circular(AppResponsive.radius(context, 10)),
                   border: Border.all(
                     color: isDark
                         ? Colors.teal.shade800.withOpacity(0.2)
@@ -270,18 +271,18 @@ class _WirdNotificationBuildState extends State<WirdNotificationBuild> {
                   children: [
                     Icon(
                       Icons.edit_notifications_outlined,
-                      size: 16.sp,
+                      size: AppResponsive.iconSize(context, 16),
                       color: isDark
                           ? Colors.teal.shade300
                           : Colors.teal.shade700,
                     ),
-                    SizedBox(width: 8.w),
+                    SizedBox(width: AppResponsive.widthValue(context, 8)),
                     CustomText(
                       _formatTimeArabic(state.dailyWirdTime),
                       color: isDark
                           ? Colors.teal.shade200
                           : Colors.teal.shade700,
-                      fontSize: 13.sp,
+                      fontSize: AppResponsive.fontSize(context, 13),
                       fontWeight: FontWeight.w700,
                     ),
                   ],
@@ -304,10 +305,10 @@ class _WirdNotificationBuildState extends State<WirdNotificationBuild> {
       onTap: onChanged,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
-        width: 48.w,
-        height: 28.h,
+        width: AppResponsive.widthValue(context, 48),
+        height: AppResponsive.heightValue(context, 28),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(14.r),
+          borderRadius: BorderRadius.circular(AppResponsive.radius(context, 14)),
           color: isActive
               ? activeColor
               : (isDark
@@ -327,10 +328,10 @@ class _WirdNotificationBuildState extends State<WirdNotificationBuild> {
           children: [
             // Track
             Container(
-              width: 48.w,
-              height: 28.h,
+              width: AppResponsive.widthValue(context, 48),
+              height: AppResponsive.heightValue(context, 28),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(14.r),
+                borderRadius: BorderRadius.circular(AppResponsive.radius(context, 14)),
                 gradient: isActive
                     ? LinearGradient(
                   colors: [
@@ -350,10 +351,10 @@ class _WirdNotificationBuildState extends State<WirdNotificationBuild> {
                   ? Alignment.centerRight
                   : Alignment.centerLeft,
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 3.w),
+                padding: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 3)),
                 child: Container(
-                  width: 22.w,
-                  height: 22.w,
+                  width: AppResponsive.widthValue(context, 22),
+                  height: AppResponsive.widthValue(context, 22),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colors.white,
@@ -367,7 +368,7 @@ class _WirdNotificationBuildState extends State<WirdNotificationBuild> {
                   ),
                   child: Icon(
                     isActive ? Icons.check_rounded : Icons.close_rounded,
-                    size: 14.sp,
+                    size: AppResponsive.iconSize(context, 14),
                     color: isActive ? activeColor : Colors.grey.shade400,
                   ),
                 ),

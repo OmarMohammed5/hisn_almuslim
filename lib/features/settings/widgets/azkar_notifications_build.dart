@@ -6,6 +6,7 @@ import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/features/settings/data/cubit/notification_cubit.dart';
 import 'package:hisn_almuslim/features/settings/data/cubit/notification_state.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
+import '../../../core/responsive/app_responsive.dart';
 
 class AzkarNotificationsBuild extends StatelessWidget {
   const AzkarNotificationsBuild({super.key});
@@ -25,10 +26,10 @@ class AzkarNotificationsBuild extends StatelessWidget {
             timePickerTheme: TimePickerThemeData(
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               hourMinuteShape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.r),
+                borderRadius: BorderRadius.circular(AppResponsive.radius(context, 12)),
               ),
               dayPeriodShape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.r),
+                borderRadius: BorderRadius.circular(AppResponsive.radius(context, 12)),
               ),
             ),
           ),
@@ -56,12 +57,12 @@ class AzkarNotificationsBuild extends StatelessWidget {
     return BlocBuilder<NotificationCubit, NotificationState>(
       builder: (context, state) {
         return Container(
-          padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 4.w),
+          padding: EdgeInsets.symmetric(vertical: AppResponsive.heightValue(context, 8), horizontal: AppResponsive.widthValue(context, 4)),
           decoration: BoxDecoration(
             color: isDark
                 ? Colors.grey.shade900.withOpacity(0.3)
                 : Colors.grey.shade50,
-            borderRadius: BorderRadius.circular(16.r),
+            borderRadius: BorderRadius.circular(AppResponsive.radius(context, 16)),
             border: Border.all(
               color: isDark
                   ? Colors.grey.shade800.withOpacity(0.3)
@@ -91,11 +92,11 @@ class AzkarNotificationsBuild extends StatelessWidget {
                   color: isDark
                       ? Colors.grey.shade800.withOpacity(0.3)
                       : Colors.grey.shade200,
-                  height: 1.h,
-                  indent: 16.w,
-                  endIndent: 16.w,
+                  height: AppResponsive.heightValue(context, 1),
+                  indent: AppResponsive.widthValue(context, 16),
+                  endIndent: AppResponsive.widthValue(context, 16),
                 ),
-                Gap(4.h),
+                Gap(AppResponsive.heightValue(context, 4)),
                 _buildTimePickerTile(
                   context: context,
                   isDark: isDark,
@@ -109,16 +110,16 @@ class AzkarNotificationsBuild extends StatelessWidget {
                     });
                   },
                 ),
-                Gap(4.h),
+                Gap(AppResponsive.heightValue(context, 4)),
               ],
 
               Divider(
                 color: isDark
                     ? Colors.grey.shade800.withOpacity(0.3)
                     : Colors.grey.shade200,
-                height: 1.h,
-                indent: 16.w,
-                endIndent: 16.w,
+                height: AppResponsive.heightValue(context, 1),
+                indent: AppResponsive.widthValue(context, 16),
+                endIndent: AppResponsive.widthValue(context, 16),
               ),
 
               /// Evening Azkar
@@ -141,11 +142,11 @@ class AzkarNotificationsBuild extends StatelessWidget {
                   color: isDark
                       ? Colors.grey.shade800.withOpacity(0.3)
                       : Colors.grey.shade200,
-                  height: 1.h,
-                  indent: 16.w,
-                  endIndent: 16.w,
+                  height: AppResponsive.heightValue(context, 1),
+                  indent: AppResponsive.widthValue(context, 16),
+                  endIndent: AppResponsive.widthValue(context, 16),
                 ),
-                Gap(4.h),
+                Gap(AppResponsive.heightValue(context, 4)),
                 _buildTimePickerTile(
                   context: context,
                   isDark: isDark,
@@ -159,16 +160,16 @@ class AzkarNotificationsBuild extends StatelessWidget {
                     });
                   },
                 ),
-                Gap(4.h),
+                Gap(AppResponsive.heightValue(context, 4)),
               ],
 
               Divider(
                 color: isDark
                     ? Colors.grey.shade800.withOpacity(0.3)
                     : Colors.grey.shade200,
-                height: 1.h,
-                indent: 16.w,
-                endIndent: 16.w,
+                height: AppResponsive.heightValue(context, 1),
+                indent: AppResponsive.widthValue(context, 16),
+                endIndent: AppResponsive.widthValue(context, 16),
               ),
 
               /// Recurring Salat upon the Prophet reminder
@@ -191,17 +192,17 @@ class AzkarNotificationsBuild extends StatelessWidget {
                   color: isDark
                       ? Colors.grey.shade800.withOpacity(0.3)
                       : Colors.grey.shade200,
-                  height: 1.h,
-                  indent: 16.w,
-                  endIndent: 16.w,
+                  height: AppResponsive.heightValue(context, 1),
+                  indent: AppResponsive.widthValue(context, 16),
+                  endIndent: AppResponsive.widthValue(context, 16),
                 ),
-                Gap(4.h),
+                Gap(AppResponsive.heightValue(context, 4)),
                 _buildDhikrReminderIntervalTile(
                   context: context,
                   isDark: isDark,
                   minutes: state.dhikrReminderMinutes,
                 ),
-                Gap(4.h),
+                Gap(AppResponsive.heightValue(context, 4)),
               ],
             ],
           ),
@@ -225,18 +226,18 @@ class AzkarNotificationsBuild extends StatelessWidget {
         onTap: () {
           onToggle(!isEnabled);
         },
-        borderRadius: BorderRadius.circular(12.r),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 12)),
         splashColor: isEnabled
             ? activeColor.withOpacity(0.1)
             : Colors.grey.withOpacity(0.05),
         highlightColor: Colors.transparent,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
+          padding: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 10), vertical: AppResponsive.heightValue(context, 8)),
           child: Row(
             children: [
               // Icon Container
               Container(
-                padding: EdgeInsets.all(8.w),
+                padding: EdgeInsets.all(AppResponsive.widthValue(context, 8)),
                 decoration: BoxDecoration(
                   gradient: isEnabled
                       ? LinearGradient(
@@ -255,7 +256,7 @@ class AzkarNotificationsBuild extends StatelessWidget {
                       : (isEnabled
                       ? activeColor.withOpacity(0.08)
                       : Colors.grey.shade100),
-                  borderRadius: BorderRadius.circular(12.r),
+                  borderRadius: BorderRadius.circular(AppResponsive.radius(context, 12)),
                   border: Border.all(
                     color: isEnabled
                         ? activeColor.withOpacity(0.2)
@@ -267,7 +268,7 @@ class AzkarNotificationsBuild extends StatelessWidget {
                 ),
                 child: Icon(
                   icon,
-                  size: 20.sp,
+                  size: AppResponsive.iconSize(context, 20),
                   color: isEnabled
                       ? activeColor
                       : (isDark
@@ -276,7 +277,7 @@ class AzkarNotificationsBuild extends StatelessWidget {
                 ),
               ),
 
-              Gap(14.w),
+              Gap(AppResponsive.widthValue(context, 14)),
 
               // Title
               Expanded(
@@ -285,7 +286,7 @@ class AzkarNotificationsBuild extends StatelessWidget {
                   children: [
                     CustomText(
                       title,
-                      fontSize: 13.sp,
+                      fontSize: AppResponsive.fontSize(context, 13),
                       fontWeight: isEnabled ? FontWeight.w700 : FontWeight.w600,
                       color: isEnabled
                           ? (isDark ? Colors.white : Colors.black87)
@@ -297,6 +298,7 @@ class AzkarNotificationsBuild extends StatelessWidget {
 
               // Custom Switch
               _buildCustomSwitch(
+                context: context,
                 isActive: isEnabled,
                 activeColor: activeColor,
                 isDark: isDark,
@@ -319,16 +321,16 @@ class AzkarNotificationsBuild extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
+        padding: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 10), vertical: AppResponsive.heightValue(context, 8)),
         child: Row(
           children: [
             Container(
-              padding: EdgeInsets.all(8.w),
+              padding: EdgeInsets.all(AppResponsive.widthValue(context, 8)),
               decoration: BoxDecoration(
                 color: isDark
                     ? Colors.teal.shade800.withOpacity(0.2)
                     : Colors.teal.shade50,
-                borderRadius: BorderRadius.circular(12.r),
+                borderRadius: BorderRadius.circular(AppResponsive.radius(context, 12)),
                 border: Border.all(
                   color: isDark
                       ? Colors.teal.shade800.withOpacity(0.2)
@@ -337,17 +339,17 @@ class AzkarNotificationsBuild extends StatelessWidget {
               ),
               child: Icon(
                 Icons.schedule_rounded,
-                size: 20.sp,
+                size: AppResponsive.iconSize(context, 20),
                 color: isDark
                     ? Colors.teal.shade300
                     : Colors.teal.shade700,
               ),
             ),
-            Gap(14.w),
+            Gap(AppResponsive.widthValue(context, 14)),
             Expanded(
               child: CustomText(
                 'التذكير كل',
-                fontSize: 13.sp,
+                fontSize: AppResponsive.fontSize(context, 13),
                 fontWeight: FontWeight.w600,
                 color: isDark ? Colors.grey.shade300 : Colors.grey.shade700,
               ),
@@ -358,7 +360,7 @@ class AzkarNotificationsBuild extends StatelessWidget {
                 color: isDark
                     ? Colors.teal.shade900.withOpacity(0.25)
                     : Colors.teal.shade50,
-                borderRadius: BorderRadius.circular(10.r),
+                borderRadius: BorderRadius.circular(AppResponsive.radius(context, 10)),
                 border: Border.all(
                   color: isDark
                       ? Colors.teal.shade800.withOpacity(0.3)
@@ -369,10 +371,10 @@ class AzkarNotificationsBuild extends StatelessWidget {
                 child: DropdownButton<int>(
                   value: minutes,
                   isDense: true,
-                  borderRadius: BorderRadius.circular(12.r),
+                  borderRadius: BorderRadius.circular(AppResponsive.radius(context, 12)),
                   icon: Icon(
                     Icons.keyboard_arrow_down_rounded,
-                    size: 20.sp,
+                    size: AppResponsive.iconSize(context, 20),
                     color: isDark
                         ? Colors.teal.shade300
                         : Colors.teal.shade700,
@@ -424,21 +426,21 @@ class AzkarNotificationsBuild extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(12.r),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 12)),
         splashColor: Colors.teal.withOpacity(0.05),
         highlightColor: Colors.transparent,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
+          padding: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 10), vertical: AppResponsive.heightValue(context, 8)),
           child: Row(
             children: [
               // Icon Container
               Container(
-                padding: EdgeInsets.all(8.w),
+                padding: EdgeInsets.all(AppResponsive.widthValue(context, 8)),
                 decoration: BoxDecoration(
                   color: isDark
                       ? Colors.teal.shade800.withOpacity(0.2)
                       : Colors.teal.shade50,
-                  borderRadius: BorderRadius.circular(12.r),
+                  borderRadius: BorderRadius.circular(AppResponsive.radius(context, 12)),
                   border: Border.all(
                     color: isDark
                         ? Colors.teal.shade800.withOpacity(0.2)
@@ -448,20 +450,20 @@ class AzkarNotificationsBuild extends StatelessWidget {
                 ),
                 child: Icon(
                   Icons.access_time,
-                  size: 20.sp,
+                  size: AppResponsive.iconSize(context, 20),
                   color: isDark
                       ? Colors.teal.shade300
                       : Colors.teal.shade700,
                 ),
               ),
 
-              Gap(14.w),
+              Gap(AppResponsive.widthValue(context, 14)),
 
               // Title
               Expanded(
                 child: CustomText(
                   title,
-                  fontSize: 13.sp,
+                  fontSize: AppResponsive.fontSize(context, 13),
                   fontWeight: FontWeight.w600,
                   color: isDark ? Colors.grey.shade300 : Colors.grey.shade700,
                 ),
@@ -469,7 +471,7 @@ class AzkarNotificationsBuild extends StatelessWidget {
 
               // Time Display
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),
+                padding: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 14), vertical: AppResponsive.heightValue(context, 6)),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
@@ -481,7 +483,7 @@ class AzkarNotificationsBuild extends StatelessWidget {
                           : Colors.teal.shade50.withOpacity(0.5),
                     ],
                   ),
-                  borderRadius: BorderRadius.circular(10.r),
+                  borderRadius: BorderRadius.circular(AppResponsive.radius(context, 10)),
                   border: Border.all(
                     color: isDark
                         ? Colors.teal.shade800.withOpacity(0.2)
@@ -494,18 +496,18 @@ class AzkarNotificationsBuild extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.edit_notifications_outlined,
-                      size: 16.sp,
+                      size: AppResponsive.iconSize(context, 16),
                       color: isDark
                           ? Colors.teal.shade300
                           : Colors.teal.shade700,
                     ),
-                    SizedBox(width: 8.w),
+                    SizedBox(width: AppResponsive.widthValue(context, 8)),
                     CustomText(
                       _formatTimeArabic(time),
                       color: isDark
                           ? Colors.teal.shade200
                           : Colors.teal.shade700,
-                      fontSize: 13.sp,
+                      fontSize: AppResponsive.fontSize(context, 13),
                       fontWeight: FontWeight.w700,
                     ),
                   ],
@@ -519,6 +521,7 @@ class AzkarNotificationsBuild extends StatelessWidget {
   }
 
   Widget _buildCustomSwitch({
+    required BuildContext context,
     required bool isActive,
     required Color activeColor,
     required bool isDark,
@@ -528,10 +531,10 @@ class AzkarNotificationsBuild extends StatelessWidget {
       onTap: onChanged,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
-        width: 48.w,
-        height: 28.h,
+        width: AppResponsive.widthValue(context, 48),
+        height: AppResponsive.heightValue(context, 28),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(14.r),
+          borderRadius: BorderRadius.circular(AppResponsive.radius(context, 14)),
           color: isActive
               ? activeColor
               : (isDark
@@ -551,10 +554,10 @@ class AzkarNotificationsBuild extends StatelessWidget {
           children: [
             // Track
             Container(
-              width: 48.w,
-              height: 28.h,
+              width: AppResponsive.widthValue(context, 48),
+              height: AppResponsive.heightValue(context, 28),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(14.r),
+                borderRadius: BorderRadius.circular(AppResponsive.radius(context, 14)),
                 gradient: isActive
                     ? LinearGradient(
                   colors: [
@@ -574,10 +577,10 @@ class AzkarNotificationsBuild extends StatelessWidget {
                   ? Alignment.centerRight
                   : Alignment.centerLeft,
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 3.w),
+                padding: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 3)),
                 child: Container(
-                  width: 22.w,
-                  height: 22.w,
+                  width: AppResponsive.widthValue(context, 22),
+                  height: AppResponsive.widthValue(context, 22),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colors.white,
@@ -591,7 +594,7 @@ class AzkarNotificationsBuild extends StatelessWidget {
                   ),
                   child: Icon(
                     isActive ? Icons.check_rounded : Icons.close_rounded,
-                    size: 14.sp,
+                    size: AppResponsive.iconSize(context, 14),
                     color: isActive ? activeColor : Colors.grey.shade400,
                   ),
                 ),

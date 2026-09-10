@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../core/responsive/app_responsive.dart';
 
 
 class PlayerControlCard extends StatelessWidget {
@@ -27,7 +28,7 @@ class PlayerControlCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 26.w),
+      padding: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 20)),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -35,47 +36,47 @@ class PlayerControlCard extends StatelessWidget {
             " سورة ${arabicTitle}",
             textAlign: TextAlign.center,
             style: TextStyle(
-            fontSize: 16.sp,
+            fontSize: AppResponsive.fontSize(context, 16),
             fontWeight: FontWeight.w600,
             color: Colors.white,
               fontFamily: "Noon",
             ),
           ),
-          SizedBox(height: 6.h),
+          SizedBox(height: AppResponsive.heightValue(context, 6)),
           Text(
             "القارئ الشيخ /  ${reciterName}",
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 14.sp,
+              fontSize: AppResponsive.fontSize(context, 14),
               fontWeight: FontWeight.w600,
               color: Colors.white,
               fontFamily: "Noon",
             ),
           ),
           if (riwayaText != null && riwayaText!.trim().isNotEmpty) ...[
-            SizedBox(height: 3.h),
+            SizedBox(height: AppResponsive.heightValue(context, 3)),
             Text(
               riwayaText!,
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 10.5.sp,
+                fontSize: AppResponsive.fontSize(context, 10.5),
                 color: Colors.white.withValues(alpha: 0.42),
                 fontFamily: "Noon",
               ),
             ),
           ],
-          SizedBox(height: 26.h),
+          SizedBox(height: AppResponsive.heightValue(context, 26)),
           progressSlider,
           timeRow,
-          SizedBox(height: 22.h),
+          SizedBox(height: AppResponsive.heightValue(context, 22)),
           controlsRow,
-          SizedBox(height: 22.h),
+          SizedBox(height: AppResponsive.heightValue(context, 22)),
           if (completionMode != null) ...[
             completionMode!,
-            SizedBox(height: 14.h),
+            SizedBox(height: AppResponsive.heightValue(context, 14)),
           ],
           speedChip,
-          SizedBox(height: 8.h),
+          SizedBox(height: AppResponsive.heightValue(context, 8)),
         ],
       ),
     );

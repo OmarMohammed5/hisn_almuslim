@@ -1,10 +1,8 @@
 import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hisn_almuslim/core/helpers/share_helper.dart';
-import 'package:hisn_almuslim/core/shared/custom_text.dart';
 
 import '../data/cubit/ayah_highlight_state.dart';
 import '../domain/entities/ayah_entity.dart';
@@ -24,6 +22,7 @@ class AyahActionsSheet extends StatefulWidget {
   final HighlightData? currentHighlight;
   final ValueChanged<Color> onHighlight;
   final VoidCallback onRemoveHighlight;
+  final VoidCallback onTafsir;
 
   const AyahActionsSheet({
     super.key,
@@ -31,6 +30,7 @@ class AyahActionsSheet extends StatefulWidget {
     required this.ayah,
     required this.onHighlight,
     required this.onRemoveHighlight,
+    required this.onTafsir,
     this.currentHighlight,
   });
 
@@ -40,55 +40,81 @@ class AyahActionsSheet extends StatefulWidget {
 
 class _AyahActionsSheetState extends State<AyahActionsSheet> {
   final AudioPlayer _player = AudioPlayer();
-  bool _loading = false;
-  bool _playing = false;
-  bool _loop = false;
-  bool _showColors = false;
 
-  String get _audioUrl {
-    if (widget.ayah.audioUrl.endsWith('.mp3')) return widget.ayah.audioUrl;
-    if (widget.ayah.audioSecondary.isNotEmpty &&
-        widget.ayah.audioSecondary.first.endsWith('.mp3'))
-      return widget.ayah.audioSecondary.first;
-    return 'https://cdn.islamic.network/quran/audio/128/ar.husary/${widget.surah.number}_${widget.ayah.numberInSurah}.mp3';
-  }
+  bool _isLoading = false;
+  bool _isPlaying = false;
+  bool _hasError = false;
+  bool _showColorPicker = false;
 
   @override
   void initState() {
     super.initState();
+
     _player.onPlayerStateChanged.listen((state) {
-      if (mounted) setState(() => _playing = state == PlayerState.playing);
+      if (!mounted) return;
+
+      setState(() {
+        _isPlaying = state == PlayerState.playing;
+      });
     });
   }
 
   @override
   void dispose() {
+    _player.stop();
     _player.dispose();
     super.dispose();
   }
 
-  Future<void> _listen() async {
-    if (_playing) {
+  String get _audioUrl {
+    if (widget.ayah.audioUrl.endsWith('.mp3')) {
+      return widget.ayah.audioUrl;
+    }
+
+    if (widget.ayah.audioSecondary.isNotEmpty) {
+      final fallback = widget.ayah.audioSecondary.first;
+
+      if (fallback.endsWith('.mp3')) {
+        return fallback;
+      }
+    }
+
+    return 'https://cdn.islamic.network/quran/audio/128/ar.husary/'
+        '${widget.surah.number}_${widget.ayah.numberInSurah}.mp3';
+  }
+
+  Future<void> _togglePlay() async {
+    if (_isPlaying) {
       await _player.pause();
       return;
     }
-    setState(() => _loading = true);
+
+    if (_player.state == PlayerState.paused) {
+      await _player.resume();
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+      _hasError = false;
+    });
+
     try {
-      if (_player.state == PlayerState.paused) {
-        await _player.resume();
-      } else {
-        await _player.play(UrlSource(_audioUrl));
+      await _player.play(UrlSource(_audioUrl));
+    } catch (_) {
+      if (mounted) {
+        setState(() => _hasError = true);
       }
-      await _player.setReleaseMode(
-        _loop ? ReleaseMode.loop : ReleaseMode.release,
-      );
     } finally {
-      if (mounted) setState(() => _loading = false);
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
-  void _copy() {
+  void _copyAyah() {
     Clipboard.setData(ClipboardData(text: widget.ayah.text));
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         behavior: SnackBarBehavior.floating,
@@ -96,16 +122,18 @@ class _AyahActionsSheetState extends State<AyahActionsSheet> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(14.r),
         ),
-        content: const Text('تم نسخ الآية'),
+        content: Text('تم نسخ الآية', style: TextStyle(fontSize: 13.sp)),
       ),
     );
   }
 
-  void _share() {
+  void _shareAyah() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     ShareHelper.shareAsImage(
       context,
       widget.ayah.text,
-      isDark: Theme.of(context).brightness == Brightness.dark,
+      isDark: isDark,
       source:
           '(${widget.surah.displayName} - الآية ${widget.ayah.numberInSurah})',
       fontFamily: 'QuranFont',
@@ -114,74 +142,51 @@ class _AyahActionsSheetState extends State<AyahActionsSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final dark = Theme.of(context).brightness == Brightness.dark;
-    final bg = dark ? const Color(0xFF101815) : const Color(0xFFFDFBF5);
-    final surface = dark ? const Color(0xFF17211D) : const Color(0xFFF0EBDC);
-    final text = dark ? const Color(0xFFECE6D6) : const Color(0xFF20281F);
-    final muted = dark ? const Color(0xFF96A39A) : const Color(0xFF667268);
-    final primary = dark ? const Color(0xFF7EB6A8) : const Color(0xFF1F5145);
-    final gold = dark ? const Color(0xFFD2B57C) : const Color(0xFFAC8E54);
-    final highlighted = widget.currentHighlight != null;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    final actions = [
-      _ActionTile(
-        Icons.share_rounded,
-        'مشاركة',
-        primary,
-        surface,
-        text,
-        _share,
-      ),
-      _ActionTile(Icons.copy_rounded, 'نسخ', primary, surface, text, _copy),
-      _ActionTile(
-        highlighted ? Icons.bookmark_rounded : Icons.bookmark_border_rounded,
-        highlighted ? 'تغيير' : 'تظليل',
-        highlighted ? widget.currentHighlight!.color : gold,
-        surface,
-        text,
-        () => setState(() => _showColors = !_showColors),
-      ),
-      _ActionTile(
-        _loop ? Icons.repeat_one_rounded : Icons.repeat_rounded,
-        'تكرار',
-        _loop ? gold : primary,
-        surface,
-        text,
-        () async {
-          setState(() => _loop = !_loop);
-          await _player.setReleaseMode(
-            _loop ? ReleaseMode.loop : ReleaseMode.release,
-          );
-        },
-      ),
-    ];
+    final background = isDark
+        ? const Color(0xFF101815)
+        : const Color(0xFFFDFBF5);
+
+    final surface = isDark ? const Color(0xFF161F1B) : const Color(0xFFF0EBDC);
+
+    final text = isDark ? const Color(0xFFECE6D6) : const Color(0xFF20281F);
+
+    final softText = isDark ? const Color(0xFF96A39A) : const Color(0xFF667268);
+
+    final primary = isDark ? const Color(0xFF7EB6A8) : const Color(0xFF1F5145);
+
+    final gold = isDark ? const Color(0xFFD2B57C) : const Color(0xFFAC8E54);
+
+    final hasHighlight = widget.currentHighlight != null;
 
     return Container(
       constraints: BoxConstraints(
         maxHeight: MediaQuery.of(context).size.height * .88,
       ),
       decoration: BoxDecoration(
-        color: bg,
+        color: background,
         borderRadius: BorderRadius.vertical(top: Radius.circular(30.r)),
       ),
       child: SafeArea(
         top: false,
         child: SingleChildScrollView(
-          padding: EdgeInsets.fromLTRB(16.w, 10.h, 16.w, 18.h),
+          padding: EdgeInsets.fromLTRB(16.w, 10.h, 16.w, 16.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Center(
                 child: Container(
-                  width: 40.w,
+                  width: 38.w,
                   height: 4.h,
                   decoration: BoxDecoration(
-                    color: muted.withValues(alpha: .28),
-                    borderRadius: BorderRadius.circular(99.r),
+                    color: softText.withValues(alpha: .30),
+                    borderRadius: BorderRadius.circular(10.r),
                   ),
                 ),
               ),
-              SizedBox(height: 14.h),
+              SizedBox(height: 16.h),
+
               Row(
                 children: [
                   Container(
@@ -197,30 +202,31 @@ class _AyahActionsSheetState extends State<AyahActionsSheet> {
                       size: 21.sp,
                     ),
                   ),
-                  SizedBox(width: 10.w),
+                  SizedBox(width: 11.w),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      spacing: 6.h,
                       children: [
-                        CustomText(
-                          'الآية ${_digits(widget.ayah.numberInSurah)}',
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.w800,
-                          color: text,
+                        Text(
+                          'الآية ${_arabicDigits(widget.ayah.numberInSurah)}',
+                          style: TextStyle(
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.w800,
+                            color: text,
+                          ),
                         ),
-                        CustomText(
+                        SizedBox(height: 2.h),
+                        Text(
                           widget.surah.displayName,
-                          fontSize: 11.sp,
-                          color: muted,
+                          style: TextStyle(fontSize: 10.5.sp, color: softText),
                         ),
                       ],
                     ),
                   ),
-                  if (highlighted)
+                  if (hasHighlight)
                     Container(
-                      width: 11.w,
-                      height: 11.w,
+                      width: 10.w,
+                      height: 10.w,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: widget.currentHighlight!.color,
@@ -228,33 +234,33 @@ class _AyahActionsSheetState extends State<AyahActionsSheet> {
                     ),
                 ],
               ),
-              SizedBox(height: 14.h),
+
+              SizedBox(height: 15.h),
+
               Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 16.w,
-                  vertical: 18.h,
-                ),
+                padding: EdgeInsets.fromLTRB(16.w, 18.h, 16.w, 18.h),
                 decoration: BoxDecoration(
                   color: surface,
                   borderRadius: BorderRadius.circular(20.r),
+                  border: Border.all(color: gold.withValues(alpha: .12)),
                 ),
-                child: CustomText(
+                child: Text(
                   widget.ayah.text,
-                  maxLines: 50,
                   textAlign: TextAlign.center,
-                  fontSize: 16.sp,
-                  height: 1.95,
-                  color: text,
+                  textDirection: TextDirection.rtl,
+                  style: TextStyle(
+                    fontFamily: 'QuranFont',
+                    fontSize: 20.sp,
+                    height: 1.95,
+                    color: text,
+                  ),
                 ),
               ),
-              SizedBox(height: 10.h),
 
-              // Listening
+              SizedBox(height: 12.h),
+
               Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 12.w,
-                  vertical: 8.h,
-                ),
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
                 decoration: BoxDecoration(
                   color: surface,
                   borderRadius: BorderRadius.circular(17.r),
@@ -265,155 +271,233 @@ class _AyahActionsSheetState extends State<AyahActionsSheet> {
                       color: primary,
                       shape: const CircleBorder(),
                       child: InkWell(
-                        onTap: _loading ? null : _listen,
                         customBorder: const CircleBorder(),
+                        onTap: _isLoading ? null : _togglePlay,
                         child: SizedBox(
                           width: 42.w,
                           height: 42.w,
-                          child: _loading
+                          child: _isLoading
                               ? Padding(
                                   padding: EdgeInsets.all(12.w),
-                                  child: CupertinoActivityIndicator(
+                                  child: const CircularProgressIndicator(
+                                    strokeWidth: 2,
                                     color: Colors.white,
                                   ),
                                 )
                               : Icon(
-                                  _playing
+                                  _isPlaying
                                       ? Icons.pause_rounded
                                       : Icons.play_arrow_rounded,
                                   color: Colors.white,
+                                  size: 23.sp,
                                 ),
                         ),
                       ),
                     ),
-                    SizedBox(width: 10.w),
+                    SizedBox(width: 11.w),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        spacing: 7.h,
                         children: [
-                          CustomText(
-                            _playing ? 'جاري الاستماع' : 'استماع للآية',
+                          Text(
+                            _hasError
+                                ? 'تعذر تشغيل الصوت'
+                                : _isPlaying
+                                ? 'جاري الاستماع'
+                                : 'استماع للآية',
+                            style: TextStyle(
                               fontSize: 11.5.sp,
                               fontWeight: FontWeight.w800,
-                              color: text,
+                              color: _hasError ? Colors.red.shade400 : text,
+                            ),
                           ),
-                          CustomText(
+                          SizedBox(height: 2.h),
+                          Text(
                             'الشيخ محمود خليل الحصري',
-                            fontSize: 9.5.sp, color: muted,
+                            style: TextStyle(fontSize: 9.5.sp, color: softText),
                           ),
                         ],
                       ),
                     ),
-                    Icon(
-                      _loop
-                          ? Icons.repeat_one_rounded
-                          : Icons.graphic_eq_rounded,
-                      color: gold,
-                      size: 22.sp,
-                    ),
+                    if (_isPlaying)
+                      Icon(Icons.graphic_eq_rounded, color: gold, size: 22.sp),
                   ],
                 ),
               ),
-              SizedBox(height: 13.h),
-              CustomText(
+
+              SizedBox(height: 14.h),
+
+              Text(
                 'إجراءات الآية',
-                fontSize: 10.sp,
-                fontWeight: FontWeight.w700,
-                color: muted,
+                style: TextStyle(
+                  fontSize: 11.sp,
+                  fontWeight: FontWeight.w700,
+                  color: softText,
+                ),
               ),
               SizedBox(height: 8.h),
+
               GridView.count(
                 crossAxisCount: 4,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 crossAxisSpacing: 8.w,
                 mainAxisSpacing: 8.h,
-                childAspectRatio: .92,
-                children: actions,
+                childAspectRatio: .95,
+                children: [
+                  _ActionTile(
+                    icon: Icons.copy_rounded,
+                    label: 'نسخ',
+                    color: primary,
+                    surface: surface,
+                    text: text,
+                    onTap: _copyAyah,
+                  ),
+                  _ActionTile(
+                    icon: Icons.share_rounded,
+                    label: 'مشاركة',
+                    color: primary,
+                    surface: surface,
+                    text: text,
+                    onTap: _shareAyah,
+                  ),
+                  _ActionTile(
+                    icon: hasHighlight
+                        ? Icons.bookmark_rounded
+                        : Icons.bookmark_border_rounded,
+                    label: hasHighlight ? 'تغيير' : 'تظليل',
+                    color: hasHighlight ? widget.currentHighlight!.color : gold,
+                    surface: surface,
+                    text: text,
+                    onTap: () {
+                      setState(() {
+                        _showColorPicker = !_showColorPicker;
+                      });
+                    },
+                  ),
+                  _ActionTile(
+                    icon: Icons.menu_book_rounded,
+                    label: 'تفسير',
+                    color: primary,
+                    surface: surface,
+                    text: text,
+                    onTap: widget.onTafsir,
+                  ),
+                ],
               ),
-              if (_showColors) ...[
-                SizedBox(height: 9.h),
+
+              if (_showColorPicker) ...[
+                SizedBox(height: 10.h),
                 Container(
                   padding: EdgeInsets.symmetric(
+                    horizontal: 10.w,
                     vertical: 11.h,
-                    horizontal: 8.w,
                   ),
                   decoration: BoxDecoration(
                     color: surface,
                     borderRadius: BorderRadius.circular(17.r),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  child: Column(
                     children: [
-                      ...kHighlightPalette.map(
-                        (color) => Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 5.w),
-                          child: GestureDetector(
-                            onTap: () {
-                              widget.onHighlight(color);
-                              Navigator.pop(context);
-                            },
-                            child: Container(
-                              width: 32.w,
-                              height: 32.w,
-                              decoration: BoxDecoration(
-                                color: color,
-                                shape: BoxShape.circle,
-                                border:
-                                    widget.currentHighlight?.color == color
-                                    ? Border.all(color: text, width: 2)
-                                    : null,
-                              ),
-                              child: widget.currentHighlight?.color == color
-                                  ? Icon(
-                                      Icons.check_rounded,
-                                      size: 17.sp,
-                                      color: Colors.white,
-                                    )
-                                  : null,
-                            ),
-                          ),
+                      Text(
+                        'اختر لون التظليل',
+                        style: TextStyle(
+                          fontSize: 10.5.sp,
+                          fontWeight: FontWeight.w700,
+                          color: softText,
                         ),
                       ),
-                      if (highlighted)
-                        Padding(
-                          padding: EdgeInsets.only(right: 5.w),
-                          child: GestureDetector(
-                            onTap: () {
-                              widget.onRemoveHighlight();
-                              Navigator.pop(context);
-                            },
-                            child: Container(
-                              width: 32.w,
-                              height: 32.w,
-                              decoration: BoxDecoration(
-                                color: Colors.red.withValues(alpha: .09),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Icon(
-                                Icons.delete_outline_rounded,
-                                size: 17.sp,
-                                color: Colors.red.shade400,
+                      SizedBox(height: 9.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          for (final color in kHighlightPalette)
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 5.w),
+                              child: GestureDetector(
+                                onTap: () {
+                                  widget.onHighlight(color);
+                                  Navigator.pop(context);
+                                },
+                                child: AnimatedContainer(
+                                  duration: const Duration(milliseconds: 150),
+                                  width: 32.w,
+                                  height: 32.w,
+                                  decoration: BoxDecoration(
+                                    color: color.withValues(alpha: .88),
+                                    shape: BoxShape.circle,
+                                    border:
+                                        widget.currentHighlight?.color == color
+                                        ? Border.all(color: text, width: 2)
+                                        : null,
+                                  ),
+                                  child: widget.currentHighlight?.color == color
+                                      ? Icon(
+                                          Icons.check_rounded,
+                                          size: 17.sp,
+                                          color: Colors.white,
+                                        )
+                                      : null,
+                                ),
                               ),
                             ),
-                          ),
-                        ),
+                          if (hasHighlight)
+                            Padding(
+                              padding: EdgeInsets.only(left: 5.w),
+                              child: GestureDetector(
+                                onTap: () {
+                                  widget.onRemoveHighlight();
+                                  Navigator.pop(context);
+                                },
+                                child: Container(
+                                  width: 32.w,
+                                  height: 32.w,
+                                  decoration: BoxDecoration(
+                                    color: Colors.red.withValues(alpha: .09),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Icon(
+                                    Icons.delete_outline_rounded,
+                                    size: 17.sp,
+                                    color: Colors.red.shade400,
+                                  ),
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
               ],
+
+              SizedBox(height: 10.h),
+
+              if (hasHighlight)
+                TextButton.icon(
+                  onPressed: () {
+                    widget.onRemoveHighlight();
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(
+                    Icons.remove_circle_outline_rounded,
+                    size: 17.sp,
+                    color: Colors.red.shade400,
+                  ),
+                  label: Text(
+                    'إزالة التظليل',
+                    style: TextStyle(
+                      fontSize: 11.sp,
+                      color: Colors.red.shade400,
+                    ),
+                  ),
+                ),
             ],
           ),
         ),
       ),
     );
   }
-
-  String _digits(int n) => n.toString().replaceAllMapped(
-    RegExp(r'\d'),
-    (m) => '٠١٢٣٤٥٦٧٨٩'[int.parse(m.group(0)!)],
-  );
 }
 
 class _ActionTile extends StatelessWidget {
@@ -424,24 +508,23 @@ class _ActionTile extends StatelessWidget {
   final Color text;
   final VoidCallback onTap;
 
-  const _ActionTile(
-    this.icon,
-    this.label,
-    this.color,
-    this.surface,
-    this.text,
-    this.onTap,
-  );
+  const _ActionTile({
+    required this.icon,
+    required this.label,
+    required this.color,
+    required this.surface,
+    required this.text,
+    required this.onTap,
+  });
 
   @override
-  Widget build(BuildContext context) => Material(
-    color: surface,
-    borderRadius: BorderRadius.circular(16.r),
-    child: InkWell(
-      onTap: onTap,
+  Widget build(BuildContext context) {
+    return Material(
+      color: surface,
       borderRadius: BorderRadius.circular(16.r),
-      child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 9.h),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16.r),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -450,20 +533,39 @@ class _ActionTile extends StatelessWidget {
               height: 34.w,
               decoration: BoxDecoration(
                 color: color.withValues(alpha: .09),
-                shape: BoxShape.circle,
+                borderRadius: BorderRadius.circular(11.r),
               ),
               child: Icon(icon, size: 18.sp, color: color),
             ),
-            SizedBox(height: 5.h),
-            CustomText(
+            SizedBox(height: 6.h),
+            Text(
               label,
-              fontSize: 9.sp,
-              fontWeight: FontWeight.w600,
-              color: text,
+              style: TextStyle(
+                fontSize: 9.5.sp,
+                fontWeight: FontWeight.w600,
+                color: text.withValues(alpha: .75),
+              ),
             ),
           ],
         ),
       ),
-    ),
-  );
+    );
+  }
+}
+
+String _arabicDigits(int number) {
+  const map = {
+    '0': '٠',
+    '1': '١',
+    '2': '٢',
+    '3': '٣',
+    '4': '٤',
+    '5': '٥',
+    '6': '٦',
+    '7': '٧',
+    '8': '٨',
+    '9': '٩',
+  };
+
+  return number.toString().split('').map((e) => map[e] ?? e).join();
 }

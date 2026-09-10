@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../core/responsive/app_responsive.dart';
 import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -81,9 +82,14 @@ class _ReciterSelectionDialogState extends State<ReciterSelectionDialog> {
       maxChildSize: 0.92,
       expand: false,
       builder: (context, scrollController) {
-        return Container(
-          decoration: BoxDecoration(
-            color: sheetBg,
+        return Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: AppResponsive.maxContentWidth(context),
+            ),
+            child: Container(
+              decoration: BoxDecoration(
+                color: sheetBg,
             borderRadius: BorderRadius.vertical(top: Radius.circular(28.r)),
           ),
           child: Column(
@@ -215,8 +221,8 @@ class _ReciterSelectionDialogState extends State<ReciterSelectionDialog> {
                     : ListView.separated(
                   controller: scrollController,
                   padding: EdgeInsets.symmetric(
-                    horizontal: 12.w,
-                    vertical: 8.h,
+                    horizontal: AppResponsive.widthValue(context, 12),
+                    vertical: AppResponsive.heightValue(context, 8),
                   ),
                   itemCount: _filteredReciters.length,
                   separatorBuilder: (_, __) => Gap(6.h),
@@ -273,6 +279,7 @@ class _ReciterSelectionDialogState extends State<ReciterSelectionDialog> {
                                   children: [
                                     CustomText(
                                       reciter.reciter.ar,
+                                      maxLines: 1,
                                       fontWeight: FontWeight.w600,
                                       fontSize: 12.sp,
                                       color: isSelected
@@ -300,9 +307,10 @@ class _ReciterSelectionDialogState extends State<ReciterSelectionDialog> {
                   },
                 ),
               ),
-            ],
+              ],
+            ),
           ),
-        );
+        ));
       },
     );
   }

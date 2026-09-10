@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
+import 'package:hisn_almuslim/core/responsive/app_responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -83,13 +84,13 @@ class _QuranHomePageState extends State<QuranHomePage> {
                         children: [
                           Icon(
                             Icons.search_off,
-                            size: 60.sp,
+                            size: AppResponsive.fontSize(context, 40),
                             color: Colors.grey[400],
                           ),
-                          SizedBox(height: 16.h),
+                          SizedBox(height: AppResponsive.heightValue(context, 16)),
                           CustomText(
                             'لا توجد نتائج',
-                              fontSize: 16.sp,
+                              fontSize: AppResponsive.fontSize(context, 14),
                               color: Colors.grey[600],
                           ),
                         ],
@@ -99,14 +100,24 @@ class _QuranHomePageState extends State<QuranHomePage> {
 
                   return BlocBuilder<AyahHighlightCubit, AyahHighlightState>(
                     builder: (context, highlightState) {
-                      return ListView.builder(
-                        controller: _scrollController,
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 12.w,
-                          vertical: 8.h,
-                        ),
-                        itemCount: surahs.length,
-                        itemBuilder: (context, index) {
+                      final maxWidth = AppResponsive.isDesktop(context)
+                          ? 1100.0
+                          : AppResponsive.isTablet(context)
+                              ? 820.0
+                              : double.infinity;
+
+                      return Center(
+                        child: AppResponsive.constrain(
+                          context,
+                          maxWidth: maxWidth,
+                          child: ListView.builder(
+                            controller: _scrollController,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: AppResponsive.widthValue(context, 12),
+                              vertical: AppResponsive.heightValue(context, 8),
+                            ),
+                                                  itemCount: surahs.length,
+                                                  itemBuilder: (context, index) {
                           final surah = surahs[index];
 
                           return SurahCard(
@@ -119,7 +130,9 @@ class _QuranHomePageState extends State<QuranHomePage> {
                               );
                             },
                           );
-                        },
+                            },
+                          ),
+                        ),
                       );
                     },
                   );
@@ -132,19 +145,19 @@ class _QuranHomePageState extends State<QuranHomePage> {
                       children: [
                         Icon(
                           Icons.error_outline,
-                          size: 60.sp,
+                          size: AppResponsive.fontSize(context, 60),
                           color: Colors.red[300],
                         ),
-                        SizedBox(height: 16.h),
+                        SizedBox(height: AppResponsive.heightValue(context, 16)),
                         Text(
                           state.message,
                           style: TextStyle(
-                            fontSize: 16.sp,
+                            fontSize: AppResponsive.fontSize(context, 16),
                             color: Colors.grey[600],
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        SizedBox(height: 16.h),
+                        SizedBox(height: AppResponsive.heightValue(context, 16)),
                         ElevatedButton(
                           onPressed: () => context.read<QuranCubit>().loadAllSurahs(),
                           child: const Text('إعادة المحاولة'),
@@ -168,24 +181,35 @@ class _QuranHomePageState extends State<QuranHomePage> {
   }
 
   Widget _buildSearchBar(BuildContext context) {
-    return Padding(
-      padding:  EdgeInsets.all(12.w),
-      child: SearchField(
-        controller: _searchController,
-        onChanged: (value) {
-        _searchDebounce?.cancel();
-        _searchDebounce = Timer(
-          const Duration(milliseconds: 300),
-              () {
-            if (value.isEmpty) {
-              context.read<QuranCubit>().clearSearch();
-            } else {
-              context.read<QuranCubit>().searchSurahs(value);
-            }
-          },
-        );
-        },
-          hint: 'ابحث عن سورة ...',
+    final maxWidth = AppResponsive.isDesktop(context)
+        ? 1100.0
+        : AppResponsive.isTablet(context)
+            ? 820.0
+            : double.infinity;
+
+    return Center(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: maxWidth),
+        child: Padding(
+          padding: EdgeInsets.all(AppResponsive.widthValue(context, 12)),
+          child: SearchField(
+            controller: _searchController,
+            onChanged: (value) {
+              _searchDebounce?.cancel();
+              _searchDebounce = Timer(
+                const Duration(milliseconds: 300),
+                () {
+                  if (value.isEmpty) {
+                    context.read<QuranCubit>().clearSearch();
+                  } else {
+                    context.read<QuranCubit>().searchSurahs(value);
+                  }
+                },
+              );
+            },
+            hint: 'ابحث عن سورة ...',
+          ),
+        ),
       ),
     );
   }

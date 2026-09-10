@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../core/responsive/app_responsive.dart';
 import '../../../../core/theme/app_colors.dart';
 
 class AudioWaveAnimation extends StatefulWidget {
@@ -79,8 +80,8 @@ class _AudioWaveAnimationState extends State<AudioWaveAnimation>
     final color = widget.color ?? AppColors.kPrimary;
 
     return SizedBox(
-      width: widget.size.w,
-      height: widget.size.w,
+      width: AppResponsive.widthValue(context, widget.size),
+      height: AppResponsive.widthValue(context, widget.size),
       child: Center(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -96,13 +97,13 @@ class _AudioWaveAnimationState extends State<AudioWaveAnimation>
                   final sinValue = sin(time + phase);
                   height = 0.35 + 0.65 * (0.5 + 0.5 * sinValue);
                 }
-                final width = index == 2 ? 4.w : 3.w;
+                final width = AppResponsive.widthValue(context, index == 2 ? 4 : 3);
                 final opacity = 0.3 + (height * 0.5);
 
                 return Container(
-                  margin: EdgeInsets.symmetric(horizontal: 1.5.w),
+                  margin: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 1.5)),
                   width: width,
-                  height: (widget.size * 0.25 + height * widget.size * 0.55).h,
+                  height: AppResponsive.heightValue(context, widget.size * 0.25 + height * widget.size * 0.55),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.bottomCenter,

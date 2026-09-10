@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../core/responsive/app_responsive.dart';
 
 class CustomSwitchWidget extends StatelessWidget {
   final bool isActive;
@@ -20,10 +21,10 @@ class CustomSwitchWidget extends StatelessWidget {
       onTap: onChanged,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
-        width: 48.w,
-        height: 28.h,
+        width: AppResponsive.widthValue(context, 48),
+        height: AppResponsive.heightValue(context, 28),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(14.r),
+          borderRadius: BorderRadius.circular(AppResponsive.radius(context, 14)),
           color: isActive
               ? activeColor
               : (isDark ? Colors.grey.shade700 : Colors.grey.shade300),
@@ -41,10 +42,10 @@ class CustomSwitchWidget extends StatelessWidget {
           children: [
             // Track
             Container(
-              width: 48.w,
-              height: 28.h,
+              width: AppResponsive.widthValue(context, 48),
+              height: AppResponsive.heightValue(context, 28),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(14.r),
+                borderRadius: BorderRadius.circular(AppResponsive.radius(context, 14)),
                 gradient: isActive
                     ? LinearGradient(
                   colors: [activeColor, activeColor.withOpacity(0.7)],
@@ -60,10 +61,10 @@ class CustomSwitchWidget extends StatelessWidget {
                   ? Alignment.centerRight
                   : Alignment.centerLeft,
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 3.w),
+                padding: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 3)),
                 child: Container(
-                  width: 22.w,
-                  height: 22.w,
+                  width: AppResponsive.widthValue(context, 22),
+                  height: AppResponsive.widthValue(context, 22),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colors.white,
@@ -77,7 +78,7 @@ class CustomSwitchWidget extends StatelessWidget {
                   ),
                   child: Icon(
                     isActive ? Icons.check_rounded : Icons.close_rounded,
-                    size: 14.sp,
+                    size: AppResponsive.iconSize(context, 14),
                     color: isActive ? activeColor : Colors.grey.shade400,
                   ),
                 ),

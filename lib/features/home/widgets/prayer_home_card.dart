@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../core/responsive/app_responsive.dart';
 import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 import 'package:hisn_almuslim/features/adhan/data/cubit/adhan_cubit.dart';
@@ -57,20 +57,20 @@ class _PrayerHomeCardContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 18.w),
+      padding: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 18)),
       child: Column(
         children: [
           // Main Prayer Card
-          _buildMainCard(),
-          Gap(14.h),
+          _buildMainCard(context),
+          Gap(AppResponsive.heightValue(context, 14)),
           // Other Prayers Timeline
-          _buildTimeline(),
+          _buildTimeline(context),
         ],
       ),
     );
   }
 
-  Widget _buildMainCard() {
+  Widget _buildMainCard(BuildContext context) {
 
     final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
     final borderColor = isDark
@@ -87,16 +87,16 @@ class _PrayerHomeCardContent extends StatelessWidget {
         : const Color(0xFFB2DFDB);
 
     return Container(
-      padding: EdgeInsets.all(20.w),
+      padding: EdgeInsets.all(AppResponsive.widthValue(context, 20)),
       decoration: BoxDecoration(
         color: bgColor,
         border: Border.all(color: borderColor, width: 1),
-        borderRadius: BorderRadius.circular(24.r),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 24)),
         boxShadow: [
           BoxShadow(
             color: accentColor.withValues(alpha: 0.02),
             blurRadius: 2,
-            offset: Offset(0, 2.h),
+            offset: Offset(0, AppResponsive.heightValue(context, 2)),
           ),
         ],
       ),
@@ -112,24 +112,24 @@ class _PrayerHomeCardContent extends StatelessWidget {
                 children: [
                   CustomText(
                     'الصلاة القادمة',
-                    fontSize: 10.sp,
+                    fontSize: AppResponsive.fontSize(context, 10),
                     color: accentColor,
                     fontWeight: FontWeight.w700,
                   ),
-                  Gap(4.h),
+                  Gap(AppResponsive.heightValue(context, 4)),
                   CustomText(
                     _getArabicPrayerName(nextPrayer.name),
-                    fontSize: 24.sp,
+                    fontSize: AppResponsive.fontSize(context, 24),
                     color: textColor,
                     fontWeight: FontWeight.w800,
                   ),
                 ],
               ),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 8.h),
+                padding: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 14), vertical: AppResponsive.heightValue(context, 8)),
                 decoration: BoxDecoration(
                   color: accentColor.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(12.r),
+                  borderRadius: BorderRadius.circular(AppResponsive.radius(context, 12)),
                   border: Border.all(
                     color: accentColor.withValues(alpha: 0.2),
                     width: 1,
@@ -140,15 +140,15 @@ class _PrayerHomeCardContent extends StatelessWidget {
                     Icon(
                       Icons.schedule_rounded,
                       color: accentColor,
-                      size: 16.sp,
+                      size: AppResponsive.fontSize(context, 16),
                     ),
-                    Gap(4.w),
+                    Gap(AppResponsive.widthValue(context, 4)),
                     CustomText(
                       DateFormat('hh:mm a')
                           .format(nextPrayer.time)
                           .replaceAll('AM', 'ص')
                           .replaceAll('PM', 'م'),
-                      fontSize: 14.sp,
+                      fontSize: AppResponsive.fontSize(context, 14),
                       color: accentColor,
                       fontWeight: FontWeight.w700,
                     ),
@@ -157,25 +157,25 @@ class _PrayerHomeCardContent extends StatelessWidget {
               ),
             ],
           ),
-          Gap(20.h),
+          Gap(AppResponsive.heightValue(context, 20)),
           // Progress bar
           Container(
-            height: 4.h,
+            height: AppResponsive.heightValue(context, 4),
             width: double.infinity,
             decoration: BoxDecoration(
               color: isDark ? const Color(0xFF1A4A42) : const Color(0xFFE0F0EC),
-              borderRadius: BorderRadius.circular(2.r),
+              borderRadius: BorderRadius.circular(AppResponsive.radius(context, 2)),
             ),
-            child: _buildProgressBar(),
+            child: _buildProgressBar(context),
           ),
-          Gap(16.h),
+          Gap(AppResponsive.heightValue(context, 16)),
           // Countdown
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               CustomText(
                 'الوقت المتبقي',
-                fontSize: 11.sp,
+                fontSize: AppResponsive.fontSize(context, 11),
                 color: subTextColor,
                 fontWeight: FontWeight.w600,
               ),
@@ -186,13 +186,13 @@ class _PrayerHomeCardContent extends StatelessWidget {
                     label: 'س',
                     accentColor: accentColor,
                   ),
-                  Gap(6.w),
+                  Gap(AppResponsive.widthValue(context, 6)),
                   _CountdownChip(
                     value: remaining.inMinutes % 60,
                     label: 'د',
                     accentColor: accentColor,
                   ),
-                  Gap(6.w),
+                  Gap(AppResponsive.widthValue(context, 6)),
                   _CountdownChip(
                     value: remaining.inSeconds % 60,
                     label: 'ث',
@@ -207,7 +207,7 @@ class _PrayerHomeCardContent extends StatelessWidget {
     );
   }
 
-  Widget _buildProgressBar() {
+  Widget _buildProgressBar(BuildContext context) {
     final totalDuration = Duration(hours: 24);
     final progress =
         (totalDuration - remaining).inSeconds / totalDuration.inSeconds;
@@ -219,13 +219,13 @@ class _PrayerHomeCardContent extends StatelessWidget {
           gradient: LinearGradient(
             colors: [const Color(0xFF0E8A78), const Color(0xFF4DD0B5)],
           ),
-          borderRadius: BorderRadius.circular(2.r),
+          borderRadius: BorderRadius.circular(AppResponsive.radius(context, 2)),
         ),
       ),
     );
   }
 
-  Widget _buildTimeline() {
+  Widget _buildTimeline(BuildContext context) {
     final allPrayers = List.from(others);
     allPrayers.add(nextPrayer);
     allPrayers.sort((a, b) => a.time.compareTo(b.time));
@@ -245,11 +245,11 @@ class _PrayerHomeCardContent extends StatelessWidget {
 
 
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
+      padding: EdgeInsets.symmetric(vertical: AppResponsive.heightValue(context, 12), horizontal: AppResponsive.widthValue(context, 16)),
       decoration: BoxDecoration(
         color: bgColor,
         border: Border.all(color: borderColor, width: 1),
-        borderRadius: BorderRadius.circular(20.r),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 20)),
       ),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
@@ -301,11 +301,11 @@ class _CountdownChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 48.w,
-      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+      width: AppResponsive.widthValue(context, 48),
+      padding: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 8), vertical: AppResponsive.heightValue(context, 4)),
       decoration: BoxDecoration(
         color: accentColor.withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(8.r),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 8)),
         border: Border.all(
           color: accentColor.withValues(alpha: 0.15),
           width: 1,
@@ -316,13 +316,13 @@ class _CountdownChip extends StatelessWidget {
         children: [
           CustomText(
             value.toString().padLeft(2, '0'),
-            fontSize: 16.sp,
+            fontSize: AppResponsive.fontSize(context, 16),
             color: accentColor,
             fontWeight: FontWeight.w800,
           ),
           CustomText(
             label,
-            fontSize: 12.sp,
+            fontSize: AppResponsive.fontSize(context, 12),
             color: accentColor.withValues(alpha: 0.7),
             fontWeight: FontWeight.w600,
           ),
@@ -340,11 +340,11 @@ class _LoadingCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 200.h,
-      margin: EdgeInsets.symmetric(horizontal: 18.w),
+      height: AppResponsive.heightValue(context, 200),
+      margin: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 18)),
       decoration: BoxDecoration(
         color: isDark ? const Color(0xFF0D2A26) : const Color(0xFFF8FBF9),
-        borderRadius: BorderRadius.circular(24.r),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 24)),
         border: Border.all(
           color: isDark
               ? const Color(0xFF1A4A42).withValues(alpha: 0.3)
@@ -357,14 +357,14 @@ class _LoadingCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              width: 50.w,
-              height: 50.w,
+              width: AppResponsive.widthValue(context, 50),
+              height: AppResponsive.widthValue(context, 50),
               child: CupertinoActivityIndicator(color: const Color(0xFF0E8A78)),
             ),
-            Gap(12.h),
+            Gap(AppResponsive.heightValue(context, 12)),
             CustomText(
               'جاري تحميل أوقات الصلاة...',
-              fontSize: 14.sp,
+              fontSize: AppResponsive.fontSize(context, 13),
               color: isDark ? Colors.white60 : const Color(0xFF0E8A78),
               fontWeight: FontWeight.w500,
             ),

@@ -1,4 +1,5 @@
 import 'package:flutter/gestures.dart';
+import '../../../core/responsive/app_responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hisn_almuslim/features/quran/widgets/basmala_widget.dart';
@@ -164,9 +165,9 @@ class MushafPageBlockState extends State<MushafPageBlock> {
     return RepaintBoundary(
       child: Padding(
         padding: EdgeInsets.symmetric(
-          horizontal: widget.mode == QuranReadingMode.page ? 7.w : 16.w,
+          horizontal: widget.mode == QuranReadingMode.page ? AppResponsive.widthValue(context, 7) : AppResponsive.widthValue(context, 16),
 
-          vertical: widget.mode == QuranReadingMode.page ? 4.h : 8.h,
+          vertical: widget.mode == QuranReadingMode.page ? AppResponsive.heightValue(context, 4) : AppResponsive.heightValue(context, 8),
         ),
 
         child: content,
@@ -187,12 +188,12 @@ class MushafPageBlockState extends State<MushafPageBlock> {
       child: Container(
         width: double.infinity,
 
-        padding: EdgeInsets.fromLTRB(14.w, 15.h, 14.w, 10.h),
+        padding: EdgeInsets.fromLTRB(AppResponsive.widthValue(context, 14), AppResponsive.heightValue(context, 15), AppResponsive.widthValue(context, 14), AppResponsive.heightValue(context, 10)),
 
         decoration: BoxDecoration(
           color: paper,
 
-          borderRadius: BorderRadius.circular(8.r),
+          borderRadius: BorderRadius.circular(AppResponsive.radius(context, 8)),
 
           border: Border.all(color: gold.withValues(alpha: .10)),
 
@@ -200,9 +201,9 @@ class MushafPageBlockState extends State<MushafPageBlock> {
             BoxShadow(
               color: Colors.black.withValues(alpha: dark ? .12 : .035),
 
-              blurRadius: 18.r,
+              blurRadius: AppResponsive.radius(context, 18),
 
-              offset: Offset(0, 7.h),
+              offset: Offset(0, AppResponsive.heightValue(context, 7)),
             ),
           ],
         ),
@@ -216,7 +217,7 @@ class MushafPageBlockState extends State<MushafPageBlock> {
             // BASMALA
             if (widget.showBasmala) BasmalaWidget(dark: dark, gold: gold),
 
-            SizedBox(height: 2.h),
+            SizedBox(height: AppResponsive.heightValue(context, 2)),
 
             // QURAN TEXT
             RichText(
@@ -226,15 +227,15 @@ class MushafPageBlockState extends State<MushafPageBlock> {
 
               softWrap: true,
 
-              text: TextSpan(children: _buildPageSpans(base, accent)),
+              text: TextSpan(children: _buildPageSpans(context, base, accent)),
             ),
 
-            SizedBox(height: 10.h),
+            SizedBox(height: AppResponsive.heightValue(context, 10)),
 
             // PAGE FOOTER
             PageFooter(page: widget.page),
 
-            SizedBox(height: 4.h),
+            SizedBox(height: AppResponsive.heightValue(context, 4)),
           ],
         ),
       ),
@@ -242,7 +243,7 @@ class MushafPageBlockState extends State<MushafPageBlock> {
   }
 
   // PAGE SPANS
-  List<InlineSpan> _buildPageSpans(Color base, Color selection) {
+  List<InlineSpan> _buildPageSpans(BuildContext context, Color base, Color selection) {
     final spans = <InlineSpan>[];
 
     for (final ayah in widget.page.ayahs) {
@@ -264,7 +265,7 @@ class MushafPageBlockState extends State<MushafPageBlock> {
           style: TextStyle(
             fontFamily: 'QuranFont',
 
-            fontSize: widget.fontSize.sp,
+            fontSize: AppResponsive.fontSize(context, widget.fontSize),
 
             height: 2.02,
 
@@ -286,7 +287,7 @@ class MushafPageBlockState extends State<MushafPageBlock> {
             key: _keyFor(ayah.numberInSurah),
 
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 2.w),
+              padding: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 2)),
 
               child: AyahBadge(
                 numberInSurah: ayah.numberInSurah,
@@ -334,16 +335,16 @@ class MushafPageBlockState extends State<MushafPageBlock> {
               decoration: BoxDecoration(
                 color: selected ? accent.withValues(alpha: .055) : null,
 
-                borderRadius: BorderRadius.circular(13.r),
+                borderRadius: BorderRadius.circular(AppResponsive.radius(context, 13)),
               ),
 
               child: InkWell(
                 onTap: () => widget.onAyahTap(ayah),
 
-                borderRadius: BorderRadius.circular(13.r),
+                borderRadius: BorderRadius.circular(AppResponsive.radius(context, 13)),
 
                 child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 7.h, horizontal: 4.w),
+                  padding: EdgeInsets.symmetric(vertical: AppResponsive.heightValue(context, 7), horizontal: AppResponsive.widthValue(context, 4)),
 
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -354,7 +355,7 @@ class MushafPageBlockState extends State<MushafPageBlock> {
                         textAlign: TextAlign.right,
                         style: TextStyle(
                           fontFamily: 'QuranFont',
-                          fontSize: widget.fontSize.sp,
+                          fontSize: AppResponsive.fontSize(context, widget.fontSize),
                           height: 1.9,
                           color: selected ? accent : base,
                           backgroundColor: highlight?.color.withValues(
@@ -363,7 +364,7 @@ class MushafPageBlockState extends State<MushafPageBlock> {
                         ),
                       ),
 
-                      SizedBox(height: 5.h),
+                      SizedBox(height: AppResponsive.heightValue(context, 5)),
 
                       Row(
                         children: [
@@ -379,7 +380,7 @@ class MushafPageBlockState extends State<MushafPageBlock> {
 
                       if (ayah != widget.page.ayahs.last)
                         Padding(
-                          padding: EdgeInsets.only(top: 5.h),
+                          padding: EdgeInsets.only(top: AppResponsive.heightValue(context, 5)),
 
                           child: Divider(
                             height: 1,
@@ -394,11 +395,11 @@ class MushafPageBlockState extends State<MushafPageBlock> {
             );
           }),
 
-          SizedBox(height: 4.h),
+          SizedBox(height: AppResponsive.heightValue(context, 4)),
 
           PageFooter(page: widget.page),
 
-          SizedBox(height: 12.h),
+          SizedBox(height: AppResponsive.heightValue(context, 12)),
         ],
       ),
     );
@@ -432,9 +433,9 @@ class MushafPageBlockState extends State<MushafPageBlock> {
             return Container(
               key: _keyFor(ayah.numberInSurah),
 
-              margin: EdgeInsets.only(bottom: 6.h),
+              margin: EdgeInsets.only(bottom: AppResponsive.heightValue(context, 6)),
 
-              padding: EdgeInsets.fromLTRB(10.w, 11.h, 10.w, 11.h),
+              padding: EdgeInsets.fromLTRB(AppResponsive.widthValue(context, 10), AppResponsive.heightValue(context, 11), AppResponsive.widthValue(context, 10), AppResponsive.heightValue(context, 11)),
 
               decoration: BoxDecoration(
                 color: selected
@@ -443,7 +444,7 @@ class MushafPageBlockState extends State<MushafPageBlock> {
                     ? highlight.color.withValues(alpha: .12)
                     : surface,
 
-                borderRadius: BorderRadius.circular(17.r),
+                borderRadius: BorderRadius.circular(AppResponsive.radius(context, 17)),
 
                 border: Border.all(
                   color: selected
@@ -455,7 +456,7 @@ class MushafPageBlockState extends State<MushafPageBlock> {
               child: InkWell(
                 onTap: () => widget.onAyahTap(ayah),
 
-                borderRadius: BorderRadius.circular(17.r),
+                borderRadius: BorderRadius.circular(AppResponsive.radius(context, 17)),
 
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -465,11 +466,11 @@ class MushafPageBlockState extends State<MushafPageBlock> {
                       ayah.text,
                       textAlign: TextAlign.right,
                       fontFamily: 'Noon',
-                      fontSize: widget.fontSize.sp,
+                      fontSize: AppResponsive.fontSize(context, widget.fontSize),
                       height: 1.95,
                       color: selected ? accent : base,
                     ),
-                    SizedBox(height: 8.h),
+                    SizedBox(height: AppResponsive.heightValue(context, 8)),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: AyahBadge(
@@ -483,9 +484,9 @@ class MushafPageBlockState extends State<MushafPageBlock> {
               ),
             );
           }),
-          SizedBox(height: 4.h),
+          SizedBox(height: AppResponsive.heightValue(context, 4)),
           PageFooter(page: widget.page),
-          SizedBox(height: 12.h),
+          SizedBox(height: AppResponsive.heightValue(context, 12)),
         ],
       ),
     );
@@ -516,24 +517,24 @@ class MushafPageBlockState extends State<MushafPageBlock> {
 
             return Container(
               key: _keyFor(ayah.numberInSurah),
-              margin: EdgeInsets.only(bottom: 4.h),
+              margin: EdgeInsets.only(bottom: AppResponsive.heightValue(context, 4)),
               decoration: BoxDecoration(
                 color: selected
                     ? gold.withValues(alpha: .08)
                     : highlight?.color.withValues(alpha: .08),
-                borderRadius: BorderRadius.circular(12.r),
+                borderRadius: BorderRadius.circular(AppResponsive.radius(context, 12)),
               ),
               child: InkWell(
                 onTap: () => widget.onAyahTap(ayah),
-                borderRadius: BorderRadius.circular(12.r),
+                borderRadius: BorderRadius.circular(AppResponsive.radius(context, 12)),
                 child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 6.h, horizontal: 4.w),
+                  padding: EdgeInsets.symmetric(vertical: AppResponsive.heightValue(context, 6), horizontal: AppResponsive.widthValue(context, 4)),
                   child: Text(
                     ayah.text,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontFamily: 'QuranFont',
-                      fontSize: (widget.fontSize + 1).sp,
+                      fontSize: AppResponsive.fontSize(context, widget.fontSize + 1),
                       height: 2.05,
                       color: selected ? gold : base,
                     ),
@@ -542,9 +543,9 @@ class MushafPageBlockState extends State<MushafPageBlock> {
               ),
             );
           }),
-          SizedBox(height: 4.h),
+          SizedBox(height: AppResponsive.heightValue(context, 4)),
           PageFooter(page: widget.page),
-          SizedBox(height: 12.h),
+          SizedBox(height: AppResponsive.heightValue(context, 12)),
         ],
       ),
     );

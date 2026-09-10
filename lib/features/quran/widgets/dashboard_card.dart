@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/responsive/app_responsive.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hisn_almuslim/core/theme/app_colors.dart';
 import '../../../core/routing/app_routes.dart';
@@ -50,10 +51,10 @@ class DashboardCard extends StatelessWidget {
         ? Colors.grey.shade400
         : Colors.grey.shade600;
 
-    final radius = BorderRadius.circular(20.r);
+    final radius = BorderRadius.circular(AppResponsive.radius(context, 20));
 
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
+      margin: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 16), vertical: AppResponsive.heightValue(context, 6)),
       decoration: BoxDecoration(
         color: bgColor,
         borderRadius: radius,
@@ -61,8 +62,8 @@ class DashboardCard extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: shadowColor,
-            blurRadius: 20.r,
-            offset: Offset(0, 8.h),
+            blurRadius: AppResponsive.radius(context, 20),
+            offset: Offset(0, AppResponsive.heightValue(context, 8)),
             spreadRadius: 1,
           ),
         ],
@@ -77,7 +78,7 @@ class DashboardCard extends StatelessWidget {
           splashColor: primary.withValues(alpha: 0.1),
           highlightColor: primary.withValues(alpha: 0.05),
           child: Padding(
-            padding: EdgeInsets.all(16.w),
+            padding: EdgeInsets.all(AppResponsive.widthValue(context, 16)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -86,8 +87,8 @@ class DashboardCard extends StatelessWidget {
                   children: [
                     // Surah Number Circle with Gradient
                     Container(
-                      width: 32.w,
-                      height: 32.w,
+                      width: AppResponsive.widthValue(context, 32),
+                      height: AppResponsive.widthValue(context, 32),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         gradient: LinearGradient(
@@ -103,7 +104,7 @@ class DashboardCard extends StatelessWidget {
                         child: Text(
                           '$surahNumber',
                           style: TextStyle(
-                            fontSize: 14.sp,
+                            fontSize: AppResponsive.fontSize(context, 14),
                             fontWeight: FontWeight.w700,
                             color: Colors.white,
                             fontFamily: 'Noon',
@@ -111,7 +112,7 @@ class DashboardCard extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(width: 14.w),
+                    SizedBox(width: AppResponsive.widthValue(context, 14)),
 
                     // Surah Name & Progress
                     Expanded(
@@ -124,7 +125,7 @@ class DashboardCard extends StatelessWidget {
                                 child: Text(
                                   surah.displayName,
                                   style: TextStyle(
-                                    fontSize: 14.sp,
+                                    fontSize: AppResponsive.fontSize(context, 14),
                                     fontWeight: FontWeight.w700,
                                     color: mainText,
                                     fontFamily: 'Noon',
@@ -135,13 +136,13 @@ class DashboardCard extends StatelessWidget {
                               ),
                             ],
                           ),
-                          SizedBox(height: 4.h),
+                          SizedBox(height: AppResponsive.heightValue(context, 4)),
                           // Progress Bar
                           Row(
                             children: [
                               Expanded(
                                 child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(4.r),
+                                  borderRadius: BorderRadius.circular(AppResponsive.radius(context, 4)),
                                   child: LinearProgressIndicator(
                                     value: ayahNumber / 286, // Approximate progress
                                     backgroundColor: isDark
@@ -150,15 +151,15 @@ class DashboardCard extends StatelessWidget {
                                     valueColor: AlwaysStoppedAnimation<Color>(
                                       primary.withValues(alpha: 0.8),
                                     ),
-                                    minHeight: 4.h,
+                                    minHeight: AppResponsive.heightValue(context, 4),
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 10.w),
+                              SizedBox(width: AppResponsive.widthValue(context, 10)),
                               Text(
                                 '$_getProgress%',
                                 style: TextStyle(
-                                  fontSize: 10.sp,
+                                  fontSize: AppResponsive.fontSize(context, 10),
                                   fontWeight: FontWeight.w600,
                                   color: primary,
                                   fontFamily: 'Noon',
@@ -172,21 +173,21 @@ class DashboardCard extends StatelessWidget {
                   ],
                 ),
 
-                SizedBox(height: 13.h),
+                SizedBox(height: AppResponsive.heightValue(context, 13)),
 
                 // ===== Last Reading Time =====
                 Row(
                   children: [
                     Icon(
                       Icons.access_time_rounded,
-                      size: 14.sp,
+                      size: AppResponsive.fontSize(context, 14),
                       color: secondaryText,
                     ),
-                    SizedBox(width: 6.w),
+                    SizedBox(width: AppResponsive.widthValue(context, 6)),
                     Text(
                       'آخر قراءة :  ${_getTimeAgo(timestamp)}',
                       style: TextStyle(
-                        fontSize: 11.sp,
+                        fontSize: AppResponsive.fontSize(context, 11),
                         color: secondaryText,
                         fontFamily: 'Noon',
                         fontWeight: FontWeight.w400,
@@ -195,7 +196,7 @@ class DashboardCard extends StatelessWidget {
                     const Spacer(),
                     // Continue Reading Button
                     Container(
-                      height: 32.h,
+                      height: AppResponsive.heightValue(context, 32),
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           begin: Alignment.centerLeft,
@@ -205,7 +206,7 @@ class DashboardCard extends StatelessWidget {
                             primary.withValues(alpha: 0.8),
                           ],
                         ),
-                        borderRadius: BorderRadius.circular(16.r),
+                        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 16)),
                       ),
                       child: ElevatedButton(
                         onPressed: () => _goToSurah(context),
@@ -213,11 +214,11 @@ class DashboardCard extends StatelessWidget {
                           backgroundColor: Colors.transparent,
                           foregroundColor: Colors.white,
                           elevation: 0,
-                          padding: EdgeInsets.symmetric(horizontal: 16.w),
+                          padding: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 16)),
                           minimumSize: Size.zero,
                           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16.r),
+                            borderRadius: BorderRadius.circular(AppResponsive.radius(context, 16)),
                           ),
                         ),
                         child: Row(
@@ -226,16 +227,16 @@ class DashboardCard extends StatelessWidget {
                             Text(
                               'متابعة',
                               style: TextStyle(
-                                fontSize: 11.sp,
+                                fontSize: AppResponsive.fontSize(context, 11),
                                 fontWeight: FontWeight.w700,
                                 color: Colors.white,
                                 fontFamily: 'Noon',
                               ),
                             ),
-                            SizedBox(width: 4.w),
+                            SizedBox(width: AppResponsive.widthValue(context, 4)),
                             Icon(
                               Icons.arrow_forward_rounded,
-                              size: 14.sp,
+                              size: AppResponsive.fontSize(context, 14),
                               color: Colors.white,
                             ),
                           ],

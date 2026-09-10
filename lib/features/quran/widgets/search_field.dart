@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import '../../../core/responsive/app_responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -70,13 +71,13 @@ class _SearchFieldState extends State<SearchField> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Container(
-        height: 52.h,
+        height: AppResponsive.heightValue(context, 52),
         padding:
-        EdgeInsets.symmetric(horizontal: 4.w),
+        EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 4)),
         decoration: BoxDecoration(
           color: scheme.surface,
           borderRadius:
-          BorderRadius.circular(28.r),
+          BorderRadius.circular(AppResponsive.radius(context, 28)),
           border: Border.all(
             color: AppColors.kPrimary.withValues(
               alpha: isDark ? .16 : .08,
@@ -87,16 +88,16 @@ class _SearchFieldState extends State<SearchField> {
               color: Colors.black.withValues(
                 alpha: isDark ? .08 : .025,
               ),
-              blurRadius: 12.r,
-              offset: Offset(0, 4.h),
+              blurRadius: AppResponsive.radius(context, 12),
+              offset: Offset(0, AppResponsive.heightValue(context, 4)),
             ),
           ],
         ),
         child: Row(
           children: [
             Container(
-              width: 42.w,
-              height: 42.w,
+              width: AppResponsive.widthValue(context, 42),
+              height: AppResponsive.widthValue(context, 42),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: AppColors.kPrimary.withValues(alpha: isDark ? .14 : .07,),
@@ -104,11 +105,11 @@ class _SearchFieldState extends State<SearchField> {
               child: Icon(
                 CupertinoIcons.search,
                 color: AppColors.kPrimary,
-                size: 20.sp,
+                size: AppResponsive.fontSize(context, 20),
               ),
             ),
 
-            Gap(10.w),
+            Gap(AppResponsive.widthValue(context, 10)),
 
             Expanded(
               child: TextField(
@@ -129,7 +130,7 @@ class _SearchFieldState extends State<SearchField> {
                 style: TextStyle(
                   color:
                   scheme.onSurface,
-                  fontSize: 13.sp,
+                  fontSize: AppResponsive.fontSize(context, 13),
                   fontFamily:
                   'QuranFont',
                 ),
@@ -143,7 +144,7 @@ class _SearchFieldState extends State<SearchField> {
                         .withValues(
                       alpha: .45,
                     ),
-                    fontSize: 11.5.sp,
+                    fontSize: AppResponsive.fontSize(context, 11.5),
                   ),
 
                   suffixIcon:
@@ -161,7 +162,7 @@ class _SearchFieldState extends State<SearchField> {
                     icon: Icon(
                       Icons
                           .clear_rounded,
-                      size: 19.sp,
+                      size: AppResponsive.fontSize(context, 19),
                       color: scheme
                           .onSurface
                           .withValues(
@@ -176,10 +177,10 @@ class _SearchFieldState extends State<SearchField> {
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Colors.teal.shade800,
-                      width: 2.w,
+                      width: AppResponsive.widthValue(context, 2),
                     ),
                     borderRadius: BorderRadius.all(
-                      Radius.circular(25.r),
+                      Radius.circular(AppResponsive.radius(context, 25)),
                     ),
                   ),
 
@@ -188,10 +189,10 @@ class _SearchFieldState extends State<SearchField> {
                       color: isDark
                           ? const Color(0xFF2B2B2B)
                           : const Color(0xFFE9EEF0),
-                      width: 1.w,
+                      width: AppResponsive.widthValue(context, 1),
                     ),
                     borderRadius: BorderRadius.all(
-                      Radius.circular(25.r),
+                      Radius.circular(AppResponsive.radius(context, 25)),
                     ),
                 ),
               ),

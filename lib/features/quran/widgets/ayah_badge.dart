@@ -1,6 +1,7 @@
 // lib/features/quran/presentation/widgets/ayah_badge.dart
 
 import 'package:flutter/material.dart';
+import '../../../core/responsive/app_responsive.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/utils/arabic_digits.dart';
@@ -25,8 +26,8 @@ class AyahBadge extends StatelessWidget {
         (isDark ? MushafColors.goldDark : MushafColors.gold);
 
     return Container(
-      width: 24.w,
-      height: 24.w,
+      width: AppResponsive.widthValue(context, 24),
+      height: AppResponsive.widthValue(context, 24),
       alignment: Alignment.center,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
@@ -38,7 +39,7 @@ class AyahBadge extends StatelessWidget {
       child: Text(
         toArabicDigits(numberInSurah),
         style: TextStyle(
-          fontSize: 10.5.sp,
+          fontSize: AppResponsive.fontSize(context, 10.5),
           color: ringColor,
           fontWeight: FontWeight.w600,
         ),

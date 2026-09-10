@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../core/responsive/app_responsive.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:hisn_almuslim/features/home/widgets/calender_day_item.dart';
 import 'package:hisn_almuslim/features/home/widgets/calender_header.dart';
-
 import '../../../core/theme/app_colors.dart';
 
 class HijriCalendarCard extends StatefulWidget {
@@ -82,15 +81,15 @@ class _HijriCalendarCardState extends State<HijriCalendarCard> {
         : AppColors.kBorderLight;
 
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 18.w),
+      margin: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 18)),
       decoration: BoxDecoration(
         color: bgColor,
-        border: Border.all(color: borderColor, width: 1),        borderRadius: BorderRadius.circular(28.r),
+        border: Border.all(color: borderColor, width: 1),        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 28)),
         boxShadow: [
           BoxShadow(
             color: _primary.withValues(alpha: isDark ? 0.01 : 0.08),
             blurRadius: 2,
-            offset: Offset(0, 2.h),
+            offset: Offset(0, AppResponsive.heightValue(context, 2)),
           ),
         ],
       ),
@@ -104,46 +103,46 @@ class _HijriCalendarCardState extends State<HijriCalendarCard> {
             selectedDate: selectedDate,
             selectedIsToday: selectedIsToday,
           ),
-          _buildWeekDays(isDark: isDark),
+          _buildWeekDays(context, isDark: isDark),
         ],
       ),
     );
   }
 
   // Week Days - Improved with fixed size
-  Widget _buildWeekDays({required bool isDark}) {
+  Widget _buildWeekDays(BuildContext context, {required bool isDark}) {
     final textColor = isDark ? Colors.white : _lightText;
 
     return Padding(
-      padding: EdgeInsets.fromLTRB(12.w, 14.h, 12.w, 16.h),
+      padding: EdgeInsets.fromLTRB(AppResponsive.widthValue(context, 12), AppResponsive.heightValue(context, 14), AppResponsive.widthValue(context, 12), AppResponsive.heightValue(context, 16)),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           // Row(
           //   children: [
           //     Container(
-          //       width: 3.w,
-          //       height: 14.h,
+          //       width: AppResponsive.widthValue(context, 3),
+          //       height: AppResponsive.heightValue(context, 14),
           //       decoration: BoxDecoration(
           //         color: _primary,
-          //         borderRadius: BorderRadius.circular(2.r),
+          //         borderRadius: BorderRadius.circular(AppResponsive.radius(context, 2)),
           //       ),
           //     ),
-              // Gap(6.w),
+              // Gap(AppResponsive.widthValue(context, 6)),
               // Text(
               //   'أيام الأسبوع',
               //   style: TextStyle(
               //     color: textColor,
-              //     fontSize: 12.sp,
+              //     fontSize: AppResponsive.fontSize(context, 12),
               //     fontWeight: FontWeight.w800,
               //     fontFamily: 'Cairo',
               //   ),
               // ),
             // ],
           // ),
-          // Gap(10.h),
+          // Gap(AppResponsive.heightValue(context, 10)),
           SizedBox(
-            height: 62.h,
+            height: AppResponsive.heightValue(context, 64),
             child: Row(
               children: List.generate(
                 _weekDays.length,

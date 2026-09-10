@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/responsive/app_responsive.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -20,10 +21,10 @@ class QuranAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      toolbarHeight: 58.h,
-      leadingWidth: 52.w,
+      toolbarHeight: AppResponsive.heightValue(context, 58),
+      leadingWidth: AppResponsive.widthValue(context, 52),
       leading: IconButton(
-        icon: Icon(Icons.arrow_back_ios_new_rounded, size: 20.sp),
+        icon: Icon(Icons.arrow_back_ios_new_rounded, size: AppResponsive.fontSize(context, 20)),
         onPressed: () => Navigator.pop(context),
       ),
       centerTitle: true,
@@ -32,13 +33,13 @@ class QuranAppBar extends StatelessWidget implements PreferredSizeWidget {
           final surah = state is SurahPagesLoaded ? state.surah : null;
           return Column(
             mainAxisSize: MainAxisSize.min,
-            spacing: 3.h,
+            spacing: AppResponsive.heightValue(context, 3),
             children: [
               Text(
                 surah?.displayName ?? 'سورة',
                 style: TextStyle(
                   fontFamily: 'Noon',
-                  fontSize: 15.sp,
+                  fontSize: AppResponsive.fontSize(context, 15),
                   fontWeight: FontWeight.w700,
                   color: colors.text,
                 ),
@@ -47,7 +48,7 @@ class QuranAppBar extends StatelessWidget implements PreferredSizeWidget {
                 Text(
                   '${surah.totalAyahs} آيات',
                   style: TextStyle(
-                    fontSize: 8.5.sp,
+                    fontSize: AppResponsive.fontSize(context, 8.5),
                     color: colors.text.withValues(alpha: .48),
                   ),
                 ),
@@ -58,14 +59,14 @@ class QuranAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         IconButton(
           tooltip: 'إعدادات القراءة',
-          icon: Icon(Icons.tune_rounded, size: 21.sp),
+          icon: Icon(Icons.tune_rounded, size: AppResponsive.fontSize(context, 21)),
           onPressed: onSettingsPressed,
         ),
-        SizedBox(width: 5.w),
+        SizedBox(width: AppResponsive.widthValue(context, 5)),
       ],
     );
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(58.h);
+  Size get preferredSize => const Size.fromHeight(58);
 }

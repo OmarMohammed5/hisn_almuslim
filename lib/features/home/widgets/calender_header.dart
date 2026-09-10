@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../core/responsive/app_responsive.dart';
 import 'package:gap/gap.dart';
 import 'package:hijri/hijri_calendar.dart';
 
@@ -78,7 +78,7 @@ class _CalenderHeaderState extends State<CalenderHeader> {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.fromLTRB(20.w, 18.h, 20.w, 16.h),
+      padding: EdgeInsets.fromLTRB(AppResponsive.widthValue(context, 20), AppResponsive.heightValue(context, 18), AppResponsive.widthValue(context, 20), AppResponsive.heightValue(context, 16)),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topRight,
@@ -106,8 +106,8 @@ class _CalenderHeaderState extends State<CalenderHeader> {
                   alignment: Alignment.center,
                   children: [
                     Container(
-                      width: 56.w,
-                      height: 56.w,
+                      width: AppResponsive.widthValue(context, 56),
+                      height: AppResponsive.widthValue(context, 56),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(
@@ -120,7 +120,7 @@ class _CalenderHeaderState extends State<CalenderHeader> {
                           _toArabicNumber(widget.selectedHijri.hDay),
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 32.sp,
+                            fontSize: AppResponsive.fontSize(context, 32),
                             fontWeight: FontWeight.w900,
                             height: 1,
                             fontFamily: 'Cairo',
@@ -130,7 +130,7 @@ class _CalenderHeaderState extends State<CalenderHeader> {
                     ),
                   ],
                 ),
-                Gap(12.w),
+                Gap(AppResponsive.widthValue(context, 12)),
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -141,46 +141,46 @@ class _CalenderHeaderState extends State<CalenderHeader> {
                           _getArabicMonth(widget.selectedHijri.hMonth),
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 16.sp,
+                            fontSize: AppResponsive.fontSize(context, 16),
                             fontWeight: FontWeight.w800,
                             fontFamily: 'Cairo',
                           ),
                         ),
-                        Gap(6.w),
+                        Gap(AppResponsive.widthValue(context, 6)),
                         Container(
-                          width: 4.w,
-                          height: 4.w,
+                          width: AppResponsive.widthValue(context, 4),
+                          height: AppResponsive.widthValue(context, 4),
                           decoration: const BoxDecoration(
                             color: _primaryLight,
                             shape: BoxShape.circle,
                           ),
                         ),
-                        Gap(6.w),
+                        Gap(AppResponsive.widthValue(context, 6)),
                         Text(
                           '${_toArabicNumber(widget.selectedHijri.hYear)} هـ',
                           style: TextStyle(
                             color: Colors.white.withValues(alpha: 0.7),
-                            fontSize: 12.sp,
+                            fontSize: AppResponsive.fontSize(context, 12),
                             fontWeight: FontWeight.w600,
                             fontFamily: 'Cairo',
                           ),
                         ),
                       ],
                     ),
-                    Gap(4.h),
+                    Gap(AppResponsive.heightValue(context, 4)),
                     Row(
                       children: [
                         Icon(
                           Icons.calendar_today_rounded,
                           color: Colors.white.withValues(alpha: 0.5),
-                          size: 12.sp,
+                          size: AppResponsive.fontSize(context, 12),
                         ),
-                        Gap(4.w),
+                        Gap(AppResponsive.widthValue(context, 4)),
                         Text(
                           _getGregorianDate(widget.selectedDate),
                           style: TextStyle(
                             color: Colors.white.withValues(alpha: 0.6),
-                            fontSize: 10.sp,
+                            fontSize: AppResponsive.fontSize(context, 10),
                             fontWeight: FontWeight.w500,
                             fontFamily: 'Cairo',
                           ),
@@ -195,28 +195,28 @@ class _CalenderHeaderState extends State<CalenderHeader> {
           // Today Badge
           if (widget.selectedIsToday)
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+              padding: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 10), vertical: AppResponsive.heightValue(context, 6)),
               decoration: BoxDecoration(
                 color: _primaryDark,
-                borderRadius: BorderRadius.circular(20.r),
+                borderRadius: BorderRadius.circular(AppResponsive.radius(context, 20)),
                 boxShadow: [
                   BoxShadow(
                     color: _primaryDark.withValues(alpha: 0.3),
                     blurRadius: 12,
-                    offset: Offset(0, 4.h),
+                    offset: Offset(0, AppResponsive.heightValue(context, 4)),
                   ),
                 ],
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.today_rounded, color: Colors.white, size: 12.sp),
-                  Gap(4.w),
+                  Icon(Icons.today_rounded, color: Colors.white, size: AppResponsive.fontSize(context, 12)),
+                  Gap(AppResponsive.widthValue(context, 4)),
                   Text(
                     'اليوم',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 10.sp,
+                      fontSize: AppResponsive.fontSize(context, 10),
                       fontWeight: FontWeight.w800,
                       fontFamily: 'Cairo',
                     ),

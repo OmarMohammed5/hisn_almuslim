@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/responsive/app_responsive.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hisn_almuslim/features/quran/widgets/reader_settings.dart';
 import '../../../core/shared/custom_text.dart';
@@ -36,7 +37,7 @@ class ReadingModeSheet extends StatelessWidget {
 
     return SafeArea(
       top: false,
-
+      bottom: false,
       child: Container(
         constraints: BoxConstraints(
           maxHeight: MediaQuery.sizeOf(context).height * .75,
@@ -45,44 +46,57 @@ class ReadingModeSheet extends StatelessWidget {
         decoration: BoxDecoration(
           color: bg,
 
-          borderRadius: BorderRadius.vertical(top: Radius.circular(28.r)),
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(AppResponsive.radius(context, 28)),
+          ),
         ),
 
         child: Column(
           children: [
-            SizedBox(height: 10.h),
+            SizedBox(height: AppResponsive.heightValue(context, 10)),
 
             Container(
-              width: 38.w,
-              height: 4.h,
+              width: AppResponsive.widthValue(context, 38),
+              height: AppResponsive.heightValue(context, 4),
 
               decoration: BoxDecoration(
                 color: muted.withValues(alpha: .25),
 
-                borderRadius: BorderRadius.circular(20.r),
+                borderRadius: BorderRadius.circular(
+                  AppResponsive.radius(context, 20),
+                ),
               ),
             ),
 
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 17.h),
+              padding: EdgeInsets.symmetric(
+                horizontal: AppResponsive.widthValue(context, 20),
+                vertical: AppResponsive.heightValue(context, 17),
+              ),
 
               child: CustomText(
                 'اختر نمط القراءة',
                 color: text,
-                fontSize: 15.sp,
+                fontSize: AppResponsive.fontSize(context, 14),
                 fontWeight: FontWeight.w700,
               ),
             ),
 
             Expanded(
               child: ListView.separated(
-                padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 25.h),
+                padding: EdgeInsets.fromLTRB(
+                  AppResponsive.widthValue(context, 16),
+                  0,
+                  AppResponsive.widthValue(context, 16),
+                  AppResponsive.heightValue(context, 25),
+                ),
 
                 physics: const BouncingScrollPhysics(),
 
                 itemCount: quranReadingModes.length,
 
-                separatorBuilder: (_, __) => SizedBox(height: 8.h),
+                separatorBuilder: (_, __) =>
+                    SizedBox(height: AppResponsive.heightValue(context, 8)),
 
                 itemBuilder: (context, index) {
                   final item = quranReadingModes[index];
@@ -97,7 +111,9 @@ class ReadingModeSheet extends StatelessWidget {
                           ? primary.withValues(alpha: .08)
                           : surface,
 
-                      borderRadius: BorderRadius.circular(17.r),
+                      borderRadius: BorderRadius.circular(
+                        AppResponsive.radius(context, 17),
+                      ),
 
                       border: Border.all(
                         color: isSelected
@@ -113,26 +129,30 @@ class ReadingModeSheet extends StatelessWidget {
                         Navigator.pop(context);
                       },
 
-                      borderRadius: BorderRadius.circular(17.r),
+                      borderRadius: BorderRadius.circular(
+                        AppResponsive.radius(context, 17),
+                      ),
 
                       child: Padding(
                         padding: EdgeInsets.symmetric(
-                          horizontal: 14.w,
-                          vertical: 13.h,
+                          horizontal: AppResponsive.widthValue(context, 14),
+                          vertical: AppResponsive.heightValue(context, 13),
                         ),
 
                         child: Row(
                           children: [
                             Container(
-                              width: 43.w,
-                              height: 43.w,
+                              width: AppResponsive.widthValue(context, 43),
+                              height: AppResponsive.widthValue(context, 43),
 
                               decoration: BoxDecoration(
                                 color: isSelected
                                     ? primary.withValues(alpha: .10)
                                     : muted.withValues(alpha: .07),
 
-                                borderRadius: BorderRadius.circular(13.r),
+                                borderRadius: BorderRadius.circular(
+                                  AppResponsive.radius(context, 13),
+                                ),
                               ),
 
                               child: Icon(
@@ -140,11 +160,13 @@ class ReadingModeSheet extends StatelessWidget {
 
                                 color: isSelected ? primary : muted,
 
-                                size: 21.sp,
+                                size: AppResponsive.fontSize(context, 21),
                               ),
                             ),
 
-                            SizedBox(width: 12.w),
+                            SizedBox(
+                              width: AppResponsive.widthValue(context, 12),
+                            ),
 
                             Expanded(
                               child: Column(
@@ -154,16 +176,27 @@ class ReadingModeSheet extends StatelessWidget {
                                   CustomText(
                                     item.title,
                                     color: text,
-                                    fontSize: 13.sp,
+                                    fontSize: AppResponsive.fontSize(
+                                      context,
+                                      13,
+                                    ),
                                     fontWeight: FontWeight.w700,
                                   ),
 
-                                  SizedBox(height: 7.h),
+                                  SizedBox(
+                                    height: AppResponsive.heightValue(
+                                      context,
+                                      7,
+                                    ),
+                                  ),
 
                                   CustomText(
                                     item.subtitle,
                                     color: muted,
-                                    fontSize: 10.sp,
+                                    fontSize: AppResponsive.fontSize(
+                                      context,
+                                      10,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -176,9 +209,15 @@ class ReadingModeSheet extends StatelessWidget {
                                   ? Container(
                                       key: const ValueKey('selected'),
 
-                                      width: 25.w,
+                                      width: AppResponsive.widthValue(
+                                        context,
+                                        25,
+                                      ),
 
-                                      height: 25.w,
+                                      height: AppResponsive.widthValue(
+                                        context,
+                                        25,
+                                      ),
 
                                       decoration: BoxDecoration(
                                         color: primary,
@@ -193,15 +232,24 @@ class ReadingModeSheet extends StatelessWidget {
                                             ? const Color(0xFF10201A)
                                             : Colors.white,
 
-                                        size: 15.sp,
+                                        size: AppResponsive.fontSize(
+                                          context,
+                                          15,
+                                        ),
                                       ),
                                     )
                                   : Container(
                                       key: const ValueKey('empty'),
 
-                                      width: 18.w,
+                                      width: AppResponsive.widthValue(
+                                        context,
+                                        18,
+                                      ),
 
-                                      height: 18.w,
+                                      height: AppResponsive.widthValue(
+                                        context,
+                                        18,
+                                      ),
 
                                       decoration: BoxDecoration(
                                         shape: BoxShape.circle,
@@ -221,25 +269,6 @@ class ReadingModeSheet extends StatelessWidget {
               ),
             ),
 
-            Padding(
-              padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 18.h),
-
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-
-                children: [
-                  Icon(Icons.auto_awesome_rounded, size: 14.sp, color: gold),
-
-                  SizedBox(width: 6.w),
-
-                  CustomText(
-                    'يمكن تغيير النمط في أي وقت',
-                    color: muted,
-                    fontSize: 9.5.sp,
-                  ),
-                ],
-              ),
-            ),
           ],
         ),
       ),

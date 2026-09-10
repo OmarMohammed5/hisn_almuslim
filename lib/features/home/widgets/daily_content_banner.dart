@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import '../../../core/responsive/app_responsive.dart';
 import '../../../core/shared/custom_text.dart';
 import '../data/models/featured_banner_model.dart';
 
@@ -40,10 +40,10 @@ class DailyContentBanner extends StatelessWidget {
       child: Container(
         width: double.infinity,
 
-        margin: EdgeInsets.symmetric(horizontal: 4.w),
+        margin: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 4)),
 
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(22.r),
+          borderRadius: BorderRadius.circular(AppResponsive.radius(context, 22)),
 
           gradient: LinearGradient(
             begin: Alignment.topRight,
@@ -58,7 +58,7 @@ class DailyContentBanner extends StatelessWidget {
         ),
 
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(22.r),
+          borderRadius: BorderRadius.circular(AppResponsive.radius(context, 22)),
 
           child: Stack(
             children: [
@@ -66,13 +66,13 @@ class DailyContentBanner extends StatelessWidget {
               // Decorative Circle - Bottom Left
               // ==================================================
               Positioned(
-                left: -38.w,
-                bottom: -48.h,
+                left: -AppResponsive.widthValue(context, 38),
+                bottom: -AppResponsive.heightValue(context, 48),
 
                 child: IgnorePointer(
                   child: Container(
-                    width: 125.w,
-                    height: 125.w,
+                    width: AppResponsive.widthValue(context, 125),
+                    height: AppResponsive.widthValue(context, 125),
 
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
@@ -89,13 +89,13 @@ class DailyContentBanner extends StatelessWidget {
               // Decorative Circle - Top Right
               // ==================================================
               Positioned(
-                right: -48.w,
-                top: -58.h,
+                right: -AppResponsive.widthValue(context, 48),
+                top: -AppResponsive.heightValue(context, 58),
 
                 child: IgnorePointer(
                   child: Container(
-                    width: 135.w,
-                    height: 135.w,
+                    width: AppResponsive.widthValue(context, 135),
+                    height: AppResponsive.widthValue(context, 135),
 
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
@@ -112,7 +112,7 @@ class DailyContentBanner extends StatelessWidget {
               // Main Content
               // ==================================================
               Padding(
-                padding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
+                padding: EdgeInsets.fromLTRB(AppResponsive.widthValue(context, 12), AppResponsive.heightValue(context, 12), AppResponsive.widthValue(context, 12), AppResponsive.heightValue(context, 12)),
 
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -121,21 +121,21 @@ class DailyContentBanner extends StatelessWidget {
                     // ============================================
                     // Header
                     // ============================================
-                    _buildHeader(textColor: textColor, isDark: isDark),
+                    _buildHeader(context, textColor: textColor, isDark: isDark),
 
-                    SizedBox(height: 10.h),
+                    SizedBox(height: AppResponsive.heightValue(context, 10)),
 
                     // ============================================
                     // Main Content
                     // ============================================
-                    _buildContent(textColor: textColor),
+                    _buildContent(context, textColor: textColor),
 
-                    SizedBox(height: 10.h),
+                    SizedBox(height: AppResponsive.heightValue(context, 10)),
 
                     // ============================================
                     // Source
                     // ============================================
-                    _buildSource(color: secondaryTextColor),
+                    _buildSource(context, color: secondaryTextColor),
                   ],
                 ),
               ),
@@ -150,13 +150,13 @@ class DailyContentBanner extends StatelessWidget {
   // Header
   // ============================================================
 
-  Widget _buildHeader({required Color textColor, required bool isDark}) {
+  Widget _buildHeader(BuildContext context, {required Color textColor, required bool isDark}) {
     return Row(
       children: [
         // Icon
         Container(
-          width: 36.w,
-          height: 36.w,
+          width: AppResponsive.widthValue(context, 36),
+          height: AppResponsive.widthValue(context, 36),
 
           decoration: BoxDecoration(
             shape: BoxShape.circle,
@@ -168,10 +168,10 @@ class DailyContentBanner extends StatelessWidget {
             ),
           ),
 
-          child: Icon(_getIcon(), size: 18.sp, color: textColor),
+          child: Icon(_getIcon(), size: AppResponsive.fontSize(context, 18), color: textColor),
         ),
 
-        SizedBox(width: 9.w),
+        SizedBox(width: AppResponsive.widthValue(context, 9)),
 
         // Title
         Expanded(
@@ -182,7 +182,7 @@ class DailyContentBanner extends StatelessWidget {
 
             textAlign: TextAlign.right,
 
-            fontSize: 13.5.sp,
+            fontSize: AppResponsive.fontSize(context, 13.5),
 
             fontWeight: FontWeight.w700,
 
@@ -197,19 +197,19 @@ class DailyContentBanner extends StatelessWidget {
   // Main Content
   // ============================================================
 
-  Widget _buildContent({required Color textColor}) {
+  Widget _buildContent(BuildContext context, {required Color textColor}) {
     final content = banner.content?.trim() ?? '';
 
     if (content.isEmpty) {
-      return SizedBox(height: 35.h);
+      return SizedBox(height: AppResponsive.heightValue(context, 35));
     }
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 4.w),
+      padding: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 4)),
 
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final fontSize = _calculateFontSize(content, constraints.maxWidth);
+          final fontSize = _calculateFontSize(context, content, constraints.maxWidth);
 
           return CustomText(
             content,
@@ -237,7 +237,7 @@ class DailyContentBanner extends StatelessWidget {
   // Source
   // ============================================================
 
-  Widget _buildSource({required Color color}) {
+  Widget _buildSource(BuildContext context, {required Color color}) {
     final source = banner.source?.trim() ?? '';
 
     if (source.isEmpty) {
@@ -245,7 +245,7 @@ class DailyContentBanner extends StatelessWidget {
     }
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 6.w),
+      padding: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 6)),
 
       child: CustomText(
         source,
@@ -253,7 +253,7 @@ class DailyContentBanner extends StatelessWidget {
         maxLines: 2,
         textAlign: TextAlign.center,
 
-        fontSize: 9.5.sp,
+        fontSize: AppResponsive.fontSize(context, 9.5),
 
         fontWeight: FontWeight.w500,
 
@@ -268,31 +268,31 @@ class DailyContentBanner extends StatelessWidget {
   // Dynamic Font Size
   // ============================================================
 
-  double _calculateFontSize(String text, double availableWidth) {
+  double _calculateFontSize(BuildContext context, String text, double availableWidth) {
     final length = text.characters.length;
 
     // Short content
     if (length <= 45) {
-      return 16.5.sp;
+      return AppResponsive.fontSize(context, 16.5);
     }
 
     // Medium content
     if (length <= 80) {
-      return 15.5.sp;
+      return AppResponsive.fontSize(context, 15.5);
     }
 
     // Long content
     if (length <= 120) {
-      return 14.5.sp;
+      return AppResponsive.fontSize(context, 14.5);
     }
 
     // Very long content
     if (length <= 170) {
-      return 13.5.sp;
+      return AppResponsive.fontSize(context, 13.5);
     }
 
     // Extremely long content
-    return 12.8.sp;
+    return AppResponsive.fontSize(context, 12.8);
   }
 
   // ============================================================

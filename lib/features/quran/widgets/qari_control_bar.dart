@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import '../../../core/responsive/app_responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -19,25 +20,25 @@ class QariControlBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      left: 12.w,
-      right: 12.w,
-      bottom: 12.h,
+      left: AppResponsive.widthValue(context, 12),
+      right: AppResponsive.widthValue(context, 12),
+      bottom: AppResponsive.heightValue(context, 12),
       child: Material(
         color: colors.surface,
-        borderRadius: BorderRadius.circular(22.r),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 22)),
         elevation: 8,
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
+          padding: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 10), vertical: AppResponsive.heightValue(context, 8)),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(22.r),
+            borderRadius: BorderRadius.circular(AppResponsive.radius(context, 22)),
             border: Border.all(color: colors.primary.withValues(alpha: .10)),
           ),
           child: Row(
             children: [
               _buildPlayButton(context),
-              SizedBox(width: 10.w),
+              SizedBox(width: AppResponsive.widthValue(context, 10)),
               Expanded(child: _buildStatusText(context)),
-              Icon(Icons.graphic_eq_rounded, color: colors.primary, size: 20.sp),
+              Icon(Icons.graphic_eq_rounded, color: colors.primary, size: AppResponsive.fontSize(context, 20)),
             ],
           ),
         ),
@@ -50,15 +51,15 @@ class QariControlBar extends StatelessWidget {
     final isPlaying = audioManager.isPlaying;
 
     return Container(
-      width: 40.w,
-      height: 40.w,
+      width: AppResponsive.widthValue(context, 40),
+      height: AppResponsive.widthValue(context, 40),
       decoration: BoxDecoration(
         color: colors.primary.withValues(alpha: .10),
         shape: BoxShape.circle,
       ),
       child: isLoading
           ? Padding(
-        padding: EdgeInsets.all(11.w),
+        padding: EdgeInsets.all(AppResponsive.widthValue(context, 11)),
         child: CupertinoActivityIndicator(
           color: colors.primary,
         ),
@@ -69,7 +70,7 @@ class QariControlBar extends StatelessWidget {
         icon: Icon(
           isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,
           color: colors.primary,
-          size: 21.sp,
+          size: AppResponsive.fontSize(context, 21),
         ),
       ),
     );
@@ -86,18 +87,18 @@ class QariControlBar extends StatelessWidget {
           isPlaying ? 'جاري التلاوة' : 'اضغط على آية للبدء',
           style: TextStyle(
             color: colors.text,
-            fontSize: 11.sp,
+            fontSize: AppResponsive.fontSize(context, 11),
             fontWeight: FontWeight.w800,
           ),
         ),
-        SizedBox(height: 2.h),
+        SizedBox(height: AppResponsive.heightValue(context, 2)),
         Text(
           playingAyah == null
               ? 'الشيخ محمود خليل الحصري'
               : 'آية $playingAyah • الشيخ محمود خليل الحصري',
           style: TextStyle(
             color: colors.text.withValues(alpha: .52),
-            fontSize: 8.5.sp,
+            fontSize: AppResponsive.fontSize(context, 8.5),
           ),
         ),
       ],

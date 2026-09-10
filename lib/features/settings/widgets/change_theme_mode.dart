@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/features/settings/data/cubit/theme_cubit.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
+import '../../../core/responsive/app_responsive.dart';
 
 class ChangeThemeMode extends StatelessWidget {
   const ChangeThemeMode({
@@ -18,12 +19,12 @@ class ChangeThemeMode extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 4.w),
+      padding: EdgeInsets.symmetric(vertical: AppResponsive.heightValue(context, 8), horizontal: AppResponsive.widthValue(context, 4)),
       decoration: BoxDecoration(
         color: isDark
             ? Colors.grey.shade900.withOpacity(0.3)
             : Colors.grey.shade50,
-        borderRadius: BorderRadius.circular(16.r),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 16)),
         border: Border.all(
           color: isDark
               ? Colors.grey.shade800.withOpacity(0.3)
@@ -52,9 +53,9 @@ class ChangeThemeMode extends StatelessWidget {
             color: isDark
                 ? Colors.grey.shade800.withOpacity(0.3)
                 : Colors.grey.shade400.withValues(alpha: 0.5),
-            height: 1.h,
-            indent: 16.w,
-            endIndent: 16.w,
+            height: AppResponsive.heightValue(context, 1),
+            indent: AppResponsive.widthValue(context, 16),
+            endIndent: AppResponsive.widthValue(context, 16),
           ),
 
           /// Dark Mode
@@ -89,18 +90,18 @@ class ChangeThemeMode extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onChanged,
-        borderRadius: BorderRadius.circular(12.r),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 12)),
         splashColor: isActive
             ? activeColor.withOpacity(0.1)
             : Colors.grey.withOpacity(0.05),
         highlightColor: Colors.transparent,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
+          padding: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 10), vertical: AppResponsive.heightValue(context, 8)),
           child: Row(
             children: [
               // Icon Container
               Container(
-                padding: EdgeInsets.all(8.w),
+                padding: EdgeInsets.all(AppResponsive.widthValue(context, 8)),
                 decoration: BoxDecoration(
                   gradient: isActive
                       ? LinearGradient(
@@ -119,7 +120,7 @@ class ChangeThemeMode extends StatelessWidget {
                       : (isActive
                             ? activeColor.withOpacity(0.08)
                             : Colors.grey.shade100),
-                  borderRadius: BorderRadius.circular(12.r),
+                  borderRadius: BorderRadius.circular(AppResponsive.radius(context, 12)),
                   border: Border.all(
                     color: isActive
                         ? activeColor.withOpacity(0.2)
@@ -134,7 +135,7 @@ class ChangeThemeMode extends StatelessWidget {
                   color: isActive
                       ? activeColor
                       : (isDark ? Colors.grey.shade400 : Colors.grey.shade600),
-                  size: 20.sp,
+                  size: AppResponsive.iconSize(context, 20),
                 ),
               ),
 
@@ -147,7 +148,7 @@ class ChangeThemeMode extends StatelessWidget {
                   children: [
                     CustomText(
                       title,
-                      fontSize: 13.sp,
+                      fontSize: AppResponsive.fontSize(context, 13),
                       fontWeight: isActive ? FontWeight.w700 : FontWeight.w600,
                       color: isActive
                           ? (isDark ? Colors.white : Colors.black87)
@@ -161,6 +162,7 @@ class ChangeThemeMode extends StatelessWidget {
 
               // Custom Switch
               _buildCustomSwitch(
+                context: context,
                 isActive: isActive,
                 activeColor: activeColor,
                 isDark: isDark,
@@ -174,6 +176,7 @@ class ChangeThemeMode extends StatelessWidget {
   }
 
   Widget _buildCustomSwitch({
+    required BuildContext context,
     required bool isActive,
     required Color activeColor,
     required bool isDark,
@@ -183,10 +186,10 @@ class ChangeThemeMode extends StatelessWidget {
       onTap: onChanged,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
-        width: 48.w,
-        height: 28.h,
+        width: AppResponsive.widthValue(context, 48),
+        height: AppResponsive.heightValue(context, 28),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(14.r),
+          borderRadius: BorderRadius.circular(AppResponsive.radius(context, 14)),
           color: isActive
               ? activeColor
               : (isDark ? Colors.grey.shade700 : Colors.grey.shade300),
@@ -204,10 +207,10 @@ class ChangeThemeMode extends StatelessWidget {
           children: [
             // Track
             Container(
-              width: 48.w,
-              height: 28.h,
+              width: AppResponsive.widthValue(context, 48),
+              height: AppResponsive.heightValue(context, 28),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(14.r),
+                borderRadius: BorderRadius.circular(AppResponsive.radius(context, 14)),
                 gradient: isActive
                     ? LinearGradient(
                         colors: [activeColor, activeColor.withOpacity(0.7)],
@@ -224,10 +227,10 @@ class ChangeThemeMode extends StatelessWidget {
                   ? Alignment.centerRight
                   : Alignment.centerLeft,
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 3.w),
+                padding: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 3)),
                 child: Container(
-                  width: 22.w,
-                  height: 22.w,
+                  width: AppResponsive.widthValue(context, 22),
+                  height: AppResponsive.widthValue(context, 22),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colors.white,
@@ -241,7 +244,7 @@ class ChangeThemeMode extends StatelessWidget {
                   ),
                   child: Icon(
                     isActive ? Icons.check_rounded : Icons.close_rounded,
-                    size: 14.sp,
+                    size: AppResponsive.iconSize(context, 14),
                     color: isActive ? activeColor : Colors.grey.shade400,
                   ),
                 ),

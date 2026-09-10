@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/responsive/app_responsive.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/shared/custom_text.dart';
 import '../../../core/theme/app_colors.dart';
@@ -16,7 +17,6 @@ class SurahCard extends StatelessWidget {
     this.progress = 0.0,
   });
 
-  // Mushaf / Quran Palette
 
   static const Color _lightText = Color(0xFF292C29);
 
@@ -54,25 +54,25 @@ class SurahCard extends StatelessWidget {
       onTap: onTap,
 
       child: Container(
-        margin: EdgeInsets.only(bottom: 9.h),
+        margin: EdgeInsets.only(bottom: AppResponsive.heightValue(context, 9)),
 
         decoration: BoxDecoration(
           color: bgColor,
           border: Border.all(color: borderColor, width: 1),
-          borderRadius: BorderRadius.circular(18.r),
+          borderRadius: BorderRadius.circular(AppResponsive.radius(context, 18)),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: isDark ? 0.12 : 0.045),
 
-              blurRadius: 14.r,
+              blurRadius: AppResponsive.radius(context, 14),
 
-              offset: Offset(0, 5.h),
+              offset: Offset(0, AppResponsive.heightValue(context, 5)),
             ),
           ],
         ),
 
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(18.r),
+          borderRadius: BorderRadius.circular(AppResponsive.radius(context, 18)),
 
           child: Stack(
             children: [
@@ -83,7 +83,7 @@ class SurahCard extends StatelessWidget {
                 bottom: 0,
 
                 child: Container(
-                  width: 3.w,
+                  width: AppResponsive.widthValue(context, 3),
 
                   decoration: BoxDecoration(
                     color: isMeccan ? accentColor : goldColor,
@@ -93,18 +93,19 @@ class SurahCard extends StatelessWidget {
 
               // Main Content
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
+                padding: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 14), vertical: AppResponsive.heightValue(context, 12)),
 
                 child: Row(
                   children: [
                     // Surah Number
                     _buildSurahNumber(
+                      context: context,
                       isDark: isDark,
                       accentColor: accentColor,
                       goldColor: goldColor,
                     ),
 
-                    SizedBox(width: 13.w),
+                    SizedBox(width: AppResponsive.widthValue(context, 13)),
 
                     // Surah Information
                     Expanded(
@@ -115,28 +116,29 @@ class SurahCard extends StatelessWidget {
                           // Surah Name
                           CustomText(
                             surah.displayName,
-                            fontSize: 14.6.sp,
+                            fontSize: AppResponsive.fontSize(context, 13),
                             fontFamily: 'Noon',
                             fontWeight: FontWeight.w600,
                             color: textColor,
                             height: 1.35,
                           ),
 
-                          SizedBox(height: 7.h),
+                          SizedBox(height: AppResponsive.heightValue(context, 7)),
 
                           // Metadata
                           Row(
-                            spacing: 10.w,
+                            spacing: AppResponsive.widthValue(context, 10),
                             children: [
                               Image.asset(
                                 isMeccan
                                     ? "assets/icons/Makka.png"
                                     : "assets/icons/Madina.png",
                                 fit: BoxFit.cover,
-                                height: 20.h,
-                                width: 20.w,
+                                height: AppResponsive.heightValue(context, 20),
+                                width: AppResponsive.widthValue(context, 20),
                               ),
                               _buildInfoChip(
+                                context: context,
                                 label: '${surah.totalAyahs} آية',
                                 color: textColor.withValues(alpha: 0.65),
                                 isDark: isDark,
@@ -147,10 +149,10 @@ class SurahCard extends StatelessWidget {
                       ),
                     ),
 
-                    SizedBox(width: 10.w),
+                    SizedBox(width: AppResponsive.widthValue(context, 10)),
 
                     // Arrow
-                    _buildArrow(accentColor: accentColor, isDark: isDark),
+                    _buildArrow(context: context, accentColor: accentColor, isDark: isDark),
                   ],
                 ),
               ),
@@ -163,6 +165,7 @@ class SurahCard extends StatelessWidget {
 
   // Surah Number
   Widget _buildSurahNumber({
+    required BuildContext context,
     required bool isDark,
     required Color accentColor,
     required Color goldColor,
@@ -170,8 +173,8 @@ class SurahCard extends StatelessWidget {
     final color = surah.isMeccan ? accentColor : goldColor;
 
     return SizedBox(
-      width: 46.w,
-      height: 46.w,
+      width: AppResponsive.widthValue(context, 46),
+      height: AppResponsive.widthValue(context, 46),
 
       child: Stack(
         alignment: Alignment.center,
@@ -182,8 +185,8 @@ class SurahCard extends StatelessWidget {
             angle: 0.785398,
 
             child: Container(
-              width: 31.w,
-              height: 31.w,
+              width: AppResponsive.widthValue(context, 31),
+              height: AppResponsive.widthValue(context, 31),
 
               decoration: BoxDecoration(
                 color: color.withValues(alpha: isDark ? 0.10 : 0.075),
@@ -194,7 +197,7 @@ class SurahCard extends StatelessWidget {
                   width: 1.1,
                 ),
 
-                borderRadius: BorderRadius.circular(6.r),
+                borderRadius: BorderRadius.circular(AppResponsive.radius(context, 6)),
               ),
             ),
           ),
@@ -202,7 +205,7 @@ class SurahCard extends StatelessWidget {
           // Number
           CustomText(
             '${surah.number}',
-            fontSize: surah.number > 99 ? 10.sp : 12.sp,
+            fontSize: surah.number > 99 ? AppResponsive.fontSize(context, 10) : AppResponsive.fontSize(context, 12),
             fontWeight: FontWeight.w700,
             color: color,
           ),
@@ -213,17 +216,18 @@ class SurahCard extends StatelessWidget {
 
   // Info Chip
   Widget _buildInfoChip({
+    required BuildContext context,
     required String label,
     required Color color,
     required bool isDark,
   }) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 7.w, vertical: 3.5.h),
+      padding: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 7), vertical: AppResponsive.heightValue(context, 3.5)),
 
       decoration: BoxDecoration(
         color: color.withValues(alpha: isDark ? 0.08 : 0.055),
 
-        borderRadius: BorderRadius.circular(7.r),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 7)),
 
         border: Border.all(
           color: color.withValues(alpha: isDark ? 0.13 : 0.10),
@@ -237,7 +241,7 @@ class SurahCard extends StatelessWidget {
         children: [
           CustomText(
             label,
-            fontSize: 9.5.sp,
+            fontSize: AppResponsive.fontSize(context, 9.5),
 
             fontWeight: FontWeight.w500,
 
@@ -248,10 +252,10 @@ class SurahCard extends StatelessWidget {
     );
   }
 
-  Widget _buildArrow({required Color accentColor, required bool isDark}) {
+  Widget _buildArrow({required BuildContext context, required Color accentColor, required bool isDark}) {
     return Container(
-      width: 31.w,
-      height: 31.w,
+      width: AppResponsive.widthValue(context, 31),
+      height: AppResponsive.widthValue(context, 31),
 
       decoration: BoxDecoration(
         shape: BoxShape.circle,
@@ -262,7 +266,7 @@ class SurahCard extends StatelessWidget {
       child: Icon(
         Icons.arrow_forward_ios_rounded,
 
-        size: 12.sp,
+        size: AppResponsive.fontSize(context, 12),
 
         color: accentColor.withValues(alpha: 0.75),
       ),

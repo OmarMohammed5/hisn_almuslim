@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../core/responsive/app_responsive.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 import 'package:hisn_almuslim/features/home/widgets/radio_icon_widget.dart';
 import 'package:hisn_almuslim/features/home/widgets/radio_play_button.dart';
@@ -102,13 +102,13 @@ class _CairoRadioCardState extends State<CairoRadioCard>
         final isLoading = state is RadioLoading;
 
         return Container(
-          margin: EdgeInsets.symmetric(horizontal: 18.w),
+          margin: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 18)),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 350),
             curve: Curves.easeOut,
-            padding: EdgeInsets.all(22.w),
+            padding: EdgeInsets.all(AppResponsive.widthValue(context, 22)),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(22.r),
+              borderRadius: BorderRadius.circular(AppResponsive.radius(context, 22)),
               color: bgColor,
               border: Border.all(color: borderColor, width: 1),
               boxShadow:
@@ -117,8 +117,8 @@ class _CairoRadioCardState extends State<CairoRadioCard>
                   : [
                 BoxShadow(
                   color: AppColors.kPrimary.withValues(alpha: 0.05),
-                  blurRadius: 6.r,
-                  offset: Offset(0, 3.h),
+                  blurRadius: AppResponsive.radius(context, 6),
+                  offset: Offset(0, AppResponsive.heightValue(context, 3)),
                 ),
               ],
             ),
@@ -131,7 +131,7 @@ class _CairoRadioCardState extends State<CairoRadioCard>
                   iconBreathAnimation: _iconBreathAnimation,
                 ),
 
-                SizedBox(width: 14.w),
+                SizedBox(width: AppResponsive.widthValue(context, 14)),
 
                 // Radio Information
                 Expanded(
@@ -146,16 +146,16 @@ class _CairoRadioCardState extends State<CairoRadioCard>
                               color: Colors.red.shade800,
                             ),
 
-                            SizedBox(width: 6.w),
+                            SizedBox(width: AppResponsive.widthValue(context, 6)),
 
                             CustomText(
                               'مباشر الآن',
-                                fontSize: 12.sp,
+                                fontSize: AppResponsive.fontSize(context, 11),
                                 fontWeight: FontWeight.w700,
                                 color: Colors.red.shade800,
                             ),
 
-                            SizedBox(width: 10.w),
+                            SizedBox(width: AppResponsive.widthValue(context, 10)),
 
                             // Sound waves
                             SoundWaveBars(
@@ -167,19 +167,19 @@ class _CairoRadioCardState extends State<CairoRadioCard>
                           ] else
                             ...[
                               Container(
-                                width: 7.w,
-                                height: 7.w,
+                                width: AppResponsive.widthValue(context, 7),
+                                height: AppResponsive.widthValue(context, 7),
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: radioMedium,
                                 ),
                               ),
 
-                              SizedBox(width: 6.w),
+                              SizedBox(width: AppResponsive.widthValue(context, 6)),
 
                               CustomText(
                                 'متوقف',
-                                  fontSize: 11.sp,
+                                  fontSize: AppResponsive.fontSize(context, 11),
                                   fontWeight: FontWeight.w600,
                                   color: colorScheme.onSurface.withValues(
                                     alpha: 0.65,
@@ -189,23 +189,23 @@ class _CairoRadioCardState extends State<CairoRadioCard>
                         ],
                       ),
 
-                      SizedBox(height: 10.h),
+                      SizedBox(height: AppResponsive.heightValue(context, 12)),
 
                       // Main title
                       CustomText(
                         'إذاعة القرآن الكريم',
                         maxLines: 1,
-                          fontSize: 16.sp,
+                          fontSize: AppResponsive.fontSize(context, 13),
                           fontWeight: FontWeight.bold,
                           color: colorScheme.onSurface,
                       ),
 
-                      SizedBox(height: 5.h),
+                      SizedBox(height: AppResponsive.heightValue(context, 7)),
 
                       // Location
                       CustomText(
                         'من القاهرة',
-                          fontSize: 13.sp,
+                          fontSize: AppResponsive.fontSize(context, 12),
                           color: colorScheme.onSurface.withValues(
                             alpha: 0.60,
                         ),
@@ -214,7 +214,7 @@ class _CairoRadioCardState extends State<CairoRadioCard>
                   ),
                 ),
 
-                SizedBox(width: 10.w),
+                SizedBox(width: AppResponsive.widthValue(context, 10)),
 
                 // Play / Pause Button
                 RadioPlayButton(

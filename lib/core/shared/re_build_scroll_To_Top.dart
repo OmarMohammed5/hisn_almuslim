@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hisn_almuslim/core/theme/app_colors.dart';
 
+import '../responsive/app_responsive.dart';
+
 class ReBuildScrollToTop extends StatelessWidget {
   const ReBuildScrollToTop({
     super.key,
@@ -36,7 +38,7 @@ class ReBuildScrollToTop extends StatelessWidget {
               child: Icon(
                 Icons.keyboard_arrow_up,
                 color: Colors.white,
-                size: 25.sp,
+                size: AppResponsive.iconSize(context, 25),
               ),
             ),
           ),

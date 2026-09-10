@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import '../../../core/responsive/app_responsive.dart';
 import '../../../core/theme/radio_colors.dart';
 import '../../radio/presentation/cubit/radio_cubit.dart';
 
@@ -52,16 +52,16 @@ class RadioPlayButton extends StatelessWidget {
           }
         },
         child: SizedBox(
-          width: 50.w,
-          height: 50.w,
+          width: AppResponsive.widthValue(context, 50),
+          height: AppResponsive.widthValue(context, 50),
           child: Center(
             child: AnimatedSwitcher(
               duration: const Duration(milliseconds: 200),
               child: isLoading
                   ? SizedBox(
                 key: const ValueKey('loading'),
-                width: 21.w,
-                height: 21.w,
+                width: AppResponsive.widthValue(context, 21),
+                height: AppResponsive.widthValue(context, 21),
                 child: CupertinoActivityIndicator(
                   color: colorScheme.onPrimary,
                 ),
@@ -72,7 +72,7 @@ class RadioPlayButton extends StatelessWidget {
                     : Icons.play_arrow_rounded,
                 key: ValueKey(isPlaying),
                 color: radioPrimary,
-                size: 28.sp,
+                size: AppResponsive.fontSize(context, 28),
               ),
             ),
           ),

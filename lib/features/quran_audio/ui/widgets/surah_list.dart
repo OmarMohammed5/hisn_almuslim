@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../core/responsive/app_responsive.dart';
 import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/features/quran_audio/data/models/surah_audio_model.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
@@ -47,7 +48,12 @@ class SurahList extends StatelessWidget {
 
         return ListView.builder(
           controller: controller,
-          padding: EdgeInsets.only(top: 4.h, bottom: 90.h),
+          padding: EdgeInsets.only(
+            top: AppResponsive.heightValue(context, 4),
+            bottom: AppResponsive.heightValue(context, 90),
+            left: AppResponsive.widthValue(context, 4),
+            right: AppResponsive.widthValue(context, 4),
+          ),
           itemCount: surahs.length,
           itemBuilder: (context, index) {
             final surah = surahs[index];

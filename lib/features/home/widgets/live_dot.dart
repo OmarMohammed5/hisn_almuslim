@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../core/responsive/app_responsive.dart';
 
 class LiveDot extends StatefulWidget {
   const LiveDot({
@@ -45,8 +45,8 @@ class _LiveDotState extends State<LiveDot>
         ),
       ),
       child: Container(
-        width: 7.w,
-        height: 7.w,
+        width: AppResponsive.widthValue(context, 7),
+        height: AppResponsive.widthValue(context, 7),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: widget.color,

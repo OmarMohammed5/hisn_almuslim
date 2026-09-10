@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:hisn_almuslim/core/responsive/app_responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -157,7 +158,9 @@ class _QuranSurahPageState extends State<QuranSurahPage> {
 
     final ayah =
         _pageBlockKeys[page.pageNumber]?.currentState?.topVisibleAyahNumber(
-          thresholdY: MediaQuery.of(context).padding.top + 92.h,
+          thresholdY:
+              MediaQuery.of(context).padding.top +
+              AppResponsive.heightValue(context, 92),
         ) ??
         page.firstAyahNumberInSurah;
 
@@ -249,10 +252,13 @@ class _QuranSurahPageState extends State<QuranSurahPage> {
   // APP BAR
   PreferredSizeWidget _buildAppBar(Color text, Color primary) {
     return AppBar(
-      toolbarHeight: 58.h,
-      leadingWidth: 52.w,
+      toolbarHeight: AppResponsive.heightValue(context, 58),
+      leadingWidth: AppResponsive.widthValue(context, 52),
       leading: IconButton(
-        icon: Icon(Icons.arrow_back_ios_new_rounded, size: 20.sp),
+        icon: Icon(
+          Icons.arrow_back_ios_new_rounded,
+          size: AppResponsive.fontSize(context, 20),
+        ),
         onPressed: () => Navigator.pop(context),
       ),
       centerTitle: true,
@@ -260,13 +266,13 @@ class _QuranSurahPageState extends State<QuranSurahPage> {
         builder: (context, state) {
           return Column(
             mainAxisSize: MainAxisSize.min,
-            spacing: 3.h,
+            spacing: AppResponsive.heightValue(context, 3),
             children: [
               Text(
                 state is SurahPagesLoaded ? state.surah.displayName : 'سورة',
                 style: TextStyle(
                   fontFamily: 'Noon',
-                  fontSize: 15.sp,
+                  fontSize: AppResponsive.fontSize(context, 15),
                   fontWeight: FontWeight.w700,
                   color: text,
                 ),
@@ -275,7 +281,7 @@ class _QuranSurahPageState extends State<QuranSurahPage> {
                 Text(
                   '${state.surah.totalAyahs} آيات',
                   style: TextStyle(
-                    fontSize: 8.5.sp,
+                    fontSize: AppResponsive.fontSize(context, 8.5),
                     color: text.withValues(alpha: .48),
                   ),
                 ),
@@ -286,10 +292,13 @@ class _QuranSurahPageState extends State<QuranSurahPage> {
       actions: [
         IconButton(
           tooltip: 'إعدادات القراءة',
-          icon: Icon(Icons.tune_rounded, size: 21.sp),
+          icon: Icon(
+            Icons.tune_rounded,
+            size: AppResponsive.fontSize(context, 21),
+          ),
           onPressed: _openSettings,
         ),
-        SizedBox(width: 5.w),
+        SizedBox(width: AppResponsive.widthValue(context, 5)),
       ],
     );
   }
@@ -358,39 +367,53 @@ class _QuranSurahPageState extends State<QuranSurahPage> {
                     () => GlobalKey<MushafPageBlockState>(),
                   );
 
-                  return MushafPageBlock(
-                    key: key,
+                  final maxReaderWidth = AppResponsive.isDesktop(context)
+                      ? 1000.0
+                      : AppResponsive.isTablet(context)
+                      ? 860.0
+                      : double.infinity;
 
-                    page: page,
+                  return Center(
+                    child: AppResponsive.constrain(
+                      context,
+                      maxWidth: maxReaderWidth,
+                      child: MushafPageBlock(
+                        key: key,
 
-                    mode: _settings.mode,
+                        page: page,
 
-                    fontSize: _settings.fontSize,
+                        mode: _settings.mode,
 
-                    darkMode: _settings.darkMode,
+                        fontSize: _settings.fontSize,
 
-                    settingsRevision: _settingsRevision,
+                        darkMode: _settings.darkMode,
 
-                    selectedAyahNumber: state.selectedAyahNumber,
+                        settingsRevision: _settingsRevision,
 
-                    highlightedAyahs: highlights,
+                        selectedAyahNumber: state.selectedAyahNumber,
 
-                    showBasmala: index == 0 && widget.surahNumber != 9,
+                        highlightedAyahs: highlights,
 
-                    onAyahTap: (ayah) {
-                      context.read<QuranCubit>().selectAyah(ayah.numberInSurah);
+                        showBasmala: index == 0 && widget.surahNumber != 9,
 
-                      if (_settings.mode == QuranReadingMode.qari) {
-                        _playAyah(state.surah.number, ayah);
-                      } else {
-                        _showAyahActions(
-                          context,
-                          state,
-                          ayah,
-                          highlights[ayah.numberInSurah],
-                        );
-                      }
-                    },
+                        onAyahTap: (ayah) {
+                          context.read<QuranCubit>().selectAyah(
+                            ayah.numberInSurah,
+                          );
+
+                          if (_settings.mode == QuranReadingMode.qari) {
+                            _playAyah(state.surah.number, ayah);
+                          } else {
+                            _showAyahActions(
+                              context,
+                              state,
+                              ayah,
+                              highlights[ayah.numberInSurah],
+                            );
+                          }
+                        },
+                      ),
+                    ),
                   );
                 },
               ),
@@ -416,96 +439,117 @@ class _QuranSurahPageState extends State<QuranSurahPage> {
     final primary = dark ? _darkPrimary : _lightPrimary;
 
     return Positioned(
-      left: 12.w,
-      right: 12.w,
-      bottom: 12.h,
-
-      child: Material(
-        color: surface,
-
-        borderRadius: BorderRadius.circular(22.r),
-
-        elevation: 8,
-
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
-
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(22.r),
-
-            border: Border.all(color: primary.withValues(alpha: .10)),
+      left: AppResponsive.widthValue(context, 12),
+      right: AppResponsive.widthValue(context, 12),
+      bottom: AppResponsive.heightValue(context, 12),
+      child: Center(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: AppResponsive.isDesktop(context)
+                ? 900.0
+                : AppResponsive.isTablet(context)
+                ? 760.0
+                : double.infinity,
           ),
+          child: Material(
+            color: surface,
 
-          child: Row(
-            children: [
-              Container(
-                width: 40.w,
-                height: 40.w,
+            borderRadius: BorderRadius.circular(
+              AppResponsive.radius(context, 22),
+            ),
 
-                decoration: BoxDecoration(
-                  color: primary.withValues(alpha: .10),
+            elevation: 8,
 
-                  shape: BoxShape.circle,
-                ),
-
-                child: _audioLoading
-                    ? Padding(
-                        padding: EdgeInsets.all(11.w),
-
-                        child: CupertinoActivityIndicator(
-                          color: primary,
-                        ),
-                      )
-                    : IconButton(
-                        padding: EdgeInsets.zero,
-
-                        onPressed: _toggleAudio,
-
-                        icon: Icon(
-                          _audioPlaying
-                              ? Icons.pause_rounded
-                              : Icons.play_arrow_rounded,
-
-                          color: primary,
-
-                          size: 21.sp,
-                        ),
-                      ),
+            child: Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: AppResponsive.widthValue(context, 10),
+                vertical: AppResponsive.heightValue(context, 8),
               ),
 
-              SizedBox(width: 10.w),
-
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-
-                  children: [
-                    Text(
-                      _audioPlaying ? 'جاري التلاوة' : 'اضغط على آية للبدء',
-                      style: TextStyle(
-                        color: text,
-                        fontSize: 11.sp,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    SizedBox(height: 2.h),
-                    Text(
-                      _playingAyah == null
-                          ? 'الشيخ محمود خليل الحصري'
-                          : 'آية $_playingAyah • الشيخ محمود خليل الحصري',
-
-                      style: TextStyle(
-                        color: text.withValues(alpha: .52),
-
-                        fontSize: 8.5.sp,
-                      ),
-                    ),
-                  ],
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(
+                  AppResponsive.radius(context, 22),
                 ),
+
+                border: Border.all(color: primary.withValues(alpha: .10)),
               ),
 
-              Icon(Icons.graphic_eq_rounded, color: primary, size: 20.sp),
-            ],
+              child: Row(
+                children: [
+                  Container(
+                    width: AppResponsive.widthValue(context, 40),
+                    height: AppResponsive.widthValue(context, 40),
+
+                    decoration: BoxDecoration(
+                      color: primary.withValues(alpha: .10),
+
+                      shape: BoxShape.circle,
+                    ),
+
+                    child: _audioLoading
+                        ? Padding(
+                            padding: EdgeInsets.all(
+                              AppResponsive.widthValue(context, 11),
+                            ),
+
+                            child: CupertinoActivityIndicator(color: primary),
+                          )
+                        : IconButton(
+                            padding: EdgeInsets.zero,
+
+                            onPressed: _toggleAudio,
+
+                            icon: Icon(
+                              _audioPlaying
+                                  ? Icons.pause_rounded
+                                  : Icons.play_arrow_rounded,
+
+                              color: primary,
+
+                              size: AppResponsive.fontSize(context, 21),
+                            ),
+                          ),
+                  ),
+
+                  SizedBox(width: AppResponsive.widthValue(context, 10)),
+
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+
+                      children: [
+                        Text(
+                          _audioPlaying ? 'جاري التلاوة' : 'اضغط على آية للبدء',
+                          style: TextStyle(
+                            color: text,
+                            fontSize: AppResponsive.fontSize(context, 11),
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        SizedBox(height: AppResponsive.heightValue(context, 2)),
+                        Text(
+                          _playingAyah == null
+                              ? 'الشيخ محمود خليل الحصري'
+                              : 'آية $_playingAyah • الشيخ محمود خليل الحصري',
+
+                          style: TextStyle(
+                            color: text.withValues(alpha: .52),
+
+                            fontSize: AppResponsive.fontSize(context, 8.5),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  Icon(
+                    Icons.graphic_eq_rounded,
+                    color: primary,
+                    size: AppResponsive.fontSize(context, 20),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -625,17 +669,26 @@ class _QuranSurahPageState extends State<QuranSurahPage> {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
+      // Force the modal route itself to use the full available width.
+      // The child being width: double.infinity is not enough on desktop/tablet
+      // because Material can apply a max-width constraint to the bottom sheet.
+      constraints: const BoxConstraints(
+        minWidth: double.infinity,
+      ),
       builder: (_) {
-        return ReaderSettingsSheet(
-          settings: _settings,
-          onChanged: _saveSettings,
-          onChooseMode: () {
-            Navigator.pop(context);
-            Future.delayed(const Duration(milliseconds: 120), _openModePicker);
-          },
-          onClose: () {
-            Navigator.pop(context);
-          },
+        return SizedBox(
+          width: double.infinity,
+          child: ReaderSettingsSheet(
+            settings: _settings,
+            onChanged: _saveSettings,
+            onChooseMode: () {
+              Navigator.pop(context);
+              Future.delayed(const Duration(milliseconds: 120), _openModePicker);
+            },
+            onClose: () {
+              Navigator.pop(context);
+            },
+          ),
         );
       },
     );
@@ -647,13 +700,19 @@ class _QuranSurahPageState extends State<QuranSurahPage> {
       context: context,
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
+      constraints: const BoxConstraints(
+        minWidth: double.infinity,
+      ),
       builder: (_) {
-        return ReadingModeSheet(
+        return SizedBox(
+          width: double.infinity,
+          child: ReadingModeSheet(
           selected: _settings.mode,
           darkMode: _settings.darkMode,
           onSelected: (mode) {
             _saveSettings(_settings.copyWith(mode: mode));
           },
+          ),
         );
       },
     );
@@ -670,8 +729,15 @@ class _QuranSurahPageState extends State<QuranSurahPage> {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
+      // Full-width modal: do not let Material apply its desktop/tablet
+      // max-width constraint.
+      constraints: const BoxConstraints(
+        minWidth: double.infinity,
+      ),
       builder: (sheetContext) {
-        return AyahActionsSheet(
+        return SizedBox(
+          width: double.infinity,
+          child: AyahActionsSheet(
           surah: state.surah,
           ayah: ayah,
           currentHighlight: currentHighlight,
@@ -684,13 +750,14 @@ class _QuranSurahPageState extends State<QuranSurahPage> {
               color,
             );
           },
-          onRemoveHighlight: () {
-            context.read<AyahHighlightCubit>().removeHighlight(
-              state.surah.number,
+            onRemoveHighlight: () {
+              context.read<AyahHighlightCubit>().removeHighlight(
+                state.surah.number,
 
-              ayah.numberInSurah,
-            );
-          },
+                ayah.numberInSurah,
+              );
+            }, onTafsir: () {  },
+          ),
         );
       },
     );
@@ -700,15 +767,19 @@ class _QuranSurahPageState extends State<QuranSurahPage> {
   Widget _buildError(String message, Color primary, Color text) {
     return Center(
       child: Padding(
-        padding: EdgeInsets.all(24.w),
+        padding: EdgeInsets.all(AppResponsive.widthValue(context, 24)),
 
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
 
           children: [
-            Icon(Icons.menu_book_rounded, size: 46.sp, color: primary),
+            Icon(
+              Icons.menu_book_rounded,
+              size: AppResponsive.fontSize(context, 46),
+              color: primary,
+            ),
 
-            SizedBox(height: 14.h),
+            SizedBox(height: AppResponsive.heightValue(context, 14)),
 
             Text(
               message,
@@ -716,7 +787,7 @@ class _QuranSurahPageState extends State<QuranSurahPage> {
               textAlign: TextAlign.center,
 
               style: TextStyle(
-                fontSize: 12.sp,
+                fontSize: AppResponsive.fontSize(context, 12),
 
                 height: 1.7,
 
@@ -724,7 +795,7 @@ class _QuranSurahPageState extends State<QuranSurahPage> {
               ),
             ),
 
-            SizedBox(height: 14.h),
+            SizedBox(height: AppResponsive.heightValue(context, 14)),
 
             FilledButton.icon(
               onPressed: () {

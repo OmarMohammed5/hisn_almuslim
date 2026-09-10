@@ -40,9 +40,6 @@ class _LecturePlayerScreenState
   String get _progressKey =>
       'lecture_progress_${widget.lecture.id}';
 
-  // ============================================================
-  // Save Last Lecture
-  // ============================================================
 
   Future<void> _saveLastLecture() async {
     try {
@@ -53,9 +50,6 @@ class _LecturePlayerScreenState
     } catch (_) {}
   }
 
-  // ============================================================
-  // Init
-  // ============================================================
 
   @override
   void initState() {
@@ -87,10 +81,6 @@ class _LecturePlayerScreenState
           (_) => _saveProgress(),
     );
   }
-
-  // ============================================================
-  // Save Progress
-  // ============================================================
 
   Future<void> _saveProgress() async {
     // Prevent multiple save operations
@@ -134,9 +124,6 @@ class _LecturePlayerScreenState
     }
   }
 
-  // ============================================================
-  // Dispose
-  // ============================================================
 
   @override
   void dispose() {
@@ -147,9 +134,6 @@ class _LecturePlayerScreenState
     super.dispose();
   }
 
-  // ============================================================
-  // Build
-  // ============================================================
 
   @override
   Widget build(BuildContext context) {
@@ -188,9 +172,6 @@ class _LecturePlayerScreenState
 
           children: [
 
-            // ======================================================
-            // Video Player
-            // ======================================================
 
             Padding(
               padding: EdgeInsets.fromLTRB(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import '../../../core/responsive/app_responsive.dart';
 import 'package:hisn_almuslim/features/home/data/models/category_model.dart';
 import 'package:hisn_almuslim/features/home/widgets/category_card.dart';
 import 'package:hisn_almuslim/features/home/widgets/home_section_header.dart';
@@ -64,8 +63,11 @@ class _CategoriesHomeSectionState extends State<CategoriesHomeSection>
 
   @override
   Widget build(BuildContext context) {
+
+    final isMobile = AppResponsive.isMobile(context);
+
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 18.w),
+      padding: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 18)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -84,7 +86,7 @@ class _CategoriesHomeSectionState extends State<CategoriesHomeSection>
             onAction: _canExpand ? _toggleExpanded : null,
           ),
 
-          SizedBox(height: 14.h),
+          SizedBox(height: AppResponsive.heightValue(context, 14)),
 
           // Categories with AnimatedSize + Fade/Slide for extra items
           ClipRect(
@@ -99,9 +101,9 @@ class _CategoriesHomeSectionState extends State<CategoriesHomeSection>
                 itemCount: _visibleCount,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  crossAxisSpacing: 12.w,
-                  mainAxisSpacing: 12.h,
-                  childAspectRatio: 2.2,
+                  crossAxisSpacing: AppResponsive.widthValue(context, 12),
+                  mainAxisSpacing: AppResponsive.heightValue(context, 12),
+                  childAspectRatio: isMobile ? 2.2 : 2.8,
                 ),
                 itemBuilder: (context, index) {
                   final category = widget.categories[index];

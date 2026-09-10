@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../core/responsive/app_responsive.dart';
 import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/core/routing/app_routes.dart';
 import 'package:hisn_almuslim/features/quran_audio/data/models/surah_audio_model.dart';
@@ -72,17 +73,40 @@ class _QuranAudioHomeScreenState extends State<QuranAudioHomeScreen> {
       body: BlocBuilder<QuranAudioCubit, QuranAudioState>(
         builder: (context, state) {
           return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              QuranAudioHeader(state: state, onSearch: _searchSurah , searchController: _searchSurahController,),
+              Center(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth: AppResponsive.maxContentWidth(context),
+                  ),
+                  child: QuranAudioHeader(
+                    state: state,
+                    onSearch: _searchSurah,
+                    searchController: _searchSurahController,
+                  ),
+                ),
+              ),
               Expanded(
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(20.w, 12.h, 20.w, 0.h),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(child: _buildContent(context, state)),
-                    ],
+                child: Center(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxWidth: AppResponsive.maxContentWidth(context),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(
+                        AppResponsive.widthValue(context, 20),
+                        AppResponsive.heightValue(context, 12),
+                        AppResponsive.widthValue(context, 20),
+                        0,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(child: _buildContent(context, state)),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -136,12 +160,12 @@ class _QuranAudioHomeScreenState extends State<QuranAudioHomeScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.search_off_rounded, size: 48.sp, color: Colors.grey.shade400),
-          Gap(12.h),
+          Icon(Icons.search_off_rounded, size: AppResponsive.iconSize(context, 48), color: Colors.grey.shade400),
+          Gap(AppResponsive.heightValue(context, 12)),
           CustomText(
             'لا توجد نتائج مطابقة',
             color: Colors.grey.shade600,
-            fontSize: 13.sp,
+            fontSize: AppResponsive.fontSize(context, 13),
           ),
         ],
       ),
