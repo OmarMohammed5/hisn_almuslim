@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hisn_almuslim/core/responsive/app_responsive.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../domain/entities/level_entity.dart';
@@ -22,114 +22,96 @@ class QuizLevelCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark =
-        Theme.of(context).brightness ==
-            Brightness.dark;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
     final borderColor = isDark
         ? Colors.white.withValues(alpha: 0.07)
         : AppColors.kBorderLight;
 
-
     return AnimatedOpacity(
-      duration:
-      const Duration(milliseconds: 250),
+      duration: const Duration(milliseconds: 250),
       opacity: unlocked ? 1 : .55,
       child: Material(
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
-          borderRadius:
-          BorderRadius.circular(25.r),
+          borderRadius: BorderRadius.circular(
+            AppResponsive.radius(context, 25),
+          ),
           child: Ink(
-            padding: EdgeInsets.all(20.w),
+            padding: EdgeInsets.all(AppResponsive.widthValue(context, 20)),
             decoration: BoxDecoration(
               color: bgColor,
               border: Border.all(color: borderColor, width: 1),
-              borderRadius:
-              BorderRadius.circular(25.r),
+              borderRadius: BorderRadius.circular(
+                AppResponsive.radius(context, 25),
+              ),
             ),
             child: Row(
               children: [
                 Container(
-                  width: 62.w,
-                  height: 62.w,
+                  width: AppResponsive.widthValue(context, 62),
+                  height: AppResponsive.widthValue(context, 62),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: unlocked
-                        ? Colors.green.withValues(
-                      alpha: .12,
-                    )
-                        : Colors.grey.withValues(
-                      alpha: .1,
-                    ),
+                        ? Colors.green.withValues(alpha: .12)
+                        : Colors.grey.withValues(alpha: .1),
                   ),
                   child: Icon(
-                    unlocked
-                        ? Icons.play_arrow_rounded
-                        : Icons.lock_rounded,
-                    size: 32.sp,
+                    unlocked ? Icons.play_arrow_rounded : Icons.lock_rounded,
+                    size: AppResponsive.fontSize(context, 32),
                   ),
                 ),
 
-                SizedBox(width: 16.w),
+                SizedBox(width: AppResponsive.widthValue(context, 16)),
 
                 Expanded(
                   child: Column(
-                    crossAxisAlignment:
-                    CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         'المستوى ${level.levelNumber}',
                         style: TextStyle(
-                          fontSize: 18.sp,
-                          fontWeight:
-                          FontWeight.w800,
+                          fontSize: AppResponsive.fontSize(context, 18),
+                          fontWeight: FontWeight.w800,
                         ),
                       ),
 
-                      SizedBox(height: 6.h),
+                      SizedBox(height: AppResponsive.heightValue(context, 6)),
 
                       Text(
                         '${level.questions.length} سؤال',
                         style: TextStyle(
-                          fontSize: 13.sp,
-                          color: Theme.of(context)
-                              .textTheme
-                              .bodyMedium
-                              ?.color
-                              ?.withValues(
-                            alpha: .6,
-                          ),
+                          fontSize: AppResponsive.fontSize(context, 13),
+                          color: Theme.of(
+                            context,
+                          ).textTheme.bodyMedium?.color?.withValues(alpha: .6),
                         ),
                       ),
 
-                      if (unlocked &&
-                          bestScore > 0) ...[
-                        SizedBox(height: 8.h),
+                      if (unlocked && bestScore > 0) ...[
+                        SizedBox(height: AppResponsive.heightValue(context, 8)),
                         Text(
                           'أفضل نتيجة: $bestScore%',
                           style: TextStyle(
-                            fontSize: 12.sp,
-                            fontWeight:
-                            FontWeight.w600,
+                            fontSize: AppResponsive.fontSize(context, 12),
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ],
 
                       if (stars > 0) ...[
-                        SizedBox(height: 7.h),
+                        SizedBox(height: AppResponsive.heightValue(context, 7)),
                         Row(
-                          children:
-                          List.generate(
+                          children: List.generate(
                             3,
-                                (index) => Icon(
+                            (index) => Icon(
                               index < stars
                                   ? Icons.star_rounded
-                                  : Icons
-                                  .star_outline_rounded,
-                              size: 18.sp,
+                                  : Icons.star_outline_rounded,
+                              size: AppResponsive.fontSize(context, 18),
                             ),
                           ),
                         ),
@@ -141,7 +123,7 @@ class QuizLevelCard extends StatelessWidget {
                 if (unlocked)
                   Icon(
                     Icons.arrow_forward_ios_rounded,
-                    size: 16.sp,
+                    size: AppResponsive.fontSize(context, 16),
                   ),
               ],
             ),

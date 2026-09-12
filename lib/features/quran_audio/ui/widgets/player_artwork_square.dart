@@ -10,7 +10,8 @@ class PlayerArtworkSquare extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final outerSize = size.w + 30.w;
+    final responsiveSize = AppResponsive.widthValue(context, size);
+    final outerSize = responsiveSize + AppResponsive.widthValue(context, 30);
 
     return TweenAnimationBuilder<double>(
       tween: Tween(begin: 0.0, end: 1.0),

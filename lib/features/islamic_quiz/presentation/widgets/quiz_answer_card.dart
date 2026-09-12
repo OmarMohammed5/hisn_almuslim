@@ -2,13 +2,12 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hisn_almuslim/core/responsive/app_responsive.dart';
 
 import '../../../../core/shared/custom_text.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../domain/entities/answer_entity.dart';
 import '../theme/quiz_tokens.dart';
-
 
 class QuizAnswerCard extends StatefulWidget {
   const QuizAnswerCard({
@@ -35,8 +34,11 @@ class _QuizAnswerCardState extends State<QuizAnswerCard> {
   int _shakeTrigger = 0;
 
   bool get _isSelected => widget.selectedIndex == widget.index;
+
   bool get _showCorrect => widget.isAnswered && widget.answer.isCorrect;
-  bool get _showWrong => widget.isAnswered && _isSelected && !widget.answer.isCorrect;
+
+  bool get _showWrong =>
+      widget.isAnswered && _isSelected && !widget.answer.isCorrect;
 
   @override
   void didUpdateWidget(covariant QuizAnswerCard oldWidget) {
@@ -67,7 +69,6 @@ class _QuizAnswerCardState extends State<QuizAnswerCard> {
 
     final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
 
-
     if (_showCorrect) {
       borderColor = QuizColors.success;
       backgroundColor = QuizColors.successSoft;
@@ -82,18 +83,15 @@ class _QuizAnswerCardState extends State<QuizAnswerCard> {
 
     final emphasized = _showCorrect || _showWrong;
 
-
-
-
-
-
     Widget card = AnimatedContainer(
       duration: QuizDurations.normal,
       curve: Curves.easeOut,
       width: double.infinity,
       decoration: BoxDecoration(
         color: bgColor,
-        borderRadius: BorderRadius.circular(QuizRadius.md.r),
+        borderRadius: BorderRadius.circular(
+          AppResponsive.radius(context, QuizRadius.md),
+        ),
         border: Border.all(color: borderColor, width: emphasized ? 2 : 1),
       ),
       child: Material(
@@ -103,14 +101,19 @@ class _QuizAnswerCardState extends State<QuizAnswerCard> {
           onTapDown: (_) => _setPressed(true),
           onTapCancel: () => _setPressed(false),
           onTapUp: (_) => _setPressed(false),
-          borderRadius: BorderRadius.circular(QuizRadius.md.r),
+          borderRadius: BorderRadius.circular(
+            AppResponsive.radius(context, QuizRadius.md),
+          ),
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 17.h),
+            padding: EdgeInsets.symmetric(
+              horizontal: AppResponsive.widthValue(context, 18),
+              vertical: AppResponsive.heightValue(context, 17),
+            ),
             child: Row(
               children: [
                 Container(
-                  width: 38.w,
-                  height: 38.w,
+                  width: AppResponsive.widthValue(context, 38),
+                  height: AppResponsive.widthValue(context, 38),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: bgColor,
@@ -118,25 +121,31 @@ class _QuizAnswerCardState extends State<QuizAnswerCard> {
                   ),
                   alignment: Alignment.center,
                   child: icon != null
-                      ? Icon(icon, size: 21.sp, color: iconColor)
+                      ? Icon(
+                          icon,
+                          size: AppResponsive.fontSize(context, 21),
+                          color: iconColor,
+                        )
                       : CustomText(
                           maxLines: 30,
                           "${widget.index + 1}",
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w800,
+                          fontSize: AppResponsive.fontSize(context, 14),
+                          fontWeight: FontWeight.w800,
                         ),
                 ),
-                SizedBox(width: 13.w),
+                SizedBox(width: AppResponsive.widthValue(context, 13)),
                 Expanded(
                   child: CustomText(
                     widget.answer.answer,
                     textAlign: TextAlign.right,
-                    fontSize: 16.sp,
+                    fontSize: AppResponsive.fontSize(context, 13),
                     maxLines: 30,
                     fontFamily: "Noon",
                     height: 1.6,
                     fontWeight: emphasized ? FontWeight.w700 : FontWeight.w500,
-                    color: isDark ? const Color(0xFFF3F6F4) : const Color(0xFF14211A),
+                    color: isDark
+                        ? const Color(0xFFF3F6F4)
+                        : const Color(0xFF14211A),
                   ),
                 ),
               ],

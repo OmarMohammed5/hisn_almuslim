@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hisn_almuslim/core/responsive/app_responsive.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 
 import '../../../../core/theme/app_colors.dart';
@@ -19,15 +19,12 @@ class QuizProgressHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
     final borderColor = isDark
         ? Colors.white.withValues(alpha: 0.07)
         : AppColors.kBorderLight;
-
-
 
     return Row(
       children: [
@@ -38,16 +35,16 @@ class QuizProgressHeader extends StatelessWidget {
             customBorder: const CircleBorder(),
             onTap: () => Navigator.pop(context),
             child: Padding(
-              padding: EdgeInsets.all(8.w),
+              padding: EdgeInsets.all(AppResponsive.widthValue(context, 8)),
               child: Icon(
                 Icons.close_rounded,
-                size: 20.sp,
+                size: AppResponsive.fontSize(context, 20),
                 color: QuizColors.textPrimary(context),
               ),
             ),
           ),
         ),
-        SizedBox(width: QuizSpacing.sm.w),
+        SizedBox(width: AppResponsive.widthValue(context, QuizSpacing.sm)),
         Expanded(
           child: ClipRRect(
             borderRadius: BorderRadius.circular(QuizRadius.pill),
@@ -57,16 +54,19 @@ class QuizProgressHeader extends StatelessWidget {
               curve: Curves.easeOut,
               builder: (context, value, _) => LinearProgressIndicator(
                 value: value,
-                minHeight: 9.h,
+                minHeight: AppResponsive.heightValue(context, 9),
                 backgroundColor: QuizColors.border(context),
                 valueColor: AlwaysStoppedAnimation(QuizColors.primary(context)),
               ),
             ),
           ),
         ),
-        SizedBox(width: 12.w),
+        SizedBox(width: AppResponsive.widthValue(context, 12)),
         Container(
-          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+          padding: EdgeInsets.symmetric(
+            horizontal: AppResponsive.widthValue(context, 10),
+            vertical: AppResponsive.heightValue(context, 6),
+          ),
           decoration: BoxDecoration(
             color: bgColor,
             border: Border.all(color: borderColor, width: 1),
@@ -74,9 +74,9 @@ class QuizProgressHeader extends StatelessWidget {
           ),
           child: CustomText(
             '$currentQuestion / $totalQuestions',
-              fontSize: 13.sp,
-              fontWeight: FontWeight.w700,
-              color: QuizColors.primary(context),
+            fontSize: AppResponsive.fontSize(context, 13),
+            fontWeight: FontWeight.w700,
+            color: QuizColors.primary(context),
           ),
         ),
       ],

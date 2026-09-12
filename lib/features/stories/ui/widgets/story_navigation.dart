@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../core/responsive/app_responsive.dart';
 import 'nav_button.dart';
 
 class StoryNavigation extends StatelessWidget {
@@ -22,9 +23,11 @@ class StoryNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 6.h),
+      padding: EdgeInsets.symmetric(
+        horizontal: AppResponsive.widthValue(context, 20),
+        vertical: AppResponsive.heightValue(context, 6),
+      ),
       child: Row(
         children: [
           // Previous
@@ -38,8 +41,10 @@ class StoryNavigation extends StatelessWidget {
           Text(
             '${currentIndex + 1} / $totalStories',
             style: TextStyle(
-              fontSize: 11.sp,
-              color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.25),
+              fontSize: AppResponsive.fontSize(context, 11),
+              color: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.color?.withOpacity(0.25),
               fontFamily: 'Cairo',
             ),
           ),
@@ -56,5 +61,3 @@ class StoryNavigation extends StatelessWidget {
     );
   }
 }
-
-

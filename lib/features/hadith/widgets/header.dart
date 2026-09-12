@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hisn_almuslim/core/responsive/app_responsive.dart';
 
 class Header extends StatelessWidget {
   const Header({super.key, this.onFontTap});
@@ -10,11 +11,11 @@ class Header extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-      margin: EdgeInsets.only(left: 7.w, right: 7.w),
+      padding: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 12), vertical: AppResponsive.heightValue(context, 8)),
+      margin: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 7)),
       decoration: BoxDecoration(
         color: isDark ? Color(0xff1c2227) : Colors.white,
-        borderRadius: BorderRadius.circular(18.r),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 18)),
         border: Border.all(
           color: Color(0xFF677C8D).withValues(alpha: 0.2),
           width: 2,
@@ -31,7 +32,7 @@ class Header extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
-            spacing: 80.w,
+            spacing: AppResponsive.widthValue(context, 20),
             children: [
               // Back Button
               IconButton(
@@ -45,7 +46,7 @@ class Header extends StatelessWidget {
               Text(
                 'الأربعون النووية',
                 style: TextStyle(
-                  fontSize: 17.sp,
+                  fontSize: AppResponsive.fontSize(context, 17),
                   fontWeight: FontWeight.bold,
                   fontFamily: "Uthmani",
                 ),

@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/core/models/content_item.dart';
 import 'package:hisn_almuslim/core/shared/zekr_actions_widget.dart';
 import 'package:hisn_almuslim/core/utils/control_font_size.dart';
+import '../../../core/responsive/app_responsive.dart';
 import '../../../core/shared/app_bar_widget.dart';
 import '../../../core/shared/interactive_zekr_card.dart';
 import '../../../core/shared/zekr_info_dialog.dart';
@@ -30,7 +31,7 @@ class _ZekrDetailsScreenState extends State<ZekrDetailsScreen> {
 
   bool isLoading = true;
   final ValueNotifier<bool> _isUiVisible = ValueNotifier(true);
-  final ValueNotifier<double> _fontSizeNotifire = ValueNotifier(16.sp);
+  final ValueNotifier<double> _fontSizeNotifire = ValueNotifier(16);
 
   @override
   void initState() {
@@ -80,10 +81,7 @@ class _ZekrDetailsScreenState extends State<ZekrDetailsScreen> {
     if (isLoading) {
       return Scaffold(
         body: Center(
-          child: CupertinoActivityIndicator(
-            color: AppColors.kIconColor,
-            radius: 16.r,
-          ),
+          child: CupertinoActivityIndicator(color: AppColors.kIconColor),
         ),
       );
     }
@@ -94,29 +92,29 @@ class _ZekrDetailsScreenState extends State<ZekrDetailsScreen> {
       appBar: AppBarWidget(
         title: widget.zekr.title,
         actions: [
-
-
           GestureDetector(
             onTap: () => FontSizeController.showFontSizeSlider(
               context: context,
               fontSizeNotifire: _fontSizeNotifire,
             ),
             child: Container(
-              padding: EdgeInsets.all(8.w),
+              padding: EdgeInsets.all(AppResponsive.widthValue(context, 8)),
               decoration: BoxDecoration(
                 color: isDark
                     ? const Color(0xFF1A2723)
                     : const Color(0xFFEAF2F0),
-                borderRadius: BorderRadius.circular(12.r),
+                borderRadius: BorderRadius.circular(
+                  AppResponsive.radius(context, 12),
+                ),
               ),
               child: Icon(
                 Icons.text_fields,
                 color: accentColor,
-                size: 20.sp,
+                size: AppResponsive.iconSize(context, 20),
               ),
             ),
           ),
-          Gap(10.w),
+          Gap(AppResponsive.widthValue(context, 10)),
           GestureDetector(
             onTap: () {
               ZekrInfoDialog.show(
@@ -128,21 +126,23 @@ class _ZekrDetailsScreenState extends State<ZekrDetailsScreen> {
               );
             },
             child: Container(
-              padding: EdgeInsets.all(8.w),
+              padding: EdgeInsets.all(AppResponsive.widthValue(context, 8)),
               decoration: BoxDecoration(
-                color:isDark
+                color: isDark
                     ? const Color(0xFF1A2723)
                     : const Color(0xFFEAF2F0),
-                borderRadius: BorderRadius.circular(12.r),
+                borderRadius: BorderRadius.circular(
+                  AppResponsive.radius(context, 12),
+                ),
               ),
               child: Icon(
                 Icons.info_outline_rounded,
                 color: accentColor,
-                size: 22.sp,
+                size: AppResponsive.iconSize(context, 20),
               ),
             ),
           ),
-          Gap(16.w),
+          Gap(AppResponsive.widthValue(context, 16)),
         ],
       ),
       body: ValueListenableBuilder(
@@ -150,7 +150,7 @@ class _ZekrDetailsScreenState extends State<ZekrDetailsScreen> {
         builder: (context, isUiVisible, child) {
           return Stack(
             children: [
-              /// ================= CONTENT =================
+              /// CONTENT
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: _toggleUi,
@@ -171,7 +171,12 @@ class _ZekrDetailsScreenState extends State<ZekrDetailsScreen> {
                       valueListenable: _fontSizeNotifire,
                       builder: (context, fontSize, child) {
                         return ListView(
-                          padding: EdgeInsets.fromLTRB(2.w, 20.h, 2.w, 110.h),
+                          padding: EdgeInsets.fromLTRB(
+                            AppResponsive.widthValue(context, 2),
+                            AppResponsive.heightValue(context, 20),
+                            AppResponsive.widthValue(context, 2),
+                            AppResponsive.heightValue(context, 110),
+                          ),
                           physics: BouncingScrollPhysics(),
                           children: [
                             InteractiveZekrCard(
@@ -200,8 +205,8 @@ class _ZekrDetailsScreenState extends State<ZekrDetailsScreen> {
               ),
 
               Positioned(
-                left: 16.w,
-                bottom: 16.h,
+                left: AppResponsive.widthValue(context, 16),
+                bottom: AppResponsive.heightValue(context, 16),
                 child: ZekrActionsWidget(zekrText: currentContent.text),
               ),
             ],

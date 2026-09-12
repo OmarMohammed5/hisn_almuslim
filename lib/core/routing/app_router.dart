@@ -23,25 +23,18 @@ import '../../features/al azkar/evening azkar/screen/evening_azkar_screen.dart';
 import '../../features/al azkar/morning azkar/screen/morning_azkar_screen.dart';
 import '../../features/asma allah/data/cubit/asma_allah_cubit.dart';
 import '../../features/asma allah/screen/asma_allah_screen.dart';
-import '../../features/hadith/books/bukhary/data/cubit/chapters_cubit.dart';
-import '../../features/hadith/books/bukhary/data/models/chapter.dart';
-import '../../features/hadith/books/bukhary/screen/fehres_sahih_bukhary.dart';
-import '../../features/hadith/books/bukhary/screen/sahih_bukhary_details.dart';
-import '../../features/hadith/books/muslim/data/cubit/sahih_muslim_cubit.dart';
-import '../../features/hadith/books/muslim/data/model/chapter_sahih_muslim.dart';
-import '../../features/hadith/books/muslim/screen/fehres_sahih_muslim.dart';
-import '../../features/hadith/books/muslim/screen/sahih_muslim_details.dart';
-import '../../features/hadith/books/nawawi/data/cubit/hadith_cubit.dart';
-import '../../features/hadith/books/nawawi/screen/fehres_hadith_nawawi.dart';
-import '../../features/hadith/books/nawawi/screen/hadith_nawawi.dart';
-import '../../features/hadith/books/reyad al salehin/data/cubit/reyad_al_saliheen_cubit.dart';
-import '../../features/hadith/books/reyad al salehin/data/model/chapter_reyad_al_saliheen.dart';
-import '../../features/hadith/books/reyad al salehin/screen/fehres_reyad_al_saliheen.dart';
-import '../../features/hadith/books/reyad al salehin/screen/reyad_al_saliheen_details.dart';
-import '../../features/hadith/hadith_screen.dart';
 import '../../features/hisn al-muslim/screen/hisn_al_muslim_screen.dart';
 import '../../features/hisn al-muslim/screen/zekr_details_screen.dart';
 import '../../features/home/screen/home_screen.dart';
+import '../../features/hadith/hadith_screen.dart';
+import '../../features/hadith/domain/entities/hadith_route_args.dart';
+import '../../features/hadith/presentation/cubit/hadith_cubit.dart';
+import '../../features/hadith/presentation/screens/hadith_details_screen.dart';
+import '../../features/hadith/presentation/screens/hadith_index_screen.dart';
+import '../../features/jami dua/domain/entities/jami_dua_route_args.dart';
+import '../../features/jami dua/presentation/cubit/jami_dua_cubit.dart';
+import '../../features/jami dua/presentation/screens/dua_details_screen.dart';
+import '../../features/jami dua/presentation/screens/dua_screen.dart';
 import '../../features/islamic_quiz/domain/entities/main_category_entity.dart';
 import '../../features/islamic_quiz/domain/entities/topic_entity.dart';
 import '../../features/islamic_quiz/presentation/screens/quiz_categories_screen.dart';
@@ -49,20 +42,6 @@ import '../../features/islamic_quiz/presentation/screens/quiz_game_screen.dart';
 import '../../features/islamic_quiz/presentation/screens/quiz_levels_screen.dart';
 import '../../features/islamic_quiz/presentation/screens/quiz_result_screen.dart';
 import '../../features/islamic_quiz/presentation/screens/quiz_topics_screen.dart';
-import '../../features/jami dua/data/cubit/dead dua/dead_dua_cubit.dart';
-import '../../features/jami dua/data/cubit/etiquette dua/etiquette_dua_cubit.dart';
-import '../../features/jami dua/data/cubit/hajj and omra/hajj_dua_cubit.dart';
-import '../../features/jami dua/data/cubit/last ten duas/last_ten_duas_cubit.dart';
-import '../../features/jami dua/data/cubit/quran & sunnah dua/cubit/dua_cubit.dart';
-import '../../features/jami dua/data/models/hajj_items.dart';
-import '../../features/jami dua/screen/dead_dua_screen.dart';
-import '../../features/jami dua/screen/dua_screen.dart';
-import '../../features/jami dua/screen/etiquette_dua_screen.dart';
-import '../../features/jami dua/screen/hajj_and_omra_details.dart';
-import '../../features/jami dua/screen/hajj_and_omra_screen.dart';
-import '../../features/jami dua/screen/last_ten_duas_screen.dart';
-import '../../features/jami dua/screen/quran_dua_screen.dart';
-import '../../features/jami dua/screen/sunnah_dua_screen.dart';
 import '../../features/lectures/domain/entities/lecture_playlist.dart';
 import '../../features/lectures/domain/repositories/lectures_repository.dart';
 import '../../features/lectures/presentation/screens/category_lectures_screen.dart';
@@ -254,154 +233,45 @@ class AppRouter {
 
       // ============ HADITHS ============
       case AppRoutes.hadith:
-        return slidePageRoute(settings: settings, child: const HadithScreen());
-
-      case AppRoutes.fehresSahihBukhary:
         return slidePageRoute(
           settings: settings,
-          child: MultiBlocProvider(
-            providers: [
-              BlocProvider.value(value: sl<SearchCubit>()),
-              BlocProvider.value(value: sl<ChaptersCubit>()),
-            ],
-            child: const FehresSahihBukhary(),
+          child: const HadithScreen(),
+        );
+
+      case AppRoutes.hadithIndex:
+        final args = arguments as HadithIndexArgs;
+
+        return slidePageRoute(
+          settings: settings,
+          child: BlocProvider(
+            create: (_) => sl<HadithCubit>()..loadBook(args.book),
+            child: HadithIndexScreen(book: args.book),
           ),
         );
 
-      case AppRoutes.sahihBukharyDetails:
-        final chapter = arguments as Chapter;
-        return slidePageRoute(
-          settings: settings,
-          child: SahihBukharyDetails(chapterSahihBukhary: chapter),
-        );
+      case AppRoutes.hadithDetails:
+        final args = arguments as HadithDetailsArgs;
 
-      case AppRoutes.fehresSahihMuslim:
         return slidePageRoute(
           settings: settings,
-          child: MultiBlocProvider(
-            providers: [
-              BlocProvider.value(value: sl<SearchCubit>()),
-              BlocProvider.value(value: sl<SahihMuslimCubit>()),
-            ],
-            child: const FehresSahihMuslim(),
-          ),
-        );
-
-      case AppRoutes.sahihMuslimDetails:
-        final chapter = arguments as ChapterSahihMuslim;
-        return slidePageRoute(
-          settings: settings,
-          child: SahihMuslimDetails(chapterSahihMuslim: chapter),
-        );
-
-      case AppRoutes.fehresReyqdAlSaliheen:
-        return slidePageRoute(
-          settings: settings,
-          child: MultiBlocProvider(
-            providers: [
-              BlocProvider.value(value: sl<SearchCubit>()),
-              BlocProvider.value(value: sl<ReyadAlSaliheenCubit>()),
-            ],
-            child: const FehresReyadAlSaliheen(),
-          ),
-        );
-
-      case AppRoutes.reyadAlSaliheenDetails:
-        final chapter = arguments as ChapterReyadAlSaliheen;
-        return slidePageRoute(
-          settings: settings,
-          child: ReyadAlSaliheenDetails(chapterReyadAlSaliheen: chapter),
-        );
-
-      case AppRoutes.fehresHadithNawawi:
-        return slidePageRoute(
-          settings: settings,
-          child: MultiBlocProvider(
-            providers: [
-              BlocProvider.value(value: sl<SearchCubit>()),
-              BlocProvider.value(value: sl<HadithCubit>()),
-            ],
-            child: const FehresHadithNawawi(),
-          ),
-        );
-
-      case AppRoutes.hadithNawawi:
-        final id = arguments as int;
-        return slidePageRoute(
-          settings: settings,
-          child: BlocProvider.value(
-            value: sl<HadithCubit>(),
-            child: HadithNawawi(id: id),
-          ),
+          child: HadithDetailsScreen(args: args),
         );
 
       // ============ JAMI DUA ============
       case AppRoutes.dua:
-        return slidePageRoute(settings: settings, child: const DuaScreen());
-
-      case AppRoutes.deadDua:
         return slidePageRoute(
           settings: settings,
-          child: BlocProvider.value(
-            value: sl<DeadDuaCubit>(),
-            child: const DeadDuaScreen(),
-          ),
+          child: const DuaScreen(),
         );
 
-      case AppRoutes.etiquetteDua:
-        return slidePageRoute(
-          settings: settings,
-          child: BlocProvider.value(
-            value: sl<EtiquetteDuaCubit>()..loadEtiquetteDua(),
-            child: const EtiquetteDuaScreen(),
-          ),
-        );
+      case AppRoutes.duaDetails:
+        final args = arguments as JamiDuaDetailsArgs;
 
-      case AppRoutes.hajjAndOmraDua:
         return slidePageRoute(
           settings: settings,
-          child: BlocProvider.value(
-            value: sl<HajjDuaCubit>(),
-            child: const HajjAndOmraScreen(),
-          ),
-        );
-
-      case AppRoutes.hajjAndOmraDuaDetails:
-        final args = arguments as Map<String, dynamic>;
-        final title = args['title'] as String;
-        final hajjItems = args['hajjItems'] as List<HajjItems>;
-        return slidePageRoute(
-          settings: settings,
-          child: BlocProvider.value(
-            value: sl<HajjDuaCubit>(),
-            child: HajjAndOmraDetails(hajjItems: hajjItems, title: title),
-          ),
-        );
-
-      case AppRoutes.lastTenDuas:
-        return slidePageRoute(
-          settings: settings,
-          child: BlocProvider.value(
-            value: sl<LastTenDuasCubit>(),
-            child: const LastTenDuasScreen(),
-          ),
-        );
-
-      case AppRoutes.quranDua:
-        return slidePageRoute(
-          settings: settings,
-          child: BlocProvider.value(
-            value: sl<DuaCubit>(),
-            child: const QuranDuaScreen(),
-          ),
-        );
-
-      case AppRoutes.sunnahDua:
-        return slidePageRoute(
-          settings: settings,
-          child: BlocProvider.value(
-            value: sl<DuaCubit>(),
-            child: const SunnahDuaScreen(),
+          child: BlocProvider(
+            create: (_) => sl<JamiDuaCubit>()..loadCategory(args.category),
+            child: DuaDetailsScreen(args: args),
           ),
         );
 

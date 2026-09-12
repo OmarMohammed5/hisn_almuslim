@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hisn_almuslim/core/responsive/app_responsive.dart';
+import 'package:hisn_almuslim/core/responsive/app_responsive.dart';
 import 'package:hisn_almuslim/core/shared/app_bar_widget.dart';
 import 'package:hisn_almuslim/core/theme/app_colors.dart';
 import '../../../../core/routing/app_routes.dart';
@@ -18,9 +19,7 @@ class QuizCategoriesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarWidget(
-          title: "أسئلة دينيه",
-      ),
+      appBar: AppBarWidget(title: "أسئلة دينيه"),
       body: BlocBuilder<QuizCubit, QuizState>(
         builder: (context, state) {
           switch (state) {
@@ -28,7 +27,9 @@ class QuizCategoriesScreen extends StatelessWidget {
               return const SizedBox();
 
             case QuizLoading():
-              return  Center(child: CupertinoActivityIndicator(color: AppColors.kPrimary,));
+              return Center(
+                child: CupertinoActivityIndicator(color: AppColors.kPrimary),
+              );
 
             case QuizError(:final message):
               return _QuizErrorView(
@@ -54,35 +55,50 @@ class _CategoriesContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 30.h),
-      children: [
-        // HeroHeader(),
-        SizedBox(height: 28.h),
-        ...List.generate(categories.length, (index) {
-          final category = categories[index];
-          return QuizStaggeredEntry(
-            index: index,
-            child: Padding(
-              padding: EdgeInsets.only(bottom: 14.h),
-              child: QuizCategoryCard(
-                category: category,
-                onTap: () {
-                  Navigator.pushNamed(
-                    context,
-                    AppRoutes.quizTopics,
-                    arguments: category,
-                  );
-                },
+    final maxWidth = AppResponsive.isDesktop(context)
+        ? 1100.0
+        : AppResponsive.isTablet(context)
+        ? 820.0
+        : double.infinity;
+    return AppResponsive.constrain(
+      context,
+      maxWidth: maxWidth,
+      child: ListView(
+        padding: EdgeInsets.fromLTRB(
+          AppResponsive.widthValue(context, 16),
+          AppResponsive.heightValue(context, 8),
+          AppResponsive.widthValue(context, 16),
+          AppResponsive.heightValue(context, 30),
+        ),
+        children: [
+          // HeroHeader(),
+          SizedBox(height: AppResponsive.heightValue(context, 28)),
+          ...List.generate(categories.length, (index) {
+            final category = categories[index];
+            return QuizStaggeredEntry(
+              index: index,
+              child: Padding(
+                padding: EdgeInsets.only(
+                  bottom: AppResponsive.heightValue(context, 14),
+                ),
+                child: QuizCategoryCard(
+                  category: category,
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      AppRoutes.quizTopics,
+                      arguments: category,
+                    );
+                  },
+                ),
               ),
-            ),
-          );
-        }),
-      ],
+            );
+          }),
+        ],
+      ),
     );
   }
 }
-
 
 class _QuizErrorView extends StatelessWidget {
   const _QuizErrorView({required this.message, required this.onRetry});
@@ -94,18 +110,23 @@ class _QuizErrorView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: EdgeInsets.all(24.w),
+        padding: EdgeInsets.all(AppResponsive.widthValue(context, 24)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.error_outline_rounded, size: 55.sp, color: QuizColors.error),
-            SizedBox(height: 16.h),
+            Icon(
+              Icons.error_outline_rounded,
+              size: AppResponsive.fontSize(context, 55),
+              color: QuizColors.error,
+            ),
+            SizedBox(height: AppResponsive.heightValue(context, 16)),
             CustomText(
               message,
               textAlign: TextAlign.center,
-              fontSize: 16.sp, color: QuizColors.textPrimary(context),
+              fontSize: AppResponsive.fontSize(context, 16),
+              color: QuizColors.textPrimary(context),
             ),
-            SizedBox(height: 20.h),
+            SizedBox(height: AppResponsive.heightValue(context, 20)),
             ElevatedButton(
               onPressed: onRetry,
               child: const CustomText('إعادة المحاولة'),

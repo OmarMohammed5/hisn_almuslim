@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hisn_almuslim/core/responsive/app_responsive.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 
 class FontSizeController {
@@ -9,47 +10,56 @@ class FontSizeController {
   }) {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
+      constraints: const BoxConstraints(
+        minWidth: double.infinity,
+        maxWidth: double.infinity,
+      ),
       shape:  RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(36.r)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(AppResponsive.radius(context, 36))),
       ),
       builder: (context) {
         final isDark = Theme.of(context).brightness == Brightness.dark;
 
-        return Padding(
-          padding: EdgeInsets.all(20.w),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            spacing: 16.h,
-            children: [
-              CustomText(
-                'حجم الخط',
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.bold,
-              ),
+        return SizedBox(
+          width: double.infinity,
+          child: Padding(
+            padding: EdgeInsets.all(AppResponsive.widthValue(context, 20)),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              spacing: AppResponsive.heightValue(context, 16),
+              children: [
+                CustomText(
+                  'حجم الخط',
+                    fontSize: AppResponsive.fontSize(context, 13),
+                    fontWeight: FontWeight.bold,
+                ),
 
-              ValueListenableBuilder<double>(
-                valueListenable: fontSizeNotifire,
-                builder: (context, fontSize, _) {
-                  return Slider(
-                    min: 16,
-                    max: 32,
-                    divisions: 8,
-                    value: fontSize,
-                    label: fontSize.toInt().toString(),
-                    activeColor: Colors.teal.shade700,
-                    onChanged: (value) {
-                      fontSizeNotifire.value = value;
-                    },
-                  );
-                },
-              ),
+                ValueListenableBuilder<double>(
+                  valueListenable: fontSizeNotifire,
+                  builder: (context, fontSize, _) {
+                    final safeFontSize = fontSize.clamp(16.0, 32.0);
+                    return Slider(
+                      min: 16,
+                      max: 32,
+                      divisions: 8,
+                      value: safeFontSize,
+                      label: safeFontSize.toInt().toString(),
+                      activeColor: Colors.teal.shade700,
+                      onChanged: (value) {
+                        fontSizeNotifire.value = value;
+                      },
+                    );
+                  },
+                ),
 
-              CustomText(
-                'اسحب لتكبير أو تصغير الخط',
-                  fontSize: 12.sp,
-                  color: isDark ? Colors.black26 : Colors.black54,
-              ),
-            ],
+                CustomText(
+                  'اسحب لتكبير أو تصغير الخط',
+                  fontSize: AppResponsive.fontSize(context, 11),
+                    color: isDark ? Colors.black26 : Colors.black54,
+                ),
+              ],
+            ),
           ),
         );
       },

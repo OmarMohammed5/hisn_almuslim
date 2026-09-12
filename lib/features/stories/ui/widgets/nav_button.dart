@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../core/responsive/app_responsive.dart';
+
 class NavButton extends StatelessWidget {
   final String label;
   final VoidCallback? onTap;
@@ -64,22 +66,22 @@ class NavButton extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: enabled ? onTap : null,
-          borderRadius: BorderRadius.circular(14.r),
+          borderRadius: BorderRadius.circular(AppResponsive.radius(context, 14)),
           splashColor: accentColor.withValues(alpha: 0.10),
           highlightColor: accentColor.withValues(alpha: 0.05),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
             curve: Curves.easeOut,
             padding: EdgeInsets.symmetric(
-              horizontal: 18.w,
-              vertical: 10.h,
+              horizontal: AppResponsive.widthValue(context, 18),
+              vertical:AppResponsive.heightValue(context, 10),
             ),
             decoration: BoxDecoration(
               color: backgroundColor,
-              borderRadius: BorderRadius.circular(14.r),
+              borderRadius: BorderRadius.circular(AppResponsive.radius(context, 14)),
               border: Border.all(
                 color: borderColor,
-                width: 1,
+                width: AppResponsive.widthValue(context, 1),
               ),
             ),
             child: Row(
@@ -90,10 +92,10 @@ class NavButton extends StatelessWidget {
                 if (!isNext) ...[
                   Icon(
                     Icons.arrow_back_ios_new_rounded,
-                    size: 14.sp,
+                    size:AppResponsive.iconSize(context, 14),
                     color: iconColor,
                   ),
-                  SizedBox(width: 6.w),
+                  SizedBox(width: AppResponsive.widthValue(context, 6)),
                 ],
 
                 // LABEL
@@ -101,21 +103,21 @@ class NavButton extends StatelessWidget {
                 Text(
                   label,
                   style: TextStyle(
-                    fontSize: 13.sp,
+                    fontSize: AppResponsive.fontSize(context, 13),
                     fontWeight: FontWeight.w600,
                     color: textColor,
-                    fontFamily: 'QuranFont',
-                    height: 1.2,
+                    fontFamily: 'Noon',
+                    height:AppResponsive.heightValue(context, 1.2),
                   ),
                 ),
 
                 // NEXT
 
                 if (isNext) ...[
-                  SizedBox(width: 6.w),
+                  SizedBox(width: AppResponsive.widthValue(context, 6)),
                   Icon(
                     Icons.arrow_forward_ios_rounded,
-                    size: 14.sp,
+                    size:AppResponsive.iconSize(context, 14),
                     color: iconColor,
                   ),
                 ],

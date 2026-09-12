@@ -286,7 +286,7 @@ class AzkarNotificationsBuild extends StatelessWidget {
                   children: [
                     CustomText(
                       title,
-                      fontSize: AppResponsive.fontSize(context, 13),
+                      fontSize: AppResponsive.fontSize(context, 11),
                       fontWeight: isEnabled ? FontWeight.w700 : FontWeight.w600,
                       color: isEnabled
                           ? (isDark ? Colors.white : Colors.black87)
@@ -349,7 +349,7 @@ class AzkarNotificationsBuild extends StatelessWidget {
             Expanded(
               child: CustomText(
                 'التذكير كل',
-                fontSize: AppResponsive.fontSize(context, 13),
+                fontSize: AppResponsive.fontSize(context, 11),
                 fontWeight: FontWeight.w600,
                 color: isDark ? Colors.grey.shade300 : Colors.grey.shade700,
               ),
@@ -463,7 +463,7 @@ class AzkarNotificationsBuild extends StatelessWidget {
               Expanded(
                 child: CustomText(
                   title,
-                  fontSize: AppResponsive.fontSize(context, 13),
+                  fontSize: AppResponsive.fontSize(context, 11),
                   fontWeight: FontWeight.w600,
                   color: isDark ? Colors.grey.shade300 : Colors.grey.shade700,
                 ),
@@ -507,7 +507,7 @@ class AzkarNotificationsBuild extends StatelessWidget {
                       color: isDark
                           ? Colors.teal.shade200
                           : Colors.teal.shade700,
-                      fontSize: AppResponsive.fontSize(context, 13),
+                      fontSize: AppResponsive.fontSize(context, 11),
                       fontWeight: FontWeight.w700,
                     ),
                   ],

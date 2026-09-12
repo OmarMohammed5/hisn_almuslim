@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:hisn_almuslim/features/asma%20allah/data/model/asma_allah_model.dart';
 
+import '../../../core/responsive/app_responsive.dart';
 import '../../../core/theme/app_colors.dart';
 
 class AsmaCard extends StatelessWidget {
@@ -33,7 +34,10 @@ class AsmaCard extends StatelessWidget {
         : AppColors.kBorderLight;
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 7.w, vertical: 8.h),
+      padding: EdgeInsets.symmetric(
+        horizontal: AppResponsive.widthValue(context, 7),
+        vertical: AppResponsive.heightValue(context, 8),
+      ),
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: onTap,
@@ -41,31 +45,38 @@ class AsmaCard extends StatelessWidget {
           width: double.infinity,
           decoration: BoxDecoration(
             color: bgColor,
-            border: Border.all(color: borderColor, width: 1),
-            borderRadius: BorderRadius.circular(30.r),
+            border: Border.all(
+              color: borderColor,
+              width: AppResponsive.widthValue(context, 1),
+            ),
+            borderRadius: BorderRadius.circular(
+              AppResponsive.radius(context, 30),
+            ),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: isDark ? .18 : .055),
-                blurRadius: 24.r,
+                blurRadius: 12.r,
                 offset: Offset(0, 10.h),
               ),
             ],
           ),
 
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(30.r),
+            borderRadius: BorderRadius.circular(
+              AppResponsive.radius(context, 30),
+            ),
 
             child: Stack(
               children: [
                 Positioned(
-                  top: -35.h,
-                  right: -25.w,
+                  top: AppResponsive.widthValue(context, -35),
+                  right: AppResponsive.widthValue(context, -25),
 
                   child: Text(
                     'الله',
                     style: TextStyle(
-                      fontFamily: 'QuranFont',
-                      fontSize: 130.sp,
+                      fontFamily: 'Noon',
+                      fontSize: AppResponsive.fontSize(context, 130),
                       fontWeight: FontWeight.bold,
                       color: accent.withValues(alpha: isDark ? .025 : .035),
                     ),
@@ -73,18 +84,17 @@ class AsmaCard extends StatelessWidget {
                 ),
 
                 Positioned(
-                  bottom: -45.h,
-                  left: -25.w,
+                  bottom: AppResponsive.heightValue(context, -45),
+                  left: AppResponsive.widthValue(context, -25),
 
                   child: Container(
-                    width: 120.w,
-                    height: 120.w,
-
+                    width: AppResponsive.widthValue(context, 120),
+                    height: AppResponsive.heightValue(context, 120),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border: Border.all(
                         color: accent.withValues(alpha: .045),
-                        width: 14.w,
+                        width: AppResponsive.widthValue(context, 14),
                       ),
                     ),
                   ),
@@ -92,7 +102,12 @@ class AsmaCard extends StatelessWidget {
 
                 // CONTENT
                 Padding(
-                  padding: EdgeInsets.fromLTRB(24.w, 28.h, 24.w, 24.h),
+                  padding: EdgeInsets.fromLTRB(
+                    AppResponsive.widthValue(context, 24),
+                    AppResponsive.widthValue(context, 28),
+                    AppResponsive.widthValue(context, 24),
+                    AppResponsive.heightValue(context, 24),
+                  ),
 
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -104,8 +119,8 @@ class AsmaCard extends StatelessWidget {
 
                         children: [
                           Container(
-                            width: 5.w,
-                            height: 5.w,
+                            width: AppResponsive.widthValue(context, 5),
+                            height: AppResponsive.heightValue(context, 5),
 
                             decoration: BoxDecoration(
                               color: accent,
@@ -113,23 +128,23 @@ class AsmaCard extends StatelessWidget {
                             ),
                           ),
 
-                          SizedBox(width: 7.w),
+                          SizedBox(width: AppResponsive.widthValue(context, 7)),
 
                           Text(
                             'مِنْ أَسْمَاءِ اللهِ الْحُسْنَى',
                             style: TextStyle(
                               fontFamily: 'Noon',
-                              fontSize: 8.sp,
+                              fontSize: AppResponsive.fontSize(context, 8),
                               fontWeight: FontWeight.w600,
                               color: accent,
                             ),
                           ),
 
-                          SizedBox(width: 7.w),
+                          SizedBox(width: AppResponsive.widthValue(context, 7)),
 
                           Container(
-                            width: 5.w,
-                            height: 5.w,
+                            width: AppResponsive.widthValue(context, 5),
+                            height: AppResponsive.heightValue(context, 5),
 
                             decoration: BoxDecoration(
                               color: accent,
@@ -139,7 +154,7 @@ class AsmaCard extends StatelessWidget {
                         ],
                       ),
 
-                      SizedBox(height: 28.h),
+                      SizedBox(height: AppResponsive.heightValue(context, 28)),
 
                       // NAME
                       Text(
@@ -147,28 +162,30 @@ class AsmaCard extends StatelessWidget {
                         textAlign: TextAlign.center,
 
                         style: TextStyle(
-                          fontFamily: 'QuranFont',
-                          fontSize: 43.sp,
+                          fontFamily: 'Noon',
+                          fontSize: AppResponsive.fontSize(context, 43),
                           fontWeight: FontWeight.bold,
-                          height: 1.3,
+                          height: AppResponsive.heightValue(context, 1.3),
                           color: titleColor,
                         ),
                       ),
 
-                      SizedBox(height: 14.h),
+                      SizedBox(height: AppResponsive.heightValue(context, 14)),
 
                       // DECORATIVE LINE
                       Container(
-                        width: 42.w,
-                        height: 3.h,
+                        width: AppResponsive.widthValue(context, 42),
+                        height: AppResponsive.heightValue(context, 3),
 
                         decoration: BoxDecoration(
                           color: accent,
-                          borderRadius: BorderRadius.circular(10.r),
+                          borderRadius: BorderRadius.circular(
+                            AppResponsive.radius(context, 10),
+                          ),
                         ),
                       ),
 
-                      SizedBox(height: 30.h),
+                      SizedBox(height: AppResponsive.heightValue(context, 30)),
 
                       // DESCRIPTION
                       Text(
@@ -176,27 +193,29 @@ class AsmaCard extends StatelessWidget {
                         textAlign: TextAlign.center,
 
                         style: TextStyle(
-                          fontFamily: 'QuranFont',
-                          fontSize: 17.sp,
-                          height: 2,
+                          fontFamily: 'Noon',
+                          fontSize: AppResponsive.fontSize(context, 17),
+                          height: AppResponsive.heightValue(context, 2),
                           fontWeight: FontWeight.w400,
                           color: bodyColor,
                         ),
                       ),
 
-                      SizedBox(height: 30.h),
+                      SizedBox(height: AppResponsive.heightValue(context, 30)),
 
                       // TAP INDICATOR
                       Container(
                         padding: EdgeInsets.symmetric(
-                          horizontal: 13.w,
-                          vertical: 7.h,
+                          horizontal: AppResponsive.widthValue(context, 13),
+                          vertical: AppResponsive.heightValue(context, 7),
                         ),
 
                         decoration: BoxDecoration(
                           color: accent.withValues(alpha: .06),
 
-                          borderRadius: BorderRadius.circular(20.r),
+                          borderRadius: BorderRadius.circular(
+                            AppResponsive.radius(context, 20),
+                          ),
                         ),
 
                         child: Row(
@@ -205,17 +224,19 @@ class AsmaCard extends StatelessWidget {
                           children: [
                             Icon(
                               Icons.touch_app_outlined,
-                              size: 13.sp,
+                              size: AppResponsive.iconSize(context, 13),
                               color: accent,
                             ),
 
-                            SizedBox(width: 6.w),
+                            SizedBox(
+                              width: AppResponsive.widthValue(context, 6),
+                            ),
 
                             Text(
                               'اضغط للمتابعة',
                               style: TextStyle(
                                 fontFamily: 'Noon',
-                                fontSize: 8.5.sp,
+                                fontSize: AppResponsive.fontSize(context, 9),
                                 fontWeight: FontWeight.w600,
                                 color: accent,
                               ),

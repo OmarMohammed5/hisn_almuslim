@@ -4,6 +4,8 @@ import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 import 'package:intl/intl.dart';
 
+import '../../../core/responsive/app_responsive.dart';
+
 class PrayerTimings extends StatelessWidget {
   const PrayerTimings({
     super.key,
@@ -22,14 +24,15 @@ class PrayerTimings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final formattedTime = DateFormat('hh:mm a')
-        .format(time)
-        .replaceAll('AM', 'ص')
-        .replaceAll('PM', 'م');
+    final formattedTime = DateFormat(
+      'hh:mm a',
+    ).format(time).replaceAll('AM', 'ص').replaceAll('PM', 'م');
 
     final surface = isDark ? const Color(0xFF171A19) : Colors.white;
     final text = isDark ? Colors.white : const Color(0xFF17231F);
-    final muted = isDark ? Colors.white.withValues(alpha: .52) : const Color(0xFF71807B);
+    final muted = isDark
+        ? Colors.white.withValues(alpha: .52)
+        : const Color(0xFF71807B);
     final accent = isCurrentPrayer
         ? const Color(0xFF0E8A78)
         : isNextPrayer
@@ -45,13 +48,15 @@ class PrayerTimings extends StatelessWidget {
             : isNextPrayer
             ? (isDark ? const Color(0xFF30250F) : const Color(0xFFFFF7E7))
             : surface,
-        borderRadius: BorderRadius.circular(17.r),
+        borderRadius: BorderRadius.circular( AppResponsive.radius(context, 17)),
         border: Border.all(
           color: isCurrentPrayer
               ? const Color(0xFF0E8A78).withValues(alpha: .22)
               : isNextPrayer
               ? const Color(0xFFD99727).withValues(alpha: .20)
-              : (isDark ? Colors.white.withValues(alpha: .05) : const Color(0xFFE9EFED)),
+              : (isDark
+                    ? Colors.white.withValues(alpha: .05)
+                    : const Color(0xFFE9EFED)),
         ),
         boxShadow: [
           if (!isDark)
@@ -65,41 +70,55 @@ class PrayerTimings extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            width: 7.w,
-            height: 7.w,
+            width: AppResponsive.widthValue(context, 7),
+            height:  AppResponsive.heightValue(context, 7),
             decoration: BoxDecoration(shape: BoxShape.circle, color: accent),
           ),
-          Gap(8.w),
+          Gap(AppResponsive.widthValue(context, 8)),
+
           Expanded(
             child: Row(
               children: [
                 CustomText(
                   prayer,
-                  fontSize: 13.sp,
+                  fontSize: AppResponsive.fontSize(context, 12),
                   color: text,
                   fontWeight: isCurrentPrayer || isNextPrayer
                       ? FontWeight.w800
                       : FontWeight.w600,
                 ),
                 if (isCurrentPrayer) ...[
-                  Gap(7.w),
-                  _Badge(text: 'الآن', color: const Color(0xFF0E8A78), isDark: isDark),
+                  Gap(AppResponsive.widthValue(context, 7)),
+                  _Badge(
+                    text: 'الآن',
+                    color: const Color(0xFF0E8A78),
+                    isDark: isDark,
+                  ),
                 ] else if (isNextPrayer) ...[
-                  Gap(7.w),
-                  _Badge(text: 'القادمة', color: const Color(0xFFD99727), isDark: isDark),
+                  Gap(AppResponsive.widthValue(context, 7)),
+                  _Badge(
+                    text: 'القادمة',
+                    color: const Color(0xFFD99727),
+                    isDark: isDark,
+                  ),
                 ],
               ],
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 11.w, vertical: 6.h),
+            padding: EdgeInsets.symmetric(
+              horizontal: AppResponsive.widthValue(context, 11),
+              vertical: AppResponsive.heightValue(context, 6),
+            ),
             decoration: BoxDecoration(
-              color: isDark ? Colors.white.withValues(alpha: .06) : const Color(0xFFF2F4F3),
-              borderRadius: BorderRadius.circular(12.r),
+              color: isDark
+                  ? Colors.white.withValues(alpha: .06)
+                  : const Color(0xFFF2F4F3),
+              borderRadius: BorderRadius.circular( AppResponsive.radius(context, 12)),
             ),
             child: CustomText(
               formattedTime,
-              fontSize: 10.sp,
+              fontSize: AppResponsive.fontSize(context, 10),
               color: text,
               fontWeight: FontWeight.w700,
             ),
@@ -112,6 +131,7 @@ class PrayerTimings extends StatelessWidget {
 
 class _Badge extends StatelessWidget {
   const _Badge({required this.text, required this.color, required this.isDark});
+
   final String text;
   final Color color;
   final bool isDark;
@@ -119,14 +139,17 @@ class _Badge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 3.h),
+      padding: EdgeInsets.symmetric(
+        horizontal: AppResponsive.widthValue(context, 6),
+        vertical: AppResponsive.heightValue(context, 3),
+      ),
       decoration: BoxDecoration(
         color: color.withValues(alpha: isDark ? .18 : .12),
-        borderRadius: BorderRadius.circular(20.r),
+        borderRadius: BorderRadius.circular( AppResponsive.radius(context, 20)),
       ),
       child: CustomText(
         text,
-        fontSize: 8.sp,
+        fontSize: AppResponsive.fontSize(context, 8.6),
         color: isDark ? color.withValues(alpha: .95) : color,
         fontWeight: FontWeight.w800,
       ),

@@ -1,8 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:hisn_almuslim/features/lectures/presentation/widgets/lecture_content_container.dart';
+import 'package:hisn_almuslim/core/responsive/app_responsive.dart';
 import 'package:hisn_almuslim/core/shared/app_bar_widget.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 import 'package:hisn_almuslim/core/theme/app_colors.dart';
@@ -27,27 +28,21 @@ class SheikhDetailsScreen extends StatefulWidget {
   });
 
   @override
-  State<SheikhDetailsScreen> createState() =>
-      _SheikhDetailsScreenState();
+  State<SheikhDetailsScreen> createState() => _SheikhDetailsScreenState();
 }
 
-class _SheikhDetailsScreenState
-    extends State<SheikhDetailsScreen> {
+class _SheikhDetailsScreenState extends State<SheikhDetailsScreen> {
   late Future<List<LecturePlaylist>> _future;
 
   @override
   void initState() {
     super.initState();
 
-    _future = widget.repository.getSheikhPlaylists(
-      widget.sheikh.channelId,
-    );
+    _future = widget.repository.getSheikhPlaylists(widget.sheikh.channelId);
   }
 
   // Open Playlist
-  void _openPlaylist(
-      LecturePlaylist playlist,
-      ) {
+  void _openPlaylist(LecturePlaylist playlist) {
     Navigator.pushNamed(
       context,
       AppRoutes.playListView,
@@ -63,170 +58,131 @@ class _SheikhDetailsScreenState
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
-    final isDark =
-        theme.brightness == Brightness.dark;
+    final isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
-      appBar: AppBarWidget(
-        title: widget.sheikh.name,
-      ),
+      appBar: AppBarWidget(title: widget.sheikh.name),
 
-      body: FutureBuilder<List<LecturePlaylist>>(
-        future: _future,
+      body: LectureContentContainer(
+        child: FutureBuilder<List<LecturePlaylist>>(
+          future: _future,
 
-        builder: (context, snapshot) {
+          builder: (context, snapshot) {
+            // Loading
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return _buildLoadingState();
+            }
 
-          // Loading
-          if (snapshot.connectionState ==
-              ConnectionState.waiting) {
-            return _buildLoadingState();
-          }
+            // Error
+            if (snapshot.hasError) {
+              return _buildErrorState(context, scheme);
+            }
 
-          // Error
-          if (snapshot.hasError) {
-            return _buildErrorState(
-              context,
-              scheme,
-            );
-          }
+            final playlists = snapshot.data ?? const [];
 
-          final playlists = snapshot.data ?? const [];
+            // Content
+            return RefreshIndicator(
+              color: AppColors.kPrimary,
+              onRefresh: () async {
+                setState(() {
+                  _future = widget.repository.getSheikhPlaylists(
+                    widget.sheikh.channelId,
+                  );
+                });
 
-          // Content
-          return RefreshIndicator(
-            color: AppColors.kPrimary,
-            onRefresh: () async {
-              setState(() {
-                _future =
-                    widget.repository
-                        .getSheikhPlaylists(
-                      widget.sheikh.channelId,
-                    );
-              });
+                await _future;
+              },
 
-              await _future;
-            },
+              child: ListView(
+                physics: const AlwaysScrollableScrollPhysics(),
 
-            child: ListView(
-              physics:
-              const AlwaysScrollableScrollPhysics(),
-
-              padding: EdgeInsets.fromLTRB(
-                16.w,
-                14.h,
-                16.w,
-                50.h,
-              ),
-
-              children: [
-
-                // Sheikh Hero
-                SheikhHeader(scheme: scheme, isDark: isDark, sheikh: widget.sheikh,),
-                Gap(28.h),
-
-                // Playlists Header
-                _buildPlaylistsHeader(
-                  scheme,
-                  playlists.length,
+                padding: EdgeInsets.fromLTRB(
+                  AppResponsive.widthValue(context, 16),
+                  AppResponsive.heightValue(context, 14),
+                  AppResponsive.widthValue(context, 16),
+                  AppResponsive.heightValue(context, 50),
                 ),
 
-                Gap(12.h),
+                children: [
+                  // Sheikh Hero
+                  SheikhHeader(
+                    scheme: scheme,
+                    isDark: isDark,
+                    sheikh: widget.sheikh,
+                  ),
+                  Gap(AppResponsive.heightValue(context, 28)),
 
-                // Playlists
-                if (playlists.isEmpty)
-                  _buildEmptyState(
-                    scheme,
-                  )
-                else
-                  ...playlists.map(
-                        (playlist) => Padding(
-                      padding:
-                      EdgeInsets.only(
-                        bottom: 12.h,
-                      ),
-                      child: PlaylistCard(
-                        playlist: playlist,
-                        onTap: () =>
-                            _openPlaylist(
-                              playlist,
-                            ),
+                  // Playlists Header
+                  _buildPlaylistsHeader(scheme, playlists.length),
+
+                  Gap(AppResponsive.heightValue(context, 12)),
+
+                  // Playlists
+                  if (playlists.isEmpty)
+                    _buildEmptyState(scheme)
+                  else
+                    ...playlists.map(
+                      (playlist) => Padding(
+                        padding: EdgeInsets.only(
+                          bottom: AppResponsive.heightValue(context, 8),
+                        ),
+                        child: PlaylistCard(
+                          playlist: playlist,
+                          onTap: () => _openPlaylist(playlist),
+                        ),
                       ),
                     ),
-                  ),
-              ],
-            ),
-          );
-        },
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }
 
-
   // Playlists Header
-  Widget _buildPlaylistsHeader(
-      ColorScheme scheme,
-      int count,
-      ) {
+  Widget _buildPlaylistsHeader(ColorScheme scheme, int count) {
     return Row(
-      textDirection:
-      TextDirection.rtl,
-
       children: [
-
         // Icon
         Container(
-          width: 40.w,
-          height: 40.w,
+          width: AppResponsive.widthValue(context, 40),
+          height: AppResponsive.widthValue(context, 40),
 
           decoration: BoxDecoration(
             shape: BoxShape.circle,
 
-            color: scheme.primary
-                .withValues(
-              alpha: .08,
-            ),
+            color: scheme.primary.withValues(alpha: .08),
           ),
 
           child: Icon(
-            Icons
-                .video_library_rounded,
-            color:
-            AppColors.kPrimary,
-            size: 20.sp,
+            Icons.video_library_rounded,
+            color: AppColors.kPrimary,
+            size: AppResponsive.fontSize(context, 20),
           ),
         ),
 
-        SizedBox(width: 10.w),
+        SizedBox(width: AppResponsive.widthValue(context, 10)),
 
         // Title
         Expanded(
           child: Column(
-            crossAxisAlignment:
-            CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
 
             children: [
               CustomText(
                 'السلاسل والقوائم',
-
-                fontSize: 15.sp,
-
-                fontWeight:
-                FontWeight.w900,
+                fontSize: AppResponsive.fontSize(context, 13),
+                fontWeight: FontWeight.w900,
               ),
 
-              SizedBox(height: 3.h),
+              SizedBox(height: AppResponsive.heightValue(context, 5)),
 
               CustomText(
-                count == 0
-                    ? 'لا توجد قوائم متاحة'
-                    : '$count سلسلة متاحة',
-
-                fontSize: 9.5.sp,
-
-                color: scheme.onSurface
-                    .withValues(
-                  alpha: .50,
-                ),
+                count == 0 ? 'لا توجد قوائم متاحة' : '$count سلسلة متاحة',
+                fontSize: AppResponsive.fontSize(context, 9),
+                color: scheme.onSurface.withValues(alpha: .50),
               ),
             ],
           ),
@@ -236,88 +192,64 @@ class _SheikhDetailsScreenState
   }
 
   // Empty State
-  Widget _buildEmptyState(
-      ColorScheme scheme,
-      ) {
+  Widget _buildEmptyState(ColorScheme scheme) {
     return Container(
-      margin:
-      EdgeInsets.only(top: 12.h),
+      margin: EdgeInsets.only(top: AppResponsive.heightValue(context, 12)),
 
-      padding:
-      EdgeInsets.symmetric(
-        horizontal: 20.w,
-        vertical: 34.h,
+      padding: EdgeInsets.symmetric(
+        horizontal: AppResponsive.widthValue(context, 20),
+        vertical: AppResponsive.heightValue(context, 34),
       ),
 
       decoration: BoxDecoration(
-        borderRadius:
-        BorderRadius.circular(20.r),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 20)),
 
-        color: scheme.primary
-            .withValues(
-          alpha: .035,
-        ),
+        color: scheme.primary.withValues(alpha: .035),
 
-        border: Border.all(
-          color: scheme.primary
-              .withValues(
-            alpha: .07,
-          ),
-        ),
+        border: Border.all(color: scheme.primary.withValues(alpha: .07)),
       ),
 
       child: Column(
         children: [
           Container(
-            width: 58.w,
-            height: 58.w,
+            width: AppResponsive.widthValue(context, 58),
+            height: AppResponsive.widthValue(context, 58),
 
             decoration: BoxDecoration(
               shape: BoxShape.circle,
 
-              color: scheme.primary
-                  .withValues(
-                alpha: .08,
-              ),
+              color: scheme.primary.withValues(alpha: .08),
             ),
 
             child: Icon(
-              Icons
-                  .playlist_play_rounded,
-              color:
-              AppColors.kPrimary,
-              size: 29.sp,
+              Icons.playlist_play_rounded,
+              color: AppColors.kPrimary,
+              size: AppResponsive.fontSize(context, 29),
             ),
           ),
 
-          Gap(12.h),
+          Gap(AppResponsive.heightValue(context, 12)),
 
           CustomText(
             'لا توجد قوائم متاحة حاليًا',
 
-            textAlign:
-            TextAlign.center,
+            textAlign: TextAlign.center,
 
-            fontSize: 13.sp,
+            fontSize: AppResponsive.fontSize(context, 13),
 
-            fontWeight:
-            FontWeight.w800,
+            fontWeight: FontWeight.w800,
           ),
 
-          Gap(5.h),
+          Gap(AppResponsive.heightValue(context, 5)),
 
           CustomText(
             'لم يتم العثور على سلاسل أو قوائم محاضرات لهذا الشيخ.',
 
-            textAlign:
-            TextAlign.center,
+            textAlign: TextAlign.center,
 
-            fontSize: 10.sp,
+            fontSize: AppResponsive.fontSize(context, 10),
 
-            color: scheme.onSurface
-                .withValues(
-              alpha: .50,
-            ),
+            color: scheme.onSurface.withValues(alpha: .50),
 
             height: 1.5,
           ),
@@ -330,27 +262,22 @@ class _SheikhDetailsScreenState
   Widget _buildLoadingState() {
     return Center(
       child: Column(
-        mainAxisSize:
-        MainAxisSize.min,
+        mainAxisSize: MainAxisSize.min,
 
         children: [
           CupertinoActivityIndicator(
-            color:
-            AppColors.kPrimary,
-            radius: 13.r,
+            color: AppColors.kPrimary,
+            radius: AppResponsive.radius(context, 13),
           ),
 
-          Gap(12.h),
+          Gap(AppResponsive.heightValue(context, 12)),
 
           CustomText(
             'جاري تحميل السلاسل...',
-            fontSize: 11.sp,
-            color: Theme.of(context)
-                .colorScheme
-                .onSurface
-                .withValues(
-              alpha: .50,
-            ),
+            fontSize: AppResponsive.fontSize(context, 11),
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurface.withValues(alpha: .50),
           ),
         ],
       ),
@@ -358,89 +285,71 @@ class _SheikhDetailsScreenState
   }
 
   // Error State
-  Widget _buildErrorState(
-      BuildContext context,
-      ColorScheme scheme,
-      ) {
+  Widget _buildErrorState(BuildContext context, ColorScheme scheme) {
     return ListView(
-      physics:
-      const AlwaysScrollableScrollPhysics(),
+      physics: const AlwaysScrollableScrollPhysics(),
 
-      padding:
-      EdgeInsets.symmetric(
-        horizontal: 24.w,
+      padding: EdgeInsets.symmetric(
+        horizontal: AppResponsive.widthValue(context, 24),
       ),
 
       children: [
-        SizedBox(height: 120.h),
+        SizedBox(height: AppResponsive.heightValue(context, 120)),
 
         Container(
-          width: 70.w,
-          height: 70.w,
+          width: AppResponsive.widthValue(context, 70),
+          height: AppResponsive.widthValue(context, 70),
 
-          margin:
-          EdgeInsets.symmetric(
-            horizontal: 100.w,
+          margin: EdgeInsets.symmetric(
+            horizontal: AppResponsive.widthValue(context, 100),
           ),
 
           decoration: BoxDecoration(
             shape: BoxShape.circle,
 
-            color: scheme.primary
-                .withValues(
-              alpha: .08,
-            ),
+            color: scheme.primary.withValues(alpha: .08),
           ),
 
           child: Icon(
-            Icons
-                .cloud_off_rounded,
-            color:
-            AppColors.kPrimary,
-            size: 32.sp,
+            Icons.cloud_off_rounded,
+            color: AppColors.kPrimary,
+            size: AppResponsive.fontSize(context, 32),
           ),
         ),
 
-        Gap(18.h),
+        Gap(AppResponsive.heightValue(context, 18)),
 
         CustomText(
           'تعذر تحميل قوائم المحاضرات',
 
-          textAlign:
-          TextAlign.center,
+          textAlign: TextAlign.center,
 
-          fontSize: 14.sp,
+          fontSize: AppResponsive.fontSize(context, 14),
 
-          fontWeight:
-          FontWeight.w800,
+          fontWeight: FontWeight.w800,
         ),
 
-        Gap(7.h),
+        Gap(AppResponsive.heightValue(context, 7)),
 
         CustomText(
           'حدثت مشكلة أثناء جلب محتوى الشيخ. حاول مرة أخرى.',
 
-          textAlign:
-          TextAlign.center,
+          textAlign: TextAlign.center,
 
-          fontSize: 10.5.sp,
+          fontSize: AppResponsive.fontSize(context, 10.5),
 
-          color: scheme.onSurface
-              .withValues(
-            alpha: .50,
-          ),
+          color: scheme.onSurface.withValues(alpha: .50),
 
           height: 1.5,
         ),
 
-        Gap(20.h),
+        Gap(AppResponsive.heightValue(context, 20)),
 
         Center(
           child: OutlinedButton.icon(
             onPressed: () {
               setState(() {
-                _future = widget.repository
-                    .getSheikhPlaylists(
+                _future = widget.repository.getSheikhPlaylists(
                   widget.sheikh.channelId,
                 );
               });
@@ -448,41 +357,31 @@ class _SheikhDetailsScreenState
 
             icon: Icon(
               Icons.refresh_rounded,
-              size: 17.sp,
+              size: AppResponsive.fontSize(context, 17),
             ),
 
             label: CustomText(
               'إعادة المحاولة',
-              fontSize: 11.sp,
-              fontWeight:
-              FontWeight.w700,
+              fontSize: AppResponsive.fontSize(context, 11),
+              fontWeight: FontWeight.w700,
             ),
 
-            style:
-            OutlinedButton.styleFrom(
-              foregroundColor:
-              AppColors.kPrimary,
+            style: OutlinedButton.styleFrom(
+              foregroundColor: AppColors.kPrimary,
 
               side: BorderSide(
-                color:
-                AppColors.kPrimary
-                    .withValues(
-                  alpha: .30,
+                color: AppColors.kPrimary.withValues(alpha: .30),
+              ),
+
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(
+                  AppResponsive.radius(context, 20),
                 ),
               ),
 
-              shape:
-              RoundedRectangleBorder(
-                borderRadius:
-                BorderRadius.circular(
-                  20.r,
-                ),
-              ),
-
-              padding:
-              EdgeInsets.symmetric(
-                horizontal: 18.w,
-                vertical: 10.h,
+              padding: EdgeInsets.symmetric(
+                horizontal: AppResponsive.widthValue(context, 18),
+                vertical: AppResponsive.heightValue(context, 10),
               ),
             ),
           ),

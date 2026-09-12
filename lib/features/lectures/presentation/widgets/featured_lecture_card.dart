@@ -1,7 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
+import 'package:hisn_almuslim/core/responsive/app_responsive.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 import 'package:hisn_almuslim/core/theme/app_colors.dart';
 
@@ -10,11 +11,13 @@ import '../../domain/entities/lecture.dart';
 class FeaturedLectureCard extends StatelessWidget {
   final Lecture lecture;
   final VoidCallback onTap;
+  final double? width;
 
   const FeaturedLectureCard({
     super.key,
     required this.lecture,
     required this.onTap,
+    this.width,
   });
 
   String _duration() {
@@ -33,22 +36,26 @@ class FeaturedLectureCard extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(20.r),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 20)),
         child: Ink(
-          width: 252.w,
+          width: width ?? AppResponsive.widthValue(context, 252),
           decoration: BoxDecoration(
             color: scheme.surface,
-            borderRadius: BorderRadius.circular(20.r),
+            borderRadius: BorderRadius.circular(
+              AppResponsive.radius(context, 20),
+            ),
             border: Border.all(
               color: AppColors.kPrimary.withValues(alpha: .10),
             ),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(
-                  alpha: Theme.of(context).brightness == Brightness.dark ? .04 : .025,
+                  alpha: Theme.of(context).brightness == Brightness.dark
+                      ? .04
+                      : .025,
                 ),
-                blurRadius: 12.r,
-                offset: Offset(0, 4.h),
+                blurRadius: AppResponsive.radius(context, 12),
+                offset: Offset(0, AppResponsive.heightValue(context, 4)),
               ),
             ],
           ),
@@ -57,77 +64,92 @@ class FeaturedLectureCard extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(20.r),
+                  top: Radius.circular(AppResponsive.radius(context, 20)),
                 ),
-                child: SizedBox(
-                  height: 124.h,
-                  width: double.infinity,
+                child: AspectRatio(
+                  aspectRatio: 16 / 8.7,
                   child: CachedNetworkImage(
                     imageUrl: lecture.thumbnailUrl,
                     fit: BoxFit.cover,
                     placeholder: (_, __) => ColoredBox(
                       color: AppColors.kPrimary.withValues(alpha: .06),
-                      child: const Center(
-                        child: CupertinoActivityIndicator(),
-                      ),
+                      child: const Center(child: CupertinoActivityIndicator()),
                     ),
                     errorWidget: (_, __, ___) => ColoredBox(
                       color: AppColors.kPrimary.withValues(alpha: .07),
                       child: Icon(
                         Icons.ondemand_video_rounded,
                         color: AppColors.kPrimary,
-                        size: 32.sp,
+                        size: AppResponsive.fontSize(context, 32),
                       ),
                     ),
                   ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(12.w, 11.h, 12.w, 12.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CustomText(
-                      lecture.title,
-                      maxLines: 2,
-                      fontSize: 12.5.sp,
-                      fontWeight: FontWeight.w800,
-                      height: 1.35,
-                    ),
-                    SizedBox(height: 8.h),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.play_circle_outline_rounded,
-                          size: 14.sp,
-                          color: AppColors.kPrimary,
+
+
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(
+                    AppResponsive.widthValue(context, 12),
+                    AppResponsive.heightValue(context, 14),
+                    AppResponsive.widthValue(context, 12),
+                    AppResponsive.heightValue(context, 14),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        child: CustomText(
+                          lecture.title,
+                          maxLines: 4,
+                          fontSize: AppResponsive.fontSize(context, 9.5),
+                          fontWeight: FontWeight.w800,
+                          fontFamily: "Noon",
+                          height: 1.35,
                         ),
-                        SizedBox(width: 5.w),
-                        Expanded(
-                          child: CustomText(
-                            lecture.channelName,
-                            maxLines: 1,
-                            fontSize: 9.5.sp,
-                            color: scheme.onSurface.withValues(alpha: .55),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.play_circle_outline_rounded,
+                                size: AppResponsive.fontSize(context, 13),
+                                color: AppColors.kPrimary,
+                              ),
+                              SizedBox(width: AppResponsive.widthValue(context, 5)),
+                              Expanded(
+                                child: CustomText(
+                                  lecture.channelName,
+                                  fontFamily: "Noon",
+                                  maxLines: 1,
+                                  fontSize: AppResponsive.fontSize(context, 9.5),
+                                  color: scheme.onSurface.withValues(alpha: .55),
+                                ),
+                              ),
+                              if (_duration().isNotEmpty)
+                                CustomText(
+                                  _duration(),
+                                  fontSize: AppResponsive.fontSize(context, 9),
+                                  fontWeight: FontWeight.w700,
+                                  color: AppColors.kPrimary,
+                                ),
+                            ],
                           ),
-                        ),
-                        if (_duration().isNotEmpty)
+                          SizedBox(height: AppResponsive.heightValue(context, 8)),
                           CustomText(
-                            _duration(),
-                            fontSize: 9.sp,
+                            'YouTube',
+                            fontSize: AppResponsive.fontSize(context, 9),
                             fontWeight: FontWeight.w700,
-                            color: AppColors.kPrimary,
+                            color: scheme.onSurface.withValues(alpha: .42),
                           ),
-                      ],
-                    ),
-                    SizedBox(height: 8.h),
-                    CustomText(
-                      'YouTube',
-                      fontSize: 9.sp,
-                      fontWeight: FontWeight.w700,
-                      color: scheme.onSurface.withValues(alpha: .42),
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

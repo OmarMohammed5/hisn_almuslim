@@ -20,7 +20,7 @@ class CustomText extends StatelessWidget {
     this.maxLines = 1,
     this.textAlign,
     this.height = 1,
-    this.fontFamily = "QuranFont",
+    this.fontFamily = "Noon",
   });
 
   @override
@@ -35,7 +35,7 @@ class CustomText extends StatelessWidget {
         height: height,
         fontSize: fontSize.sp ?? 19.sp,
         fontWeight: fontWeight,
-        fontFamily: fontFamily ?? "QuranFont",
+        fontFamily: fontFamily ?? "Noon",
         color: color ?? Theme.of(context).textTheme.bodyMedium?.color,
       ),
     );

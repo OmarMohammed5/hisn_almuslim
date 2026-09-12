@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:hisn_almuslim/core/responsive/app_responsive.dart';
 import 'package:hisn_almuslim/features/asma%20allah/data/cubit/asma_allah_cubit.dart';
 import 'package:hisn_almuslim/features/asma%20allah/widgets/asma_card.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
@@ -101,7 +102,7 @@ class _AsmaAllahScreenState extends State<AsmaAllahScreen> {
                 // PROGRESS
                 _buildProgress(isDark: isDark, total: names.length),
 
-                SizedBox(height: 18.h),
+                SizedBox(height: AppResponsive.heightValue(context, 18)),
 
                 Expanded(
                   child: PageView.builder(
@@ -135,7 +136,7 @@ class _AsmaAllahScreenState extends State<AsmaAllahScreen> {
 
                           final opacity = 1.0 - (difference * .22);
 
-                          final offsetY = difference * 10.h;
+                          final offsetY = difference * AppResponsive.heightValue(context, 10);
 
                           return Opacity(
                             opacity: opacity,
@@ -185,9 +186,13 @@ class _AsmaAllahScreenState extends State<AsmaAllahScreen> {
         ? Colors.white.withValues(alpha: 0.07)
         : AppColors.kBorderLight;
 
-
     return Padding(
-      padding: EdgeInsets.fromLTRB(12.w, 8.h, 12.w, 12.h),
+      padding: EdgeInsets.fromLTRB(
+        AppResponsive.widthValue(context, 12),
+        AppResponsive.heightValue(context, 8),
+        AppResponsive.widthValue(context, 12),
+        AppResponsive.heightValue(context, 12),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -202,22 +207,28 @@ class _AsmaAllahScreenState extends State<AsmaAllahScreen> {
           CustomText(
             'أسماء الله الحسنى',
             color: textColor,
-            fontSize: 15.sp,
+            fontSize: AppResponsive.fontSize(context, 14),
             fontWeight: FontWeight.w800,
           ),
           // COUNTER
           Container(
-            width: 65.w,
-            height: 30.h,
+            width: AppResponsive.widthValue(context, 65),
+            height: AppResponsive.heightValue(context, 30),
             decoration: BoxDecoration(
               color: bgColor,
-              border: Border.all(color: borderColor, width: 1),              borderRadius: BorderRadius.circular(13.r),
+              border: Border.all(
+                color: borderColor,
+                width: AppResponsive.widthValue(context, 1),
+              ),
+              borderRadius: BorderRadius.circular(
+                AppResponsive.radius(context, 13),
+              ),
             ),
             child: Center(
               child: Text(
                 '${_arabicNumber(currentIndex + 1)} / ${_arabicNumber(total)}',
                 style: TextStyle(
-                  fontSize: 11.sp,
+                  fontSize: AppResponsive.fontSize(context, 11),
                   fontWeight: FontWeight.w800,
                   color: accent,
                 ),
@@ -236,16 +247,18 @@ class _AsmaAllahScreenState extends State<AsmaAllahScreen> {
     final progress = total == 0 ? 0.0 : (currentIndex + 1) / total;
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 22.w),
+      padding: EdgeInsets.symmetric(
+        horizontal: AppResponsive.widthValue(context, 22),
+      ),
       child: TweenAnimationBuilder<double>(
         tween: Tween(begin: 0, end: progress),
         duration: const Duration(milliseconds: 260),
         curve: Curves.easeOutCubic,
         builder: (context, value, child) {
           return ClipRRect(
-            borderRadius: BorderRadius.circular(20.r),
+            borderRadius: BorderRadius.circular(AppResponsive.radius(context, 20)),
             child: SizedBox(
-              height: 3.h,
+              height: AppResponsive.heightValue(context, 3),
               child: Stack(
                 children: [
                   Container(
@@ -258,7 +271,9 @@ class _AsmaAllahScreenState extends State<AsmaAllahScreen> {
                     child: Container(
                       decoration: BoxDecoration(
                         color: accent,
-                        borderRadius: BorderRadius.circular(20.r),
+                        borderRadius: BorderRadius.circular(
+                          AppResponsive.radius(context, 20),
+                        ),
                       ),
                     ),
                   ),
@@ -285,22 +300,24 @@ class _AsmaAllahScreenState extends State<AsmaAllahScreen> {
       child: InkWell(
         onTap: onTap,
 
-        borderRadius: BorderRadius.circular(14.r),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 14)),
 
         child: Container(
-          width: 37.w,
-          height: 37.w,
+          width: AppResponsive.widthValue(context, 37),
+          height: AppResponsive.heightValue(context, 37),
 
           decoration: BoxDecoration(
             color: isDark ? Colors.white.withValues(alpha: .045) : Colors.white,
-            borderRadius: BorderRadius.circular(14.r),
+            borderRadius: BorderRadius.circular(
+              AppResponsive.radius(context, 14),
+            ),
 
             border: Border.all(color: accent.withValues(alpha: .10)),
           ),
 
           child: Icon(
             icon,
-            size: 16.sp,
+            size: AppResponsive.iconSize(context, 16),
             color: isDark ? Colors.white70 : Colors.black54,
           ),
         ),

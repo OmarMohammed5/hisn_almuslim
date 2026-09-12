@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:hisn_almuslim/core/responsive/app_responsive.dart';
 import 'package:hisn_almuslim/features/quran_audio/logic/quran_audio_state.dart';
 import 'package:hisn_almuslim/features/quran_audio/ui/widgets/reciter_selector_button.dart';
 import '../../../../core/shared/custom_text.dart';
@@ -26,7 +27,6 @@ class QuranAudioHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     final double statusBarHeight = MediaQuery.paddingOf(context).top;
@@ -37,15 +37,18 @@ class QuranAudioHeader extends StatelessWidget {
 
     final primary = AppColors.kPrimary;
 
-
-
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.fromLTRB(16.w, statusBarHeight + 8.h, 16.w, 16.h),
+      padding: EdgeInsets.fromLTRB(
+        AppResponsive.widthValue(context, 16),
+        statusBarHeight + AppResponsive.heightValue(context, 8),
+        AppResponsive.widthValue(context, 16),
+        AppResponsive.heightValue(context, 16),
+      ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(45.r),
-          bottomRight: Radius.circular(45.r),
+          bottomLeft: Radius.circular(AppResponsive.radius(context, 45)),
+          bottomRight: Radius.circular(AppResponsive.radius(context, 45)),
         ),
         color: background,
         boxShadow: [
@@ -63,14 +66,15 @@ class QuranAudioHeader extends StatelessWidget {
           Align(
             alignment: Alignment.topRight,
             child: _headerIconButton(
+              context: context,
               icon: Icons.arrow_back_ios_rounded,
               isDark: isDark,
               onTap: () => Navigator.pop(context),
             ),
           ),
-          Gap(12.h),
+          Gap(AppResponsive.heightValue(context, 12)),
           _buildReciterSection(context, state),
-          Gap(18.h),
+          Gap(AppResponsive.heightValue(context, 18)),
           SearchField(
             onChanged: onSearch,
             hint: 'ابحث في السور ...',
@@ -98,26 +102,28 @@ Widget _buildReciterSection(BuildContext context, QuranAudioState state) {
     );
   } else if (state is QuranAudioLoading) {
     return _glassContainer(
+      context: context,
       child: Row(
-        spacing: 12.w,
+        spacing: AppResponsive.widthValue(context, 12),
         children: [
           SizedBox(
-            height: 18.h,
-            width: 18.w,
+            height: AppResponsive.heightValue(context, 18),
+            width: AppResponsive.widthValue(context, 18),
             child: const CupertinoActivityIndicator(color: Colors.white),
           ),
           CustomText(
             'جاري تحميل القراء...',
             color: Colors.white,
-            fontSize: 11.sp,
+            fontSize: AppResponsive.fontSize(context, 11),
           ),
         ],
       ),
     );
   } else if (state is QuranAudioError) {
     return _glassContainer(
+      context: context,
       child: Row(
-        spacing: 12.w,
+        spacing: AppResponsive.widthValue(context, 12),
         children: [
           const Icon(Icons.error_outline_rounded, color: Colors.white),
           Expanded(child: CustomText(state.message, color: Colors.white)),
@@ -128,19 +134,22 @@ Widget _buildReciterSection(BuildContext context, QuranAudioState state) {
   return const SizedBox.shrink();
 }
 
-Widget _glassContainer({required Widget child}) {
+Widget _glassContainer({required BuildContext context, required Widget child}) {
   return Container(
     width: double.infinity,
-    padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 16.w),
+    padding: EdgeInsets.symmetric(
+      vertical: AppResponsive.heightValue(context, 14),
+      horizontal: AppResponsive.widthValue(context, 16),
+    ),
     decoration: BoxDecoration(
       color: Colors.white.withValues(alpha: 0.14),
-      borderRadius: BorderRadius.circular(18.r),
+      borderRadius: BorderRadius.circular(AppResponsive.radius(context, 18)),
       border: Border.all(color: Colors.white.withValues(alpha: 0.28)),
       boxShadow: [
         BoxShadow(
           color: Colors.black.withValues(alpha: 0.08),
-          blurRadius: 12,
-          offset: const Offset(0, 4),
+          blurRadius: 2,
+          offset: const Offset(0, 2),
         ),
       ],
     ),
@@ -152,18 +161,19 @@ Widget _buildTopBar(BuildContext context, bool isDark) {
   return Row(
     children: [
       _headerIconButton(
+        context: context,
         icon: Icons.arrow_back_ios_rounded,
         isDark: isDark,
         onTap: () => Navigator.pop(context),
       ),
-      Gap(12.w),
+      Gap(AppResponsive.widthValue(context, 12)),
       Icon(FlutterIslamicIcons.solidQuran2, color: Colors.white, size: 20.sp),
-      Gap(8.w),
+      Gap(AppResponsive.widthValue(context, 8)),
       Expanded(
         child: CustomText(
           'المصحف (صوتيات)',
           color: Colors.white,
-          fontSize: 15.sp,
+          fontSize: AppResponsive.fontSize(context, 14),
           fontWeight: FontWeight.bold,
           maxLines: 1,
         ),
@@ -173,6 +183,7 @@ Widget _buildTopBar(BuildContext context, bool isDark) {
 }
 
 Widget _headerIconButton({
+  required BuildContext context,
   required IconData icon,
   required bool isDark,
   required VoidCallback onTap,
@@ -186,9 +197,9 @@ Widget _headerIconButton({
       customBorder: const CircleBorder(),
       onTap: onTap,
       child: SizedBox(
-        width: 28.w,
-        height: 28.h,
-        child: Icon(icon, color: Colors.white, size: 16.sp),
+        width: AppResponsive.widthValue(context, 30),
+        height: AppResponsive.heightValue(context, 30),
+        child: Icon(icon, color: Colors.white, size: AppResponsive.iconSize(context, 17),),
       ),
     ),
   );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hisn_almuslim/core/responsive/app_responsive.dart';
 import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/core/shared/custom_snack_bar.dart';
 import 'package:hisn_almuslim/features/hadith/widgets/hadith_number.dart';
@@ -59,10 +60,10 @@ class Content extends StatelessWidget {
         // Title
         HadithTitle(title: title),
 
-        Gap(8.h),
+        Gap(AppResponsive.heightValue(context, 8)),
 
         Container(
-          padding: EdgeInsets.all(20.w),
+          padding: EdgeInsets.all(AppResponsive.widthValue(context, 20)),
           decoration: BoxDecoration(
             color: bgColor,
             border: Border.all(color: borderColor, width: 1),
@@ -92,7 +93,7 @@ class Content extends StatelessWidget {
                     onTap: () => _copyContent(context),
                     isDark: isDark,
                   ),
-                  Gap(16.w),
+                  Gap(AppResponsive.widthValue(context, 16)),
                   _buildActionButton(
                     context: context,
                     icon: Icons.share_rounded,
@@ -102,23 +103,23 @@ class Content extends StatelessWidget {
                   ),
                 ],
               ),
-              Gap(16.h),
+              Gap(AppResponsive.heightValue(context, 16)),
 
               Container(
-                height: 1.h,
+                height: 1,
                 color: isDark
                     ? Colors.grey.shade800
                     : Colors.grey.shade200,
               ),
 
-              Gap(16.h),
+              Gap(AppResponsive.heightValue(context, 16)),
 
               Text(
                 content.trim(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: fontSize.sp,
-                  height: 2.2.h,
+                  fontSize: fontSize,
+                  height: 2.2,
                   fontWeight: FontWeight.w500,
                   letterSpacing: 0.5,
                   fontFamily: "Uthmani",
@@ -126,7 +127,7 @@ class Content extends StatelessWidget {
                 ),
               ),
 
-              Gap(20.h),
+              Gap(AppResponsive.heightValue(context, 20)),
 
 
 
@@ -147,12 +148,12 @@ class Content extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+        padding: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 16), vertical: AppResponsive.heightValue(context, 8)),
         decoration: BoxDecoration(
           color: isDark
               ? Colors.white.withValues(alpha: 0.05)
               : Colors.grey.withValues(alpha: 0.06),
-          borderRadius: BorderRadius.circular(8.r),
+          borderRadius: BorderRadius.circular(AppResponsive.radius(context, 8)),
           border: Border.all(
             color: isDark
                 ? Colors.white.withValues(alpha: 0.05)
@@ -165,14 +166,14 @@ class Content extends StatelessWidget {
           children: [
             Icon(
               icon,
-              size: 16.sp,
+              size: AppResponsive.iconSize(context, 16),
               color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
             ),
-            Gap(6.w),
+            Gap(AppResponsive.widthValue(context, 6)),
             Text(
               label,
               style: TextStyle(
-                fontSize: 13.sp,
+                fontSize: AppResponsive.fontSize(context, 13),
                 fontWeight: FontWeight.bold,
                 color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
                 fontFamily: "QuranFont",

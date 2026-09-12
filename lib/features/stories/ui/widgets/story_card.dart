@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../core/responsive/app_responsive.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../domain/entities/prophet_story.dart';
 
@@ -34,13 +35,6 @@ class StoryCard extends StatelessWidget {
         ? Colors.white.withValues(alpha: 0.45)
         : Colors.black.withValues(alpha: 0.48);
 
-    final surfaceColor = isDark
-        ? const Color(0xFF171C1D)
-        : Colors.white;
-    //
-    // final borderColor = isDark
-    //     ? Colors.white.withValues(alpha: 0.07)
-    //     : Colors.black.withValues(alpha: 0.06);
 
     final indexColor = isDark
         ? Colors.white.withValues(alpha: 0.30)
@@ -60,25 +54,25 @@ class StoryCard extends StatelessWidget {
         : AppColors.kBorderLight;
 
     return Padding(
-      padding: EdgeInsets.only(bottom: 12.h),
+      padding: EdgeInsets.only(bottom:AppResponsive.heightValue(context, 12)),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(20.r),
+          borderRadius: BorderRadius.circular(AppResponsive.radius(context, 20)),
           splashColor: accentColor.withValues(alpha: 0.06),
           highlightColor: accentColor.withValues(alpha: 0.03),
           child: Ink(
             padding: EdgeInsets.fromLTRB(
-              18.w,
-              16.h,
-              18.w,
-              14.h,
+              AppResponsive.widthValue(context, 18),
+              AppResponsive.heightValue(context, 16),
+              AppResponsive.widthValue(context, 18),
+              AppResponsive.heightValue(context, 14),
             ),
             decoration: BoxDecoration(
               color: bgColor,
-              border: Border.all(color: borderColor, width: 1),
-              borderRadius: BorderRadius.circular(20.r),
+              border: Border.all(color: borderColor, width: AppResponsive.widthValue(context, 1)),
+              borderRadius: BorderRadius.circular(AppResponsive.radius(context, 20)),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,7 +85,7 @@ class StoryCard extends StatelessWidget {
                     Text(
                       '${(index + 1).toString().padLeft(2, '0')}',
                       style: TextStyle(
-                        fontSize: 12.sp,
+                        fontSize: AppResponsive.fontSize(context, 12),
                         fontWeight: FontWeight.w700,
                         color: indexColor,
                         fontFamily: 'Cairo',
@@ -99,7 +93,7 @@ class StoryCard extends StatelessWidget {
                       ),
                     ),
 
-                    SizedBox(width: 12.w),
+                    SizedBox(width: AppResponsive.widthValue(context, 12)),
 
                     // PROPHET NAME
                     Expanded(
@@ -107,22 +101,22 @@ class StoryCard extends StatelessWidget {
                         story.prophet,
                         textAlign: TextAlign.right,
                         style: TextStyle(
-                          fontSize: 16.sp,
+                          fontSize: AppResponsive.fontSize(context, 16),
                           fontWeight: FontWeight.w800,
                           color: titleColor,
                           fontFamily: 'Noon',
-                          height: 1.35,
+                          height: AppResponsive.heightValue(context, 1.35),
                         ),
                       ),
                     ),
                   ],
                 ),
 
-                SizedBox(height: 10.h),
+                SizedBox(height: AppResponsive.heightValue(context, 10)),
                 // STORY PREVIEW
                 Padding(
                   padding: EdgeInsets.only(
-                    left: 26.w,
+                    left: AppResponsive.widthValue(context, 26),
                   ),
                   child: Text(
                     previewText,
@@ -130,24 +124,24 @@ class StoryCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.right,
                     style: TextStyle(
-                      fontSize: 12.5.sp,
+                      fontSize: AppResponsive.fontSize(context, 12.5),
                       fontWeight: FontWeight.w400,
                       color: previewColor,
                       fontFamily: 'Noon',
-                      height: 1.65,
+                      height: AppResponsive.heightValue(context, 1.65),
                     ),
                   ),
                 ),
 
-                SizedBox(height: 14.h),
+                SizedBox(height: AppResponsive.heightValue(context, 14)),
 
                 // DIVIDER
                 Container(
-                  height: 1,
+                  height: AppResponsive.heightValue(context, 1),
                   color: borderColor,
                 ),
 
-                SizedBox(height: 10.h),
+                SizedBox(height: AppResponsive.heightValue(context, 10)),
 
                 // READ ACTION
                 Row(
@@ -156,18 +150,18 @@ class StoryCard extends StatelessWidget {
                     Text(
                       'اقرأ القصة',
                       style: TextStyle(
-                        fontSize: 11.sp,
+                        fontSize: AppResponsive.fontSize(context, 11),
                         fontWeight: FontWeight.w700,
                         color: accentColor,
                         fontFamily: 'Noon',
                       ),
                     ),
 
-                    SizedBox(width: 5.w),
+                    SizedBox(width: AppResponsive.widthValue(context, 5)),
 
                     Icon(
                       Icons.arrow_forward_ios_sharp,
-                      size: 11.sp,
+                      size: AppResponsive.iconSize(context, 12),
                       color: accentColor,
                     ),
                   ],

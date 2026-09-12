@@ -11,6 +11,7 @@ import '../../../../core/shared/interactive_zekr_card.dart';
 import '../../../../core/shared/zekr_actions_widget.dart';
 import '../../../../core/shared/zekr_info_dialog.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/responsive/app_responsive.dart';
 
 class MorningAzkarScreen extends StatefulWidget {
   const MorningAzkarScreen({super.key, this.initialIndex});
@@ -52,7 +53,7 @@ class _MorningAzkarScreenState extends State<MorningAzkarScreen> {
 
   // Control of font size
 
-  final ValueNotifier<double> _fontSizeNotifire = ValueNotifier(16.sp);
+  final ValueNotifier<double> _fontSizeNotifire = ValueNotifier(16);
 
   // Immersive Reading Mode
   bool _isUiVisible = true;
@@ -85,7 +86,7 @@ class _MorningAzkarScreenState extends State<MorningAzkarScreen> {
         body: Center(
           child: CupertinoActivityIndicator(
             color: AppColors.kIconColor,
-            radius: 16.r,
+            radius: AppResponsive.radius(context, 16),
           ),
         ),
       );
@@ -101,21 +102,23 @@ class _MorningAzkarScreenState extends State<MorningAzkarScreen> {
               fontSizeNotifire: _fontSizeNotifire,
             ),
             child: Container(
-              padding: EdgeInsets.all(8.w),
+              padding: EdgeInsets.all(AppResponsive.widthValue(context, 8)),
               decoration: BoxDecoration(
                 color: isDark
                     ? const Color(0xFF1A2723)
                     : const Color(0xFFEAF2F0),
-                borderRadius: BorderRadius.circular(12.r),
+                borderRadius: BorderRadius.circular(
+                  AppResponsive.radius(context, 12),
+                ),
               ),
               child: Icon(
                 Icons.text_fields,
                 color: accentColor,
-                size: 20.sp,
+                size: AppResponsive.iconSize(context, 20),
               ),
             ),
           ),
-          Gap(10.w),
+          Gap(AppResponsive.widthValue(context, 10)),
           GestureDetector(
             onTap: () {
               final currentZekr =
@@ -131,21 +134,23 @@ class _MorningAzkarScreenState extends State<MorningAzkarScreen> {
               );
             },
             child: Container(
-              padding: EdgeInsets.all(8.w),
+              padding: EdgeInsets.all(AppResponsive.widthValue(context, 8)),
               decoration: BoxDecoration(
                 color: isDark
                     ? const Color(0xFF1A2723)
                     : const Color(0xFFEAF2F0),
-                borderRadius: BorderRadius.circular(12.r),
+                borderRadius: BorderRadius.circular(
+                  AppResponsive.radius(context, 12),
+                ),
               ),
               child: Icon(
                 Icons.info_outline_rounded,
                 color: accentColor,
-                size: 22.sp,
+                size: AppResponsive.iconSize(context, 22),
               ),
             ),
           ),
-          Gap(16.w),
+          Gap(AppResponsive.widthValue(context, 16)),
         ],
       ),
       body: Stack(
@@ -178,7 +183,12 @@ class _MorningAzkarScreenState extends State<MorningAzkarScreen> {
                           final total = morningAzkar['content'].length;
                           return ListView(
                             physics: BouncingScrollPhysics(),
-                            padding: EdgeInsets.fromLTRB(2.w, 20.h, 2.w, 110.h),
+                            padding: EdgeInsets.fromLTRB(
+                              AppResponsive.widthValue(context, 2),
+                              20,
+                              AppResponsive.widthValue(context, 2),
+                              110,
+                            ),
                             children: [
                               InteractiveZekrCard(
                                 key: ValueKey(index),
@@ -210,8 +220,8 @@ class _MorningAzkarScreenState extends State<MorningAzkarScreen> {
             ],
           ),
           Positioned(
-            left: 16.w,
-            bottom: 16.h,
+            left: AppResponsive.widthValue(context, 16),
+            bottom: AppResponsive.heightValue(context, 16),
             child: ZekrActionsWidget(
               zekrText:
                   morningAzkar['content'][_currentIndex]['text']?.toString() ??

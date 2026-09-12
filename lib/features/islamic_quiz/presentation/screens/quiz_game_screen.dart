@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hisn_almuslim/core/responsive/app_responsive.dart';
 import 'package:hisn_almuslim/core/theme/app_colors.dart';
 
 import '../../../../core/di/dependency_injection.dart';
@@ -31,8 +31,9 @@ class QuizGameScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => sl<QuizGameCubit>()
-        ..startGame(topicSlug: args.topicSlug, level: args.level),
+      create: (_) =>
+          sl<QuizGameCubit>()
+            ..startGame(topicSlug: args.topicSlug, level: args.level),
       child: const _QuizGameView(),
     );
   }
@@ -68,71 +69,103 @@ class _QuizGameView extends StatelessWidget {
               final question = state.currentQuestion;
 
               if (question == null) {
-                return  Center(child: CupertinoActivityIndicator(color: AppColors.kPrimary,));
+                return Center(
+                  child: CupertinoActivityIndicator(color: AppColors.kPrimary),
+                );
               }
 
               final isAnswered = state.status == QuizGameStatus.answered;
 
-              return Padding(
-                padding: EdgeInsets.fromLTRB(18.w, 12.h, 18.w, 18.h),
-                child: Column(
-                  children: [
-                    QuizProgressHeader(
-                      currentQuestion: state.currentIndex + 1,
-                      totalQuestions: state.questions.length,
-                      progress: state.progress,
-                    ),
-                    SizedBox(height: 26.h),
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: AnimatedSwitcher(
-                          duration: QuizDurations.normal,
-                          transitionBuilder: (child, animation) => FadeTransition(
-                            opacity: animation,
-                            child: SlideTransition(
-                              position: Tween<Offset>(
-                                begin: const Offset(.06, 0),
-                                end: Offset.zero,
-                              ).animate(CurvedAnimation(parent: animation, curve: Curves.easeOut)),
-                              child: child,
-                            ),
-                          ),
-                          child: Column(
-                            key: ValueKey(state.currentIndex),
-                            children: [
-                              QuizQuestionCard(question: question.question),
-                              SizedBox(height: 24.h),
-                              ...List.generate(question.answers.length, (index) {
-                                final answer = question.answers[index];
-                                return Padding(
-                                  padding: EdgeInsets.only(bottom: 12.h),
-                                  child: QuizAnswerCard(
-                                    answer: answer,
-                                    index: index,
-                                    selectedIndex: state.selectedAnswerIndex,
-                                    isAnswered: isAnswered,
-                                    onTap: () {
-                                      context.read<QuizGameCubit>().selectAnswer(index);
-                                    },
+              return AppResponsive.constrain(
+                context,
+                maxWidth: 900,
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(
+                    AppResponsive.widthValue(context, 18),
+                    AppResponsive.heightValue(context, 12),
+                    AppResponsive.widthValue(context, 18),
+                    AppResponsive.heightValue(context, 18),
+                  ),
+                  child: Column(
+                    children: [
+                      QuizProgressHeader(
+                        currentQuestion: state.currentIndex + 1,
+                        totalQuestions: state.questions.length,
+                        progress: state.progress,
+                      ),
+                      SizedBox(height: AppResponsive.heightValue(context, 26)),
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: AnimatedSwitcher(
+                            duration: QuizDurations.normal,
+                            transitionBuilder: (child, animation) =>
+                                FadeTransition(
+                                  opacity: animation,
+                                  child: SlideTransition(
+                                    position:
+                                        Tween<Offset>(
+                                          begin: const Offset(.06, 0),
+                                          end: Offset.zero,
+                                        ).animate(
+                                          CurvedAnimation(
+                                            parent: animation,
+                                            curve: Curves.easeOut,
+                                          ),
+                                        ),
+                                    child: child,
                                   ),
-                                );
-                              }),
-                            ],
+                                ),
+                            child: Column(
+                              key: ValueKey(state.currentIndex),
+                              children: [
+                                QuizQuestionCard(question: question.question),
+                                SizedBox(
+                                  height: AppResponsive.heightValue(
+                                    context,
+                                    24,
+                                  ),
+                                ),
+                                ...List.generate(question.answers.length, (
+                                  index,
+                                ) {
+                                  final answer = question.answers[index];
+                                  return Padding(
+                                    padding: EdgeInsets.only(
+                                      bottom: AppResponsive.heightValue(
+                                        context,
+                                        12,
+                                      ),
+                                    ),
+                                    child: QuizAnswerCard(
+                                      answer: answer,
+                                      index: index,
+                                      selectedIndex: state.selectedAnswerIndex,
+                                      isAnswered: isAnswered,
+                                      onTap: () {
+                                        context
+                                            .read<QuizGameCubit>()
+                                            .selectAnswer(index);
+                                      },
+                                    ),
+                                  );
+                                }),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(height: 8.h),
-                    QuizNextButton(
-                      visible: isAnswered,
-                      label: state.currentIndex == state.questions.length - 1
-                          ? 'إنهاء المستوى'
-                          : 'السؤال التالي',
-                      onPressed: () {
-                        context.read<QuizGameCubit>().nextQuestion();
-                      },
-                    ),
-                  ],
+                      SizedBox(height: AppResponsive.heightValue(context, 8)),
+                      QuizNextButton(
+                        visible: isAnswered,
+                        label: state.currentIndex == state.questions.length - 1
+                            ? 'إنهاء المستوى'
+                            : 'السؤال التالي',
+                        onPressed: () {
+                          context.read<QuizGameCubit>().nextQuestion();
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               );
             },

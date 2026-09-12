@@ -35,26 +35,12 @@ class SurahTile extends StatelessWidget {
     final isPausedState = isCurrentSurah && isPaused && !isPlaying;
     final isCompletedState = isCurrentSurah && isCompleted;
 
-
-    Color getBorderColor() {
-      if (isActive) return AppColors.kPrimary.withValues(alpha: 0.6);
-      if (isPausedState) return Colors.orange.withValues(alpha: 0.4);
-      if (isCompletedState) return Colors.grey.withValues(alpha: 0.3);
-      return isDark ? const Color(0xff2d3338) : const Color(0xffE5E7EC);
-    }
-
-    double getBorderWidth() {
-      if (isActive || isPausedState) return 1.8.w;
-      return 1.2.w;
-    }
-
     Color getTextColor() {
       if (isActive) return AppColors.kPrimary;
       if (isPausedState) return Colors.orange;
       if (isCompletedState) return Colors.grey;
       return isDark ? Colors.white : const Color(0xff1a1f24);
     }
-
 
     Color getBadgeColor() {
       if (isActive) return AppColors.kPrimary;
@@ -68,133 +54,156 @@ class SurahTile extends StatelessWidget {
         ? Colors.white.withValues(alpha: 0.07)
         : AppColors.kBorderLight;
 
-
     return LayoutBuilder(
       builder: (context, constraints) {
         final compact = constraints.maxWidth < 360;
+        final wide = constraints.maxWidth >= 480;
 
         return GestureDetector(
           onTap: onPressed,
           child: AnimatedContainer(
-        duration: const Duration(milliseconds: 400),
-        curve: Curves.easeInOut,
-        margin: EdgeInsets.symmetric(vertical: 6.h),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20.r),
-          color: bgColor,
-          border: Border.all(color: borderColor, width: 1),
-          boxShadow: isActive || isPausedState
-              ? [
-            BoxShadow(
-              color: getBadgeColor().withValues(alpha: 0.12),
-              blurRadius: 12,
-              offset: const Offset(0, 4),
+            duration: const Duration(milliseconds: 400),
+            curve: Curves.easeInOut,
+            margin: EdgeInsets.symmetric(vertical: 6.h),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20.r),
+              color: bgColor,
+              border: Border.all(color: borderColor, width: 1),
+              boxShadow: isActive || isPausedState
+                  ? [
+                      BoxShadow(
+                        color: getBadgeColor().withValues(alpha: 0.12),
+                        blurRadius: 2,
+                        offset: const Offset(0, 2),
+                      ),
+                    ]
+                  : null,
             ),
-          ]
-              : null,
-        ),
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: AppResponsive.widthValue(context, compact ? 10 : 14),
-            vertical: AppResponsive.heightValue(context, compact ? 8 : 10),
-          ),
-          child: Row(
-            children: [
-              _buildSurahNumber(
-                isActive: isActive,
-                isPaused: isPausedState,
-                isCompleted: isCompletedState,
-                isDark: isDark,
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: AppResponsive.widthValue(
+                  context,
+                  compact ? 10 : 14,
+                ),
+                vertical: AppResponsive.heightValue(
+                  context,
+                  compact ? 8 : (wide ? 8 : 10),
+                ),
               ),
-              Gap(AppResponsive.widthValue(context, compact ? 9 : 14)),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
+              child: Row(
+                children: [
+                  _buildSurahNumber(
+                    context: context,
+                    isActive: isActive,
+                    isPaused: isPausedState,
+                    isCompleted: isCompletedState,
+                    isDark: isDark,
+                  ),
+                  Gap(AppResponsive.widthValue(context, compact ? 9 : 14)),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Flexible(
-                          child: Text(
-                            "سورة ${surah.nameArabic}",
+                        Row(
+                          children: [
+                            Flexible(
+                              child: Text(
+                                "سورة ${surah.nameArabic}",
+                                style: TextStyle(
+                                  fontSize: AppResponsive.fontSize(
+                                    context,
+                                    compact ? 15 : (wide ? 16 : 17),
+                                  ),
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Noon',
+                                  color: getTextColor(),
+                                  height: 1.2,
+                                ),
+                              ),
+                            ),
+                            if (isCurrentSurah) ...[
+                              SizedBox(
+                                width: AppResponsive.widthValue(context, 8),
+                              ),
+                              _buildStatusBadge(
+                                context: context,
+                                isActive: isActive,
+                                isPaused: isPausedState,
+                                isCompleted: isCompletedState,
+                              ),
+                            ],
+                          ],
+                        ),
+                        Gap(AppResponsive.heightValue(context, 4)),
+                        Text(
+                          surah.nameEnglish,
                           style: TextStyle(
-                            fontSize: AppResponsive.fontSize(context, compact ? 15 : 17),
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Al mushaf',
-                            color: getTextColor(),
-                            height: 1.2,
+                            fontSize: AppResponsive.fontSize(
+                              context,
+                              compact ? 9 : 10,
+                            ),
+                            color: isDark
+                                ? Colors.white.withValues(alpha: 0.4)
+                                : Colors.black.withValues(alpha: 0.3),
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
-                        ),
-                        if (isCurrentSurah) ...[
-                          SizedBox(width: 8.w),
-                          _buildStatusBadge(
-                            isActive: isActive,
-                            isPaused: isPausedState,
-                            isCompleted: isCompletedState,
-                          ),
-                        ],
                       ],
                     ),
-                    Gap(4.h),
-                    Text(
-                      surah.nameEnglish,
-                      style: TextStyle(
-                        fontSize: AppResponsive.fontSize(context, compact ? 9 : 10),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AppResponsive.widthValue(context, 10),
+                      vertical: AppResponsive.heightValue(context, 4),
+                    ),
+                    decoration: BoxDecoration(
+                      color: isDark
+                          ? Colors.white.withValues(alpha: 0.06)
+                          : Colors.black.withValues(alpha: 0.04),
+                      borderRadius: BorderRadius.circular(
+                        AppResponsive.radius(context, 12),
+                      ),
+                      border: Border.all(
                         color: isDark
-                            ? Colors.white.withValues(alpha: 0.4)
-                            : Colors.black.withValues(alpha: 0.3),
-                        fontWeight: FontWeight.w500,
+                            ? Colors.white.withValues(alpha: 0.08)
+                            : Colors.black.withValues(alpha: 0.06),
                       ),
                     ),
-                  ],
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
-                decoration: BoxDecoration(
-                  color: isDark
-                      ? Colors.white.withValues(alpha: 0.06)
-                      : Colors.black.withValues(alpha: 0.04),
-                  borderRadius: BorderRadius.circular(12.r),
-                  border: Border.all(
-                    color: isDark
-                        ? Colors.white.withValues(alpha: 0.08)
-                        : Colors.black.withValues(alpha: 0.06),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        CustomText(
+                          "${surah.versesCount}",
+                          fontSize: AppResponsive.fontSize(context, 9),
+                          fontWeight: FontWeight.w600,
+                          color: isDark
+                              ? Colors.white.withValues(alpha: 0.6)
+                              : Colors.black.withValues(alpha: 0.5),
+                        ),
+                        SizedBox(width: AppResponsive.widthValue(context, 3)),
+                        Icon(
+                          Icons.menu_book_rounded,
+                          size: AppResponsive.iconSize(context, 12),
+                          color: isDark
+                              ? Colors.white.withValues(alpha: 0.4)
+                              : Colors.black.withValues(alpha: 0.35),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    CustomText(
-                      "${surah.versesCount}",
-                      fontSize: 11.sp,
-                      fontWeight: FontWeight.w600,
-                      color: isDark
-                          ? Colors.white.withValues(alpha: 0.6)
-                          : Colors.black.withValues(alpha: 0.5),
-                    ),
-                    SizedBox(width: 3.w),
-                    Icon(
-                      Icons.menu_book_rounded,
-                      size: 12.sp,
-                      color: isDark
-                          ? Colors.white.withValues(alpha: 0.4)
-                          : Colors.black.withValues(alpha: 0.35),
-                    ),
-                  ],
-                ),
+                ],
               ),
-            ],
-          ),
-        ),
+            ),
           ),
         );
       },
     );
   }
 
-/// Cases
+  /// Cases
   Widget _buildStatusBadge({
+    required BuildContext context,
     required bool isActive,
     required bool isPaused,
     required bool isCompleted,
@@ -224,33 +233,24 @@ class SurahTile extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(
-          color: color.withValues(alpha: 0.3),
-        ),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 12)),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           if (icon != null)
-            Icon(
-              icon,
-              size: 12.sp,
-              color: color,
-            ),
+            Icon(icon, size: AppResponsive.iconSize(context, 12), color: color),
           if (isActive)
             Container(
-              width: 5.w,
-              height: 5.w,
-              decoration: BoxDecoration(
-                color: color,
-                shape: BoxShape.circle,
-              ),
+              width: AppResponsive.widthValue(context, 5),
+              height: AppResponsive.heightValue(context, 5),
+              decoration: BoxDecoration(color: color, shape: BoxShape.circle),
             ),
-          SizedBox(width: 4.w),
+          SizedBox(width: AppResponsive.widthValue(context, 4)),
           CustomText(
             text,
-            fontSize: 8.sp,
+            fontSize: AppResponsive.fontSize(context, 8),
             fontWeight: FontWeight.w600,
             color: color,
           ),
@@ -260,12 +260,12 @@ class SurahTile extends StatelessWidget {
   }
 
   Widget _buildSurahNumber({
+    required BuildContext context,
     required bool isActive,
     required bool isPaused,
     required bool isCompleted,
     required bool isDark,
   }) {
-    final bool showWave = isActive || isPaused;
     final Color circleColor = isActive
         ? AppColors.kPrimary
         : isPaused
@@ -279,19 +279,19 @@ class SurahTile extends StatelessWidget {
       children: [
         AnimatedContainer(
           duration: const Duration(milliseconds: 300),
-          width: 42.w,
-          height: 42.h,
+          width: AppResponsive.widthValue(context, 42),
+          height: AppResponsive.heightValue(context, 42),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             gradient: (isActive || isPaused)
                 ? LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                circleColor.withValues(alpha: 0.25),
-                circleColor.withValues(alpha: 0.1),
-              ],
-            )
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      circleColor.withValues(alpha: 0.25),
+                      circleColor.withValues(alpha: 0.1),
+                    ],
+                  )
                 : null,
             color: (isActive || isPaused)
                 ? null
@@ -300,16 +300,16 @@ class SurahTile extends StatelessWidget {
                 : (isDark ? const Color(0xff2d3338) : const Color(0xffE9EEF0)),
             border: (isActive || isPaused)
                 ? Border.all(
-              color: circleColor.withValues(alpha: 0.5),
-              width: 1.5.w,
-            )
+                    color: circleColor.withValues(alpha: 0.5),
+                    width: AppResponsive.widthValue(context, 1.5),
+                  )
                 : null,
           ),
           child: Center(
             child: Text(
               '${surah.number}',
               style: TextStyle(
-                fontSize: 13.sp,
+                fontSize: AppResponsive.fontSize(context, 13),
                 fontWeight: FontWeight.w700,
                 fontFamily: 'Al mushaf',
                 color: (isActive || isPaused) ? circleColor : null,
@@ -322,7 +322,7 @@ class SurahTile extends StatelessWidget {
             child: AudioWaveAnimation(
               isPlaying: true,
               color: AppColors.kPrimary,
-              size: 50.w,
+              size: AppResponsive.iconSize(context, 50),
             ),
           ),
         if (isPaused)
@@ -332,7 +332,7 @@ class SurahTile extends StatelessWidget {
               child: AudioWaveAnimation(
                 isPlaying: false,
                 color: Colors.orange,
-                size: 50.w,
+                size: AppResponsive.iconSize(context, 50),
               ),
             ),
           ),
@@ -342,13 +342,15 @@ class SurahTile extends StatelessWidget {
             duration: const Duration(milliseconds: 2000),
             builder: (context, value, child) {
               return Container(
-                width: 42.w + (value * 20),
-                height: 42.w + (value * 20),
+                width: AppResponsive.widthValue(context, 42) + (value * 20),
+                height: AppResponsive.heightValue(context, 42) + (value * 20),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: AppColors.kPrimary.withValues(alpha: 0.15 * (1 - value)),
-                    width: 1.2.w,
+                    color: AppColors.kPrimary.withValues(
+                      alpha: 0.15 * (1 - value),
+                    ),
+                    width: AppResponsive.widthValue(context, 1.2),
                   ),
                 ),
               );
@@ -356,13 +358,13 @@ class SurahTile extends StatelessWidget {
           ),
         if (isPaused)
           Container(
-            width: 50.w,
-            height: 50.w,
+            width: AppResponsive.widthValue(context, 50),
+            height: AppResponsive.heightValue(context, 50),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(
                 color: Colors.orange.withValues(alpha: 0.15),
-                width: 1.w,
+                width: AppResponsive.widthValue(context, 1),
               ),
             ),
           ),

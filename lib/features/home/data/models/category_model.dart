@@ -6,7 +6,6 @@ import 'package:hisn_almuslim/features/al%20azkar/morning%20azkar/screen/morning
 import 'package:hisn_almuslim/features/asma%20allah/screen/asma_allah_screen.dart';
 import 'package:hisn_almuslim/features/hadith/hadith_screen.dart';
 import 'package:hisn_almuslim/features/hisn%20al-muslim/screen/hisn_al_muslim_screen.dart';
-import 'package:hisn_almuslim/features/jami%20dua/screen/dua_screen.dart';
 import 'package:hisn_almuslim/features/tasbeeh/screen/zekr_allah_screen.dart';
 
 class CategoryModel {

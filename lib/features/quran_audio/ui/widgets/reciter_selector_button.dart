@@ -58,158 +58,207 @@ class _ReciterSelectorButtonState extends State<ReciterSelectorButton> {
               onTap: _showReciterSelectionDialog,
               child: Container(
                 padding: EdgeInsets.symmetric(
-                  horizontal: AppResponsive.widthValue(context, compact ? 10 : 16),
-                  vertical: AppResponsive.heightValue(context, compact ? 9 : 12),
+                  horizontal: AppResponsive.widthValue(
+                    context,
+                    compact ? 10 : 16,
+                  ),
+                  vertical: AppResponsive.heightValue(
+                    context,
+                    compact ? 9 : 12,
+                  ),
                 ),
-            decoration: BoxDecoration(
-              color: bgColor,
-              border: Border.all(color: borderColor, width: 1),
-              borderRadius: BorderRadius.circular(25.r),
-              boxShadow: [
-                BoxShadow(
-                  color: isDark
-                      ? Colors.black.withValues(alpha: 0.3)
-                      : Colors.grey.shade200.withValues(alpha: 0.5),
-                  blurRadius: 0,
-                  offset: const Offset(0, 2),
+                decoration: BoxDecoration(
+                  color: bgColor,
+                  border: Border.all(
+                    color: borderColor,
+                    width: AppResponsive.widthValue(context, 1),
+                  ),
+                  borderRadius: BorderRadius.circular(
+                    AppResponsive.radius(context, 25),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: isDark
+                          ? Colors.black.withValues(alpha: 0.3)
+                          : Colors.grey.shade200.withValues(alpha: 0.5),
+                      blurRadius: 0,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            child: Row(
-              children: [
-                _buildReciterAvatar(isPlaying, isDark),
-                SizedBox(width: 14.w),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
+                child: Row(
+                  children: [
+                    _buildReciterAvatar(isPlaying, isDark),
+                    Gap(AppResponsive.widthValue(context, 14)),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 8.w,
-                              vertical: 2.h,
-                            ),
-                            decoration: BoxDecoration(
-                              color: AppColors.kPrimary.withValues(alpha: 0.12),
-                              borderRadius: BorderRadius.circular(6.r),
-                            ),
-                            child: CustomText(
-                              'القارئ الشيخ',
-                              color: AppColors.kPrimary,
-                              fontSize: 9.sp,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          if (isPlaying && currentSurah != null) ...[
-                            SizedBox(width: 6.w),
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 8.w,
-                                vertical: 2.h,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.green.withValues(alpha: 0.12),
-                                borderRadius: BorderRadius.circular(6.r),
-                                border: Border.all(
-                                  color: Colors.green.withValues(alpha: 0.3),
+                          Row(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: AppResponsive.widthValue(
+                                    context,
+                                    8,
+                                  ),
+                                  vertical: AppResponsive.heightValue(
+                                    context,
+                                    3,
+                                  ),
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AppColors.kPrimary.withValues(
+                                    alpha: 0.12,
+                                  ),
+                                  borderRadius: BorderRadius.circular(6.r),
+                                ),
+                                child: CustomText(
+                                  'القارئ الشيخ',
+                                  color: AppColors.kPrimary,
+                                  fontSize: AppResponsive.fontSize(context, 9),
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Container(
-                                    width: 5.w,
-                                    height: 5.w,
-                                    decoration: const BoxDecoration(
-                                      color: Colors.green,
-                                      shape: BoxShape.circle,
+                              if (isPlaying && currentSurah != null) ...[
+                                Gap(AppResponsive.widthValue(context, 6)),
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: AppResponsive.widthValue(
+                                      context,
+                                      8,
+                                    ),
+                                    vertical: AppResponsive.heightValue(
+                                      context,
+                                      2,
                                     ),
                                   ),
-                                  SizedBox(width: 4.w),
-                                  CustomText(
-                                    'يتلى الآن',
-                                    color: Colors.green,
-                                    fontSize: 8.sp,
-                                    fontWeight: FontWeight.w600,
+                                  decoration: BoxDecoration(
+                                    color: Colors.green.withValues(alpha: 0.12),
+                                    borderRadius: BorderRadius.circular(
+                                      AppResponsive.radius(context, 6),
+                                    ),
+                                    border: Border.all(
+                                      color: Colors.green.withValues(
+                                        alpha: 0.3,
+                                      ),
+                                    ),
                                   ),
-                                ],
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Container(
+                                        width: AppResponsive.widthValue(
+                                          context,
+                                          6,
+                                        ),
+                                        height: AppResponsive.heightValue(
+                                          context,
+                                          6,
+                                        ),
+                                        decoration: const BoxDecoration(
+                                          color: Colors.green,
+                                          shape: BoxShape.circle,
+                                        ),
+                                      ),
+                                      Gap(AppResponsive.widthValue(context, 4)),
+                                      CustomText(
+                                        'يتلى الآن',
+                                        color: Colors.green,
+                                        fontSize: AppResponsive.fontSize(
+                                          context,
+                                          8,
+                                        ),
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ],
+                          ),
+                          Gap(AppResponsive.heightValue(context, 6)),
+                          CustomText(
+                            widget.currentReciter?.reciter.ar ?? 'اختر القارئ',
+                            fontSize: AppResponsive.fontSize(context, 12.4),
+                            fontWeight: FontWeight.w700,
+                            color: isDark
+                                ? Colors.white
+                                : const Color(0xFF1A2332),
+                            maxLines: 1,
+                          ),
+                          if (widget.currentReciter != null)
+                            Gap(AppResponsive.heightValue(context, 6)),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.menu_book_outlined,
+                                size: AppResponsive.iconSize(context, 12),
+                                color: isDark
+                                    ? Colors.white.withValues(alpha: 0.4)
+                                    : Colors.grey.shade600,
                               ),
-                            ),
-                          ],
+                              Gap(AppResponsive.widthValue(context, 4)),
+                              CustomText(
+                                "رواية ${widget.currentReciter!.rewaya.ar}",
+                                maxLines: 1,
+                                fontSize: AppResponsive.fontSize(context, 10),
+                                color: isDark
+                                    ? Colors.white.withValues(alpha: 0.4)
+                                    : Colors.grey.shade600,
+                              ),
+                            ],
+                          ),
                         ],
                       ),
-                      Gap(6.h),
-                      CustomText(
-                        widget.currentReciter?.reciter.ar ?? 'اختر القارئ',
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w700,
-                        color: isDark ? Colors.white : const Color(0xFF1A2332),
-                        maxLines: 1,
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: AppResponsive.widthValue(
+                          context,
+                          compact ? 7 : 12,
+                        ),
+                        vertical: AppResponsive.heightValue(
+                          context,
+                          compact ? 6 : 8,
+                        ),
                       ),
-                      if (widget.currentReciter != null) Gap(6.h),
-                      Row(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            AppColors.kPrimary.withValues(alpha: 0.15),
+                            AppColors.kPrimary.withValues(alpha: 0.05),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(
+                          AppResponsive.radius(context, 12),
+                        ),
+                        border: Border.all(
+                          color: AppColors.kPrimary.withValues(alpha: 0.2),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
-                            Icons.menu_book_outlined,
-                            size: 12.sp,
-                            color: isDark
-                                ? Colors.white.withValues(alpha: 0.4)
-                                : Colors.grey.shade600,
+                            Icons.swap_horiz_rounded,
+                            color: AppColors.kPrimary,
+                            size: AppResponsive.iconSize(context, 16),
                           ),
-                          SizedBox(width: 4.w),
+                          Gap(AppResponsive.widthValue(context, 4)),
                           CustomText(
-                            "رواية ${widget.currentReciter!.rewaya.ar}",
-                            maxLines: 1,
-                            fontSize: 11.sp,
-                            color: isDark
-                                ? Colors.white.withValues(alpha: 0.4)
-                                : Colors.grey.shade600,
+                            'تبديل',
+                            color: AppColors.kPrimary,
+                            fontSize: AppResponsive.fontSize(context, 9.6),
+                            fontWeight: FontWeight.w600,
                           ),
                         ],
                       ),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: AppResponsive.widthValue(context, compact ? 7 : 12),
-                    vertical: AppResponsive.heightValue(context, compact ? 6 : 8),
-                  ),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        AppColors.kPrimary.withValues(alpha: 0.15),
-                        AppColors.kPrimary.withValues(alpha: 0.05),
-                      ],
                     ),
-                    borderRadius: BorderRadius.circular(12.r),
-                    border: Border.all(
-                      color: AppColors.kPrimary.withValues(alpha: 0.2),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.swap_horiz_rounded,
-                        color: AppColors.kPrimary,
-                        size: 16.sp,
-                      ),
-                      SizedBox(width: 4.w),
-                      CustomText(
-                        'تبديل',
-                        color: AppColors.kPrimary,
-                        fontSize: 10.sp,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ],
-                  ),
+                  ],
                 ),
-              ],
-            ),
               ),
             );
           },
@@ -254,14 +303,14 @@ class _ReciterSelectorButtonState extends State<ReciterSelectorButton> {
                   : isDark
                   ? Colors.white.withValues(alpha: 0.08)
                   : Colors.grey.shade300,
-              width: 1.5.w,
+              width: AppResponsive.widthValue(context, 1.5),
             ),
           ),
           child: Center(
             child: hasReciter
                 ? CustomText(
                     '$reciterIndex',
-                    fontSize: 14.sp,
+                    fontSize: AppResponsive.fontSize(context, 14),
                     fontWeight: FontWeight.w700,
                     color: AppColors.kPrimary,
                   )
@@ -270,7 +319,7 @@ class _ReciterSelectorButtonState extends State<ReciterSelectorButton> {
                     color: isDark
                         ? Colors.white.withValues(alpha: 0.3)
                         : Colors.grey.shade500,
-                    size: 22.sp,
+                    size: AppResponsive.iconSize(context, 20),
                   ),
           ),
         ),
@@ -278,14 +327,15 @@ class _ReciterSelectorButtonState extends State<ReciterSelectorButton> {
           bottom: 0,
           right: 0,
           child: Container(
-            width: 12.w,
-            height: 12.w,
+            width: AppResponsive.widthValue(context, 12),
+            height: AppResponsive.heightValue(context, 12),
+
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: isPlaying ? Colors.green : Colors.grey.shade400,
               border: Border.all(
                 color: isDark ? const Color(0xFF1A2332) : Colors.white,
-                width: 2.w,
+                width: AppResponsive.widthValue(context, 2),
               ),
             ),
           ),

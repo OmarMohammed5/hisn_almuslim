@@ -15,24 +15,12 @@ class AppRoutes {
 
   // Hadith
   static const String hadith = '/hadith';
-  static const String fehresSahihBukhary = '/fehres-sahih-bukhary';
-  static const String sahihBukharyDetails = '/sahih-bukhary-details';
-  static const String fehresSahihMuslim = '/fehres-sahih-muslim';
-  static const String sahihMuslimDetails = '/sahih-muslim-details';
-  static const String fehresReyqdAlSaliheen = '/fehres-reyad-al-saliheen';
-  static const String reyadAlSaliheenDetails = '/reyad-al-saliheen-details';
-  static const String fehresHadithNawawi = '/fehres-hadith-nawawi';
-  static const String hadithNawawi = '/hadith-nawawi';
+  static const String hadithIndex = '/hadith-index';
+  static const String hadithDetails = '/hadith-details';
 
   // Jami Dua
   static const String dua = '/dua';
-  static const String deadDua = '/dead-dua';
-  static const String etiquetteDua = '/etiquette-dua';
-  static const String hajjAndOmraDua = '/hajj-and-omra-dua';
-  static const String hajjAndOmraDuaDetails = '/hajj-and-omra-dua-details';
-  static const String lastTenDuas = '/last-ten-duas';
-  static const String quranDua = '/quran-dua';
-  static const String sunnahDua = '/sunnah-dua';
+  static const String duaDetails = '/dua-details';
 
   // Adhan
   static const String adhan = '/adhan';

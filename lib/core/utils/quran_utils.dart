@@ -176,9 +176,12 @@ int getJuzNumber(int surahNumber, int ayahNumber) {
 }
 
 Widget buildEmptyState(BuildContext context, bool isDark) {
-  final primary = Theme.of(context).colorScheme.primary;
-  final titleColor = isDark ? Colors.white : const Color(0xFF183A36);
+  final theme = Theme.of(context);
+  final primary = theme.colorScheme.primary;
+  final scheme = theme.colorScheme;
 
+  // --- Adaptive Colors ---
+  final titleColor = isDark ? Colors.white : const Color(0xFF183A36);
   final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
   final borderColor = isDark
       ? Colors.white.withValues(alpha: 0.07)
@@ -190,77 +193,96 @@ Widget buildEmptyState(BuildContext context, bool isDark) {
       vertical: AppResponsive.heightValue(context, 6),
     ),
     padding: EdgeInsets.symmetric(
-      horizontal: AppResponsive.widthValue(context, 16),
-      vertical: AppResponsive.heightValue(context, 16),
+      horizontal: AppResponsive.widthValue(context, 14),
+      vertical: AppResponsive.heightValue(context, 14),
     ),
     decoration: BoxDecoration(
       color: bgColor,
       border: Border.all(color: borderColor, width: 1),
-      borderRadius: BorderRadius.circular(AppResponsive.radius(context, 18)),
+      borderRadius: BorderRadius.circular(AppResponsive.radius(context, 20)),
       boxShadow: [
         BoxShadow(
           color: isDark
-              ? Colors.black.withValues(alpha: .15)
-              : primary.withValues(alpha: .05),
-          blurRadius: 12.r,
-          offset: Offset(0, 2.h),
+              ? Colors.black.withValues(alpha: .20)
+              : primary.withValues(alpha: .06),
+          blurRadius: AppResponsive.radius(context, 16),
+          offset: Offset(0, AppResponsive.heightValue(context, 4)),
         ),
       ],
     ),
     child: Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        // ===== Icon =====
+
         Container(
-          width: AppResponsive.widthValue(context, 48),
-          height: AppResponsive.heightValue(context, 48),
+          width: AppResponsive.widthValue(context, 50),
+          height: AppResponsive.widthValue(context, 50),
+          padding: EdgeInsets.all(AppResponsive.widthValue(context, 3)),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: AppColors.kPrimary.withValues(alpha: .7),
+            gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: [
+                AppColors.kPrimary,
+                AppColors.kPrimary.withValues(alpha: 0.35),
+              ],
+            ),
           ),
-          child: Icon(
-            FlutterIslamicIcons.solidQuran2,
-            size: AppResponsive.iconSize(context, 22),
-            color: Colors.white,
+          child: Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: isDark ? AppColors.kSurfaceDark : Colors.white,
+            ),
+            child: Icon(
+              FlutterIslamicIcons.solidQuran2,
+              size: AppResponsive.iconSize(context, 22),
+              color: isDark ? Colors.white : AppColors.kPrimary,
+            ),
           ),
         ),
 
-        Gap(AppResponsive.widthValue(context, 14)),
+        Gap(AppResponsive.widthValue(context, 12)),
 
-        // ===== Text Column =====
         Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              CustomText(
-                "قم بتظليل آخر ما قرأت لتسجيل تقدمك",
-                fontSize: AppResponsive.fontSize(context, 11),
-                maxLines: 3,
-                fontWeight: FontWeight.w700,
-                color: titleColor,
-                height: AppResponsive.heightValue(context, 1),
+          child: CustomText(
+            "قم بتظليل آخر ما قرأت لتسجيل تقدمك",
+            fontSize: AppResponsive.fontSize(context, 11),
+            maxLines: 3,
+            fontWeight: FontWeight.w700,
+            color: titleColor,
+            height: 1.4,
+          ),
+        ),
+
+        Gap(AppResponsive.widthValue(context, 10)),
+
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(AppResponsive.radius(context, 30)),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.kPrimary.withValues(alpha: isDark ? 0.3 : 0.25),
+                blurRadius: AppResponsive.radius(context, 10),
+                offset: Offset(0, AppResponsive.heightValue(context, 3)),
               ),
             ],
           ),
-        ),
-
-        // ===== Button =====
-        SizedBox(
-          height: AppResponsive.heightValue(context, 37),
           child: ElevatedButton(
             onPressed: () {
               Navigator.pushNamed(context, AppRoutes.quranHome);
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.kPrimary.withValues(alpha: .7),
+              backgroundColor: AppColors.kPrimary,
               foregroundColor: Colors.white,
               elevation: 0,
               padding: EdgeInsets.symmetric(
-                horizontal: AppResponsive.widthValue(context, 12),
+                horizontal: AppResponsive.widthValue(context, 14),
+                vertical: AppResponsive.heightValue(context, 10),
               ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(
-                  AppResponsive.radius(context, 16),
+                  AppResponsive.radius(context, 30),
                 ),
               ),
               minimumSize: Size.zero,
@@ -274,11 +296,12 @@ Widget buildEmptyState(BuildContext context, bool isDark) {
                   fontSize: AppResponsive.fontSize(context, 10),
                   fontWeight: FontWeight.w700,
                   color: Colors.white,
+                  maxLines: 1,
                 ),
-                Gap(AppResponsive.widthValue(context, 4)),
+                Gap(AppResponsive.widthValue(context, 5)),
                 Icon(
                   Icons.arrow_forward_rounded,
-                  size: AppResponsive.iconSize(context, 13),
+                  size: AppResponsive.iconSize(context, 14),
                   color: Colors.white,
                 ),
               ],

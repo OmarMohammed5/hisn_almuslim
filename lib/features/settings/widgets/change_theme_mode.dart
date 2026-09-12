@@ -148,7 +148,7 @@ class ChangeThemeMode extends StatelessWidget {
                   children: [
                     CustomText(
                       title,
-                      fontSize: AppResponsive.fontSize(context, 13),
+                      fontSize: AppResponsive.fontSize(context, 11),
                       fontWeight: isActive ? FontWeight.w700 : FontWeight.w600,
                       color: isActive
                           ? (isDark ? Colors.white : Colors.black87)

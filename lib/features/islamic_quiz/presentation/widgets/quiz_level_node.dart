@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hisn_almuslim/core/responsive/app_responsive.dart';
 
 import '../../../../core/shared/custom_text.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -7,7 +7,6 @@ import '../../domain/entities/level_entity.dart';
 import '../theme/quiz_tokens.dart';
 import 'quiz_press_scale.dart';
 import 'quiz_stars.dart';
-
 
 class QuizLevelNode extends StatelessWidget {
   const QuizLevelNode({
@@ -56,18 +55,20 @@ class QuizLevelNode extends StatelessWidget {
         ? Colors.white.withValues(alpha: 0.07)
         : AppColors.kBorderLight;
 
-
-
     Widget circle = Container(
-      width: 64.w,
-      height: 64.w,
+      width: AppResponsive.widthValue(context, 64),
+      height: AppResponsive.widthValue(context, 64),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: bgColor,
         border: Border.all(color: borderColor, width: 1),
       ),
       alignment: Alignment.center,
-      child: Icon(_nodeIcon, size: 28.sp, color: color),
+      child: Icon(
+        _nodeIcon,
+        size: AppResponsive.fontSize(context, 28),
+        color: color,
+      ),
     );
 
     if (justUnlocked) {
@@ -93,8 +94,10 @@ class QuizLevelNode extends StatelessWidget {
               if (!isLast)
                 Expanded(
                   child: Container(
-                    width: 3.w,
-                    margin: EdgeInsets.symmetric(vertical: 4.h),
+                    width: AppResponsive.widthValue(context, 3),
+                    margin: EdgeInsets.symmetric(
+                      vertical: AppResponsive.heightValue(context, 4),
+                    ),
                     decoration: BoxDecoration(
                       color: bgColor,
                       border: Border.all(color: borderColor, width: 1),
@@ -104,10 +107,14 @@ class QuizLevelNode extends StatelessWidget {
                 ),
             ],
           ),
-          SizedBox(width: QuizSpacing.md.w),
+          SizedBox(width: AppResponsive.widthValue(context, QuizSpacing.md)),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.only(bottom: isLast ? 0 : QuizSpacing.lg.h),
+              padding: EdgeInsets.only(
+                bottom: isLast
+                    ? 0
+                    : AppResponsive.heightValue(context, QuizSpacing.lg),
+              ),
               child: QuizPressScale(
                 enabled: unlocked,
                 child: AnimatedOpacity(
@@ -117,13 +124,19 @@ class QuizLevelNode extends StatelessWidget {
                     color: Colors.transparent,
                     child: InkWell(
                       onTap: unlocked ? onTap : null,
-                      borderRadius: BorderRadius.circular(QuizRadius.lg.r),
+                      borderRadius: BorderRadius.circular(
+                        AppResponsive.radius(context, QuizRadius.lg),
+                      ),
                       child: Ink(
-                        padding: EdgeInsets.all(18.w),
+                        padding: EdgeInsets.all(
+                          AppResponsive.widthValue(context, 18),
+                        ),
                         decoration: BoxDecoration(
                           color: bgColor,
                           border: Border.all(color: borderColor, width: 1),
-                          borderRadius: BorderRadius.circular(18.r)
+                          borderRadius: BorderRadius.circular(
+                            AppResponsive.radius(context, 18),
+                          ),
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -133,36 +146,55 @@ class QuizLevelNode extends StatelessWidget {
                                 Expanded(
                                   child: CustomText(
                                     'المستوى ${level.levelNumber}',
-                                    fontSize: 15.sp,
+                                    fontSize: AppResponsive.fontSize(
+                                      context,
+                                      15,
+                                    ),
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                                 if (unlocked)
-                                  Icon(Icons.arrow_forward_ios_rounded,
-                                      size: 14.sp, color: QuizColors.textSecondary(context)),
+                                  Icon(
+                                    Icons.arrow_forward_ios_rounded,
+                                    size: AppResponsive.fontSize(context, 14),
+                                    color: QuizColors.textSecondary(context),
+                                  ),
                               ],
                             ),
-                            SizedBox(height: 10.h),
+                            SizedBox(
+                              height: AppResponsive.heightValue(context, 10),
+                            ),
                             CustomText(
                               unlocked
                                   ? '${level.questions.length} سؤال'
                                   : 'أكمل المستوى ${level.levelNumber - 1} لفتح هذا المستوى',
                               fontWeight: FontWeight.w400,
-                              fontSize: 12.sp,
+                              fontSize: AppResponsive.fontSize(context, 12),
                             ),
                             if (unlocked && (bestScore > 0 || stars > 0)) ...[
-                              SizedBox(height: 10.h),
+                              SizedBox(
+                                height: AppResponsive.heightValue(context, 10),
+                              ),
                               Row(
                                 children: [
                                   if (bestScore > 0) ...[
                                     CustomText(
                                       'أفضل نتيجة: $bestScore%',
                                       fontWeight: FontWeight.w600,
-                                      fontSize: 13.sp,
+                                      fontSize: AppResponsive.fontSize(
+                                        context,
+                                        13,
+                                      ),
                                     ),
-                                    SizedBox(width: QuizSpacing.sm.w),
+                                    SizedBox(
+                                      width: AppResponsive.widthValue(
+                                        context,
+                                        QuizSpacing.sm,
+                                      ),
+                                    ),
                                   ],
-                                  if (stars > 0) QuizStars(count: stars, size: 15),
+                                  if (stars > 0)
+                                    QuizStars(count: stars, size: 15),
                                 ],
                               ),
                             ],

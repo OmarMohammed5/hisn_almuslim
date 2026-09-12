@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hisn_almuslim/core/responsive/app_responsive.dart';
 
 class FontSizeControl extends StatelessWidget {
   final VoidCallback onIncrease;
@@ -17,19 +18,19 @@ class FontSizeControl extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       // margin: EdgeInsets.symmetric(horizontal: 4.w),
-      padding: EdgeInsets.symmetric(vertical: 4.h),
+      padding: EdgeInsets.symmetric(vertical: AppResponsive.heightValue(context, 4)),
       decoration: BoxDecoration(
         color: isDark ? const Color(0xff22272b) : const Color(0xffe9eef0),
-        borderRadius: BorderRadius.circular(20.r),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 20)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        spacing: 6.w,
+        spacing: AppResponsive.widthValue(context, 6),
         children: [
           IconButton(
             icon: Icon(
               Icons.text_increase,
-              size: 22.sp,
+              size: AppResponsive.iconSize(context, 22),
               color: Colors.teal.shade700,
             ),
             onPressed: onIncrease,
@@ -38,12 +39,12 @@ class FontSizeControl extends StatelessWidget {
           ),
           Text(
             'حجم الخط',
-            style: TextStyle(fontSize: 11.sp, fontFamily: "Cairo"),
+            style: TextStyle(fontSize: AppResponsive.fontSize(context, 11), fontFamily: "Cairo"),
           ),
           IconButton(
             icon: Icon(
               Icons.text_decrease,
-              size: 22.sp,
+              size: AppResponsive.iconSize(context, 22),
               color: Colors.teal.shade700,
             ),
             onPressed: onDecrease,

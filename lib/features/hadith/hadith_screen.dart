@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hisn_almuslim/core/responsive/app_responsive.dart';
 import 'package:hisn_almuslim/core/routing/app_routes.dart';
-import 'package:hisn_almuslim/features/hadith/books/bukhary/screen/fehres_sahih_bukhary.dart';
-import 'package:hisn_almuslim/features/hadith/books/muslim/screen/fehres_sahih_muslim.dart';
-import 'package:hisn_almuslim/features/hadith/books/nawawi/screen/fehres_hadith_nawawi.dart';
-import 'package:hisn_almuslim/features/hadith/books/reyad%20al%20salehin/screen/fehres_reyad_al_saliheen.dart';
+import 'package:hisn_almuslim/features/hadith/domain/entities/hadith_book.dart';
+import 'package:hisn_almuslim/features/hadith/domain/entities/hadith_route_args.dart';
 import 'package:hisn_almuslim/features/hadith/widgets/book_card.dart';
 import '../../core/shared/app_bar_widget.dart';
 
@@ -13,53 +11,69 @@ class HadithScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final maxWidth = AppResponsive.isDesktop(context)
+        ? 1100.0
+        : AppResponsive.isTablet(context)
+            ? 820.0
+            : double.infinity;
+
+    void openBook(HadithBookType book) {
+      Navigator.pushNamed(
+        context,
+        AppRoutes.hadithIndex,
+        arguments: HadithIndexArgs(book: book),
+      );
+    }
+
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        appBar: AppBarWidget(title: "الأَحَادِيثُ النَّبَوِيَّةُ"),
-        body: Column(
-          children: [
-
-            Expanded(
-              child: GridView.count(
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-                crossAxisCount: 2,
-                mainAxisSpacing: 16.h,
-                crossAxisSpacing: 20.w,
-                childAspectRatio: 0.83,
-                children: [
-
-                  BookCard(
-                    onTap: () => Navigator.pushNamed(context, AppRoutes.fehresSahihBukhary),
-                    title: 'صحيح البخاري',
-                    subtitle: 'متابعة القراءة من\nالحديث',
-                    number: '١',
+        appBar: AppBarWidget(title: 'الأَحَادِيثُ النَّبَوِيَّةُ'),
+        body: AppResponsive.constrain(
+          context,
+          maxWidth: maxWidth,
+          child: Column(
+            children: [
+              Expanded(
+                child: GridView.count(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: AppResponsive.widthValue(context, 16),
+                    vertical: AppResponsive.heightValue(context, 16),
                   ),
-
-                  BookCard(
-                    onTap: () => Navigator.pushNamed(context, AppRoutes.fehresSahihMuslim),
-                    title: 'صحيح مسلم',
-                    subtitle: 'متابعة القراءة من\nالحديث',
-                    number: '١',
-                  ),
-
-                  BookCard(
-                    onTap: () =>  Navigator.pushNamed(context, AppRoutes.fehresReyqdAlSaliheen),
-                    title: 'رياض الصالحين',
-                    subtitle: 'متابعة القراءة من\nالحديث',
-                    number: '١',
-                  ),
-
-                  BookCard(
-                    onTap: () =>  Navigator.pushNamed(context, AppRoutes.fehresHadithNawawi),
-                    title: 'الأربعون النووية',
-                    subtitle: 'متابعة القراءة من\nالحديث',
-                    number: '١',
-                  ),
-                ],
+                  crossAxisCount: 2,
+                  mainAxisSpacing: AppResponsive.heightValue(context, 16),
+                  crossAxisSpacing: AppResponsive.widthValue(context, 20),
+                  childAspectRatio: 0.83,
+                  children: [
+                    BookCard(
+                      onTap: () => openBook(HadithBookType.bukhary),
+                      title: HadithBook.bukhary.title,
+                      subtitle: HadithBook.bukhary.subtitle,
+                      number: HadithBook.bukhary.number,
+                    ),
+                    BookCard(
+                      onTap: () => openBook(HadithBookType.muslim),
+                      title: HadithBook.muslim.title,
+                      subtitle: HadithBook.muslim.subtitle,
+                      number: HadithBook.muslim.number,
+                    ),
+                    BookCard(
+                      onTap: () => openBook(HadithBookType.riyadAlSaliheen),
+                      title: HadithBook.riyadAlSaliheen.title,
+                      subtitle: HadithBook.riyadAlSaliheen.subtitle,
+                      number: HadithBook.riyadAlSaliheen.number,
+                    ),
+                    BookCard(
+                      onTap: () => openBook(HadithBookType.nawawi),
+                      title: HadithBook.nawawi.title,
+                      subtitle: HadithBook.nawawi.subtitle,
+                      number: HadithBook.nawawi.number,
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

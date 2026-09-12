@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/core/theme/app_colors.dart';
+import '../responsive/app_responsive.dart';
 
 import 'custom_text.dart';
 
@@ -36,9 +37,15 @@ class ZekrInfoDialog {
       builder: (dialogContext) {
         return AlertDialog(
           backgroundColor: dialogBgColor,
+          insetPadding: EdgeInsets.symmetric(
+            horizontal: AppResponsive.widthValue(context, 24),
+            vertical: AppResponsive.heightValue(context, 24),
+          ),
 
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.r),
+            borderRadius: BorderRadius.circular(
+              AppResponsive.radius(context, 20),
+            ),
           ),
 
           // =========================
@@ -47,25 +54,27 @@ class ZekrInfoDialog {
           title: Row(
             children: [
               Container(
-                padding: EdgeInsets.all(8.w),
+                padding: EdgeInsets.all(AppResponsive.widthValue(context, 8)),
                 decoration: BoxDecoration(
                   color: AppColors.kPrimary,
-                  borderRadius: BorderRadius.circular(10.r),
+                  borderRadius: BorderRadius.circular(
+                    AppResponsive.radius(context, 10),
+                  ),
                 ),
                 child: Icon(
                   Icons.book_outlined,
                   color: Colors.white,
-                  size: 22.sp,
+                  size: AppResponsive.iconSize(context, 22),
                 ),
               ),
 
-              Gap(12.w),
+              Gap(AppResponsive.widthValue(context, 12)),
 
               Expanded(
                 child: CustomText(
                   title,
                   color: finalTextColor,
-                  fontSize: 18.sp,
+                  fontSize: AppResponsive.fontSize(context, 13),
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -85,20 +94,22 @@ class ZekrInfoDialog {
                 // =========================
                 if (safeSource.isNotEmpty)
                   _buildSourceSection(
+                    context: context,
                     source: safeSource,
                     accentColor: finalAccentColor,
                     textColor: finalTextColor,
                   )
                 else
-                  _buildEmptyInfoSection(),
+                  _buildEmptyInfoSection(context),
 
                 // =========================
                 // COUNT
                 // =========================
                 if (safeCount.isNotEmpty) ...[
-                  Gap(12.h),
+                  Gap(AppResponsive.heightValue(context, 16)),
 
                   _buildCountSection(
+                    context: context,
                     count: safeCount,
                     accentColor: finalAccentColor,
                     textColor: finalTextColor,
@@ -120,10 +131,15 @@ class ZekrInfoDialog {
               style: TextButton.styleFrom(
                 backgroundColor: AppColors.kPrimary,
 
-                padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppResponsive.widthValue(context, 24),
+                  vertical: 12,
+                ),
 
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.r),
+                  borderRadius: BorderRadius.circular(
+                    AppResponsive.radius(context, 10),
+                  ),
                 ),
               ),
 
@@ -131,15 +147,15 @@ class ZekrInfoDialog {
                 'إغلاق',
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
-                fontSize: 14.sp,
+                fontSize: AppResponsive.fontSize(context, 11),
               ),
             ),
           ],
 
           actionsPadding: EdgeInsets.only(
-            bottom: 16.h,
-            left: 16.w,
-            right: 16.w,
+            bottom: AppResponsive.heightValue(context, 16),
+            left: AppResponsive.widthValue(context, 16),
+            right: AppResponsive.widthValue(context, 16),
           ),
         );
       },
@@ -151,21 +167,19 @@ class ZekrInfoDialog {
   // ============================================================
 
   static Widget _buildSourceSection({
+    required BuildContext context,
     required String source,
     required Color accentColor,
     required Color textColor,
   }) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(16.w),
+      padding: EdgeInsets.all(AppResponsive.widthValue(context, 16)),
 
       decoration: BoxDecoration(
         color: accentColor.withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(
-          color: accentColor.withValues(alpha: 0.2),
-          width: 1.w,
-        ),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 12)),
+        border: Border.all(color: accentColor.withValues(alpha: 0.2), width: 1),
       ),
 
       child: Column(
@@ -173,28 +187,32 @@ class ZekrInfoDialog {
         children: [
           Row(
             children: [
-              Icon(Icons.menu_book_rounded, color: accentColor, size: 18.sp),
+              Icon(
+                Icons.menu_book_rounded,
+                color: accentColor,
+                size: AppResponsive.iconSize(context, 18),
+              ),
 
-              Gap(8.w),
+              Gap(AppResponsive.widthValue(context, 8)),
 
               CustomText(
                 'المصدر',
                 color: accentColor,
-                fontSize: 14.sp,
+                fontSize: AppResponsive.fontSize(context, 13),
                 fontWeight: FontWeight.bold,
               ),
             ],
           ),
 
-          Gap(8.h),
+          Gap(8),
 
           Text(
             source,
             style: TextStyle(
-              fontSize: 15.sp,
-              height: 1.8.h,
+              fontSize: AppResponsive.fontSize(context, 15),
+              height: AppResponsive.heightValue(context, 1.8),
               fontWeight: FontWeight.w600,
-              fontFamily: 'Amiri Quran',
+              fontFamily: 'Noon',
               color: textColor,
             ),
           ),
@@ -207,27 +225,31 @@ class ZekrInfoDialog {
   // EMPTY INFORMATION SECTION
   // ============================================================
 
-  static Widget _buildEmptyInfoSection() {
+  static Widget _buildEmptyInfoSection(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(16.w),
+      padding: EdgeInsets.all(AppResponsive.widthValue(context, 16)),
 
       decoration: BoxDecoration(
         color: Colors.grey.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(12.r),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 12)),
       ),
 
       child: Row(
         children: [
-          Icon(Icons.info_outline, color: Colors.grey, size: 20.sp),
+          Icon(
+            Icons.info_outline,
+            color: Colors.grey,
+            size: AppResponsive.iconSize(context, 20),
+          ),
 
-          Gap(12.w),
+          Gap(AppResponsive.widthValue(context, 12)),
 
           Expanded(
             child: CustomText(
               'لا توجد معلومات إضافية',
               color: Colors.grey,
-              fontSize: 14.sp,
+              fontSize: AppResponsive.fontSize(context, 14),
             ),
           ),
         ],
@@ -240,37 +262,42 @@ class ZekrInfoDialog {
   // ============================================================
 
   static Widget _buildCountSection({
+    required BuildContext context,
     required String count,
     required Color accentColor,
     required Color textColor,
   }) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(12.w),
+      padding: EdgeInsets.all(AppResponsive.widthValue(context, 12)),
 
       decoration: BoxDecoration(
         color: accentColor.withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(12.r),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 12)),
       ),
 
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.repeat_rounded, color: accentColor, size: 18.sp),
+          Icon(
+            Icons.repeat_rounded,
+            color: accentColor,
+            size: AppResponsive.iconSize(context, 18),
+          ),
 
-          Gap(8.w),
+          Gap(AppResponsive.widthValue(context, 8)),
 
           CustomText(
             'عدد التكرار: ',
             color: textColor,
-            fontSize: 14.sp,
+            fontSize: AppResponsive.fontSize(context, 12),
             fontWeight: FontWeight.w600,
           ),
 
           CustomText(
             '$count مرة',
             color: accentColor,
-            fontSize: 15.sp,
+            fontSize: AppResponsive.fontSize(context, 12),
             fontWeight: FontWeight.bold,
           ),
         ],

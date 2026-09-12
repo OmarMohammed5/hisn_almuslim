@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hisn_almuslim/core/routing/app_routes.dart';
 import 'package:hisn_almuslim/core/shared/app_bar_widget.dart';
 import 'package:hisn_almuslim/core/theme/app_colors.dart';
+import '../../../../core/responsive/app_responsive.dart';
 import '../../../../core/shared/re_build_scroll_To_Top.dart';
 import '../../../../core/shared/search_field.dart';
 import '../../domain/entities/prophet_story.dart';
@@ -26,7 +27,6 @@ class _StoriesScreenState extends State<StoriesScreen> {
   final ScrollController _scrollController = ScrollController();
   final ValueNotifier<bool> _showScrollToTop = ValueNotifier(false);
 
-
   @override
   void initState() {
     super.initState();
@@ -47,68 +47,77 @@ class _StoriesScreenState extends State<StoriesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final maxWidth = AppResponsive.isDesktop(context)
+        ? 1100.0
+        : AppResponsive.isTablet(context)
+        ? 820.0
+        : double.infinity;
+
     return Scaffold(
       appBar: AppBarWidget(title: "قصص الأنبياء"),
       body: SafeArea(
-        child: Column(
-          children: [
-        
-            // Search with padding
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
-              child:
-              SearchField(
+        child: AppResponsive.constrain(
+          context,
+          maxWidth: maxWidth,
+          child: Column(
+            children: [
+              // Search with padding
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
+                child: SearchField(
                   controller: _searchController,
                   onChanged: (query) {
                     context.read<StoriesCubit>().searchStories(query);
                   },
                   hint: "ابحث في قصص الأنبياء",
+                ),
               ),
-            ),
 
-            // Stories list
-            Expanded(
-              child: BlocBuilder<StoriesCubit, StoriesState>(
-                builder: (context, state) {
-                  if (state is StoriesLoading) {
-                    return const _LoadingView();
-                  }
+              // Stories list
+              Expanded(
+                child: BlocBuilder<StoriesCubit, StoriesState>(
+                  builder: (context, state) {
+                    if (state is StoriesLoading) {
+                      return const _LoadingView();
+                    }
 
-                  if (state is StoriesError) {
-                    return _ErrorView(
-                      message: state.message,
-                      onRetry: () => context.read<StoriesCubit>().loadStories(),
-                    );
-                  }
+                    if (state is StoriesError) {
+                      return _ErrorView(
+                        message: state.message,
+                        onRetry: () =>
+                            context.read<StoriesCubit>().loadStories(),
+                      );
+                    }
 
-                  if (state is StoriesLoaded) {
-                    if (state.filteredStories.isEmpty) {
-                      return _EmptyView(
+                    if (state is StoriesLoaded) {
+                      if (state.filteredStories.isEmpty) {
+                        return _EmptyView(
+                          searchQuery: state.searchQuery,
+                          onClear: () {
+                            _searchController.clear();
+                            context.read<StoriesCubit>().clearSearch();
+                          },
+                        );
+                      }
+
+                      return _StoriesListView(
+                        controller: _scrollController,
+                        stories: state.filteredStories,
+                        totalStories: state.stories.length,
                         searchQuery: state.searchQuery,
-                        onClear: () {
+                        onSearchCleared: () {
                           _searchController.clear();
                           context.read<StoriesCubit>().clearSearch();
                         },
                       );
                     }
 
-                    return _StoriesListView(
-                      controller: _scrollController,
-                      stories: state.filteredStories,
-                      totalStories: state.stories.length,
-                      searchQuery: state.searchQuery,
-                      onSearchCleared: () {
-                        _searchController.clear();
-                        context.read<StoriesCubit>().clearSearch();
-                      },
-                    );
-                  }
-
-                  return const SizedBox.shrink();
-                },
+                    return const SizedBox.shrink();
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       floatingActionButton: ReBuildScrollToTop(
@@ -132,16 +141,16 @@ class _LoadingView extends StatelessWidget {
           SizedBox(
             width: 28.w,
             height: 28.w,
-            child: CupertinoActivityIndicator(
-              color: AppColors.kPrimary,
-            ),
+            child: CupertinoActivityIndicator(color: AppColors.kPrimary),
           ),
           SizedBox(height: 16.h),
           Text(
             'جاري التحميل...',
             style: TextStyle(
               fontSize: 14.sp,
-              color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.5),
+              color: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.color?.withOpacity(0.5),
               fontFamily: 'QuranFont',
             ),
           ),
@@ -164,57 +173,66 @@ class _ErrorView extends StatelessWidget {
 
     return Center(
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 32.w),
+        padding: EdgeInsets.symmetric(
+          horizontal: AppResponsive.widthValue(context, 32),
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              width: 60.w,
-              height: 60.w,
+              width: AppResponsive.widthValue(context, 60),
+              height: AppResponsive.heightValue(context, 60),
               decoration: BoxDecoration(
                 color: Colors.red.withOpacity(0.06),
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 Icons.error_outline_rounded,
-                size: 28.sp,
+                size: AppResponsive.iconSize(context, 28),
                 color: Colors.red.shade300,
               ),
             ),
-            SizedBox(height: 16.h),
+            SizedBox(height: AppResponsive.heightValue(context, 16)),
             Text(
               'حدث خطأ أثناء التحميل',
               style: TextStyle(
-                fontSize: 16.sp,
+                fontSize: AppResponsive.fontSize(context, 16),
                 fontWeight: FontWeight.w600,
                 color: Theme.of(context).textTheme.bodyMedium?.color,
-                fontFamily: 'QuranFont',
+                fontFamily: 'Noon',
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 6.h),
+            SizedBox(height: AppResponsive.heightValue(context, 6)),
             Text(
               message,
               style: TextStyle(
-                fontSize: 13.sp,
-                color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.5),
+                fontSize: AppResponsive.fontSize(context, 13),
+                color: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.color?.withOpacity(0.5),
                 fontFamily: 'QuranFont',
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 20.h),
+            SizedBox(height: AppResponsive.heightValue(context, 20)),
             GestureDetector(
               onTap: onRetry,
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 10.h),
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppResponsive.widthValue(context, 24),
+                  vertical: AppResponsive.heightValue(context, 10),
+                ),
                 decoration: BoxDecoration(
                   color: primaryColor,
-                  borderRadius: BorderRadius.circular(10.r),
+                  borderRadius: BorderRadius.circular(
+                    AppResponsive.radius(context, 10),
+                  ),
                 ),
                 child: Text(
                   'إعادة المحاولة',
                   style: TextStyle(
-                    fontSize: 14.sp,
+                    fontSize: AppResponsive.fontSize(context, 14),
                     fontWeight: FontWeight.w600,
                     color: Colors.white,
                     fontFamily: 'QuranFont',
@@ -242,64 +260,70 @@ class _EmptyView extends StatelessWidget {
 
     return Center(
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 32.w),
+        padding: EdgeInsets.symmetric(
+          horizontal: AppResponsive.widthValue(context, 32),
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              width: 60.w,
-              height: 60.w,
+              width: AppResponsive.widthValue(context, 60),
+              height: AppResponsive.heightValue(context, 60),
               decoration: BoxDecoration(
                 color: primaryColor.withOpacity(0.06),
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 Icons.search_off_rounded,
-                size: 28.sp,
+                size: AppResponsive.iconSize(context, 28),
                 color: primaryColor.withOpacity(0.4),
               ),
             ),
-            SizedBox(height: 16.h),
+            SizedBox(height: AppResponsive.heightValue(context, 16)),
             Text(
               'لا توجد نتائج',
               style: TextStyle(
-                fontSize: 16.sp,
+                fontSize: AppResponsive.fontSize(context, 16),
                 fontWeight: FontWeight.w600,
                 color: Theme.of(context).textTheme.bodyMedium?.color,
-                fontFamily: 'Cairo',
+                fontFamily: 'Noon',
               ),
             ),
             if (searchQuery != null) ...[
-              SizedBox(height: 4.h),
+              SizedBox(height: AppResponsive.heightValue(context, 4)),
               Text(
                 '"$searchQuery"',
                 style: TextStyle(
-                  fontSize: 13.sp,
-                  color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.4),
-                  fontFamily: 'Cairo',
+                  fontSize: AppResponsive.fontSize(context, 13),
+                  color: Theme.of(
+                    context,
+                  ).textTheme.bodyMedium?.color?.withOpacity(0.4),
+                  fontFamily: 'Noon',
                 ),
               ),
             ],
-            SizedBox(height: 4.h),
+            SizedBox(height: AppResponsive.heightValue(context, 4)),
             Text(
               'جرّب البحث باسم نبي أو كلمة أخرى',
               style: TextStyle(
-                fontSize: 13.sp,
-                color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.4),
-                fontFamily: 'QuranFont',
+                fontSize: AppResponsive.fontSize(context, 13),
+                color: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.color?.withOpacity(0.4),
+                fontFamily: 'Noon',
               ),
             ),
             if (searchQuery != null) ...[
-              SizedBox(height: 16.h),
+              SizedBox(height: AppResponsive.heightValue(context, 16)),
               GestureDetector(
                 onTap: onClear,
                 child: Text(
                   'مسح البحث',
                   style: TextStyle(
-                    fontSize: 14.sp,
+                    fontSize: AppResponsive.fontSize(context, 14),
                     fontWeight: FontWeight.w600,
                     color: primaryColor,
-                    fontFamily: 'QuranFont',
+                    fontFamily: 'Noon',
                   ),
                 ),
               ),
@@ -323,14 +347,18 @@ class _StoriesListView extends StatelessWidget {
     required this.stories,
     required this.totalStories,
     this.searchQuery,
-    required this.onSearchCleared, this.controller,
+    required this.onSearchCleared,
+    this.controller,
   });
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       controller: controller,
-      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 4.h),
+      padding: EdgeInsets.symmetric(
+        horizontal: AppResponsive.widthValue(context, 20),
+        vertical: AppResponsive.heightValue(context, 4),
+      ),
       itemCount: stories.length,
       itemBuilder: (context, index) {
         final story = stories[index];
@@ -342,11 +370,12 @@ class _StoriesListView extends StatelessWidget {
             // Result count (only at top)
             if (index == 0 && searchQuery != null)
               Padding(
-                padding: EdgeInsets.only(bottom: 8.h),
+                padding: EdgeInsets.only(
+                  bottom: AppResponsive.heightValue(context, 8),
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                  ],
+                  children: [],
                 ),
               ),
 
@@ -356,19 +385,20 @@ class _StoriesListView extends StatelessWidget {
               index: index,
               onTap: () {
                 Navigator.pushNamed(
-                    context,
+                  context,
                   AppRoutes.storyDetails,
                   arguments: {
-                      'story' : story,
-                    'allStories' : stories,
-                    'currentIndex' : index,
-                  }
+                    'story': story,
+                    'allStories': stories,
+                    'currentIndex': index,
+                  },
                 );
               },
             ),
 
             // Bottom padding for last item
-            if (isLast) SizedBox(height: 12.h),
+            if (isLast)
+              SizedBox(height: AppResponsive.heightValue(context, 12)),
           ],
         );
       },

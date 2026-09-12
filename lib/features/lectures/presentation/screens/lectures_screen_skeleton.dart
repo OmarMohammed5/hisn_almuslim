@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
+
+import '../../../../core/responsive/app_responsive.dart';
 
 class LecturesScreenSkeleton extends StatelessWidget {
   const LecturesScreenSkeleton({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = AppResponsive.isMobile(context);
     return Shimmer.fromColors(
       baseColor: Theme.of(context).brightness == Brightness.dark
           ? Colors.grey.shade800
@@ -17,18 +19,27 @@ class LecturesScreenSkeleton extends StatelessWidget {
       enabled: true,
       child: ListView(
         physics: const BouncingScrollPhysics(),
-        padding: EdgeInsets.fromLTRB(18.w, 18.h, 18.w, 40.h),
+        padding: EdgeInsets.fromLTRB(
+          AppResponsive.widthValue(context, 18),
+          AppResponsive.heightValue(context, 18),
+          AppResponsive.widthValue(context, 18),
+          AppResponsive.heightValue(context, 40),
+        ),
         children: [
           // Continue Listening Skeleton
-          _buildContinueListeningSkeleton(),
-          SizedBox(height: 30.h),
+          _buildContinueListeningSkeleton(context),
+          SizedBox(height: AppResponsive.heightValue(context, 30)),
 
           // Categories Title
           Align(
             alignment: Alignment.centerRight,
-            child: _buildShimmerBox(width: 90.w, height: 21.h, radius: 6.r),
+            child: _buildShimmerBox(
+              width: AppResponsive.widthValue(context, 90),
+              height: AppResponsive.heightValue(context, 21),
+              radius: AppResponsive.radius(context, 6),
+            ),
           ),
-          SizedBox(height: 16.h),
+          SizedBox(height: AppResponsive.heightValue(context, 16)),
 
           // Categories Grid
           GridView.builder(
@@ -36,24 +47,35 @@ class LecturesScreenSkeleton extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             itemCount: 9,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              crossAxisSpacing: 10.w,
-              mainAxisSpacing: 12.h,
-              childAspectRatio: .88,
+              crossAxisCount: isMobile ? 3 : 4,
+              crossAxisSpacing: AppResponsive.widthValue(context, 10),
+              mainAxisSpacing: AppResponsive.heightValue(context, 12),
+              mainAxisExtent: AppResponsive.heightValue(
+                context,
+                isMobile ? 126 : 132,
+              ),
             ),
-            itemBuilder: (_, __) => _buildCategorySkeleton(),
+            itemBuilder: (_, __) => _buildCategorySkeleton(context),
           ),
-          SizedBox(height: 38.h),
+          SizedBox(height: AppResponsive.heightValue(context, 38)),
 
           // Sheikh Title
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _buildShimmerBox(width: 100.w, height: 21.h, radius: 6.r),
-              _buildShimmerBox(width: 45.w, height: 10.h, radius: 5.r),
+              _buildShimmerBox(
+                width: AppResponsive.widthValue(context, 100),
+                height: AppResponsive.heightValue(context, 21),
+                radius: AppResponsive.radius(context, 6),
+              ),
+              _buildShimmerBox(
+                width: AppResponsive.widthValue(context, 45),
+                height: AppResponsive.heightValue(context, 10),
+                radius: AppResponsive.radius(context, 5),
+              ),
             ],
           ),
-          SizedBox(height: 16.h),
+          SizedBox(height: AppResponsive.heightValue(context, 16)),
 
           // Sheikh Grid
           GridView.builder(
@@ -61,12 +83,15 @@ class LecturesScreenSkeleton extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             itemCount: 6,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              crossAxisSpacing: 10.w,
-              mainAxisSpacing: 12.h,
-              childAspectRatio: .65,
+              crossAxisCount: isMobile ? 3 : 4,
+              crossAxisSpacing: AppResponsive.widthValue(context, 10),
+              mainAxisSpacing: AppResponsive.heightValue(context, 12),
+              mainAxisExtent: AppResponsive.heightValue(
+                context,
+                isMobile ? 150 : 158,
+              ),
             ),
-            itemBuilder: (_, __) => _buildSheikhSkeleton(),
+            itemBuilder: (_, __) => _buildSheikhSkeleton(context),
           ),
         ],
       ),
@@ -88,12 +113,12 @@ class LecturesScreenSkeleton extends StatelessWidget {
     );
   }
 
-  Widget _buildContinueListeningSkeleton() {
+  Widget _buildContinueListeningSkeleton(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(14.w),
+      padding: EdgeInsets.all(AppResponsive.widthValue(context, 14)),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20.r),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 20)),
         color: Colors.white,
       ),
       child: Column(
@@ -101,41 +126,81 @@ class LecturesScreenSkeleton extends StatelessWidget {
         children: [
           Row(
             children: [
-              _buildShimmerBox(width: 22.w, height: 22.w, radius: 7.r),
-              SizedBox(width: 8.w),
-              _buildShimmerBox(width: 105.w, height: 14.h, radius: 5.r),
+              _buildShimmerBox(
+                width: AppResponsive.widthValue(context, 22),
+                height: AppResponsive.widthValue(context, 22),
+                radius: AppResponsive.radius(context, 7),
+              ),
+              SizedBox(width: AppResponsive.widthValue(context, 8)),
+              _buildShimmerBox(
+                width: AppResponsive.widthValue(context, 105),
+                height: AppResponsive.heightValue(context, 14),
+                radius: AppResponsive.radius(context, 5),
+              ),
               const Spacer(),
-              _buildShimmerBox(width: 42.w, height: 11.h, radius: 5.r),
+              _buildShimmerBox(
+                width: AppResponsive.widthValue(context, 42),
+                height: AppResponsive.heightValue(context, 11),
+                radius: AppResponsive.radius(context, 5),
+              ),
             ],
           ),
-          SizedBox(height: 14.h),
+          SizedBox(height: AppResponsive.heightValue(context, 14)),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              _buildShimmerBox(width: 105.w, height: 72.h, radius: 14.r),
-              SizedBox(width: 12.w),
+              _buildShimmerBox(
+                width: AppResponsive.widthValue(context, 105),
+                height: AppResponsive.heightValue(context, 72),
+                radius: AppResponsive.radius(context, 14),
+              ),
+              SizedBox(width: AppResponsive.widthValue(context, 12)),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildShimmerBox(width: double.infinity, height: 13.h, radius: 5.r),
-                    SizedBox(height: 8.h),
-                    _buildShimmerBox(width: 145.w, height: 11.h, radius: 5.r),
-                    SizedBox(height: 8.h),
-                    _buildShimmerBox(width: 95.w, height: 9.h, radius: 5.r),
+                    _buildShimmerBox(
+                      width: double.infinity,
+                      height: AppResponsive.heightValue(context, 13),
+                      radius: AppResponsive.radius(context, 5),
+                    ),
+                    SizedBox(height: AppResponsive.heightValue(context, 8)),
+                    _buildShimmerBox(
+                      width: AppResponsive.widthValue(context, 145),
+                      height: AppResponsive.heightValue(context, 11),
+                      radius: AppResponsive.radius(context, 5),
+                    ),
+                    SizedBox(height: AppResponsive.heightValue(context, 8)),
+                    _buildShimmerBox(
+                      width: AppResponsive.widthValue(context, 95),
+                      height: AppResponsive.heightValue(context, 9),
+                      radius: AppResponsive.radius(context, 5),
+                    ),
                   ],
                 ),
               ),
             ],
           ),
-          SizedBox(height: 14.h),
-          _buildShimmerBox(width: double.infinity, height: 5.h, radius: 10.r),
-          SizedBox(height: 12.h),
+          SizedBox(height: AppResponsive.heightValue(context, 14)),
+          _buildShimmerBox(
+            width: double.infinity,
+            height: AppResponsive.heightValue(context, 5),
+            radius: AppResponsive.radius(context, 10),
+          ),
+          SizedBox(height: AppResponsive.heightValue(context, 12)),
           Row(
             children: [
-              _buildShimmerBox(width: 70.w, height: 10.h, radius: 5.r),
+              _buildShimmerBox(
+                width: AppResponsive.widthValue(context, 70),
+                height: AppResponsive.heightValue(context, 10),
+                radius: AppResponsive.radius(context, 5),
+              ),
               const Spacer(),
-              _buildShimmerBox(width: 85.w, height: 34.h, radius: 10.r),
+              _buildShimmerBox(
+                width: AppResponsive.widthValue(context, 85),
+                height: AppResponsive.heightValue(context, 34),
+                radius: AppResponsive.radius(context, 10),
+              ),
             ],
           ),
         ],
@@ -143,41 +208,68 @@ class LecturesScreenSkeleton extends StatelessWidget {
     );
   }
 
-  Widget _buildCategorySkeleton() {
+  Widget _buildCategorySkeleton(BuildContext context) {
     return Container(
-      height: 118.h,
+      height: AppResponsive.heightValue(context, 118),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(18.r),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 18)),
         color: Colors.white,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _buildShimmerBox(width: 52.w, height: 52.w, radius: 100.r),
-          SizedBox(height: 12.h),
-          _buildShimmerBox(width: 70.w, height: 11.h, radius: 5.r),
+          _buildShimmerBox(
+            width: AppResponsive.widthValue(context, 52),
+            height: AppResponsive.widthValue(context, 52),
+            radius: AppResponsive.radius(context, 100),
+          ),
+          SizedBox(height: AppResponsive.heightValue(context, 12)),
+          _buildShimmerBox(
+            width: AppResponsive.widthValue(context, 70),
+            height: AppResponsive.heightValue(context, 11),
+            radius: AppResponsive.radius(context, 5),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildSheikhSkeleton() {
+  Widget _buildSheikhSkeleton(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 8.w),
+      padding: EdgeInsets.symmetric(
+        vertical: AppResponsive.heightValue(context, 12),
+        horizontal: AppResponsive.widthValue(context, 8),
+      ),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(18.r),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 18)),
         color: Colors.white,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _buildShimmerBox(width: 58.w, height: 58.w, radius: 100.r),
-          SizedBox(height: 9.h),
-          _buildShimmerBox(width: 70.w, height: 10.h, radius: 5.r),
-          SizedBox(height: 7.h),
-          _buildShimmerBox(width: 45.w, height: 8.h, radius: 5.r),
-          SizedBox(height: 9.h),
-          _buildShimmerBox(width: 12.w, height: 12.w, radius: 100.r),
+          _buildShimmerBox(
+            width: AppResponsive.widthValue(context, 58),
+            height: AppResponsive.widthValue(context, 58),
+            radius: AppResponsive.radius(context, 100),
+          ),
+          SizedBox(height: AppResponsive.heightValue(context, 9)),
+          _buildShimmerBox(
+            width: AppResponsive.widthValue(context, 70),
+            height: AppResponsive.heightValue(context, 10),
+            radius: AppResponsive.radius(context, 5),
+          ),
+          SizedBox(height: AppResponsive.heightValue(context, 7)),
+          _buildShimmerBox(
+            width: AppResponsive.widthValue(context, 45),
+            height: AppResponsive.heightValue(context, 8),
+            radius: AppResponsive.radius(context, 5),
+          ),
+          SizedBox(height: AppResponsive.heightValue(context, 9)),
+          _buildShimmerBox(
+            width: AppResponsive.widthValue(context, 12),
+            height: AppResponsive.widthValue(context, 12),
+            radius: AppResponsive.radius(context, 100),
+          ),
         ],
       ),
     );

@@ -4,6 +4,7 @@ import 'package:hisn_almuslim/core/shared/app_bar_widget.dart';
 import 'package:flutter/services.dart';
 import '../../../../core/helpers/story_share_data.dart';
 import '../../../../core/helpers/story_share_helper.dart';
+import '../../../../core/responsive/app_responsive.dart';
 import '../../../../core/shared/custom_snack_bar.dart';
 import '../../domain/entities/prophet_story.dart';
 import '../widgets/reading_toolbar.dart';
@@ -70,10 +71,12 @@ class _StoryDetailsScreenState extends State<StoryDetailsScreen> {
 
   void _copyStory() {
     final story = widget.allStories[_currentIndex];
-    Clipboard.setData(ClipboardData(text: '${story.prophet}\n\n${story.story}'));
+    Clipboard.setData(
+      ClipboardData(text: '${story.prophet}\n\n${story.story}'),
+    );
     ScaffoldMessenger.of(context).showSnackBar(
       customSnackBar(
-          'تم نسخ القصة',
+        'تم نسخ القصة',
         Icons.check_circle,
         context,
         lightColor: Colors.teal,
@@ -90,7 +93,7 @@ class _StoryDetailsScreenState extends State<StoryDetailsScreen> {
     final primaryColor = Theme.of(context).primaryColor;
 
     return Scaffold(
-      appBar: AppBarWidget(title:   'قصص الأنبياء',),
+      appBar: AppBarWidget(title: 'قصص الأنبياء'),
       body: Column(
         children: [
           // Minimal header
@@ -104,7 +107,10 @@ class _StoryDetailsScreenState extends State<StoryDetailsScreen> {
           Expanded(
             child: SingleChildScrollView(
               controller: _scrollController,
-              padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 8.h),
+              padding: EdgeInsets.symmetric(
+                horizontal: AppResponsive.widthValue(context, 22),
+                vertical: AppResponsive.heightValue(context, 8),
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -118,32 +124,32 @@ class _StoryDetailsScreenState extends State<StoryDetailsScreen> {
                     ),
                     textAlign: TextAlign.justify,
                   ),
-                  SizedBox(height: 20.h),
+                  SizedBox(height: AppResponsive.heightValue(context, 20)),
 
                   // Subtle end marker
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        width: 20.w,
-                        height: 1.h,
+                        width: AppResponsive.widthValue(context, 20),
+                        height: AppResponsive.heightValue(context, 1),
                         color: primaryColor.withOpacity(0.2),
                       ),
-                      SizedBox(width: 8.w),
+                      SizedBox(width: AppResponsive.widthValue(context, 8)),
                       Icon(
                         Icons.star_rounded,
-                        size: 12.sp,
+                        size: AppResponsive.iconSize(context, 12),
                         color: primaryColor.withOpacity(0.3),
                       ),
-                      SizedBox(width: 8.w),
+                      SizedBox(width: AppResponsive.widthValue(context, 8)),
                       Container(
-                        width: 20.w,
-                        height: 1.h,
+                        width: AppResponsive.widthValue(context, 20),
+                        height: AppResponsive.heightValue(context, 1),
                         color: primaryColor.withOpacity(0.2),
                       ),
                     ],
                   ),
-                  SizedBox(height: 16.h),
+                  SizedBox(height: AppResponsive.heightValue(context, 16)),
                 ],
               ),
             ),
@@ -181,4 +187,3 @@ class _StoryDetailsScreenState extends State<StoryDetailsScreen> {
     );
   }
 }
-

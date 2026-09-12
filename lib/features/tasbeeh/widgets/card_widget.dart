@@ -8,6 +8,7 @@ import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 import 'package:hisn_almuslim/features/tasbeeh/data/cubit/counter_cubit.dart';
 
+import '../../../core/responsive/app_responsive.dart';
 import '../../../core/theme/app_colors.dart';
 
 class CardWidget extends StatelessWidget {
@@ -26,30 +27,41 @@ class CardWidget extends StatelessWidget {
         ? Colors.white.withValues(alpha: 0.07)
         : AppColors.kBorderLight;
 
-
     return BlocBuilder<CounterCubit, Map<int, int>>(
       buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
         final total = context.read<CounterCubit>().total;
 
         return Padding(
-          padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 16.h),
+          padding: EdgeInsets.fromLTRB(
+            AppResponsive.widthValue(context, 16),
+            AppResponsive.heightValue(context, 8),
+            AppResponsive.widthValue(context, 16),
+            AppResponsive.heightValue(context, 16),
+          ),
           child: Container(
-            constraints: BoxConstraints(minHeight: 176.h, maxHeight: 205.h),
+            constraints: BoxConstraints(
+              minHeight: AppResponsive.widthValue(context, 176),
+              maxHeight: AppResponsive.widthValue(context, 205),
+            ),
             decoration: BoxDecoration(
               color: bgColor,
               border: Border.all(color: borderColor, width: 1),
-              borderRadius: BorderRadius.circular(28.r),
+              borderRadius: BorderRadius.circular(
+                AppResponsive.radius(context, 28),
+              ),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withValues(alpha: isDark ? .20 : .08),
-                  blurRadius: 28.r,
+                  blurRadius: 12.r,
                   offset: Offset(0, 12.h),
                 ),
               ],
             ),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(28.r),
+              borderRadius: BorderRadius.circular(
+                AppResponsive.radius(context, 28),
+              ),
               child: Stack(
                 children: [
                   // Very subtle identity accent — no heavy glow/gradient.
@@ -57,8 +69,8 @@ class CardWidget extends StatelessWidget {
                     top: 0,
                     right: 0,
                     child: Container(
-                      width: 92.w,
-                      height: 5.h,
+                      width: AppResponsive.widthValue(context, 92),
+                      height: AppResponsive.heightValue(context, 5),
                       decoration: const BoxDecoration(
                         color: _green,
                         borderRadius: BorderRadius.only(
@@ -68,7 +80,12 @@ class CardWidget extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.fromLTRB(18.w, 18.h, 18.w, 17.h),
+                    padding: EdgeInsets.fromLTRB(
+                      AppResponsive.widthValue(context, 18),
+                      AppResponsive.heightValue(context, 18),
+                      AppResponsive.widthValue(context, 18),
+                      AppResponsive.heightValue(context, 17),
+                    ),
                     child: Column(
                       children: [
                         Row(
@@ -77,8 +94,14 @@ class CardWidget extends StatelessWidget {
                               child: Row(
                                 children: [
                                   Container(
-                                    width: 42.w,
-                                    height: 42.w,
+                                    width: AppResponsive.widthValue(
+                                      context,
+                                      42,
+                                    ),
+                                    height: AppResponsive.heightValue(
+                                      context,
+                                      42,
+                                    ),
                                     decoration: BoxDecoration(
                                       color: isDark
                                           ? _green.withValues(alpha: .18)
@@ -90,11 +113,11 @@ class CardWidget extends StatelessWidget {
                                     ),
                                     child: Icon(
                                       FlutterIslamicIcons.tasbihHand,
-                                      size: 19.sp,
+                                      size: AppResponsive.iconSize(context, 19),
                                       color: isDark ? _mint : _green,
                                     ),
                                   ),
-                                  Gap(10.w),
+                                  Gap(AppResponsive.widthValue(context, 10)),
                                   Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -104,7 +127,10 @@ class CardWidget extends StatelessWidget {
                                         color: isDark
                                             ? Colors.white
                                             : const Color(0xFF18332D),
-                                        fontSize: 14.sp,
+                                        fontSize: AppResponsive.fontSize(
+                                          context,
+                                          14,
+                                        ),
                                         fontWeight: FontWeight.w800,
                                       ),
                                     ],
@@ -118,7 +144,7 @@ class CardWidget extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Gap(17.h),
+                        Gap(AppResponsive.heightValue(context, 17)),
                         Expanded(
                           child: Row(
                             children: [
@@ -128,9 +154,9 @@ class CardWidget extends StatelessWidget {
                                   isDark: isDark,
                                 ),
                               ),
-                              Gap(16.w),
+                              Gap(AppResponsive.widthValue(context, 16)),
                               SizedBox(
-                                width: 118.w,
+                                width: AppResponsive.widthValue(context, 118),
                                 child: _ProgressRing(
                                   total: total,
                                   isDark: isDark,
@@ -177,10 +203,10 @@ class _TotalCounter extends StatelessWidget {
         CustomText(
           'إجمالي التسبيحات',
           color: muted,
-          fontSize: 10.sp,
+          fontSize: AppResponsive.fontSize(context, 10),
           fontWeight: FontWeight.w600,
         ),
-        Gap(4.h),
+        Gap(AppResponsive.widthValue(context, 4)),
         AnimatedSwitcher(
           duration: const Duration(milliseconds: 180),
           switchInCurve: Curves.easeOutBack,
@@ -193,8 +219,10 @@ class _TotalCounter extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.fade,
             style: TextStyle(
-              fontSize: total > 99999 ? 29.sp : 34.sp,
-              height: 1,
+              fontSize: total > 99999
+                  ? AppResponsive.fontSize(context, 29)
+                  : AppResponsive.fontSize(context, 34),
+              height: AppResponsive.heightValue(context, 1),
               fontWeight: FontWeight.w900,
               color: primary,
               fontFamily: 'Cairo',
@@ -202,23 +230,25 @@ class _TotalCounter extends StatelessWidget {
             ),
           ),
         ),
-        Gap(8.h),
+        Gap(AppResponsive.widthValue(context, 8)),
         Row(
           children: [
             Container(
-              width: 28.w,
-              height: 3.h,
+              width: AppResponsive.widthValue(context, 28),
+              height: AppResponsive.heightValue(context, 3),
               decoration: BoxDecoration(
                 color: CardWidget._green,
-                borderRadius: BorderRadius.circular(10.r),
+                borderRadius: BorderRadius.circular(
+                  AppResponsive.radius(context, 10),
+                ),
               ),
             ),
-            Gap(6.w),
+            Gap(AppResponsive.widthValue(context, 6)),
             Flexible(
               child: CustomText(
                 total == 0 ? 'ابدأ أول تسبيحة' : 'ما شاء الله، استمر',
                 color: muted,
-                fontSize: 9.sp,
+                fontSize: AppResponsive.fontSize(context, 9),
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -241,8 +271,8 @@ class _ProgressRing extends StatelessWidget {
     final current = total % 33 == 0 && total > 0 ? 33 : total % 33;
 
     return SizedBox(
-      width: 108.w,
-      height: 108.w,
+      width: AppResponsive.widthValue(context, 108),
+      height: AppResponsive.heightValue(context, 108),
       child: TweenAnimationBuilder<double>(
         tween: Tween(begin: 0, end: progress),
         duration: const Duration(milliseconds: 260),
@@ -258,7 +288,7 @@ class _ProgressRing extends StatelessWidget {
                     '$current / 33',
                     style: TextStyle(
                       fontFamily: 'Cairo',
-                      fontSize: 10.5.sp,
+                      fontSize: AppResponsive.fontSize(context, 10.5),
                       fontWeight: FontWeight.w800,
                       color: isDark
                           ? Colors.white.withValues(alpha: .82)
@@ -269,7 +299,7 @@ class _ProgressRing extends StatelessWidget {
                     'هذه الدورة',
                     style: TextStyle(
                       fontFamily: 'Cairo',
-                      fontSize: 7.5.sp,
+                      fontSize: AppResponsive.fontSize(context, 8),
                       fontWeight: FontWeight.w500,
                       color: isDark
                           ? Colors.white.withValues(alpha: .42)
@@ -347,14 +377,21 @@ class _ResetButton extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(14.r),
+          borderRadius: BorderRadius.circular(
+            AppResponsive.radius(context, 14),
+          ),
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 11.w, vertical: 8.h),
+            padding: EdgeInsets.symmetric(
+              horizontal: AppResponsive.widthValue(context, 11),
+              vertical: AppResponsive.heightValue(context, 8),
+            ),
             decoration: BoxDecoration(
               color: isDark
                   ? Colors.white.withValues(alpha: .06)
                   : const Color(0xFFF3F7F5),
-              borderRadius: BorderRadius.circular(14.r),
+              borderRadius: BorderRadius.circular(
+                AppResponsive.radius(context, 14),
+              ),
               border: Border.all(
                 color: isDark
                     ? Colors.white.withValues(alpha: .08)
@@ -366,14 +403,14 @@ class _ResetButton extends StatelessWidget {
               children: [
                 Icon(
                   Icons.restart_alt_rounded,
-                  size: 15.sp,
+                  size: AppResponsive.iconSize(context, 15),
                   color: foreground.withValues(alpha: .68),
                 ),
-                Gap(4.w),
+                Gap(AppResponsive.widthValue(context, 4)),
                 CustomText(
                   'إعادة',
                   color: foreground.withValues(alpha: .68),
-                  fontSize: 9.5.sp,
+                  fontSize: AppResponsive.fontSize(context, 9.5),
                   fontWeight: FontWeight.w700,
                 ),
               ],

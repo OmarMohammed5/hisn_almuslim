@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 
+import '../../../core/responsive/app_responsive.dart';
 import '../../../core/theme/app_colors.dart';
 
 class HadithCard extends StatelessWidget {
@@ -32,23 +33,31 @@ class HadithCard extends StatelessWidget {
         : AppColors.kBorderLight;
 
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 10.h),
+      margin: EdgeInsets.symmetric(
+        horizontal: AppResponsive.widthValue(context, 4),
+        vertical: AppResponsive.heightValue(context, 10),
+      ),
       child: Stack(
         children: [
           // Main Card
           Container(
-            padding: EdgeInsets.all(8.w),
+            padding: EdgeInsets.all(AppResponsive.widthValue(context, 8)),
             decoration: BoxDecoration(
               color: bgColor,
-              border: Border.all(color: borderColor, width: 1),
-              borderRadius: BorderRadius.circular(16.r),
+              border: Border.all(
+                color: borderColor,
+                width: AppResponsive.widthValue(context, 1),
+              ),
+              borderRadius: BorderRadius.circular(
+                AppResponsive.radius(context, 16),
+              ),
               boxShadow: [
                 BoxShadow(
                   color: isDark
                       ? Colors.black.withValues(alpha: 0.3)
                       : Colors.grey.withValues(alpha: 0.1),
-                  blurRadius: 20,
-                  offset: Offset(0, 8),
+                  blurRadius: 2,
+                  offset: Offset(0, 2),
                 ),
               ],
             ),
@@ -58,43 +67,49 @@ class HadithCard extends StatelessWidget {
                 // Top Ornamental Border
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _buildOrnament(isDark),
-                  ],
+                  children: [_buildOrnament(context, isDark)],
                 ),
-                Gap(12.h),
+                Gap(AppResponsive.heightValue(context, 16)),
 
                 // Header with Index
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    _buildIndexBadge(index, isDark),
+                    _buildIndexBadge(context, index, isDark),
                     Row(
                       children: [
-                        _buildIconButton(Icons.copy_rounded, onCopy, isDark),
-                        Gap(8.w),
-                        _buildIconButton(Icons.share_rounded, onShare, isDark),
+                        _buildIconButton(
+                          context,
+                          Icons.copy_rounded,
+                          onCopy,
+                          isDark,
+                        ),
+                        Gap(AppResponsive.widthValue(context, 8)),
+                        _buildIconButton(
+                          context,
+                          Icons.share_rounded,
+                          onShare,
+                          isDark,
+                        ),
                       ],
                     ),
                   ],
                 ),
-                Gap(16.h),
+                Gap(AppResponsive.heightValue(context, 16)),
 
                 // Hadith Content
                 _buildHighlightedText(
                   context,
                   content.trim(),
                   searchQuery,
-                  fontSize.sp,
+                  fontSize,
                 ),
-                Gap(16.h),
+                Gap(AppResponsive.heightValue(context, 16)),
 
                 // Bottom Ornamental Border
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _buildOrnament(isDark),
-                  ],
+                  children: [_buildOrnament(context, isDark)],
                 ),
               ],
             ),
@@ -102,36 +117,36 @@ class HadithCard extends StatelessWidget {
 
           // Decorative corner accents
           Positioned(
-            top: -4.h,
-            left: -4.w,
-            child: _buildCornerAccent(isDark),
+            top: AppResponsive.heightValue(context, -4),
+            left: AppResponsive.widthValue(context, -4),
+            child: _buildCornerAccent(context, isDark),
           ),
           Positioned(
-            top: -4.h,
-            right: -4.w,
-            child: _buildCornerAccent(isDark),
+            top: AppResponsive.heightValue(context, -4),
+            right: AppResponsive.widthValue(context, -4),
+            child: _buildCornerAccent(context, isDark),
           ),
           Positioned(
-            bottom: -4.h,
-            left: -4.w,
-            child: _buildCornerAccent(isDark),
+            bottom: AppResponsive.heightValue(context, -4),
+            left: AppResponsive.widthValue(context, -4),
+            child: _buildCornerAccent(context, isDark),
           ),
           Positioned(
-            bottom: -4.h,
-            right: -4.w,
-            child: _buildCornerAccent(isDark),
+            bottom: AppResponsive.heightValue(context, -4),
+            right: AppResponsive.widthValue(context, -4),
+            child: _buildCornerAccent(context, isDark),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildOrnament(bool isDark) {
+  Widget _buildOrnament(BuildContext context, bool isDark) {
     return Row(
       children: [
         Container(
-          width: 30.w,
-          height: 2.h,
+          width: AppResponsive.widthValue(context, 30),
+          height: AppResponsive.heightValue(context, 2),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
@@ -141,16 +156,16 @@ class HadithCard extends StatelessWidget {
             ),
           ),
         ),
-        Gap(8.w),
+        Gap(AppResponsive.widthValue(context, 8)),
         Icon(
           Icons.dark_mode_outlined,
-          size: 14.sp,
+          size: AppResponsive.iconSize(context, 14),
           color: isDark ? Colors.teal.shade600 : Colors.teal.shade400,
         ),
-        Gap(8.w),
+        Gap(AppResponsive.widthValue(context, 8)),
         Container(
-          width: 30.w,
-          height: 2.h,
+          width: AppResponsive.widthValue(context, 30),
+          height: AppResponsive.heightValue(context, 2),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
@@ -164,31 +179,31 @@ class HadithCard extends StatelessWidget {
     );
   }
 
-  Widget _buildIndexBadge(int index, bool isDark) {
+  Widget _buildIndexBadge(BuildContext context, int index, bool isDark) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
+      padding: EdgeInsets.symmetric(
+        horizontal: AppResponsive.widthValue(context, 12),
+        vertical: AppResponsive.heightValue(context, 4),
+      ),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [
-            Colors.teal.shade400,
-            Colors.teal.shade700,
-          ],
+          colors: [Colors.teal.shade400, Colors.teal.shade700],
         ),
-        borderRadius: BorderRadius.circular(20.r),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 20)),
       ),
       child: Row(
         children: [
           Icon(
             Icons.format_quote_rounded,
-            size: 14.sp,
+            size: AppResponsive.iconSize(context, 14),
             color: Colors.white,
           ),
-          Gap(6.w),
+          Gap(AppResponsive.widthValue(context, 6)),
           Text(
             'حديث ${index + 1}',
             style: TextStyle(
               color: Colors.white,
-              fontSize: 12.sp,
+              fontSize: AppResponsive.fontSize(context, 12),
               fontWeight: FontWeight.w600,
               fontFamily: "Cairo",
             ),
@@ -198,11 +213,16 @@ class HadithCard extends StatelessWidget {
     );
   }
 
-  Widget _buildIconButton(IconData icon, VoidCallback? onTap, bool isDark) {
+  Widget _buildIconButton(
+    BuildContext context,
+    IconData icon,
+    VoidCallback? onTap,
+    bool isDark,
+  ) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.all(8.w),
+        padding: EdgeInsets.all(AppResponsive.widthValue(context, 8)),
         decoration: BoxDecoration(
           color: isDark
               ? Colors.white.withValues(alpha: 0.05)
@@ -211,30 +231,30 @@ class HadithCard extends StatelessWidget {
         ),
         child: Icon(
           icon,
-          size: 18.sp,
+          size: AppResponsive.iconSize(context, 18),
           color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
         ),
       ),
     );
   }
 
-  Widget _buildCornerAccent(bool isDark) {
+  Widget _buildCornerAccent(BuildContext context, bool isDark) {
     return Container(
-      width: 16.w,
-      height: 16.w,
+      width: AppResponsive.widthValue(context, 16),
+      height: AppResponsive.heightValue(context, 16),
       decoration: BoxDecoration(
         color: isDark ? Colors.teal.shade800 : Colors.teal.shade100,
-        borderRadius: BorderRadius.circular(4.r),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 4)),
       ),
     );
   }
 
   Widget _buildHighlightedText(
-      BuildContext context,
-      String text,
-      String query,
-      double fontSize,
-      ) {
+    BuildContext context,
+    String text,
+    String query,
+    double fontSize,
+  ) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     if (query.isEmpty) {
@@ -243,8 +263,8 @@ class HadithCard extends StatelessWidget {
         textAlign: TextAlign.center,
         style: TextStyle(
           fontSize: fontSize,
-          height: 2.4.h,
-          fontFamily: "Uthmani",
+          height: AppResponsive.heightValue(context, 2.3),
+          fontFamily: "Noon",
           color: isDark ? Colors.white : Color(0xFF1A1A2E),
           letterSpacing: 0.8,
           wordSpacing: 2,
@@ -259,8 +279,8 @@ class HadithCard extends StatelessWidget {
       text: TextSpan(
         style: TextStyle(
           fontSize: fontSize,
-          height: 2.4.h,
-          fontFamily: "Uthmani",
+          height: AppResponsive.heightValue(context, 2.3),
+          fontFamily: "Noon",
           color: isDark ? Colors.white : Color(0xFF1A1A2E),
           letterSpacing: 0.8,
           wordSpacing: 2,
@@ -271,11 +291,11 @@ class HadithCard extends StatelessWidget {
   }
 
   List<TextSpan> _buildHighlightSpans(
-      String text,
-      String query,
-      BuildContext context,
-      double fontSize,
-      ) {
+    String text,
+    String query,
+    BuildContext context,
+    double fontSize,
+  ) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final spans = <TextSpan>[];
     final lowerText = text.toLowerCase();

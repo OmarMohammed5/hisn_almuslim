@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:hisn_almuslim/features/jami%20dua/data/models/etiquette_item.dart';
+import '../domain/entities/jami_dua_category.dart';
 
 import '../../../core/theme/app_colors.dart';
+import '../../../core/responsive/app_responsive.dart';
 
 class EtiquetteCard extends StatefulWidget {
-  final EtiquetteItem item;
+  final JamiDuaItem item;
   final VoidCallback onCopy;
   final VoidCallback onShare;
   final double fontSize;
@@ -37,12 +37,12 @@ class _EtiquetteCardState extends State<EtiquetteCard> {
 
 
     return Container(
-      margin: EdgeInsets.only(bottom: 16.h),
-      padding: EdgeInsets.all(20.w),
+      margin: EdgeInsets.only(bottom: AppResponsive.heightValue(context, 16)),
+      padding: EdgeInsets.all(AppResponsive.widthValue(context, 20)),
       decoration: BoxDecoration(
         color: bgColor,
         border: Border.all(color: borderColor, width: 1),
-        borderRadius: BorderRadius.circular(18.r),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 18)),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.05),
@@ -64,7 +64,7 @@ class _EtiquetteCardState extends State<EtiquetteCard> {
                 onTap: widget.onCopy,
                 isDark: isDark,
               ),
-              Gap(12.w),
+              Gap(AppResponsive.widthValue(context, 12)),
               _CustomActionButton(
                 icon: Icons.share_outlined,
                 label: 'مشاركة',
@@ -74,47 +74,58 @@ class _EtiquetteCardState extends State<EtiquetteCard> {
             ],
           ),
 
-          Gap(12.h),
+          Gap(AppResponsive.heightValue(context, 12)),
 
           Divider(
-            height: 1.h,
+            height: AppResponsive.heightValue(context, 1),
             color: isDark ? Colors.white12 : Colors.black12,
             thickness: 1,
           ),
 
-          Gap(16.h),
+          Gap(AppResponsive.heightValue(context, 16)),
 
           Text(
-            widget.item.arabic,
+            widget.item.content,
             textDirection: TextDirection.rtl,
             style: TextStyle(
               fontFamily: 'Noon',
-              fontSize: widget.fontSize.sp,
-              height: 1.8.h,
+              fontSize: AppResponsive.fontSize(context, widget.fontSize),
+              height: 1.8,
               fontWeight: FontWeight.w600,
               color: isDark ? const Color(0xFFF5F5F5) : const Color(0xFF1A1A1A),
             ),
           ),
 
-          Gap(12.h),
+          Gap(AppResponsive.heightValue(context, 12)),
 
-          Row(
-            children: [
-              Icon(Icons.bookmark_border, size: 16.sp, color: Colors.grey.shade600),
-              Gap(6.w),
-              Text(
-                widget.item.reference,
-                style: TextStyle(
-                  fontFamily: 'Noon',
-                  fontSize: 13.sp,
-                  color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
-                  fontStyle: FontStyle.italic,
+          if (widget.item.reference?.trim().isNotEmpty ?? false)
+            Row(
+              children: [
+                Icon(
+                  Icons.bookmark_border,
+                  size: AppResponsive.iconSize(context, 16),
+                  color: Colors.grey.shade600,
                 ),
-              ),
-            ],
-          ),
+                Gap(AppResponsive.widthValue(context, 6)),
+                Expanded(
+                  child: Text(
+                    widget.item.reference!,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontFamily: 'Noon',
+                      fontSize: AppResponsive.fontSize(context, 13),
+                      color: isDark
+                          ? Colors.grey.shade400
+                          : Colors.grey.shade600,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ),
+              ],
+            ),
 
-          Gap(12.h),
+          Gap(AppResponsive.heightValue(context, 12)),
 
           if (widget.item.hadithText.trim().isNotEmpty)
             Material(
@@ -126,7 +137,7 @@ class _EtiquetteCardState extends State<EtiquetteCard> {
                   });
                 },
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4.h),
+                  padding: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 4), vertical: AppResponsive.heightValue(context, 4)),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -135,14 +146,14 @@ class _EtiquetteCardState extends State<EtiquetteCard> {
                             ? Icons.keyboard_arrow_up
                             : Icons.keyboard_arrow_down,
                         color: Colors.teal.shade700,
-                        size: 20.sp,
+                        size: AppResponsive.iconSize(context, 20),
                       ),
-                      Gap(6.w),
+                      Gap(AppResponsive.widthValue(context, 6)),
                       Text(
                         _showHadith ? 'إخفاء الدليل' : 'عرض الدليل من السنة',
                         style: TextStyle(
                           fontFamily: 'Noon',
-                          fontSize: 14.sp,
+                          fontSize: AppResponsive.fontSize(context, 14),
                           color: Colors.teal.shade700,
                           fontWeight: FontWeight.w600,
                         ),
@@ -156,14 +167,14 @@ class _EtiquetteCardState extends State<EtiquetteCard> {
           AnimatedCrossFade(
             firstChild: const SizedBox.shrink(),
             secondChild: Padding(
-              padding: EdgeInsets.only(top: 12.h),
+              padding: EdgeInsets.only(top: AppResponsive.heightValue(context, 12)),
               child: Container(
-                padding: EdgeInsets.all(14.w),
+                padding: EdgeInsets.all(AppResponsive.widthValue(context, 14)),
                 decoration: BoxDecoration(
                   color: isDark
                       ? Colors.black.withOpacity(0.3)
                       : const Color(0xffF3F7F5),
-                  borderRadius: BorderRadius.circular(12.r),
+                  borderRadius: BorderRadius.circular(AppResponsive.radius(context, 12)),
                   border: Border.all(
                     color: Colors.teal.shade700.withOpacity(0.1),
                     width: 1,
@@ -174,8 +185,8 @@ class _EtiquetteCardState extends State<EtiquetteCard> {
                   textDirection: TextDirection.rtl,
                   style: TextStyle(
                     fontFamily: 'Noon',
-                    fontSize: widget.fontSize.sp,
-                    height: 1.7.h,
+                    fontSize: AppResponsive.fontSize(context, widget.fontSize),
+                    height: 1.7,
                     color: isDark ? const Color(0xFFE0E0E0) : const Color(0xff2F2F2F),
                   ),
                 ),
@@ -210,15 +221,15 @@ class _CustomActionButton extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        borderRadius: BorderRadius.circular(12.r),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 12)),
         onTap: onTap,
         splashColor: Colors.teal.shade200.withOpacity(0.4),
         highlightColor: Colors.teal.shade200.withOpacity(0.2),
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+          padding: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 12), vertical: AppResponsive.heightValue(context, 8)),
           decoration: BoxDecoration(
             color: isDark ? const Color(0xFF2C2C2E) : Colors.grey.shade100,
-            borderRadius: BorderRadius.circular(12.r),
+            borderRadius: BorderRadius.circular(AppResponsive.radius(context, 12)),
             border: Border.all(
               color: Colors.teal.shade700.withOpacity(0.3),
               width: 1.5,
@@ -229,15 +240,15 @@ class _CustomActionButton extends StatelessWidget {
             children: [
               Icon(
                 icon,
-                size: 16.sp,
+                size: AppResponsive.iconSize(context, 16),
                 color: Colors.teal.shade700,
               ),
-              Gap(6.w),
+              Gap(AppResponsive.widthValue(context, 6)),
               Text(
                 label,
                 style: TextStyle(
                   fontFamily: 'Noon',
-                  fontSize: 13.sp,
+                  fontSize: AppResponsive.fontSize(context, 13),
                   fontWeight: FontWeight.w600,
                   color: isDark ? Colors.white70 : const Color(0xFF3E4D5C),
                 ),

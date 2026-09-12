@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hisn_almuslim/core/helpers/share_helper.dart';
 import 'package:hisn_almuslim/core/theme/app_colors.dart';
+import '../responsive/app_responsive.dart';
 
 import 'custom_snack_bar.dart';
 
@@ -117,8 +118,8 @@ class _ZekrActionsWidgetState extends State<ZekrActionsWidget>
       animation: _animation,
       builder: (context, child) {
         return SizedBox(
-          width: 145.w,
-          height: 155.h,
+          width: AppResponsive.widthValue(context, 145),
+          height: AppResponsive.heightValue(context, 155),
           child: Stack(
             alignment: Alignment.bottomLeft,
             clipBehavior: Clip.none,
@@ -127,8 +128,8 @@ class _ZekrActionsWidgetState extends State<ZekrActionsWidget>
               _buildAction(
                 icon: Icons.share_outlined,
                 label: 'مشاركة',
-                bottom: 110.h,
-                animationOffset: -18.h,
+                bottom: AppResponsive.heightValue(context, 125),
+                animationOffset: -18,
                 onTap: _share,
                 accentColor: accentColor,
                 buttonColor: buttonColor,
@@ -139,8 +140,8 @@ class _ZekrActionsWidgetState extends State<ZekrActionsWidget>
               _buildAction(
                 icon: Icons.copy_rounded,
                 label: 'نسخ',
-                bottom: 65.h,
-                animationOffset: -10.h,
+                bottom: AppResponsive.heightValue(context, 75),
+                animationOffset: -10,
                 onTap: _copy,
                 accentColor: accentColor,
                 buttonColor: buttonColor,
@@ -156,19 +157,21 @@ class _ZekrActionsWidgetState extends State<ZekrActionsWidget>
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 180),
                     curve: Curves.easeOutCubic,
-                    width: 58.w,
-                    height: 58.w,
+                    width: AppResponsive.widthValue(context, 58),
+                    height: AppResponsive.widthValue(context, 58),
                     transform: Matrix4.identity()
                       ..rotateZ(_animation.value * 0.4),
                     transformAlignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: AppColors.kPrimary.withValues(alpha: 0.6),
-                      borderRadius: BorderRadius.circular(18.r),
+                      borderRadius: BorderRadius.circular(
+                        AppResponsive.radius(context, 18),
+                      ),
                     ),
                     child: Icon(
                       _isOpen ? Icons.close_rounded : Icons.more_horiz_rounded,
                       color: Colors.white,
-                      size: 25.sp,
+                      size: AppResponsive.iconSize(context, 25),
                     ),
                   ),
                 ),
@@ -205,17 +208,21 @@ class _ZekrActionsWidgetState extends State<ZekrActionsWidget>
             child: GestureDetector(
               onTap: onTap,
               child: Container(
-                height: 40.h,
-                padding: EdgeInsets.only(left: 7.w, right: 7.w),
+                height: AppResponsive.heightValue(context, 40),
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppResponsive.widthValue(context, 7),
+                ),
                 decoration: BoxDecoration(
                   color: buttonColor,
-                  borderRadius: BorderRadius.circular(20.r),
+                  borderRadius: BorderRadius.circular(
+                    AppResponsive.radius(context, 20),
+                  ),
                   border: Border.all(color: accentColor.withValues(alpha: .10)),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withValues(alpha: .08),
-                      blurRadius: 12.r,
-                      offset: Offset(0, 4.h),
+                      blurRadius: 2,
+                      offset: const Offset(0, 2),
                     ),
                   ],
                 ),
@@ -223,28 +230,32 @@ class _ZekrActionsWidgetState extends State<ZekrActionsWidget>
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
-                      width: 30.w,
-                      height: 30.w,
+                      width: AppResponsive.widthValue(context, 30),
+                      height: AppResponsive.widthValue(context, 30),
                       decoration: BoxDecoration(
                         color: accentColor.withValues(alpha: .10),
                         shape: BoxShape.circle,
                       ),
-                      child: Icon(icon, color: accentColor, size: 16.sp),
+                      child: Icon(
+                        icon,
+                        color: accentColor,
+                        size: AppResponsive.iconSize(context, 16),
+                      ),
                     ),
 
-                    SizedBox(width: 7.w),
+                    SizedBox(width: AppResponsive.widthValue(context, 7)),
 
                     Text(
                       label,
                       style: TextStyle(
                         fontFamily: 'Noon',
-                        fontSize: 9.5.sp,
+                        fontSize: AppResponsive.fontSize(context, 9.5),
                         fontWeight: FontWeight.w700,
                         color: textColor,
                       ),
                     ),
 
-                    SizedBox(width: 8.w),
+                    SizedBox(width: AppResponsive.widthValue(context, 8)),
                   ],
                 ),
               ),

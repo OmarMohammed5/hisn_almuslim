@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hisn_almuslim/core/responsive/app_responsive.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 import 'package:hisn_almuslim/core/theme/app_colors.dart';
 
@@ -41,96 +41,108 @@ class QuizResultScreen extends StatelessWidget {
 
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.fromLTRB(22.w, 35.h, 22.w, 25.h),
-          child: Column(
-            children: [
-              _ResultIcon(passed: args.passed),
-              SizedBox(height: 22.h),
-              CustomText(
-                args.passed ? 'أحسنت!' : 'حاول مرة أخرى',
-                textAlign: TextAlign.center,
-                fontSize: 24.sp,
-                fontWeight: FontWeight.w900,
-                color: QuizColors.textPrimary(context),
-              ),
-              SizedBox(height: 12.h),
-              CustomText(
-                args.passed
-                    ? 'لقد اجتزت المستوى بنجاح'
-                    : 'يمكنك إعادة المستوى وتحسين نتيجتك',
-                textAlign: TextAlign.center,
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w500,
-                color: isDark
-                    ? const Color(0x99F3F6F4)
-                    : const Color(0x9914211A),
-                height: 1.5,
-              ),
-              if (args.passed) ...[
-                SizedBox(height: 14.h),
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 14.w,
-                    vertical: 8.h,
-                  ),
-                  decoration: BoxDecoration(
-                    color: bgColor,
-                    border: Border.all(color: borderColor, width: 1),                    borderRadius: BorderRadius.circular(QuizRadius.pill),
-                  ),
-                  child: CustomText(
-                    'المستوى التالي مفتوح الآن',
-                    fontSize: 13.sp,
-                    fontWeight: FontWeight.w700,
-                    color: QuizColors.success,
-                  ),
+        child: AppResponsive.constrain(
+          context,
+          maxWidth: 700,
+          child: SingleChildScrollView(
+            padding: EdgeInsets.fromLTRB(
+              AppResponsive.widthValue(context, 22),
+              AppResponsive.heightValue(context, 35),
+              AppResponsive.widthValue(context, 22),
+              AppResponsive.heightValue(context, 25),
+            ),
+            child: Column(
+              children: [
+                _ResultIcon(passed: args.passed),
+                SizedBox(height: AppResponsive.heightValue(context, 22)),
+                CustomText(
+                  args.passed ? 'أحسنت!' : 'حاول مرة أخرى',
+                  textAlign: TextAlign.center,
+                  fontSize: AppResponsive.fontSize(context, 24),
+                  fontWeight: FontWeight.w900,
+                  color: QuizColors.textPrimary(context),
                 ),
-              ],
-              SizedBox(height: 30.h),
-              QuizScoreDisplay(score: args.score, stars: args.stars),
-              SizedBox(height: 25.h),
-              Row(
-                children: [
-                  Expanded(
-                    child: QuizResultStat(
-                      icon: Icons.check_circle_rounded,
-                      value: '${args.correctAnswers}',
-                      label: 'إجابة صحيحة',
+                SizedBox(height: AppResponsive.heightValue(context, 12)),
+                CustomText(
+                  args.passed
+                      ? 'لقد اجتزت المستوى بنجاح'
+                      : 'يمكنك إعادة المستوى وتحسين نتيجتك',
+                  textAlign: TextAlign.center,
+                  fontSize: AppResponsive.fontSize(context, 14),
+                  fontWeight: FontWeight.w500,
+                  color: isDark
+                      ? const Color(0x99F3F6F4)
+                      : const Color(0x9914211A),
+                  height: 1.5,
+                ),
+                if (args.passed) ...[
+                  SizedBox(height: AppResponsive.heightValue(context, 14)),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AppResponsive.widthValue(context, 14),
+                      vertical: AppResponsive.heightValue(context, 8),
+                    ),
+                    decoration: BoxDecoration(
+                      color: bgColor,
+                      border: Border.all(color: borderColor, width: 1),
+                      borderRadius: BorderRadius.circular(QuizRadius.pill),
+                    ),
+                    child: CustomText(
+                      'المستوى التالي مفتوح الآن',
+                      fontSize: AppResponsive.fontSize(context, 13),
+                      fontWeight: FontWeight.w700,
                       color: QuizColors.success,
                     ),
                   ),
-                  SizedBox(width: 12.w),
-                  Expanded(
-                    child: QuizResultStat(
-                      icon: Icons.cancel_rounded,
-                      value: '${args.wrongAnswers}',
-                      label: 'إجابة خاطئة',
-                      color: QuizColors.error,
-                    ),
-                  ),
                 ],
-              ),
-              SizedBox(height: 30.h),
-              SizedBox(
-                width: double.infinity,
-                height: 54.h,
-                child: ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.kPrimary,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(QuizRadius.md.r),
+                SizedBox(height: AppResponsive.heightValue(context, 30)),
+                QuizScoreDisplay(score: args.score, stars: args.stars),
+                SizedBox(height: AppResponsive.heightValue(context, 25)),
+                Row(
+                  children: [
+                    Expanded(
+                      child: QuizResultStat(
+                        icon: Icons.check_circle_rounded,
+                        value: '${args.correctAnswers}',
+                        label: 'إجابة صحيحة',
+                        color: QuizColors.success,
+                      ),
                     ),
-                  ),
-                  child: CustomText(
-                    'العودة للمستويات',
-                    fontSize: 16.sp,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
+                    SizedBox(width: AppResponsive.widthValue(context, 12)),
+                    Expanded(
+                      child: QuizResultStat(
+                        icon: Icons.cancel_rounded,
+                        value: '${args.wrongAnswers}',
+                        label: 'إجابة خاطئة',
+                        color: QuizColors.error,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: AppResponsive.heightValue(context, 30)),
+                SizedBox(
+                  width: double.infinity,
+                  height: AppResponsive.heightValue(context, 58),
+                  child: ElevatedButton(
+                    onPressed: () => Navigator.pop(context),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.kPrimary,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                          AppResponsive.radius(context, QuizRadius.md),
+                        ),
+                      ),
+                    ),
+                    child: CustomText(
+                      'العودة للمستويات',
+                      fontSize: AppResponsive.fontSize(context, 13),
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -153,15 +165,15 @@ class _ResultIcon extends StatelessWidget {
       curve: Curves.easeOutBack,
       builder: (context, t, child) => Transform.scale(scale: t, child: child),
       child: Container(
-        width: 85.w,
-        height: 85.w,
+        width: AppResponsive.widthValue(context, 85),
+        height: AppResponsive.widthValue(context, 85),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: color.withValues(alpha: .12),
         ),
         child: Icon(
           passed ? Icons.emoji_events_rounded : Icons.refresh_rounded,
-          size: 50.sp,
+          size: AppResponsive.fontSize(context, 50),
           color: color,
         ),
       ),

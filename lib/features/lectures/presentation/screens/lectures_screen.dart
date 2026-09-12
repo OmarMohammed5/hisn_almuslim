@@ -2,8 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:hisn_almuslim/features/lectures/presentation/widgets/lecture_content_container.dart';
+import 'package:hisn_almuslim/core/responsive/app_responsive.dart';
 import 'package:hisn_almuslim/core/helpers/lecture_progress_storage.dart';
 import 'package:hisn_almuslim/core/routing/app_routes.dart';
 import 'package:hisn_almuslim/core/shared/app_bar_widget.dart';
@@ -24,10 +25,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class LecturesScreen extends StatefulWidget {
   final SharedPreferences preferences;
 
-  const LecturesScreen({
-    super.key,
-    required this.preferences,
-  });
+  const LecturesScreen({super.key, required this.preferences});
 
   @override
   State<LecturesScreen> createState() => _LecturesScreenState();
@@ -70,9 +68,8 @@ class _LecturesScreenState extends State<LecturesScreen> {
     if (!mounted) return;
 
     setState(() {
-      final shouldShow = progress != null &&
-          !progress.completed &&
-          progress.position > 10;
+      final shouldShow =
+          progress != null && !progress.completed && progress.position > 10;
       _continueLecture = shouldShow ? lecture : null;
       _continueProgress = shouldShow ? progress : null;
     });
@@ -127,10 +124,7 @@ class _LecturesScreenState extends State<LecturesScreen> {
     Navigator.pushNamed(
       context,
       AppRoutes.sheikhView,
-      arguments: {
-        'preferences': widget.preferences,
-        'sheikh': sheikh,
-      },
+      arguments: {'preferences': widget.preferences, 'sheikh': sheikh},
     );
   }
 
@@ -138,15 +132,15 @@ class _LecturesScreenState extends State<LecturesScreen> {
     Navigator.pushNamed(
       context,
       AppRoutes.lectureCategory,
-      arguments: {
-        'preferences': widget.preferences,
-        'category': category,
-      },
+      arguments: {'preferences': widget.preferences, 'category': category},
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = AppResponsive.isMobile(context);
+    final isTablet = AppResponsive.isTablet(context);
+
     return Scaffold(
       appBar: AppBarWidget(title: 'المحاضرات والدروس'),
       body: BlocBuilder<LecturesCubit, LecturesState>(
@@ -166,17 +160,21 @@ class _LecturesScreenState extends State<LecturesScreen> {
             );
           }
 
-          return ListView(
-            physics: const BouncingScrollPhysics(),
-            padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 110.h),
-            children: [
+          return LectureContentContainer(
+            child: ListView(
+              physics: const BouncingScrollPhysics(),
+              padding: EdgeInsets.only(
+                top: AppResponsive.heightValue(context, 12),
+                bottom: AppResponsive.heightValue(context, 32),
+              ),
+              children: [
                 if (_continueLecture != null && _continueProgress != null) ...[
                   ContinueListeningCard(
                     lecture: _continueLecture!,
                     progress: _continueProgress!,
                     onContinue: _openContinueLecture,
                   ),
-                  Gap(24.h),
+                  Gap(AppResponsive.heightValue(context, isMobile ? 24 : 20)),
                 ],
 
                 if (state.latest.isNotEmpty) ...[
@@ -184,40 +182,71 @@ class _LecturesScreenState extends State<LecturesScreen> {
                     title: 'مختارات اليوم',
                     subtitle: 'أحدث المحاضرات من القنوات المختارة',
                   ),
-                  Gap(12.h),
-                  SizedBox(
-                    height: 228.h,
-                    child: ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      physics: const BouncingScrollPhysics(),
-                      itemCount: state.latest.length.clamp(0, 8).toInt(),
-                      separatorBuilder: (_, __) => SizedBox(width: 12.w),
+                  Gap(AppResponsive.heightValue(context, 12)),
+
+                  if (isMobile)
+                    SizedBox(
+                      height: AppResponsive.heightValue(context, 310),
+                      child: ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: state.latest.length.clamp(0, 8).toInt(),
+                        separatorBuilder: (_, __) => SizedBox(
+                          width: AppResponsive.widthValue(context, 12),
+                        ),
+                        itemBuilder: (_, index) {
+                          final lecture = state.latest[index];
+                          return FeaturedLectureCard(
+                            lecture: lecture,
+                            onTap: () => _openLecture(lecture),
+                          );
+                        },
+                      ),
+                    )
+                  else
+                    GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: state.latest.length
+                          .clamp(0, isTablet ? 4 : 6)
+                          .toInt(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: isTablet ? 2 : 3,
+                        crossAxisSpacing: AppResponsive.widthValue(context, 14),
+                        mainAxisSpacing: AppResponsive.heightValue(context, 14),
+                        // 👇 FIX 1 (cont): Increased height from 252 to 310
+                        mainAxisExtent: AppResponsive.heightValue(context, 310),
+                      ),
                       itemBuilder: (_, index) {
                         final lecture = state.latest[index];
                         return FeaturedLectureCard(
                           lecture: lecture,
                           onTap: () => _openLecture(lecture),
+                          width: double.infinity,
                         );
                       },
                     ),
-                  ),
-                  Gap(28.h),
+
+                  Gap(AppResponsive.heightValue(context, isMobile ? 28 : 24)),
                 ],
 
                 _buildSectionHeader(
                   title: 'استكشف حسب الموضوع',
                   subtitle: 'اختار المجال اللي حابب تتعلم فيه',
                 ),
-                Gap(14.h),
+                Gap(AppResponsive.heightValue(context, 14)),
                 GridView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: _categories.length,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 10.w,
-                    mainAxisSpacing: 10.h,
-                    childAspectRatio: .98,
+                    crossAxisCount: isMobile ? 3 : (isTablet ? 4 : 5),
+                    crossAxisSpacing: AppResponsive.widthValue(context, 10),
+                    mainAxisSpacing: AppResponsive.heightValue(context, 10),
+                    mainAxisExtent: AppResponsive.heightValue(
+                      context,
+                      isMobile ? 126 : (isTablet ? 132 : 138),
+                    ),
                   ),
                   itemBuilder: (_, index) {
                     final (label, icon) = _categories[index];
@@ -230,22 +259,25 @@ class _LecturesScreenState extends State<LecturesScreen> {
                 ),
 
                 if (state.sheikhs.isNotEmpty) ...[
-                  Gap(30.h),
+                  Gap(AppResponsive.heightValue(context, isMobile ? 30 : 24)),
                   _buildSectionHeader(
                     title: 'قنوات مختارة',
                     subtitle: 'مصادر محاضرات ودروس من YouTube',
                     trailing: '${state.sheikhs.length} قناة',
                   ),
-                  Gap(14.h),
+                  Gap(AppResponsive.heightValue(context, 14)),
                   GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: state.sheikhs.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      crossAxisSpacing: 10.w,
-                      mainAxisSpacing: 10.h,
-                      childAspectRatio: .76,
+                      crossAxisCount: isMobile ? 3 : (isTablet ? 4 : 6),
+                      crossAxisSpacing: AppResponsive.widthValue(context, 10),
+                      mainAxisSpacing: AppResponsive.heightValue(context, 10),
+                      mainAxisExtent: AppResponsive.heightValue(
+                        context,
+                        isMobile ? 150 : (isTablet ? 158 : 166),
+                      ),
                     ),
                     itemBuilder: (_, index) {
                       final sheikh = state.sheikhs[index];
@@ -258,11 +290,11 @@ class _LecturesScreenState extends State<LecturesScreen> {
                 ],
 
                 if (state.status == LecturesStatus.loading) ...[
-                  Gap(18.h),
+                  Gap(AppResponsive.heightValue(context, 18)),
                   Center(
                     child: SizedBox(
-                      width: 22.w,
-                      height: 22.w,
+                      width: AppResponsive.widthValue(context, 22),
+                      height: AppResponsive.widthValue(context, 22),
                       child: CupertinoActivityIndicator(
                         color: AppColors.kPrimary,
                       ),
@@ -270,6 +302,7 @@ class _LecturesScreenState extends State<LecturesScreen> {
                   ),
                 ],
               ],
+            ),
           );
         },
       ),
@@ -292,14 +325,14 @@ class _LecturesScreenState extends State<LecturesScreen> {
             children: [
               CustomText(
                 title,
-                fontSize: 16.sp,
+                fontSize: AppResponsive.fontSize(context, 13),
                 fontWeight: FontWeight.w900,
               ),
-              SizedBox(height: 3.h),
+              SizedBox(height: AppResponsive.heightValue(context, 8)),
               CustomText(
                 subtitle,
                 maxLines: 1,
-                fontSize: 10.sp,
+                fontSize: AppResponsive.fontSize(context, 9.4),
                 color: scheme.onSurface.withValues(alpha: .48),
               ),
             ],
@@ -308,7 +341,7 @@ class _LecturesScreenState extends State<LecturesScreen> {
         if (trailing != null)
           CustomText(
             trailing,
-            fontSize: 10.5.sp,
+            fontSize: AppResponsive.fontSize(context, 10.5),
             fontWeight: FontWeight.w700,
             color: AppColors.kPrimary,
           ),

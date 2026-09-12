@@ -34,79 +34,82 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final maxWidth = AppResponsive.isDesktop(context)
         ? 1100.0
         : AppResponsive.isTablet(context)
-        ? 820.0
-        : double.infinity;
+            ? 980.0
+            : double.infinity;
 
 
     return Scaffold(
       appBar: AppBarWidget(title: "اِلإِعْدَادَات"),
-      body: AppResponsive.constrain(
-        context,
-        maxWidth: maxWidth,
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          padding: EdgeInsets.symmetric(
-            horizontal: AppResponsive.widthValue(context, 16),
+      body: Align(
+        alignment: Alignment.topCenter,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: maxWidth,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Gap(AppResponsive.heightValue(context, 20)),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: AppResponsive.widthValue(context, 16),
-                ),
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: CustomText(
-                    "تغيير المظهر",
-                    fontWeight: FontWeight.bold,
-                    fontSize: AppResponsive.fontSize(context, 12),
-                  ),
-                ),
+          child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              padding: EdgeInsets.symmetric(
+                horizontal: AppResponsive.isTablet(context) ? 12 : 16,
               ),
-              Gap(AppResponsive.heightValue(context, 10)),
-              ChangeThemeMode(isDark: isDark, isLight: isLight),
-
-              Gap(AppResponsive.heightValue(context, 25)),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: AppResponsive.widthValue(context, 16),
-                ),
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: CustomText(
-                    "الورد اليومي",
-                    fontSize: AppResponsive.fontSize(context, 12),
-                    fontWeight: FontWeight.bold,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                   SizedBox(height: AppResponsive.heightValue(context,14)),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AppResponsive.isTablet(context) ? 12 : 16,
+                    ),
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: CustomText(
+                        "تغيير المظهر",
+                        fontWeight: FontWeight.bold,
+                        fontSize: AppResponsive.isDesktop(context) ? 14 : AppResponsive.isTablet(context) ? 13 : 12,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              Gap(AppResponsive.heightValue(context, 10)),
-              const WirdNotificationBuild(),
+                  SizedBox(height: AppResponsive.heightValue(context,8)),
+                  ChangeThemeMode(isDark: isDark, isLight: isLight),
 
-              Gap(AppResponsive.heightValue(context, 25)),
-
-              //  AZKAR NOTIFICATIONS
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: AppResponsive.widthValue(context, 16),
-                ),
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: CustomText(
-                    "منبهات الأذكار",
-                    fontSize: AppResponsive.fontSize(context, 12),
-                    fontWeight: FontWeight.bold,
+                  SizedBox(height: AppResponsive.heightValue(context,18)),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AppResponsive.isTablet(context) ? 12 : 16,
+                    ),
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: CustomText(
+                        "الورد اليومي",
+                        fontSize: AppResponsive.isDesktop(context) ? 14 : AppResponsive.isTablet(context) ? 13 : 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              Gap(AppResponsive.heightValue(context, 10)),
-              const AzkarNotificationsBuild(),
+                  SizedBox(height: AppResponsive.heightValue(context,8)),
+                  const WirdNotificationBuild(),
 
-              Gap(AppResponsive.heightValue(context, 90)),
-            ],
-          ),
+                  SizedBox(height: AppResponsive.heightValue(context,18)),
+                  //  AZKAR NOTIFICATIONS
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AppResponsive.isTablet(context) ? 12 : 16,
+                    ),
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: CustomText(
+                        "منبهات الأذكار",
+                        fontSize: AppResponsive.isDesktop(context) ? 14 : AppResponsive.isTablet(context) ? 13 : 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: AppResponsive.heightValue(context,8)),
+                  const AzkarNotificationsBuild(),
+
+                  SizedBox(height: AppResponsive.heightValue(context,28)),
+                ],
+              ),
+            ),
         ),
       ),
     );

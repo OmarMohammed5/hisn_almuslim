@@ -69,34 +69,36 @@ class _QuranAudioHomeScreenState extends State<QuranAudioHomeScreen> {
   Widget build(BuildContext context) {
     final isKeyboardOpen = MediaQuery.viewInsetsOf(context).bottom > 0;
 
+
+    final maxWidth = AppResponsive.isDesktop(context)
+        ? 1100.0
+        : AppResponsive.isTablet(context)
+        ? 820.0
+        : double.infinity;
+
+
     return Scaffold(
       body: BlocBuilder<QuranAudioCubit, QuranAudioState>(
         builder: (context, state) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Center(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxWidth: AppResponsive.maxContentWidth(context),
-                  ),
+          return AppResponsive.constrain(
+            context,
+            maxWidth: maxWidth,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Center(
                   child: QuranAudioHeader(
                     state: state,
                     onSearch: _searchSurah,
                     searchController: _searchSurahController,
                   ),
                 ),
-              ),
-              Expanded(
-                child: Center(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxWidth: AppResponsive.maxContentWidth(context),
-                    ),
+                Expanded(
+                  child: Center(
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(
                         AppResponsive.widthValue(context, 20),
-                        AppResponsive.heightValue(context, 12),
+                        12,
                         AppResponsive.widthValue(context, 20),
                         0,
                       ),
@@ -109,17 +111,17 @@ class _QuranAudioHomeScreenState extends State<QuranAudioHomeScreen> {
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           );
         },
       ),
       floatingActionButton: isKeyboardOpen
           ? null
           : ReBuildScrollToTop(
-        showScrollToTop: _showScrollToTop,
-        scrollController: _scrollController,
-      ),
+              showScrollToTop: _showScrollToTop,
+              scrollController: _scrollController,
+            ),
     );
   }
 
@@ -142,9 +144,11 @@ class _QuranAudioHomeScreenState extends State<QuranAudioHomeScreen> {
             child: SurahList(
               controller: _scrollController,
               surahs: _filteredSurahs,
-              selectedReciter: state.effectiveSelectedReciter ?? state.reciters.first,
+              selectedReciter:
+                  state.effectiveSelectedReciter ?? state.reciters.first,
               onSurahPressed: (surahNumber) {
-                final reciter = state.effectiveSelectedReciter ?? state.reciters.first;
+                final reciter =
+                    state.effectiveSelectedReciter ?? state.reciters.first;
                 _handleSurahPressed(context, reciter.server, surahNumber);
               },
             ),
@@ -160,7 +164,11 @@ class _QuranAudioHomeScreenState extends State<QuranAudioHomeScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.search_off_rounded, size: AppResponsive.iconSize(context, 48), color: Colors.grey.shade400),
+          Icon(
+            Icons.search_off_rounded,
+            size: AppResponsive.iconSize(context, 48),
+            color: Colors.grey.shade400,
+          ),
           Gap(AppResponsive.heightValue(context, 12)),
           CustomText(
             'لا توجد نتائج مطابقة',
@@ -172,7 +180,11 @@ class _QuranAudioHomeScreenState extends State<QuranAudioHomeScreen> {
     );
   }
 
-  void _handleSurahPressed(BuildContext context, String server, int surahNumber) {
+  void _handleSurahPressed(
+    BuildContext context,
+    String server,
+    int surahNumber,
+  ) {
     try {
       final state = context.read<QuranAudioCubit>().state;
       if (state is! QuranAudioLoaded) {
@@ -186,8 +198,10 @@ class _QuranAudioHomeScreenState extends State<QuranAudioHomeScreen> {
         return;
       }
 
-
-      final String audioUrl = AudioUrlHelper.generateAudioUrl(server, surahNumber);
+      final String audioUrl = AudioUrlHelper.generateAudioUrl(
+        server,
+        surahNumber,
+      );
       final surah = SurahDataSource.getSurahByNumber(surahNumber);
       if (surah == null) {
         _showSnack(context, 'Surah not found');
@@ -196,12 +210,16 @@ class _QuranAudioHomeScreenState extends State<QuranAudioHomeScreen> {
 
       final allSurahs = SurahDataSource.getAllSurahs();
 
-      Navigator.pushNamed(context, AppRoutes.playerAudio, arguments: {
-        'surah': surah,
-        'reciter': reciter,
-        'audioUrl': audioUrl,
-        'surahs': allSurahs,
-      });
+      Navigator.pushNamed(
+        context,
+        AppRoutes.playerAudio,
+        arguments: {
+          'surah': surah,
+          'reciter': reciter,
+          'audioUrl': audioUrl,
+          'surahs': allSurahs,
+        },
+      );
     } catch (e) {
       _showSnack(context, 'Error generating audio URL: $e');
     }

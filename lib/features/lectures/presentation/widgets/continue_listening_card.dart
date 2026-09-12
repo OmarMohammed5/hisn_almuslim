@@ -1,13 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hisn_almuslim/core/responsive/app_responsive.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 import 'package:hisn_almuslim/core/theme/app_colors.dart';
 import '../../../../core/helpers/lecture_progress_storage.dart';
 import '../../domain/entities/lecture.dart';
 
-class ContinueListeningCard
-    extends StatelessWidget {
+class ContinueListeningCard extends StatelessWidget {
   final Lecture lecture;
   final LectureProgressData progress;
   final VoidCallback onContinue;
@@ -21,108 +20,96 @@ class ContinueListeningCard
 
   @override
   Widget build(BuildContext context) {
-    final scheme =
-        Theme.of(context).colorScheme;
+    final scheme = Theme.of(context).colorScheme;
+
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
+    final borderColor = isDark
+        ? Colors.white.withValues(alpha: 0.07)
+        : AppColors.kBorderLight;
 
     return Container(
-      padding: EdgeInsets.all(12.w),
+      padding: EdgeInsets.all(AppResponsive.widthValue(context, 12)),
       decoration: BoxDecoration(
-        borderRadius:
-        BorderRadius.circular(22.r),
-        color: scheme.surfaceContainerHighest
-            .withValues(alpha: .45),
-        border: Border.all(
-          color: AppColors.kPrimary
-              .withValues(alpha: .20),
-        ),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 22)),
+        color: bgColor,
+        border: Border.all(color: borderColor, width: 1),
       ),
       child: Column(
-        crossAxisAlignment:
-        CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
               Container(
-                padding:
-                EdgeInsets.symmetric(
-                  horizontal: 10.w,
-                  vertical: 6.h,
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppResponsive.widthValue(context, 10),
+                  vertical: AppResponsive.heightValue(context, 6),
                 ),
                 decoration: BoxDecoration(
-                  color: AppColors.kPrimary
-                      .withValues(alpha: .10),
-                  borderRadius:
-                  BorderRadius.circular(20.r),
+                  color: AppColors.kPrimary.withValues(alpha: .10),
+                  borderRadius: BorderRadius.circular(
+                    AppResponsive.radius(context, 20),
+                  ),
                 ),
                 child: CustomText(
                   'متابعة الاستماع',
-                  fontSize: 10.5.sp,
-                  fontWeight:
-                  FontWeight.w800,
+                  fontSize: AppResponsive.fontSize(context, 9.5),
+                  fontWeight: FontWeight.w800,
                   color: AppColors.kPrimary,
                 ),
               ),
             ],
           ),
 
-          SizedBox(height: 12.h),
+          SizedBox(height: AppResponsive.heightValue(context, 12)),
 
           Row(
-            crossAxisAlignment:
-            CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ClipRRect(
-                borderRadius:
-                BorderRadius.circular(16.r),
+                borderRadius: BorderRadius.circular(
+                  AppResponsive.radius(context, 16),
+                ),
                 child: CachedNetworkImage(
-                  imageUrl:
-                  lecture.thumbnailUrl,
-                  width: 115.w,
-                  height: 78.h,
+                  imageUrl: lecture.thumbnailUrl,
+                  width: AppResponsive.widthValue(context, 120),
+                  height: AppResponsive.heightValue(context, 80),
                   fit: BoxFit.cover,
-                  errorWidget:
-                      (_, __, ___) {
+                  errorWidget: (_, __, ___) {
                     return Container(
-                      width: 115.w,
-                      height: 78.h,
-                      color: AppColors.kPrimary
-                          .withValues(alpha: .08),
+                      width: AppResponsive.widthValue(context, 115),
+                      height: AppResponsive.heightValue(context, 78),
+                      color: AppColors.kPrimary.withValues(alpha: .08),
                       child: Icon(
                         Icons.play_circle_outline,
-                        color:
-                        AppColors.kPrimary,
+                        color: AppColors.kPrimary,
                       ),
                     );
                   },
                 ),
               ),
 
-              SizedBox(width: 12.w),
+              SizedBox(width: AppResponsive.widthValue(context, 12)),
 
               Expanded(
                 child: Column(
-                  crossAxisAlignment:
-                  CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomText(
                       lecture.title,
-                      maxLines: 3,
-                      fontSize: 13.sp,
-                      fontWeight:
-                      FontWeight.w800,
+                      maxLines: 8,
+                      fontSize: AppResponsive.fontSize(context, 11),
+                      fontWeight: FontWeight.w600,
                       height: 1.4,
                     ),
 
-                    SizedBox(height: 6.h),
+                    SizedBox(height: AppResponsive.heightValue(context, 6)),
 
                     CustomText(
                       lecture.channelName,
-                      maxLines: 3,
-                      fontSize: 10.5.sp,
-                      color: scheme.onSurface
-                          .withValues(
-                        alpha: .55,
-                      ),
+                      maxLines: 8,
+                      fontSize: AppResponsive.fontSize(context, 10.5),
+                      color: scheme.onSurface.withValues(alpha: .55),
                     ),
                   ],
                 ),
@@ -130,69 +117,62 @@ class ContinueListeningCard
             ],
           ),
 
-          SizedBox(height: 12.h),
+          SizedBox(height: AppResponsive.heightValue(context, 12)),
 
           // Progress
           ClipRRect(
-            borderRadius:
-            BorderRadius.circular(10.r),
+            borderRadius: BorderRadius.circular(
+              AppResponsive.radius(context, 10),
+            ),
             child: LinearProgressIndicator(
               value: progress.percentage,
-              minHeight: 5.h,
-              backgroundColor:
-              AppColors.kPrimary
-                  .withValues(alpha: .08),
-              valueColor:
-              AlwaysStoppedAnimation(
-                AppColors.kPrimary,
-              ),
+              minHeight: AppResponsive.heightValue(context, 5),
+              backgroundColor: AppColors.kPrimary.withValues(alpha: .08),
+              valueColor: AlwaysStoppedAnimation(AppColors.kPrimary),
             ),
           ),
 
-          SizedBox(height: 10.h),
+          SizedBox(height: AppResponsive.heightValue(context, 10)),
 
           Row(
             children: [
               CustomText(
                 '${progress.percentageInt} % مكتمل',
-                fontSize: 13.sp,
-                fontWeight:
-                FontWeight.w600,
-                color: scheme.onSurface
-                    .withValues(alpha: .50),
+                fontSize: AppResponsive.fontSize(context, 11),
+                fontWeight: FontWeight.w600,
+                color: scheme.onSurface.withValues(alpha: .50),
               ),
 
               const Spacer(),
 
               Material(
                 color: AppColors.kPrimary,
-                borderRadius:
-                BorderRadius.circular(14.r),
+                borderRadius: BorderRadius.circular(
+                  AppResponsive.radius(context, 14),
+                ),
                 child: InkWell(
                   onTap: onContinue,
-                  borderRadius:
-                  BorderRadius.circular(14.r),
+                  borderRadius: BorderRadius.circular(
+                    AppResponsive.radius(context, 14),
+                  ),
                   child: Padding(
-                    padding:
-                    EdgeInsets.symmetric(
-                      horizontal: 15.w,
-                      vertical: 9.h,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AppResponsive.widthValue(context, 15),
+                      vertical: AppResponsive.heightValue(context, 9),
                     ),
                     child: Row(
-                      mainAxisSize:
-                      MainAxisSize.min,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Icon(
                           Icons.play_arrow_rounded,
-                          size: 17.sp,
+                          size: AppResponsive.fontSize(context, 15),
                           color: Colors.white,
                         ),
-                        SizedBox(width: 5.w),
+                        SizedBox(width: AppResponsive.widthValue(context, 5)),
                         CustomText(
                           'متابعة',
-                          fontSize: 11.sp,
-                          fontWeight:
-                          FontWeight.w800,
+                          fontSize: AppResponsive.fontSize(context, 11),
+                          fontWeight: FontWeight.w800,
                           color: Colors.white,
                         ),
                       ],

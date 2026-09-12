@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
-
 import '../theme/app_colors.dart';
+import '../responsive/app_responsive.dart';
 
 class InteractiveZekrCard extends StatefulWidget {
   final String text;
@@ -93,10 +92,6 @@ class _InteractiveZekrCardState extends State<InteractiveZekrCard> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    final cardColor = isDark
-        ? const Color(0xFF1B211F)
-        : const Color(0xFFFFFFFF);
-
     final textColor = isDark
         ? const Color(0xFFEAE8E0)
         : const Color(0xFF242926);
@@ -109,19 +104,14 @@ class _InteractiveZekrCardState extends State<InteractiveZekrCard> {
         ? const Color(0xFF70D3BF)
         : const Color(0xFF087F73);
 
-
     final progress = widget.count <= 0
         ? 0.0
         : (_repetition / widget.count).clamp(0.0, 1.0);
-
-
 
     final bgColor = isDark ? AppColors.kSurfaceDark : Colors.white;
     final borderColor = isDark
         ? Colors.white.withValues(alpha: 0.07)
         : AppColors.kBorderLight;
-
-
 
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
@@ -132,16 +122,22 @@ class _InteractiveZekrCardState extends State<InteractiveZekrCard> {
         curve: Curves.easeOut,
         child: Container(
           width: double.infinity,
-          margin: EdgeInsets.symmetric(horizontal: 15.w, vertical: 9.h),
-          padding: EdgeInsets.all(18.w),
+          margin: EdgeInsets.symmetric(
+            horizontal: AppResponsive.widthValue(context, 12),
+            vertical: 8,
+          ),
+          padding: EdgeInsets.all(AppResponsive.widthValue(context, 18)),
           decoration: BoxDecoration(
             color: bgColor,
-            border: Border.all(color: borderColor, width: 1),            borderRadius: BorderRadius.circular(22.r),
+            border: Border.all(color: borderColor, width: 1),
+            borderRadius: BorderRadius.circular(
+              AppResponsive.radius(context, 22),
+            ),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: isDark ? .16 : .055),
-                blurRadius: 18.r,
-                offset: Offset(0, 7.h),
+                blurRadius: 2,
+                offset: const Offset(0, 2),
               ),
             ],
           ),
@@ -157,48 +153,27 @@ class _InteractiveZekrCardState extends State<InteractiveZekrCard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Wrap(
-                          spacing: 8.w,
-                          runSpacing: 6.h,
+                          spacing: AppResponsive.widthValue(context, 8),
+                          runSpacing: 6,
                           crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                  width: 8.w,
-                                  height: 8.w,
-                                  decoration: BoxDecoration(
-                                    color: accentColor,
-                                    shape: BoxShape.circle,
-                                  ),
-                                ),
 
-                                SizedBox(width: 7.w),
-
-                                Text(
-                                  'الذكر',
-                                  style: TextStyle(
-                                    fontFamily: 'Noon',
-                                    fontSize: 10.sp,
-                                    fontWeight: FontWeight.w700,
-                                    color: mutedColor,
-                                  ),
-                                ),
-                              ],
-                            ),
-
-                            // PAGE COUNTER
+                            //  COUNTER
                             Container(
                               padding: EdgeInsets.symmetric(
-                                horizontal: 10.w,
-                                vertical: 4.h,
+                                horizontal: AppResponsive.widthValue(
+                                  context,
+                                  10,
+                                ),
                               ),
                               decoration: BoxDecoration(
                                 color: accentColor.withValues(alpha: .12),
-                                borderRadius: BorderRadius.circular(12.r),
+                                borderRadius: BorderRadius.circular(
+                                  AppResponsive.radius(context, 12),
+                                ),
                                 border: Border.all(
                                   color: accentColor.withValues(alpha: .20),
-                                  width: 1,
+                                  width: AppResponsive.widthValue(context, 1),
                                 ),
                               ),
                               child: Row(
@@ -207,20 +182,32 @@ class _InteractiveZekrCardState extends State<InteractiveZekrCard> {
                                   CustomText(
                                     '${widget.currentIndex + 1}',
                                     color: accentColor,
-                                    fontSize: 14.sp,
+                                    fontSize: AppResponsive.fontSize(
+                                      context,
+                                      14,
+                                    ),
                                     fontWeight: FontWeight.bold,
+                                    fontFamily: "Cairo",
                                   ),
 
                                   CustomText(
                                     ' / ',
                                     color: textColor.withValues(alpha: .4),
-                                    fontSize: 12.sp,
+                                    fontSize: AppResponsive.fontSize(
+                                      context,
+                                      10.3,
+                                    ),
+                                    fontFamily: "Cairo",
                                   ),
 
                                   CustomText(
                                     '${widget.total}',
                                     color: textColor.withValues(alpha: .6),
-                                    fontSize: 12.sp,
+                                    fontSize: AppResponsive.fontSize(
+                                      context,
+                                      10.3,
+                                    ),
+                                    fontFamily: "Cairo",
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ],
@@ -229,7 +216,9 @@ class _InteractiveZekrCardState extends State<InteractiveZekrCard> {
                           ],
                         ),
 
-                        SizedBox(height: 10.h),
+                        SizedBox(
+                          height: AppResponsive.heightValue(context, 10),
+                        ),
 
                         Text(
                           _isCompleted
@@ -237,7 +226,7 @@ class _InteractiveZekrCardState extends State<InteractiveZekrCard> {
                               : 'اضغط على الذكر للتكرار',
                           style: TextStyle(
                             fontFamily: 'Noon',
-                            fontSize: 9.sp,
+                            fontSize: AppResponsive.fontSize(context, 9),
                             fontWeight: FontWeight.w600,
                             color: mutedColor,
                           ),
@@ -246,7 +235,7 @@ class _InteractiveZekrCardState extends State<InteractiveZekrCard> {
                     ),
                   ),
 
-                  SizedBox(width: 10.w),
+                  SizedBox(width: AppResponsive.widthValue(context, 10)),
 
                   // CIRCULAR PROGRESS
                   _buildCircularProgress(
@@ -258,26 +247,31 @@ class _InteractiveZekrCardState extends State<InteractiveZekrCard> {
                 ],
               ),
 
-              SizedBox(height: 22.h),
+              SizedBox(height: AppResponsive.heightValue(context, 18)),
 
               // ZEKR TEXT
               Container(
                 width: double.infinity,
-                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppResponsive.widthValue(context, 12),
+                  vertical: AppResponsive.heightValue(context, 16),
+                ),
                 decoration: BoxDecoration(
                   color: isDark
                       ? Colors.white.withValues(alpha: .025)
                       : AppColors.kPrimary.withValues(alpha: 0.06),
-                  borderRadius: BorderRadius.circular(17.r),
+                  borderRadius: BorderRadius.circular(
+                    AppResponsive.radius(context, 17),
+                  ),
                 ),
                 child: Text(
                   widget.text,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: 'Noon',
-                    fontSize: widget.size,
+                    fontSize: AppResponsive.fontSize(context, widget.size),
                     fontWeight: FontWeight.w700,
-                    height: 2,
+                    height: AppResponsive.heightValue(context, 2),
                     color: textColor,
                   ),
                 ),
@@ -291,7 +285,7 @@ class _InteractiveZekrCardState extends State<InteractiveZekrCard> {
                   mutedColor: mutedColor,
                 ),
 
-              SizedBox(height: 18.h),
+              SizedBox(height: AppResponsive.heightValue(context, 18)),
             ],
           ),
         ),
@@ -312,18 +306,18 @@ class _InteractiveZekrCardState extends State<InteractiveZekrCard> {
       curve: Curves.easeOutCubic,
       builder: (context, animatedProgress, child) {
         return SizedBox(
-          width: 68.w,
-          height: 68.w,
+          width: AppResponsive.widthValue(context, 68),
+          height: AppResponsive.widthValue(context, 68),
           child: Stack(
             alignment: Alignment.center,
             children: [
               // BACKGROUND RING
               SizedBox(
-                width: 62.w,
-                height: 62.w,
+                width: AppResponsive.widthValue(context, 62),
+                height: AppResponsive.widthValue(context, 62),
                 child: CircularProgressIndicator(
                   value: 1,
-                  strokeWidth: 5.w,
+                  strokeWidth: AppResponsive.widthValue(context, 5),
                   backgroundColor: Colors.transparent,
                   valueColor: AlwaysStoppedAnimation(
                     mutedColor.withValues(alpha: .10),
@@ -333,11 +327,11 @@ class _InteractiveZekrCardState extends State<InteractiveZekrCard> {
 
               // ACTIVE RING
               SizedBox(
-                width: 62.w,
-                height: 62.w,
+                width: AppResponsive.widthValue(context, 62),
+                height: AppResponsive.widthValue(context, 62),
                 child: CircularProgressIndicator(
                   value: animatedProgress,
-                  strokeWidth: 5.w,
+                  strokeWidth: AppResponsive.widthValue(context, 5),
                   strokeCap: StrokeCap.round,
                   backgroundColor: Colors.transparent,
                   valueColor: AlwaysStoppedAnimation(accentColor),
@@ -358,7 +352,7 @@ class _InteractiveZekrCardState extends State<InteractiveZekrCard> {
                         Icons.check_rounded,
                         key: const ValueKey('done'),
                         color: accentColor,
-                        size: 24.sp,
+                        size: AppResponsive.iconSize(context, 24),
                       )
                     : Column(
                         key: ValueKey(_repetition),
@@ -367,7 +361,7 @@ class _InteractiveZekrCardState extends State<InteractiveZekrCard> {
                           Text(
                             '${_arabicNumber(_repetition)} / ${_arabicNumber(widget.count)}',
                             style: TextStyle(
-                              fontSize: 16.sp,
+                              fontSize: AppResponsive.fontSize(context, 16),
                               fontWeight: FontWeight.w700,
                               color: mutedColor,
                             ),
@@ -389,13 +383,18 @@ class _InteractiveZekrCardState extends State<InteractiveZekrCard> {
     required Color mutedColor,
   }) {
     return Padding(
-      padding: EdgeInsets.only(top: 17.h),
+      padding: EdgeInsets.only(top: AppResponsive.heightValue(context, 18)),
       child: Container(
         width: double.infinity,
-        padding: EdgeInsets.symmetric(horizontal: 13.w, vertical: 12.h),
+        padding: EdgeInsets.symmetric(
+          horizontal: AppResponsive.widthValue(context, 14),
+          vertical: AppResponsive.heightValue(context, 14),
+        ),
         decoration: BoxDecoration(
           color: accentColor.withValues(alpha: isDark ? .055 : .035),
-          borderRadius: BorderRadius.circular(14.r),
+          borderRadius: BorderRadius.circular(
+            AppResponsive.radius(context, 14),
+          ),
           border: Border.all(color: accentColor.withValues(alpha: .06)),
         ),
         child: Column(
@@ -405,30 +404,30 @@ class _InteractiveZekrCardState extends State<InteractiveZekrCard> {
               children: [
                 Icon(
                   Icons.info_outline_rounded,
-                  size: 14.sp,
+                  size: AppResponsive.iconSize(context, 20),
                   color: accentColor,
                 ),
 
-                SizedBox(width: 5.w),
+                SizedBox(width: AppResponsive.widthValue(context, 5)),
 
                 CustomText(
                   'فضل الذكر',
-                  fontSize: 11.5.sp,
+                  fontSize: AppResponsive.fontSize(context, 10.4),
                   fontWeight: FontWeight.w700,
                   color: accentColor,
                 ),
               ],
             ),
 
-            SizedBox(height: 7.h),
+            SizedBox(height: AppResponsive.heightValue(context, 7)),
 
             CustomText(
               widget.fadl!,
-              maxLines: 20,
+              maxLines: 30,
               textAlign: TextAlign.center,
               fontFamily: 'Noon',
-              fontSize: widget.size * .70,
-              height: 1.7,
+              fontSize: AppResponsive.fontSize(context, widget.size) * .55 ,
+              height: AppResponsive.heightValue(context, 1.5),
               fontWeight: FontWeight.w600,
               color: mutedColor,
             ),

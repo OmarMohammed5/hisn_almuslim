@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hisn_almuslim/core/responsive/app_responsive.dart';
 
 import '../theme/quiz_tokens.dart';
-
 
 class QuizStars extends StatelessWidget {
   const QuizStars({
@@ -25,12 +24,14 @@ class QuizStars extends StatelessWidget {
         final color = filled ? QuizColors.warning : QuizColors.locked;
         final icon = Icon(
           filled ? Icons.star_rounded : Icons.star_outline_rounded,
-          size: size.sp,
+          size: AppResponsive.fontSize(context, size),
           color: color,
         );
 
         final star = Padding(
-          padding: EdgeInsets.symmetric(horizontal: 2.w),
+          padding: EdgeInsets.symmetric(
+            horizontal: AppResponsive.widthValue(context, 2),
+          ),
           child: icon,
         );
 
@@ -45,8 +46,12 @@ class QuizStars extends StatelessWidget {
             child: Transform.scale(scale: t, child: child),
           ),
           child: star,
-        )
-            .let((w) => _Delayed(delay: Duration(milliseconds: 140 * index), child: w));
+        ).let(
+          (w) => _Delayed(
+            delay: Duration(milliseconds: 140 * index),
+            child: w,
+          ),
+        );
       }),
     );
   }
@@ -54,6 +59,7 @@ class QuizStars extends StatelessWidget {
 
 class _Delayed extends StatefulWidget {
   const _Delayed({required this.delay, required this.child});
+
   final Duration delay;
   final Widget child;
 

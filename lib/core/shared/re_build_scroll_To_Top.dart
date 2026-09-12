@@ -29,6 +29,10 @@ class ReBuildScrollToTop extends StatelessWidget {
             child: FloatingActionButton(
               backgroundColor: AppColors.kPrimary,
               onPressed: () {
+                if (!_scrollController.hasClients) {
+                  return;
+                }
+
                 _scrollController.animateTo(
                   0,
                   duration: const Duration(milliseconds: 400),

@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:hisn_almuslim/core/theme/app_colors.dart';
 
+import '../responsive/app_responsive.dart';
+
 class SearchField extends StatefulWidget {
   final ValueChanged<String> onChanged;
   final ValueChanged<String>? onSubmitted;
@@ -19,8 +21,7 @@ class SearchField extends StatefulWidget {
   });
 
   @override
-  State<SearchField> createState() =>
-      _SearchFieldState();
+  State<SearchField> createState() => _SearchFieldState();
 }
 
 class _SearchFieldState extends State<SearchField> {
@@ -35,9 +36,7 @@ class _SearchFieldState extends State<SearchField> {
 
     _controller = widget.controller ?? TextEditingController();
 
-    _controller.addListener(
-      _onControllerChanged,
-    );
+    _controller.addListener(_onControllerChanged);
   }
 
   void _onControllerChanged() {
@@ -48,9 +47,7 @@ class _SearchFieldState extends State<SearchField> {
 
   @override
   void dispose() {
-    _controller.removeListener(
-      _onControllerChanged,
-    );
+    _controller.removeListener(_onControllerChanged);
 
     if (_ownsController) {
       _controller.dispose();
@@ -70,128 +67,98 @@ class _SearchFieldState extends State<SearchField> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Container(
-        height: 52.h,
-        padding:
-        EdgeInsets.symmetric(horizontal: 4.w),
+        height: AppResponsive.heightValue(context, 52),
+        padding: EdgeInsets.symmetric(
+          horizontal: AppResponsive.widthValue(context, 4),
+        ),
         decoration: BoxDecoration(
           color: scheme.surface,
-          borderRadius:
-          BorderRadius.circular(28.r),
+          borderRadius: BorderRadius.circular(
+            AppResponsive.radius(context, 28),
+          ),
           border: Border.all(
-            color: AppColors.kPrimary.withValues(
-              alpha: isDark ? .16 : .08,
-            ),
+            color: AppColors.kPrimary.withValues(alpha: isDark ? .16 : .08),
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(
-                alpha: isDark ? .08 : .025,
-              ),
-              blurRadius: 12.r,
-              offset: Offset(0, 4.h),
+              color: Colors.black.withValues(alpha: isDark ? .08 : .025),
+              blurRadius: 2.r,
+              offset: Offset(0, 2.h),
             ),
           ],
         ),
         child: Row(
           children: [
             Container(
-              width: 42.w,
-              height: 42.w,
+              width: AppResponsive.widthValue(context, 42),
+              height: AppResponsive.heightValue(context, 42),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.kPrimary.withValues(alpha: isDark ? .14 : .07,),
+                color: AppColors.kPrimary.withValues(alpha: isDark ? .14 : .07),
               ),
               child: Icon(
                 CupertinoIcons.search,
                 color: AppColors.kPrimary,
-                size: 20.sp,
+                size: AppResponsive.iconSize(context, 20),
               ),
             ),
-
-            Gap(10.w),
-
+            Gap(AppResponsive.widthValue(context, 10)),
             Expanded(
               child: TextField(
-
                 controller: _controller,
                 onTapOutside: (_) {
                   FocusManager.instance.primaryFocus?.unfocus();
                 },
-
                 onChanged: widget.onChanged,
-
                 onSubmitted: widget.onSubmitted,
-
                 textAlign: TextAlign.right,
-
                 textInputAction: TextInputAction.search,
-
                 style: TextStyle(
-                  color:
-                  scheme.onSurface,
-                  fontSize: 13.sp,
-                  fontFamily:
-                  'QuranFont',
+                  color: scheme.onSurface,
+                  fontSize: AppResponsive.fontSize(context, 13),
+                  fontFamily: 'Noon',
                 ),
                 cursorColor: AppColors.kPrimary,
                 decoration: InputDecoration(
                   hintText: widget.hint,
-                  hintStyle:
-                  TextStyle(
-                    color: scheme
-                        .onSurface
-                        .withValues(
-                      alpha: .45,
-                    ),
-                    fontSize: 11.5.sp,
+                  hintStyle: TextStyle(
+                    color: scheme.onSurface.withValues(alpha: .45),
+                    fontSize: AppResponsive.fontSize(context, 11.5),
                   ),
 
-                  suffixIcon:
-                  query.isNotEmpty
+                  suffixIcon: query.isNotEmpty
                       ? IconButton(
-                    onPressed: () {
-                      _controller
-                          .clear();
+                          onPressed: () {
+                            _controller.clear();
 
-                      widget
-                          .onChanged(
-                        '',
-                      );
-                    },
-                    icon: Icon(
-                      Icons
-                          .clear_rounded,
-                      size: 19.sp,
-                      color: scheme
-                          .onSurface
-                          .withValues(
-                        alpha: .45,
-                      ),
-                    ),
-                  )
+                            widget.onChanged('');
+                          },
+                          icon: Icon(
+                            Icons.clear_rounded,
+                            size: AppResponsive.iconSize(context, 19),
+                            color: scheme.onSurface.withValues(alpha: .45),
+                          ),
+                        )
                       : null,
-
                   border: InputBorder.none,
-
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Colors.teal.shade800,
-                      width: 2.w,
+                      width: AppResponsive.widthValue(context, 2),
                     ),
                     borderRadius: BorderRadius.all(
-                      Radius.circular(25.r),
+                      Radius.circular(AppResponsive.radius(context, 25)),
                     ),
                   ),
-
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
                       color: isDark
                           ? const Color(0xFF2B2B2B)
                           : const Color(0xFFE9EEF0),
-                      width: 1.w,
+                      width: AppResponsive.widthValue(context, 1),
                     ),
                     borderRadius: BorderRadius.all(
-                      Radius.circular(25.r),
+                      Radius.circular(AppResponsive.radius(context, 25)),
                     ),
                   ),
                 ),

@@ -9,6 +9,7 @@ import 'package:hisn_almuslim/features/adhan/data/cubit/adhan_cubit.dart';
 import 'package:hisn_almuslim/features/adhan/widgets/dashboard_timing.dart';
 import 'package:hisn_almuslim/features/adhan/widgets/prayer_timings.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
+import '../../../core/responsive/app_responsive.dart';
 import '../../../core/shared/app_bar_widget.dart';
 
 class AdhanScreen extends StatefulWidget {
@@ -91,39 +92,54 @@ class _AdhanScreenState extends State<AdhanScreen> {
               nextIndex = 0;
             }
 
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                DashboardTiming(
-                  isDark: isDark,
-                  nextPrayer: state.nextPrayer.name,
-                  remainingTime: state.remainingTime,
-                ),
-                Gap(6.h),
-                Expanded(
-                  child: SingleChildScrollView(
-                    padding: EdgeInsets.only(bottom: 80.h),
-                    child: Column(
-                      spacing: 8.h,
-                      children: List.generate(
-                        state.prayerTimes.length,
-                            (index) => PrayerTimings(
-                          isDark: isDark,
-                          prayer: state.prayerTimes[index].name,
-                          time: state.prayerTimes[index].time,
-                          isCurrentPrayer: index == currentIndex,
-                          isNextPrayer:
-                          currentIndex == -1 && index == nextIndex,
+
+            final maxWidth = AppResponsive.isDesktop(context)
+                ? 1100.0
+                : AppResponsive.isTablet(context)
+                ? 820.0
+                : double.infinity;
+
+            return AppResponsive.constrain(
+              context,
+              maxWidth: maxWidth,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  DashboardTiming(
+                    isDark: isDark,
+                    nextPrayer: state.nextPrayer.name,
+                    remainingTime: state.remainingTime,
+                  ),
+                  Gap( AppResponsive.heightValue(context, 6)),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      padding: EdgeInsets.only(bottom:  AppResponsive.heightValue(context, 80)),
+                      child: Column(
+                        spacing:  AppResponsive.heightValue(context, 8),
+                        children: List.generate(
+                          state.prayerTimes.length,
+                              (index) => PrayerTimings(
+                            isDark: isDark,
+                            prayer: state.prayerTimes[index].name,
+                            time: state.prayerTimes[index].time,
+                            isCurrentPrayer: index == currentIndex,
+                            isNextPrayer:
+                            currentIndex == -1 && index == nextIndex,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             );
-          } else if (state is AdhanError) {
+          }
+
+          else if (state is AdhanError) {
             return _LocationErrorView(state: state);
-          } else {
+          }
+
+          else {
             return const SizedBox.shrink();
           }
         },
@@ -142,22 +158,26 @@ class _LocationErrorView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24.w),
+        padding: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context,24)),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.location_off, size: 55.sp, color: Colors.grey),
-            Gap(30.h),
-            // CustomText(state.message, textAlign: TextAlign.center),
-            // Gap(20.h),
+            Icon(Icons.location_off, size: AppResponsive.iconSize(context, 55), color: Colors.grey),
+            Gap( AppResponsive.heightValue(context, 30)),
             ElevatedButton(
               onPressed: () => _handleAction(context),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.teal.shade700,
                 foregroundColor: Colors.white,
-                padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppResponsive.widthValue(context, 24),
+                  vertical: AppResponsive.heightValue(context, 12),
+                ),
               ),
-              child: CustomText(_buttonLabel , fontSize: 12.sp,color: Colors.white,),
+              child: CustomText(
+                _buttonLabel ,
+                fontSize: AppResponsive.fontSize(context, 12),
+                color: Colors.white,),
             ),
           ],
         ),

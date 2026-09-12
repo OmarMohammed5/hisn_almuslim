@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../core/responsive/app_responsive.dart';
 import '../../../../core/shared/custom_text.dart';
 
 class DashboardErrorView extends StatelessWidget {
@@ -16,19 +16,22 @@ class DashboardErrorView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: EdgeInsets.all(24.w),
+        padding: EdgeInsets.all(AppResponsive.widthValue(context, 24)),
 
         child: Column(
           mainAxisSize: MainAxisSize.min,
 
           children: [
-            Icon(Icons.wifi_off_rounded, size: 42.sp),
+            Icon(
+              Icons.wifi_off_rounded,
+              size: AppResponsive.fontSize(context, 42),
+            ),
 
-            SizedBox(height: 12.h),
+            SizedBox(height: AppResponsive.heightValue(context, 12)),
 
             CustomText(message, textAlign: TextAlign.center),
 
-            SizedBox(height: 14.h),
+            SizedBox(height: AppResponsive.heightValue(context, 14)),
 
             FilledButton.icon(
               onPressed: onRetry,

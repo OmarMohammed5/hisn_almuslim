@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 
+import '../responsive/app_responsive.dart';
+
 SnackBar customSnackBar(
   String msg,
   IconData icon,
@@ -19,21 +21,30 @@ SnackBar customSnackBar(
   final Color iconColor = isDark ? Colors.white : Colors.white;
 
   return SnackBar(
-    padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
-    margin: EdgeInsets.only(bottom: 15.h, left: 20.w, right: 20.w),
+    padding: EdgeInsets.symmetric(
+      horizontal: AppResponsive.widthValue(context, 14),
+      vertical: AppResponsive.widthValue(context, 12),
+    ),
+    margin: EdgeInsets.only(
+      bottom: AppResponsive.heightValue(context, 15),
+      left: AppResponsive.widthValue(context, 20),
+      right: AppResponsive.widthValue(context, 20),
+    ),
     backgroundColor: bgColor,
     elevation: 0,
     behavior: SnackBarBehavior.floating,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(AppResponsive.radius(context, 16)),
+    ),
     content: Row(
-      spacing: 12.w,
+      spacing: AppResponsive.widthValue(context, 12),
       children: [
-        Icon(icon, color: iconColor, size: 16.sp),
+        Icon(icon, color: iconColor, size: AppResponsive.iconSize(context, 16)),
         Expanded(
           child: CustomText(
             msg,
             color: textColor,
-            fontSize: 11.5.sp,
+            fontSize: AppResponsive.fontSize(context, 11),
             fontWeight: FontWeight.w600,
           ),
         ),

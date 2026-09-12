@@ -232,7 +232,6 @@ Widget BuildBackButton({
         color: iconColor,
         size: AppResponsive.iconSize(context, 17),
       ),
-      splashRadius: 20.r,
     ),
   );
 }

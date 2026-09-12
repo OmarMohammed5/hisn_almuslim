@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../core/responsive/app_responsive.dart';
+
 class BookCard extends StatelessWidget {
   final VoidCallback onTap;
   final String title;
@@ -40,26 +42,26 @@ class BookCard extends StatelessWidget {
 
     return Material(
       color: Colors.transparent,
-      borderRadius: BorderRadius.circular(18.r),
+      borderRadius: BorderRadius.circular(AppResponsive.radius(context, 18)),
       child: GestureDetector(
         onTap: onTap,
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(18.r),
+            borderRadius: BorderRadius.circular(AppResponsive.radius(context, 18)),
 
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(
                   alpha: isDark ? .35 : .16,
                 ),
-                blurRadius: 18.r,
-                offset: Offset(4.w, 8.h),
+                blurRadius: 2.r,
+                offset: Offset(4.w, 2.h),
               ),
             ],
           ),
 
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(18.r),
+            borderRadius: BorderRadius.circular(AppResponsive.radius(context, 18)),
 
             child: Stack(
               children: [
@@ -80,7 +82,7 @@ class BookCard extends StatelessWidget {
                       color: accentColor.withValues(
                         alpha: .25,
                       ),
-                      width: 1,
+                      width: AppResponsive.widthValue(context, 1),
                     ),
                   ),
 
@@ -89,29 +91,29 @@ class BookCard extends StatelessWidget {
 
                       // Decorative circles
                       Positioned(
-                        top: -35.w,
-                        left: -35.w,
+                        top: AppResponsive.heightValue(context, -35),
+                        left: AppResponsive.widthValue(context, -35),
                         child: Container(
-                          width: 95.w,
-                          height: 95.w,
+                          width: AppResponsive.widthValue(context, 95),
+                          height: AppResponsive.heightValue(context, 95),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(
                               color: Colors.white.withValues(
                                 alpha: .06,
                               ),
-                              width: 1,
+                              width: AppResponsive.widthValue(context, 1),
                             ),
                           ),
                         ),
                       ),
 
                       Positioned(
-                        bottom: -45.w,
-                        right: -45.w,
+                        bottom: AppResponsive.heightValue(context, -45),
+                        right: AppResponsive.widthValue(context, -45),
                         child: Container(
-                          width: 110.w,
-                          height: 110.w,
+                          width: AppResponsive.widthValue(context, 110),
+                          height: AppResponsive.heightValue(context, 110),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(
@@ -130,8 +132,8 @@ class BookCard extends StatelessWidget {
                           padding: EdgeInsets.all(9.w),
                           child: Container(
                             decoration: BoxDecoration(
-                              borderRadius:
-                              BorderRadius.circular(13.r),
+                              borderRadius: BorderRadius.circular(AppResponsive.radius(context, 13)),
+
 
                               border: Border.all(
                                 color: goldColor.withValues(
@@ -146,13 +148,13 @@ class BookCard extends StatelessWidget {
 
                       // Top ornament
                       Positioned(
-                        top: 22.h,
+                        top: AppResponsive.heightValue(context, 22),
                         left: 0,
                         right: 0,
                         child: Center(
                           child: Icon(
                             FlutterIslamicIcons.mohammad,
-                            color: goldColor,size: 22.sp,
+                            color: goldColor,size:AppResponsive.iconSize(context, 22),
                           ),
                         ),
                       ),
@@ -161,8 +163,8 @@ class BookCard extends StatelessWidget {
                       Center(
                         child: Padding(
                           padding: EdgeInsets.symmetric(
-                            horizontal: 22.w,
-                            vertical: 35.h,
+                            horizontal:AppResponsive.widthValue(context, 22),
+                            vertical: AppResponsive.heightValue(context, 35),
                           ),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
@@ -174,7 +176,7 @@ class BookCard extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 16.sp,
+                                  fontSize: AppResponsive.fontSize(context, 16),
                                   fontWeight: FontWeight.bold,
                                   height: 1.5,
                                   fontFamily:
@@ -193,15 +195,15 @@ class BookCard extends StatelessWidget {
                                 ),
                               ),
 
-                              SizedBox(height: 10.h),
+                              SizedBox(height:AppResponsive.heightValue(context, 10)),
 
                               Container(
-                                width: 35.w,
-                                height: 1.5.h,
+                                width: AppResponsive.widthValue(context, 35),
+                                height:AppResponsive.heightValue(context, 1.5),
                                 decoration: BoxDecoration(
                                   color: goldColor,
-                                  borderRadius:
-                                  BorderRadius.circular(5.r),
+                                  borderRadius: BorderRadius.circular(AppResponsive.radius(context, 5)),
+
                                 ),
                               ),
                             ],
@@ -211,21 +213,21 @@ class BookCard extends StatelessWidget {
 
                       // Bottom number
                       Positioned(
-                        bottom: 16.h,
+                        bottom: AppResponsive.heightValue(context, 16),
                         left: 0,
                         right: 0,
                         child: Center(
                           child: Container(
                             padding: EdgeInsets.symmetric(
-                              horizontal: 9.w,
-                              vertical: 4.h,
+                              horizontal: AppResponsive.widthValue(context, 9),
+                              vertical: AppResponsive.heightValue(context, 4),
                             ),
                             decoration: BoxDecoration(
                               color: Colors.black.withValues(
                                 alpha: .10,
                               ),
-                              borderRadius:
-                              BorderRadius.circular(20.r),
+                              borderRadius: BorderRadius.circular(AppResponsive.radius(context, 20)),
+
                               border: Border.all(
                                 color:
                                 Colors.white.withValues(
@@ -239,7 +241,7 @@ class BookCard extends StatelessWidget {
                                 color: Colors.white.withValues(
                                   alpha: .75,
                                 ),
-                                fontSize: 8.5.sp,
+                                fontSize: AppResponsive.fontSize(context, 8.5),
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -256,7 +258,7 @@ class BookCard extends StatelessWidget {
                   top: 0,
                   bottom: 0,
                   child: Container(
-                    width: 7.w,
+                    width: AppResponsive.widthValue(context, 7),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         begin: Alignment.topCenter,

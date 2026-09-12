@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hisn_almuslim/core/responsive/app_responsive.dart';
 import 'package:gap/gap.dart';
 
 class ReaderAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -27,7 +28,7 @@ class ReaderAppBar extends StatelessWidget implements PreferredSizeWidget {
   });
 
   @override
-  Size get preferredSize => Size.fromHeight(70.h);
+  Size get preferredSize => const Size.fromHeight(70);
 
   @override
   Widget build(BuildContext context) {
@@ -39,14 +40,8 @@ class ReaderAppBar extends StatelessWidget implements PreferredSizeWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: isDark
-              ? [
-            Color(0xFF0F1419),
-            Color(0xFF1A2A3A),
-          ]
-              : [
-            Colors.teal.shade100,
-            Colors.white,
-          ],
+              ? [Color(0xFF0F1419), Color(0xFF1A2A3A)]
+              : [Colors.teal.shade100, Colors.white],
         ),
         boxShadow: [
           BoxShadow(
@@ -61,13 +56,16 @@ class ReaderAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: SafeArea(
         bottom: false,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
+          padding: EdgeInsets.symmetric(
+            horizontal: AppResponsive.widthValue(context, 8),
+            vertical: AppResponsive.heightValue(context, 8),
+          ),
           child: Row(
             children: [
               // Back Button
               _buildBackButton(context, isDark),
 
-              Gap(8.w),
+              Gap(AppResponsive.widthValue(context, 8)),
 
               // Title Section
               Expanded(
@@ -78,7 +76,7 @@ class ReaderAppBar extends StatelessWidget implements PreferredSizeWidget {
                     Text(
                       title,
                       style: TextStyle(
-                        fontSize: 17.sp,
+                        fontSize: AppResponsive.fontSize(context, 17),
                         fontWeight: FontWeight.w700,
                         fontFamily: "QuranFont",
                         color: isDark ? Colors.white : Color(0xFF1A1A2E),
@@ -87,10 +85,9 @@ class ReaderAppBar extends StatelessWidget implements PreferredSizeWidget {
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
-                    Gap(2.h),
+                    Gap(AppResponsive.heightValue(context, 2)),
                     // Page indicator with elegant design
-                    if (isUiVisible)
-                      _buildPageIndicator(isDark),
+                    if (isUiVisible) _buildPageIndicator(context, isDark),
                   ],
                 ),
               ),
@@ -100,11 +97,12 @@ class ReaderAppBar extends StatelessWidget implements PreferredSizeWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   _buildActionButton(
+                    context: context,
                     icon: Icons.text_fields_rounded,
                     onPressed: onFontTap,
                     isDark: isDark,
                   ),
-                  Gap(4.w),
+                  Gap(AppResponsive.widthValue(context, 4)),
                 ],
               ),
             ],
@@ -118,12 +116,14 @@ class ReaderAppBar extends StatelessWidget implements PreferredSizeWidget {
     return GestureDetector(
       onTap: () => Navigator.pop(context),
       child: Container(
-        padding: EdgeInsets.all(8.w),
+        padding: EdgeInsets.all(AppResponsive.widthValue(context, 8)),
         decoration: BoxDecoration(
           color: isDark
               ? Colors.white.withValues(alpha: 0.05)
               : Colors.blue.withValues(alpha: 0.08),
-          borderRadius: BorderRadius.circular(12.r),
+          borderRadius: BorderRadius.circular(
+            AppResponsive.radius(context, 12),
+          ),
           border: Border.all(
             color: isDark
                 ? Colors.white.withValues(alpha: 0.08)
@@ -133,16 +133,19 @@ class ReaderAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         child: Icon(
           Icons.arrow_back_ios_new_rounded,
-          size: 18.sp,
+          size: AppResponsive.iconSize(context, 18),
           color: isDark ? Colors.white : Color(0xFF1A1A2E),
         ),
       ),
     );
   }
 
-  Widget _buildPageIndicator(bool isDark) {
+  Widget _buildPageIndicator(BuildContext context, bool isDark) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 3.h),
+      padding: EdgeInsets.symmetric(
+        horizontal: AppResponsive.widthValue(context, 10),
+        vertical: AppResponsive.heightValue(context, 3),
+      ),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
@@ -150,7 +153,7 @@ class ReaderAppBar extends StatelessWidget implements PreferredSizeWidget {
             Colors.blue.withValues(alpha: 0.05),
           ],
         ),
-        borderRadius: BorderRadius.circular(8.r),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 8)),
         border: Border.all(
           color: Colors.teal.withValues(alpha: 0.15),
           width: 0.5,
@@ -161,14 +164,14 @@ class ReaderAppBar extends StatelessWidget implements PreferredSizeWidget {
         children: [
           Icon(
             Icons.menu_book_rounded,
-            size: 12.sp,
+            size: AppResponsive.iconSize(context, 12),
             color: isDark ? Colors.teal.shade300 : Colors.teal.shade600,
           ),
-          Gap(4.w),
+          Gap(AppResponsive.widthValue(context, 4)),
           Text(
             '${currentPage + 1} / $totalCount',
             style: TextStyle(
-              fontSize: 11.sp,
+              fontSize: AppResponsive.fontSize(context, 11),
               fontWeight: FontWeight.w600,
               color: isDark ? Colors.grey.shade300 : Colors.grey.shade700,
               fontFamily: "Cairo",
@@ -180,18 +183,21 @@ class ReaderAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   Widget _buildActionButton({
+    required BuildContext context,
     required IconData icon,
     required VoidCallback? onPressed,
     required bool isDark,
     Color? color,
   }) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 2.w),
+      margin: EdgeInsets.symmetric(
+        horizontal: AppResponsive.widthValue(context, 2),
+      ),
       decoration: BoxDecoration(
         color: isDark
             ? Colors.white.withValues(alpha: 0.05)
             : Colors.blue.withValues(alpha: 0.05),
-        borderRadius: BorderRadius.circular(10.r),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 10)),
         border: Border.all(
           color: isDark
               ? Colors.white.withValues(alpha: 0.05)
@@ -202,13 +208,16 @@ class ReaderAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: IconButton(
         icon: Icon(
           icon,
-          size: 20.sp,
+          size: AppResponsive.iconSize(context, 20),
           color: color ?? (isDark ? Colors.white : Color(0xFF1A1A2E)),
         ),
         onPressed: onPressed,
-        padding: EdgeInsets.all(8.w),
-        constraints: BoxConstraints(minWidth: 36.w, minHeight: 36.h),
-        splashRadius: 20.r,
+        padding: EdgeInsets.all(AppResponsive.widthValue(context, 8)),
+        constraints: BoxConstraints(
+          minWidth: AppResponsive.widthValue(context, 36),
+          minHeight: AppResponsive.heightValue(context, 36),
+        ),
+        splashRadius: AppResponsive.radius(context, 20),
       ),
     );
   }

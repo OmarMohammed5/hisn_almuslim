@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hisn_almuslim/core/responsive/app_responsive.dart';
 import 'package:hisn_almuslim/core/shared/app_bar_widget.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 
@@ -25,11 +25,9 @@ class _QuizTopicsScreenState extends State<QuizTopicsScreen> {
   final Map<String, int> _completedByTopicSlug = {};
   bool _isLoadingProgress = true;
 
-
   /// Scroll
   final ScrollController _scrollController = ScrollController();
   final ValueNotifier<bool> _showScrollToTop = ValueNotifier(false);
-
 
   @override
   void initState() {
@@ -78,37 +76,44 @@ class _QuizTopicsScreenState extends State<QuizTopicsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarWidget(title: widget.category.arabicName),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              controller: _scrollController,
-                padding: EdgeInsets.fromLTRB(16.w, 20.h, 16.w, 30.h),
-                itemCount: widget.category.topics.length,
-                itemBuilder: (context , index){
-              final topic = widget.category.topics[index];
-              return QuizStaggeredEntry(
-                index: index,
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: 12.h),
-                  child: QuizTopicCard(
-                    topic: topic,
-                    completedLevels: _isLoadingProgress ? 0 : (_completedByTopicSlug[topic.slug] ?? 0),
-                    onTap: () async {
-                      await Navigator.pushNamed(
-                        context,
-                        AppRoutes.quizLevels,
-                        arguments: topic,
-                      );
-                      _loadProgress();
-                    },
-                  ),
-                ),
-              );
-            }),
+      body: AppResponsive.constrain(
+        context,
+        maxWidth: 900,
+        child: ListView.builder(
+          controller: _scrollController,
+          padding: EdgeInsets.fromLTRB(
+            AppResponsive.widthValue(context, 16),
+            AppResponsive.heightValue(context, 20),
+            AppResponsive.widthValue(context, 16),
+            AppResponsive.heightValue(context, 30),
           ),
-
-        ],
+          itemCount: widget.category.topics.length,
+          itemBuilder: (context, index) {
+            final topic = widget.category.topics[index];
+            return QuizStaggeredEntry(
+              index: index,
+              child: Padding(
+                padding: EdgeInsets.only(
+                  bottom: AppResponsive.heightValue(context, 12),
+                ),
+                child: QuizTopicCard(
+                  topic: topic,
+                  completedLevels: _isLoadingProgress
+                      ? 0
+                      : (_completedByTopicSlug[topic.slug] ?? 0),
+                  onTap: () async {
+                    await Navigator.pushNamed(
+                      context,
+                      AppRoutes.quizLevels,
+                      arguments: topic,
+                    );
+                    _loadProgress();
+                  },
+                ),
+              ),
+            );
+          },
+        ),
       ),
       floatingActionButton: ReBuildScrollToTop(
         showScrollToTop: _showScrollToTop,

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hisn_almuslim/features/lectures/presentation/widgets/lecture_content_container.dart';
+import 'package:hisn_almuslim/core/responsive/app_responsive.dart';
 import 'package:hisn_almuslim/core/shared/app_bar_widget.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 import 'package:hisn_almuslim/core/theme/app_colors.dart';
@@ -11,8 +12,7 @@ import '../../domain/repositories/lectures_repository.dart';
 import '../widgets/lecture_card.dart';
 import 'lecture_player_screen.dart';
 
-class PlaylistDetailsScreen
-    extends StatefulWidget {
+class PlaylistDetailsScreen extends StatefulWidget {
   final LecturePlaylist playlist;
   final SharedPreferences preferences;
   final LecturesRepository repository;
@@ -25,12 +25,10 @@ class PlaylistDetailsScreen
   });
 
   @override
-  State<PlaylistDetailsScreen> createState() =>
-      _PlaylistDetailsScreenState();
+  State<PlaylistDetailsScreen> createState() => _PlaylistDetailsScreenState();
 }
 
-class _PlaylistDetailsScreenState
-    extends State<PlaylistDetailsScreen> {
+class _PlaylistDetailsScreenState extends State<PlaylistDetailsScreen> {
   final List<Lecture> _lectures = [];
 
   String? _nextPageToken;
@@ -56,8 +54,7 @@ class _PlaylistDetailsScreenState
     });
 
     try {
-      final page = await widget.repository
-          .getPlaylistLectures(
+      final page = await widget.repository.getPlaylistLectures(
         widget.playlist.id,
       );
 
@@ -65,8 +62,7 @@ class _PlaylistDetailsScreenState
 
       setState(() {
         _lectures.addAll(page.lectures);
-        _nextPageToken =
-            page.nextPageToken;
+        _nextPageToken = page.nextPageToken;
         _hasMore = page.hasMore;
         _loading = false;
       });
@@ -75,16 +71,13 @@ class _PlaylistDetailsScreenState
 
       setState(() {
         _loading = false;
-        _error =
-        'تعذر تحميل محاضرات القائمة';
+        _error = 'تعذر تحميل محاضرات القائمة';
       });
     }
   }
 
   Future<void> _loadMore() async {
-    if (_loadingMore ||
-        !_hasMore ||
-        _nextPageToken == null) {
+    if (_loadingMore || !_hasMore || _nextPageToken == null) {
       return;
     }
 
@@ -93,30 +86,21 @@ class _PlaylistDetailsScreenState
     });
 
     try {
-      final page =
-      await widget.repository
-          .getPlaylistLectures(
+      final page = await widget.repository.getPlaylistLectures(
         widget.playlist.id,
         pageToken: _nextPageToken,
       );
 
       if (!mounted) return;
 
-      final existing =
-      _lectures.map((e) => e.id).toSet();
+      final existing = _lectures.map((e) => e.id).toSet();
 
       setState(() {
         _lectures.addAll(
-          page.lectures.where(
-                (lecture) =>
-            !existing.contains(
-              lecture.id,
-            ),
-          ),
+          page.lectures.where((lecture) => !existing.contains(lecture.id)),
         );
 
-        _nextPageToken =
-            page.nextPageToken;
+        _nextPageToken = page.nextPageToken;
 
         _hasMore = page.hasMore;
 
@@ -129,49 +113,33 @@ class _PlaylistDetailsScreenState
         _loadingMore = false;
       });
 
-      ScaffoldMessenger.of(context)
-          .showSnackBar(
-        const SnackBar(
-          content: Text(
-            'تعذر تحميل المزيد',
-          ),
-        ),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('تعذر تحميل المزيد')));
     }
   }
 
-  void _openLecture(
-      Lecture lecture,
-      ) {
-    final raw = widget.preferences
-        .getString(
-      'lecture_progress_${lecture.id}',
-    );
+  void _openLecture(Lecture lecture) {
+    final raw = widget.preferences.getString('lecture_progress_${lecture.id}');
 
     double? position;
 
     if (raw != null) {
       final parts = raw.split('|');
 
-      if (parts.length >= 3 &&
-          parts[2] != 'true') {
-        position = double.tryParse(
-          parts[0],
-        );
+      if (parts.length >= 3 && parts[2] != 'true') {
+        position = double.tryParse(parts[0]);
       }
     }
 
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) =>
-            LecturePlayerScreen(
-              lecture: lecture,
-              preferences:
-              widget.preferences,
-              initialPositionSeconds:
-              position,
-            ),
+        builder: (_) => LecturePlayerScreen(
+          lecture: lecture,
+          preferences: widget.preferences,
+          initialPositionSeconds: position,
+        ),
       ),
     );
   }
@@ -180,19 +148,23 @@ class _PlaylistDetailsScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarWidget(title: widget.playlist.title),
-      body: NotificationListener<ScrollNotification>(onNotification: (notification) {
-          final metrics = notification.metrics;
+      body: LectureContentContainer(
+        padding: EdgeInsets.zero,
+        child: NotificationListener<ScrollNotification>(
+          onNotification: (notification) {
+            final metrics = notification.metrics;
 
-          if (metrics.pixels >= metrics.maxScrollExtent - 450) {
-            _loadMore();
-          }
+            if (metrics.pixels >= metrics.maxScrollExtent - 450) {
+              _loadMore();
+            }
 
-          return false;
-        },
-        child: RefreshIndicator(
-          color: AppColors.kPrimary,
-          onRefresh: _loadInitial,
-          child: _buildBody(),
+            return false;
+          },
+          child: RefreshIndicator(
+            color: AppColors.kPrimary,
+            onRefresh: _loadInitial,
+            child: _buildBody(),
+          ),
         ),
       ),
     );
@@ -200,52 +172,41 @@ class _PlaylistDetailsScreenState
 
   Widget _buildBody() {
     if (_loading) {
-      return  Center(
-        child: CupertinoActivityIndicator(color: AppColors.kPrimary,),
+      return Center(
+        child: CupertinoActivityIndicator(color: AppColors.kPrimary),
       );
     }
 
     if (_error != null) {
       return ListView(
-        physics:
-        const AlwaysScrollableScrollPhysics(),
+        physics: const AlwaysScrollableScrollPhysics(),
         children: [
-          SizedBox(height: 180.h),
-          Center(
-            child: Text(_error!),
-          ),
+          SizedBox(height: AppResponsive.heightValue(context, 180)),
+          Center(child: Text(_error!)),
         ],
       );
     }
 
     if (_lectures.isEmpty) {
       return ListView(
-        physics:
-        const AlwaysScrollableScrollPhysics(),
+        physics: const AlwaysScrollableScrollPhysics(),
         children: [
-          SizedBox(height: 180.h),
-          const Center(
-            child: CustomText(
-              'لا توجد محاضرات في هذه القائمة',
-            ),
-          ),
+          SizedBox(height: AppResponsive.heightValue(context, 180)),
+          const Center(child: CustomText('لا توجد محاضرات في هذه القائمة')),
         ],
       );
     }
     return ListView.builder(
-      physics:
-      const AlwaysScrollableScrollPhysics(),
+      physics: const AlwaysScrollableScrollPhysics(),
 
       padding: EdgeInsets.fromLTRB(
-        16.w,
-        16.h,
-        16.w,
-        40.h,
+        AppResponsive.widthValue(context, 16),
+        AppResponsive.heightValue(context, 16),
+        AppResponsive.widthValue(context, 16),
+        AppResponsive.heightValue(context, 40),
       ),
 
-      itemCount:
-      _lectures.length +
-          (_loadingMore || !_hasMore ? 1 : 0),
+      itemCount: _lectures.length + (_loadingMore || !_hasMore ? 1 : 0),
 
       itemBuilder: (context, index) {
         if (index < _lectures.length) {
@@ -260,12 +221,10 @@ class _PlaylistDetailsScreenState
         if (_loadingMore) {
           return Padding(
             padding: EdgeInsets.symmetric(
-              vertical: 16.h,
+              vertical: AppResponsive.heightValue(context, 16),
             ),
             child: Center(
-              child: CupertinoActivityIndicator(
-                color: AppColors.kPrimary,
-              ),
+              child: CupertinoActivityIndicator(color: AppColors.kPrimary),
             ),
           );
         }
@@ -273,19 +232,16 @@ class _PlaylistDetailsScreenState
         if (!_hasMore) {
           return Padding(
             padding: EdgeInsets.symmetric(
-              vertical: 18.h,
+              vertical: AppResponsive.heightValue(context, 18),
             ),
             child: Text(
               'وصلت إلى نهاية القائمة',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 10.sp,
-                color: Theme.of(context)
-                    .colorScheme
-                    .onSurface
-                    .withValues(
-                  alpha: .45,
-                ),
+                fontSize: AppResponsive.fontSize(context, 10),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: .45),
               ),
             ),
           );
@@ -294,6 +250,5 @@ class _PlaylistDetailsScreenState
         return const SizedBox.shrink();
       },
     );
-
   }
 }

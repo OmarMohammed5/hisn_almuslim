@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../core/responsive/app_responsive.dart';
 import '../../domain/entities/prophet_story.dart';
 
 class ReadingToolbar extends StatelessWidget {
@@ -54,28 +55,28 @@ class ReadingToolbar extends StatelessWidget {
 
     return Container(
       margin: EdgeInsets.fromLTRB(
-        16.w,
+        AppResponsive.widthValue(context, 16),
         0,
-        16.w,
-        20.h,
+        AppResponsive.widthValue(context, 16),
+        AppResponsive.heightValue(context, 20),
       ),
       padding: EdgeInsets.symmetric(
-        horizontal: 10.w,
-        vertical: 8.h,
+        horizontal: AppResponsive.widthValue(context, 10),
+        vertical: AppResponsive.heightValue(context, 8),
       ),
       decoration: BoxDecoration(
         color: toolbarColor,
-        borderRadius: BorderRadius.circular(20.r),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 20)),
         border: Border.all(
           color: borderColor,
-          width: 1,
+          width: AppResponsive.widthValue(context, 1),
         ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(
               alpha: isDark ? 0.25 : 0.07,
             ),
-            blurRadius: 20.r,
+            blurRadius: 12.r,
             offset: Offset(0, 6.h),
           ),
         ],
@@ -91,40 +92,40 @@ class ReadingToolbar extends StatelessWidget {
                 _ToolbarIcon(
                   icon: Icons.remove_rounded,
                   onTap: onDecreaseFontSize,
-                  size: 18.sp,
+                  size: AppResponsive.iconSize(context, 18),
                   iconColor: iconColor,
                   backgroundColor: iconBackgroundColor,
                 ),
 
-                SizedBox(width: 4.w),
+                SizedBox(width: AppResponsive.widthValue(context, 4)),
 
                 // Current font indicator
                 AnimatedContainer(
                   duration: const Duration(milliseconds: 180),
-                  width: 42.w,
-                  height: 34.w,
+                  width: AppResponsive.widthValue(context, 42),
+                  height: AppResponsive.heightValue(context, 34),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: accentColor.withValues(alpha: 0.08),
-                    borderRadius: BorderRadius.circular(10.r),
+                    borderRadius: BorderRadius.circular(AppResponsive.radius(context, 10)),
                   ),
                   child: Text(
                     'Aa',
                     style: TextStyle(
-                      fontSize: 15.sp,
+                      fontSize: AppResponsive.fontSize(context, 15),
                       fontWeight: FontWeight.w700,
                       color: accentColor,
-                      fontFamily: 'QuranFont',
+                      fontFamily: 'Noon',
                     ),
                   ),
                 ),
 
-                SizedBox(width: 4.w),
+                SizedBox(width: AppResponsive.widthValue(context, 4)),
 
                 _ToolbarIcon(
                   icon: Icons.add_rounded,
                   onTap: onIncreaseFontSize,
-                  size: 18.sp,
+                  size: AppResponsive.iconSize(context, 18),
                   iconColor: iconColor,
                   backgroundColor: iconBackgroundColor,
                 ),
@@ -135,9 +136,9 @@ class ReadingToolbar extends StatelessWidget {
           // DIVIDER
 
           Container(
-            width: 1.w,
-            height: 24.h,
-            margin: EdgeInsets.symmetric(horizontal: 6.w),
+            width: AppResponsive.widthValue(context, 1),
+            height: AppResponsive.heightValue(context, 24),
+            margin: EdgeInsets.symmetric(horizontal: AppResponsive.widthValue(context, 6)),
             color: dividerColor,
           ),
 
@@ -150,17 +151,17 @@ class ReadingToolbar extends StatelessWidget {
                 _ToolbarIcon(
                   icon: Icons.copy_rounded,
                   onTap: onCopy,
-                  size: 18.sp,
+                  size: AppResponsive.iconSize(context, 18),
                   iconColor: iconColor,
                   backgroundColor: iconBackgroundColor,
                 ),
 
-                SizedBox(width: 16.w),
+                SizedBox(width: AppResponsive.widthValue(context, 16)),
 
                 _ToolbarIcon(
                   icon: Icons.share_rounded,
                   onTap: onShare,
-                  size: 18.sp,
+                  size: AppResponsive.iconSize(context, 18),
                   iconColor: iconColor,
                   backgroundColor: iconBackgroundColor,
                 ),
@@ -196,13 +197,13 @@ class _ToolbarIcon extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(11.r),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 11)),
         splashColor: Colors.teal.withValues(alpha: 0.12),
         highlightColor: Colors.teal.withValues(alpha: 0.06),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 160),
-          width: 34.w,
-          height: 34.w,
+          width: AppResponsive.widthValue(context, 34),
+          height:AppResponsive.heightValue(context, 34),
           decoration: BoxDecoration(
             color: backgroundColor,
             borderRadius: BorderRadius.circular(11.r),

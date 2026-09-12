@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 
 import '../../../core/theme/app_colors.dart';
+import '../../../core/responsive/app_responsive.dart';
 
 class DuaCard extends StatefulWidget {
   final String content;
@@ -38,12 +38,12 @@ class _DuaCardState extends State<DuaCard> {
 
 
     return Container(
-      margin: EdgeInsets.only(bottom: 16.h),
-      padding: EdgeInsets.all(12.w),
+      margin: EdgeInsets.only(bottom: AppResponsive.heightValue(context, 16)),
+      padding: EdgeInsets.all(AppResponsive.widthValue(context, 12)),
       decoration: BoxDecoration(
         color: bgColor,
         border: Border.all(color: borderColor, width: 1),
-        borderRadius: BorderRadius.circular(18.r),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 18)),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
@@ -65,7 +65,7 @@ class _DuaCardState extends State<DuaCard> {
                 onTap: widget.onCopy,
                 isDark: isDark,
               ),
-              Gap(12.w),
+              Gap(AppResponsive.widthValue(context, 12)),
 
               _CustomActionButton(
                 icon: Icons.share_outlined,
@@ -76,25 +76,25 @@ class _DuaCardState extends State<DuaCard> {
             ],
           ),
 
-          Gap(10.h),
+          Gap(AppResponsive.heightValue(context, 10)),
           Divider(
-            height: 1.h,
+            height: AppResponsive.heightValue(context, 1),
             color: isDark ? Colors.white12 : Colors.black12,
             thickness: 1,
           ),
-          Gap(16.h),
+          Gap(AppResponsive.heightValue(context, 16)),
 
           if (widget.title != null && widget.title!.isNotEmpty) ...[
             Text(
               widget.title!,
               style: TextStyle(
                 fontFamily: 'Noon',
-                fontSize: 17.sp,
+                fontSize: AppResponsive.fontSize(context, 17),
                 fontWeight: FontWeight.bold,
                 color: Colors.teal.shade700,
               ),
             ),
-            Gap(16.h),
+            Gap(AppResponsive.heightValue(context, 16)),
           ],
 
           Text(
@@ -102,7 +102,7 @@ class _DuaCardState extends State<DuaCard> {
             textDirection: TextDirection.rtl,
             style: TextStyle(
               fontFamily: 'Noon',
-              fontSize: widget.fontSize.sp,
+              fontSize: AppResponsive.fontSize(context, widget.fontSize),
               height: 1.8,
               fontWeight: FontWeight.w600,
               color: isDark ? const Color(0xFFF5F5F5) : const Color(0xFF1A1A1A), // ألوان أكثر نعومة
@@ -111,13 +111,13 @@ class _DuaCardState extends State<DuaCard> {
 
           // 🔹 Reference (Optional)
           if (widget.reference != null && widget.reference!.isNotEmpty) ...[
-            Gap(16.h),
+            Gap(AppResponsive.heightValue(context, 16)),
             Text(
               "[ ${widget.reference} ]",
               textDirection: TextDirection.rtl,
               style: TextStyle(
                 fontFamily: 'Noon',
-                fontSize: 13.sp,
+                fontSize: AppResponsive.fontSize(context, 13),
                 color: Colors.grey.shade600,
                 fontStyle: FontStyle.italic,
               ),
@@ -147,15 +147,18 @@ class _CustomActionButton extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        borderRadius: BorderRadius.circular(12.r),
+        borderRadius: BorderRadius.circular(AppResponsive.radius(context, 12)),
         onTap: onTap,
         splashColor: Colors.teal.shade200.withOpacity(0.4),
         highlightColor: Colors.teal.shade200.withOpacity(0.2),
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 6.h),
+          padding: EdgeInsets.symmetric(
+            horizontal: AppResponsive.widthValue(context, 6),
+            vertical: AppResponsive.heightValue(context, 6),
+          ),
           decoration: BoxDecoration(
             color: isDark ? const Color(0xFF2C2C2E) : Colors.grey.shade100,
-            borderRadius: BorderRadius.circular(12.r),
+            borderRadius: BorderRadius.circular(AppResponsive.radius(context, 12)),
             border: Border.all(
               color: Colors.teal.shade700.withOpacity(0.3),
               width: 1.5,
@@ -166,15 +169,15 @@ class _CustomActionButton extends StatelessWidget {
             children: [
               Icon(
                 icon,
-                size: 16.sp,
+                size: AppResponsive.iconSize(context, 16),
                 color: Colors.teal.shade700,
               ),
-              Gap(6.w),
+              Gap(AppResponsive.widthValue(context, 6)),
               Text(
                 label,
                 style: TextStyle(
                   fontFamily: 'Noon',
-                  fontSize: 13.sp,
+                  fontSize: AppResponsive.fontSize(context, 13),
                   fontWeight: FontWeight.w600,
                   color: isDark ? Colors.white70 : const Color(0xFF3E4D5C),
                 ),

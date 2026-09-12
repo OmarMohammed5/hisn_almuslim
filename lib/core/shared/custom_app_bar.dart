@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 
+import '../responsive/app_responsive.dart';
+
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key, required this.title, required this.isDark});
+
   final String title;
   final bool isDark;
+
   @override
   Size get preferredSize => Size.fromHeight(75);
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -13,11 +18,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       scrolledUnderElevation: 0,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       iconTheme: IconThemeData(
-        size: 27,
+        size: AppResponsive.iconSize(context, 27),
         color: isDark ? Colors.white : Colors.teal.shade700,
       ),
       title: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        padding: EdgeInsets.symmetric(
+          horizontal: AppResponsive.widthValue(context, 14),
+          vertical: AppResponsive.heightValue(context, 12),
+        ),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: isDark
@@ -47,10 +55,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.white,
-            fontSize: 20,
-            height: 1.5,
+            fontSize: AppResponsive.fontSize(context, 20),
+            height:AppResponsive.heightValue(context, 1.5),
             fontWeight: FontWeight.bold,
-            fontFamily: "Uthmani",
+            fontFamily: "Noon",
           ),
         ),
       ),

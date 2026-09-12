@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hisn_almuslim/core/responsive/app_responsive.dart';
 import 'package:gap/gap.dart';
 
 import '../../../core/theme/app_colors.dart';
@@ -34,8 +35,11 @@ class ChapterCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-        padding: EdgeInsets.all(12.w),
+        margin: EdgeInsets.symmetric(
+          horizontal: AppResponsive.widthValue(context, 6),
+          vertical: AppResponsive.heightValue(context, 5),
+        ),
+        padding: EdgeInsets.all(AppResponsive.widthValue(context, 12)),
         decoration: BoxDecoration(
           color: bgColor,
           borderRadius: BorderRadius.circular(20.r),
@@ -55,8 +59,8 @@ class ChapterCard extends StatelessWidget {
           children: [
             ///  Chapter Number
             Container(
-              width: 37.w,
-              height: 37.w,
+              width: AppResponsive.widthValue(context, 37),
+              height: AppResponsive.widthValue(context, 37),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
@@ -73,13 +77,13 @@ class ChapterCard extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                     fontFamily: "Cairo",
-                    fontSize: 18.sp,
+                    fontSize: AppResponsive.fontSize(context, 18),
                   ),
                 ),
               ),
             ),
 
-            Gap(16.w),
+            Gap(AppResponsive.widthValue(context, 12)),
 
             ///  Title + Count
             Expanded(
@@ -91,21 +95,21 @@ class ChapterCard extends StatelessWidget {
                     maxLines: 20,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontSize: 17.sp,
+                      fontSize: AppResponsive.fontSize(context, 17),
                       fontWeight: FontWeight.w700,
                       fontFamily: "Noon",
                       color: isDark ? Colors.white : Color(0xFF1A1A2E),
                       height: 1.7,
                     ),
                   ),
-                  Gap(6.h),
+                  Gap(AppResponsive.heightValue(context, 6)),
                   Row(
                     children: [
                       if (count != null) ...[
                         Container(
                           padding: EdgeInsets.symmetric(
-                            horizontal: 8.w,
-                            vertical: 2.h,
+                            horizontal: AppResponsive.widthValue(context, 8),
+                            vertical: AppResponsive.heightValue(context, 2),
                           ),
                           decoration: BoxDecoration(
                             color: isDark
@@ -118,16 +122,16 @@ class ChapterCard extends StatelessWidget {
                             children: [
                               Icon(
                                 Icons.format_quote_rounded,
-                                size: 12.sp,
+                                size: AppResponsive.iconSize(context, 12),
                                 color: isDark
                                     ? Colors.teal.shade600
                                     : Colors.teal.shade800,
                               ),
-                              Gap(5.w),
+                              Gap(AppResponsive.widthValue(context, 5)),
                               Text(
                                 '$count أحاديث',
                                 style: TextStyle(
-                                  fontSize: 10.sp,
+                                  fontSize: AppResponsive.fontSize(context, 10),
                                   fontWeight: FontWeight.w500,
                                   color: isDark
                                       ? Colors.teal.shade300
@@ -140,11 +144,11 @@ class ChapterCard extends StatelessWidget {
                         ),
                       ],
                       if (subtitle != null) ...[
-                        if (count != null) Gap(8.w),
+                        if (count != null) Gap(AppResponsive.widthValue(context, 8)),
                         Text(
                           subtitle!,
                           style: TextStyle(
-                            fontSize: 11.sp,
+                            fontSize: AppResponsive.fontSize(context, 11),
                             color: isDark
                                 ? Colors.grey.shade400
                                 : Colors.grey.shade600,
@@ -159,7 +163,7 @@ class ChapterCard extends StatelessWidget {
             ),
 
             Container(
-              padding: EdgeInsets.all(8.w),
+              padding: EdgeInsets.all(AppResponsive.widthValue(context, 8)),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
@@ -177,7 +181,7 @@ class ChapterCard extends StatelessWidget {
               ),
               child: Icon(
                 trailingIcon ?? Icons.arrow_forward_ios_rounded,
-                size: 16.sp,
+                size: AppResponsive.iconSize(context, 16),
                 color: isDark
                     ? Colors.teal.shade500
                     : Colors.teal.shade700,

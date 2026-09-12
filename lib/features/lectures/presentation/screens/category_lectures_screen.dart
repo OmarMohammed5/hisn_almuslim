@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hisn_almuslim/features/lectures/presentation/widgets/lecture_content_container.dart';
+import 'package:hisn_almuslim/core/responsive/app_responsive.dart';
 import 'package:hisn_almuslim/core/shared/app_bar_widget.dart';
 import 'package:hisn_almuslim/core/shared/search_field.dart';
 import 'package:hisn_almuslim/core/theme/app_colors.dart';
@@ -58,9 +59,9 @@ class _CategoryLecturesScreenState extends State<CategoryLecturesScreen> {
   void _submitSearch() {
     FocusScope.of(context).unfocus();
     context.read<LecturesCubit>().searchInCategory(
-          category: widget.category,
-          query: _controller.text,
-        );
+      category: widget.category,
+      query: _controller.text,
+    );
   }
 
   void _clearSearch() {
@@ -108,50 +109,54 @@ class _CategoryLecturesScreenState extends State<CategoryLecturesScreen> {
 
     return Scaffold(
       appBar: AppBarWidget(title: widget.category),
-      body: BlocBuilder<LecturesCubit, LecturesState>(
-        builder: (context, state) {
-          final isInitialLoading =
-              state.status == LecturesStatus.loading &&
-              state.searchResults.isEmpty &&
-              !state.isLoadingMoreCategory;
+      body: LectureContentContainer(
+        child: BlocBuilder<LecturesCubit, LecturesState>(
+          builder: (context, state) {
+            final isInitialLoading =
+                state.status == LecturesStatus.loading &&
+                state.searchResults.isEmpty &&
+                !state.isLoadingMoreCategory;
 
-          return Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.fromLTRB(16.w, 14.h, 16.w, 8.h),
-                child: _buildSearchField(scheme, state),
-              ),
-              Expanded(
-                child: isInitialLoading
-                    ? const SingleChildScrollView(
-                        physics: NeverScrollableScrollPhysics(),
-                        child: LectureResultsSkeleton(count: 6),
-                      )
-                    : _buildResults(context, state),
-              ),
-            ],
-          );
-        },
+            return Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(
+                    AppResponsive.widthValue(context, 16),
+                    AppResponsive.heightValue(context, 14),
+                    AppResponsive.widthValue(context, 16),
+                    AppResponsive.heightValue(context, 8),
+                  ),
+                  child: _buildSearchField(scheme, state),
+                ),
+                Expanded(
+                  child: isInitialLoading
+                      ? const SingleChildScrollView(
+                          physics: NeverScrollableScrollPhysics(),
+                          child: LectureResultsSkeleton(count: 6),
+                        )
+                      : _buildResults(context, state),
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
 
   Widget _buildSearchField(ColorScheme scheme, LecturesState state) {
-    final hasText = _controller.text.trim().isNotEmpty;
-    final isLoading = state.status == LecturesStatus.loading &&
-        state.searchResults.isEmpty;
 
     return SearchField(
       controller: _controller,
       onChanged: (value) {
         setState(() {});
         context.read<LecturesCubit>().onCategorySearchChanged(
-              category: widget.category,
-              query: value,
-            );
+          category: widget.category,
+          query: value,
+        );
       },
       onSubmitted: (_) => _submitSearch(),
-      hint:  'ابحث داخل ${widget.category}...',
+      hint: 'ابحث داخل ${widget.category}...',
     );
   }
 
@@ -160,7 +165,12 @@ class _CategoryLecturesScreenState extends State<CategoryLecturesScreen> {
       case LecturesStatus.invalidQuery:
         return ListView(
           controller: _scrollController,
-          padding: EdgeInsets.fromLTRB(16.w, 10.h, 16.w, 100.h),
+          padding: EdgeInsets.fromLTRB(
+            AppResponsive.widthValue(context, 16),
+            AppResponsive.heightValue(context, 10),
+            AppResponsive.widthValue(context, 16),
+            AppResponsive.heightValue(context, 100),
+          ),
           children: [
             LectureFeedbackView.invalidQuery(
               message: state.errorMessage ?? 'اكتب بحثًا صالحًا.',
@@ -171,7 +181,12 @@ class _CategoryLecturesScreenState extends State<CategoryLecturesScreen> {
       case LecturesStatus.failure:
         return ListView(
           controller: _scrollController,
-          padding: EdgeInsets.fromLTRB(16.w, 10.h, 16.w, 100.h),
+          padding: EdgeInsets.fromLTRB(
+            AppResponsive.widthValue(context, 16),
+            AppResponsive.heightValue(context, 10),
+            AppResponsive.widthValue(context, 16),
+            AppResponsive.heightValue(context, 100),
+          ),
           children: [
             LectureFeedbackView(
               icon: Icons.wifi_off_rounded,
@@ -179,9 +194,9 @@ class _CategoryLecturesScreenState extends State<CategoryLecturesScreen> {
               actionLabel: 'إعادة المحاولة',
               onAction: () {
                 context.read<LecturesCubit>().searchInCategory(
-                      category: widget.category,
-                      query: _controller.text,
-                    );
+                  category: widget.category,
+                  query: _controller.text,
+                );
               },
             ),
           ],
@@ -190,14 +205,24 @@ class _CategoryLecturesScreenState extends State<CategoryLecturesScreen> {
       case LecturesStatus.empty:
         return ListView(
           controller: _scrollController,
-          padding: EdgeInsets.fromLTRB(16.w, 10.h, 16.w, 100.h),
+          padding: EdgeInsets.fromLTRB(
+            AppResponsive.widthValue(context, 16),
+            AppResponsive.heightValue(context, 10),
+            AppResponsive.widthValue(context, 16),
+            AppResponsive.heightValue(context, 100),
+          ),
           children: const [LectureFeedbackView.empty()],
         );
 
       case LecturesStatus.initial:
         return ListView(
           controller: _scrollController,
-          padding: EdgeInsets.fromLTRB(16.w, 10.h, 16.w, 100.h),
+          padding: EdgeInsets.fromLTRB(
+            AppResponsive.widthValue(context, 16),
+            AppResponsive.heightValue(context, 10),
+            AppResponsive.widthValue(context, 16),
+            AppResponsive.heightValue(context, 100),
+          ),
           children: const [
             LectureFeedbackView(
               icon: Icons.auto_stories_rounded,
@@ -212,7 +237,8 @@ class _CategoryLecturesScreenState extends State<CategoryLecturesScreen> {
             state.searchResults.isNotEmpty &&
             state.errorMessage != null &&
             !state.isLoadingMoreCategory;
-        final itemCount = state.searchResults.length +
+        final itemCount =
+            state.searchResults.length +
             (state.isLoadingMoreCategory || showPaginationError ? 1 : 0);
 
         if (state.searchResults.isEmpty) {
@@ -222,14 +248,21 @@ class _CategoryLecturesScreenState extends State<CategoryLecturesScreen> {
         return ListView.builder(
           controller: _scrollController,
           physics: const BouncingScrollPhysics(),
-          padding: EdgeInsets.fromLTRB(16.w, 10.h, 16.w, 100.h),
+          padding: EdgeInsets.fromLTRB(
+            AppResponsive.widthValue(context, 16),
+            AppResponsive.heightValue(context, 10),
+            AppResponsive.widthValue(context, 16),
+            AppResponsive.heightValue(context, 100),
+          ),
           itemCount: itemCount,
           itemBuilder: (context, index) {
             if (index >= state.searchResults.length) {
               if (state.isLoadingMoreCategory) {
                 return Padding(
-                  padding: EdgeInsets.symmetric(vertical: 18.h),
-                  child:  Center(
+                  padding: EdgeInsets.symmetric(
+                    vertical: AppResponsive.heightValue(context, 18),
+                  ),
+                  child: Center(
                     child: CupertinoActivityIndicator(
                       color: AppColors.kPrimary,
                     ),
@@ -238,10 +271,14 @@ class _CategoryLecturesScreenState extends State<CategoryLecturesScreen> {
               }
 
               return Padding(
-                padding: EdgeInsets.only(top: 4.h, bottom: 20.h),
+                padding: EdgeInsets.only(
+                  top: AppResponsive.heightValue(context, 4),
+                  bottom: AppResponsive.heightValue(context, 20),
+                ),
                 child: Center(
                   child: OutlinedButton.icon(
-                    onPressed: () => context.read<LecturesCubit>().loadMoreCategory(),
+                    onPressed: () =>
+                        context.read<LecturesCubit>().loadMoreCategory(),
                     icon: const Icon(Icons.refresh_rounded),
                     label: const Text('إعادة تحميل المزيد'),
                   ),
@@ -251,7 +288,9 @@ class _CategoryLecturesScreenState extends State<CategoryLecturesScreen> {
 
             final lecture = state.searchResults[index];
             return Padding(
-              padding: EdgeInsets.only(bottom: 12.h),
+              padding: EdgeInsets.only(
+                bottom: AppResponsive.heightValue(context, 12),
+              ),
               child: LectureCard(
                 lecture: lecture,
                 onTap: () => _openLecture(lecture),

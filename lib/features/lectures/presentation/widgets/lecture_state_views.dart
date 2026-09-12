@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hisn_almuslim/core/responsive/app_responsive.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 import 'package:hisn_almuslim/core/theme/app_colors.dart';
 
@@ -58,30 +58,36 @@ class LectureCardSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 12.h),
-      padding: EdgeInsets.all(8.w),
+      margin: EdgeInsets.only(bottom: AppResponsive.heightValue(context, 12)),
+      padding: EdgeInsets.all(AppResponsive.widthValue(context, 8)),
       child: Row(
         children: [
           _ShimmerBox(
-            width: 126.w,
-            height: 78.h,
-            borderRadius: BorderRadius.circular(14.r),
+            width: AppResponsive.widthValue(context, 126),
+            height: AppResponsive.heightValue(context, 78),
+            borderRadius: BorderRadius.circular(
+              AppResponsive.radius(context, 14),
+            ),
           ),
-          SizedBox(width: 10.w),
+          SizedBox(width: AppResponsive.widthValue(context, 10)),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _ShimmerBox(
                   width: double.infinity,
-                  height: 13.h,
-                  borderRadius: BorderRadius.circular(6.r),
+                  height: AppResponsive.heightValue(context, 13),
+                  borderRadius: BorderRadius.circular(
+                    AppResponsive.radius(context, 6),
+                  ),
                 ),
-                SizedBox(height: 8.h),
+                SizedBox(height: AppResponsive.heightValue(context, 8)),
                 _ShimmerBox(
-                  width: 120.w,
-                  height: 11.h,
-                  borderRadius: BorderRadius.circular(6.r),
+                  width: AppResponsive.widthValue(context, 120),
+                  height: AppResponsive.heightValue(context, 11),
+                  borderRadius: BorderRadius.circular(
+                    AppResponsive.radius(context, 6),
+                  ),
                 ),
               ],
             ),
@@ -135,32 +141,39 @@ class LectureFeedbackView extends StatelessWidget {
     final scheme = Theme.of(context).colorScheme;
 
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 44.h, horizontal: 24.w),
+      padding: EdgeInsets.symmetric(
+        vertical: AppResponsive.heightValue(context, 44),
+        horizontal: AppResponsive.widthValue(context, 24),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            width: 56.w,
-            height: 56.w,
+            width: AppResponsive.widthValue(context, 56),
+            height: AppResponsive.widthValue(context, 56),
             decoration: BoxDecoration(
               color: AppColors.kPrimary.withValues(alpha: .08),
               shape: BoxShape.circle,
             ),
-            child: Icon(icon, color: AppColors.kPrimary, size: 26.sp),
+            child: Icon(
+              icon,
+              color: AppColors.kPrimary,
+              size: AppResponsive.fontSize(context, 26),
+            ),
           ),
-          SizedBox(height: 14.h),
+          SizedBox(height: AppResponsive.heightValue(context, 14)),
           CustomText(
             message,
             maxLines: 4,
             textAlign: TextAlign.center,
-            fontSize: 12.5.sp,
+            fontSize: AppResponsive.fontSize(context, 12.5),
             height: 1.6,
             fontWeight: FontWeight.w600,
             color: scheme.onSurface.withValues(alpha: .68),
           ),
           if (actionLabel != null && onAction != null) ...[
-            SizedBox(height: 14.h),
+            SizedBox(height: AppResponsive.heightValue(context, 14)),
             FilledButton.icon(
               onPressed: onAction,
               icon: const Icon(Icons.refresh_rounded),

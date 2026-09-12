@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:hisn_almuslim/features/lectures/presentation/widgets/lecture_content_container.dart';
+import 'package:hisn_almuslim/core/responsive/app_responsive.dart';
 import 'package:hisn_almuslim/core/helpers/lecture_progress_storage.dart';
 import 'package:hisn_almuslim/core/shared/app_bar_widget.dart';
 import 'package:hisn_almuslim/features/lectures/presentation/widgets/player_main_content.dart';
@@ -24,22 +25,17 @@ class LecturePlayerScreen extends StatefulWidget {
   });
 
   @override
-  State<LecturePlayerScreen> createState() =>
-      _LecturePlayerScreenState();
+  State<LecturePlayerScreen> createState() => _LecturePlayerScreenState();
 }
 
-class _LecturePlayerScreenState
-    extends State<LecturePlayerScreen> {
-
+class _LecturePlayerScreenState extends State<LecturePlayerScreen> {
   late final YoutubePlayerController _controller;
 
   Timer? _progressTimer;
 
   bool _isSavingProgress = false;
 
-  String get _progressKey =>
-      'lecture_progress_${widget.lecture.id}';
-
+  String get _progressKey => 'lecture_progress_${widget.lecture.id}';
 
   Future<void> _saveLastLecture() async {
     try {
@@ -50,27 +46,24 @@ class _LecturePlayerScreenState
     } catch (_) {}
   }
 
-
   @override
   void initState() {
     super.initState();
 
-    final start =
-    (widget.initialPositionSeconds ?? 0) > 10
+    final start = (widget.initialPositionSeconds ?? 0) > 10
         ? widget.initialPositionSeconds
         : null;
 
-    _controller =
-        YoutubePlayerController.fromVideoId(
-          videoId: widget.lecture.id,
-          autoPlay: false,
-          startSeconds: start,
-          params: const YoutubePlayerParams(
-            showControls: true,
-            showFullscreenButton: true,
-            strictRelatedVideos: true,
-          ),
-        );
+    _controller = YoutubePlayerController.fromVideoId(
+      videoId: widget.lecture.id,
+      autoPlay: false,
+      startSeconds: start,
+      params: const YoutubePlayerParams(
+        showControls: true,
+        showFullscreenButton: true,
+        strictRelatedVideos: true,
+      ),
+    );
 
     // Save this lecture as the last listened lecture.
     _saveLastLecture();
@@ -78,7 +71,7 @@ class _LecturePlayerScreenState
     // Save progress periodically.
     _progressTimer = Timer.periodic(
       const Duration(seconds: 5),
-          (_) => _saveProgress(),
+      (_) => _saveProgress(),
     );
   }
 
@@ -92,11 +85,9 @@ class _LecturePlayerScreenState
     _isSavingProgress = true;
 
     try {
-      final position =
-      await _controller.currentTime;
+      final position = await _controller.currentTime;
 
-      final duration =
-      await _controller.duration;
+      final duration = await _controller.duration;
 
       // YouTube controller may not have
       // loaded the duration yet.
@@ -104,14 +95,13 @@ class _LecturePlayerScreenState
         return;
       }
 
-      final completed =
-          position >= duration * 0.92;
+      final completed = position >= duration * 0.92;
 
       await widget.preferences.setString(
         _progressKey,
         '${position.toStringAsFixed(2)}|'
-            '${duration.toStringAsFixed(2)}|'
-            '$completed',
+        '${duration.toStringAsFixed(2)}|'
+        '$completed',
       );
 
       // Make sure SharedPreferences has
@@ -124,7 +114,6 @@ class _LecturePlayerScreenState
     }
   }
 
-
   @override
   void dispose() {
     _progressTimer?.cancel();
@@ -134,14 +123,12 @@ class _LecturePlayerScreenState
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
 
-      onPopInvokedWithResult:
-          (didPop, result) async {
+      onPopInvokedWithResult: (didPop, result) async {
         if (didPop) {
           return;
         }
@@ -158,53 +145,46 @@ class _LecturePlayerScreenState
       },
 
       child: Scaffold(
-        appBar: AppBarWidget(
-          title: 'المحاضرة',
-        ),
+        appBar: AppBarWidget(title: 'المحاضرة'),
 
-        body: ListView(
-          physics:
-          const BouncingScrollPhysics(),
+        body: LectureContentContainer(
+          child: ListView(
+            physics: const BouncingScrollPhysics(),
 
-          padding: EdgeInsets.only(
-            bottom: 40.h,
-          ),
+            padding: EdgeInsets.only(
+              bottom: AppResponsive.heightValue(context, 40),
+            ),
 
-          children: [
+            children: [
+              Padding(
+                padding: EdgeInsets.fromLTRB(
+                  AppResponsive.widthValue(context, 12),
+                  AppResponsive.heightValue(context, 12),
+                  AppResponsive.widthValue(context, 12),
+                  0,
+                ),
 
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(
+                    AppResponsive.radius(context, 18),
+                  ),
 
-            Padding(
-              padding: EdgeInsets.fromLTRB(
-                12.w,
-                12.h,
-                12.w,
-                0,
-              ),
+                  child: AspectRatio(
+                    aspectRatio: 16 / 9,
 
-              child: ClipRRect(
-                borderRadius:
-                BorderRadius.circular(18.r),
-
-                child: AspectRatio(
-                  aspectRatio: 16 / 9,
-
-                  child: YoutubePlayer(
-                    controller: _controller,
+                    child: YoutubePlayer(controller: _controller),
                   ),
                 ),
               ),
-            ),
 
-            Gap(18.h),
+              Gap(AppResponsive.heightValue(context, 18)),
 
-            // ======================================================
-            // Main Content
-            // ======================================================
-
-            PlayerMainContent(
-              lecture: widget.lecture,
-            ),
-          ],
+              // ======================================================
+              // Main Content
+              // ======================================================
+              PlayerMainContent(lecture: widget.lecture),
+            ],
+          ),
         ),
       ),
     );

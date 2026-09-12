@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hisn_almuslim/core/responsive/app_responsive.dart';
 import 'package:hisn_almuslim/core/shared/custom_text.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../theme/quiz_tokens.dart';
 import 'quiz_stars.dart';
-
 
 class QuizScoreDisplay extends StatelessWidget {
   const QuizScoreDisplay({super.key, required this.score, required this.stars});
@@ -22,13 +21,15 @@ class QuizScoreDisplay extends StatelessWidget {
         ? Colors.white.withValues(alpha: 0.07)
         : AppColors.kBorderLight;
 
-
-
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(vertical: 25.h),
+      padding: EdgeInsets.symmetric(
+        vertical: AppResponsive.heightValue(context, 25),
+      ),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(QuizRadius.lg.r),
+        borderRadius: BorderRadius.circular(
+          AppResponsive.radius(context, QuizRadius.lg),
+        ),
         color: bgColor,
         border: Border.all(color: borderColor, width: 1),
       ),
@@ -39,16 +40,19 @@ class QuizScoreDisplay extends StatelessWidget {
             tween: IntTween(begin: 0, end: score),
             duration: const Duration(milliseconds: 900),
             curve: Curves.easeOutCubic,
-            builder: (context, value, _) =>
-                CustomText(
+            builder: (context, value, _) => CustomText(
               '$value%',
-                fontSize: 37.sp,
-                fontWeight: FontWeight.w900,
-                color: QuizColors.primary(context),
+              fontSize: AppResponsive.fontSize(context, 37),
+              fontWeight: FontWeight.w900,
+              color: QuizColors.primary(context),
             ),
           ),
-          SizedBox(height: 12.h),
-          QuizStars(count: stars, size: 32.sp, animate: true),
+          SizedBox(height: AppResponsive.heightValue(context, 12)),
+          QuizStars(
+            count: stars,
+            size: AppResponsive.fontSize(context, 32),
+            animate: true,
+          ),
         ],
       ),
     );

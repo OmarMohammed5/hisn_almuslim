@@ -16,15 +16,6 @@ import 'package:hisn_almuslim/features/settings/data/cubit/theme_cubit.dart';
 import 'package:hisn_almuslim/features/settings/data/cubit/notification_cubit.dart';
 import 'package:hisn_almuslim/features/quran/data/cubit/cubit/search_cubit.dart';
 import 'package:hisn_almuslim/features/quran/data/cubit/quran_cubit.dart';
-import 'package:hisn_almuslim/features/hadith/books/bukhary/data/cubit/chapters_cubit.dart';
-import 'package:hisn_almuslim/features/hadith/books/muslim/data/cubit/sahih_muslim_cubit.dart';
-import 'package:hisn_almuslim/features/hadith/books/nawawi/data/cubit/hadith_cubit.dart';
-import 'package:hisn_almuslim/features/hadith/books/reyad%20al%20salehin/data/cubit/reyad_al_saliheen_cubit.dart';
-import 'package:hisn_almuslim/features/jami%20dua/data/cubit/dead%20dua/dead_dua_cubit.dart';
-import 'package:hisn_almuslim/features/jami%20dua/data/cubit/etiquette%20dua/etiquette_dua_cubit.dart';
-import 'package:hisn_almuslim/features/jami%20dua/data/cubit/hajj%20and%20omra/hajj_dua_cubit.dart';
-import 'package:hisn_almuslim/features/jami%20dua/data/cubit/last%20ten%20duas/last_ten_duas_cubit.dart';
-import 'package:hisn_almuslim/features/jami%20dua/data/cubit/quran%20&%20sunnah%20dua/cubit/dua_cubit.dart';
 import 'package:hisn_almuslim/features/asma%20allah/data/cubit/asma_allah_cubit.dart';
 import 'package:hisn_almuslim/features/adhan/data/cubit/adhan_cubit.dart';
 import 'package:hisn_almuslim/features/quran_audio/logic/quran_audio_cubit.dart';
@@ -33,6 +24,14 @@ import '../../features/islamic_quiz/data/datasources/quiz_progress_local_data_so
 import '../../features/islamic_quiz/data/repositories/quiz_progress_repository_impl.dart';
 import '../../features/islamic_quiz/domain/repositories/quiz_progress_repository.dart';
 import '../../features/islamic_quiz/presentation/cubit/game_cubit.dart';
+import '../../features/hadith/data/datasources/hadith_local_data_source.dart';
+import '../../features/hadith/data/repositories/hadith_repository_impl.dart';
+import '../../features/hadith/domain/repositories/hadith_repository.dart';
+import '../../features/hadith/presentation/cubit/hadith_cubit.dart';
+import '../../features/jami dua/data/datasources/jami_dua_local_data_source.dart';
+import '../../features/jami dua/data/repositories/jami_dua_repository_impl.dart';
+import '../../features/jami dua/domain/repositories/jami_dua_repository.dart';
+import '../../features/jami dua/presentation/cubit/jami_dua_cubit.dart';
 import '../../features/lectures/data/datasources/lectures_local_data_source.dart';
 import '../../features/lectures/data/datasources/youtube_remote_data_source.dart';
 import '../../features/lectures/data/repositories/lectures_repository_impl.dart';
@@ -129,22 +128,35 @@ Future<void> setupLocator() async {
   sl.registerFactory<QuranCubit>(
         () => QuranCubit(repository: sl<QuranRepository>()),
   );
-  sl.registerFactory<HadithCubit>(() => HadithCubit()..loadHadiths());
-  sl.registerFactory<ChaptersCubit>(() => ChaptersCubit()..loadChapters());
-  sl.registerFactory<SahihMuslimCubit>(
-        () => SahihMuslimCubit()..loadSahihMuslim(),
+  // ========== HADITH ==========
+  sl.registerLazySingleton<HadithLocalDataSource>(
+        () => HadithLocalDataSourceImpl(),
   );
-  sl.registerFactory<ReyadAlSaliheenCubit>(
-        () => ReyadAlSaliheenCubit()..loadReyadAlSaliheen(),
+
+  sl.registerLazySingleton<HadithRepository>(
+        () => HadithRepositoryImpl(
+      localDataSource: sl<HadithLocalDataSource>(),
+    ),
   );
-  sl.registerFactory<EtiquetteDuaCubit>(
-        () => EtiquetteDuaCubit()..loadEtiquetteDua(),
+
+  sl.registerFactory<HadithCubit>(
+        () => HadithCubit(repository: sl<HadithRepository>()),
   );
-  sl.registerFactory<DuaCubit>(() => DuaCubit()..loadDua());
-  sl.registerFactory<HajjDuaCubit>(() => HajjDuaCubit()..loadHajjDua());
-  sl.registerFactory<DeadDuaCubit>(() => DeadDuaCubit()..loadDuaDead());
-  sl.registerFactory<LastTenDuasCubit>(
-        () => LastTenDuasCubit()..loadLastTenDuas(),
+  // ========== JAMI DUA ==========
+  sl.registerLazySingleton<JamiDuaLocalDataSource>(
+        () => const JamiDuaLocalDataSourceImpl(),
+  );
+
+  sl.registerLazySingleton<JamiDuaRepository>(
+        () => JamiDuaRepositoryImpl(
+      localDataSource: sl<JamiDuaLocalDataSource>(),
+    ),
+  );
+
+  sl.registerFactory<JamiDuaCubit>(
+        () => JamiDuaCubit(
+      repository: sl<JamiDuaRepository>(),
+    ),
   );
   sl.registerFactory<AdhanCubit>(() => AdhanCubit()..loadPrayerTimes());
 
@@ -319,7 +331,6 @@ void _preloadQuranData() {
     repository.preloadQuran();
   } catch (e) {
     // Silently fail - data will load when needed
-    print('Failed to preload Quran data: $e');
   }
 }
 

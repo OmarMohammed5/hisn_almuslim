@@ -154,7 +154,7 @@ class _WirdNotificationBuildState extends State<WirdNotificationBuild> {
                   children: [
                     CustomText(
                       "ورد القرآن",
-                      fontSize: AppResponsive.fontSize(context, 13),
+                      fontSize: AppResponsive.fontSize(context, 11),
                       fontWeight: state.enableDailyWird
                           ? FontWeight.w700
                           : FontWeight.w600,
@@ -238,7 +238,7 @@ class _WirdNotificationBuildState extends State<WirdNotificationBuild> {
               Expanded(
                 child: CustomText(
                   "وقت التنبيه",
-                  fontSize: AppResponsive.fontSize(context, 13),
+                  fontSize: AppResponsive.fontSize(context, 11),
                   fontWeight: FontWeight.w600,
                   color: isDark ? Colors.grey.shade300 : Colors.grey.shade700,
                 ),
@@ -282,7 +282,7 @@ class _WirdNotificationBuildState extends State<WirdNotificationBuild> {
                       color: isDark
                           ? Colors.teal.shade200
                           : Colors.teal.shade700,
-                      fontSize: AppResponsive.fontSize(context, 13),
+                      fontSize: AppResponsive.fontSize(context, 11),
                       fontWeight: FontWeight.w700,
                     ),
                   ],

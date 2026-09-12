@@ -46,27 +46,63 @@ class SurahList extends StatelessWidget {
         final isPaused = state is AudioPlayerReady && !state.isPlaying && !state.isCompleted;
         final isCompleted = state is AudioPlayerReady && state.isCompleted;
 
-        return ListView.builder(
-          controller: controller,
-          padding: EdgeInsets.only(
-            top: AppResponsive.heightValue(context, 4),
-            bottom: AppResponsive.heightValue(context, 90),
-            left: AppResponsive.widthValue(context, 4),
-            right: AppResponsive.widthValue(context, 4),
-          ),
-          itemCount: surahs.length,
-          itemBuilder: (context, index) {
-            final surah = surahs[index];
-            final isCurrentSurah = surah.number == currentSurahNumber;
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            final width = constraints.maxWidth;
+            final isTablet = width >= 700;
+            final isDesktop = width >= 1100;
+            final columns = isDesktop ? 3 : (isTablet ? 2 : 1);
 
-            return SurahTile(
-              surah: surah,
-              index: index,
-              isCurrentSurah: isCurrentSurah,
-              isPlaying: isPlaying,
-              isPaused: isPaused,
-              isCompleted: isCompleted,
-              onPressed: () => onSurahPressed(surah.number),
+            final horizontalPadding =
+                AppResponsive.widthValue(context, isTablet ? 8 : 4);
+            final bottomPadding =
+                AppResponsive.heightValue(context, isTablet ? 28 : 90);
+
+            Widget itemBuilder(BuildContext context, int index) {
+              final surah = surahs[index];
+              final isCurrentSurah = surah.number == currentSurahNumber;
+
+              return SurahTile(
+                surah: surah,
+                index: index,
+                isCurrentSurah: isCurrentSurah,
+                isPlaying: isPlaying,
+                isPaused: isPaused,
+                isCompleted: isCompleted,
+                onPressed: () => onSurahPressed(surah.number),
+              );
+            }
+
+            if (columns == 1) {
+              return ListView.builder(
+                controller: controller,
+                padding: EdgeInsets.only(
+                  top: AppResponsive.heightValue(context, 4),
+                  bottom: bottomPadding,
+                  left: horizontalPadding,
+                  right: horizontalPadding,
+                ),
+                itemCount: surahs.length,
+                itemBuilder: itemBuilder,
+              );
+            }
+
+            return GridView.builder(
+              controller: controller,
+              padding: EdgeInsets.only(
+                top: AppResponsive.heightValue(context, 4),
+                bottom: bottomPadding,
+                left: horizontalPadding,
+                right: horizontalPadding,
+              ),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: columns,
+                crossAxisSpacing: AppResponsive.widthValue(context, 12),
+                mainAxisSpacing: AppResponsive.heightValue(context, 8),
+                childAspectRatio: isDesktop ? 2.45 : 2.2,
+              ),
+              itemCount: surahs.length,
+              itemBuilder: itemBuilder,
             );
           },
         );
